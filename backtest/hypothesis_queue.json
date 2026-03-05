@@ -20,26 +20,26 @@
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "pure_momentum_concentration",
+    "id": "midcap_ret_dominant",
     "result": {
       "lookback": 80,
       "top_n": 10,
       "rebalance": "weekly",
-      "ret_w": 0.45,
-      "rs_w": 0.45,
-      "green_w": 0.05,
-      "smooth_w": 0.05,
+      "ret_w": 0.4,
+      "rs_w": 0.25,
+      "green_w": 0.2,
+      "smooth_w": 0.15,
       "resilience_w": 0.0,
-      "total_return_pct": 0.68,
-      "alpha_pct": -97.52,
-      "sharpe": 0.22,
-      "max_dd_pct": 23.9,
+      "total_return_pct": 6.5,
+      "alpha_pct": -91.7,
+      "sharpe": 0.585,
+      "max_dd_pct": 23.87,
       "nikkei_pct": 98.2,
       "n_trades": 116
     },
-    "delta_sharpe": -1.971,
+    "delta_sharpe": -1.606,
     "win": false,
-    "at": "2026-03-05T10:06:39.143608"
+    "at": "2026-03-05T10:08:43.268023"
   },
   "queue": [
     {
@@ -921,7 +921,7 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       },
-      "status": "pending"
+      "status": "done_error"
     },
     {
       "id": "midcap_lookback60",
@@ -937,7 +937,25 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 60,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "total_return_pct": 18.44,
+        "alpha_pct": -79.76,
+        "sharpe": 1.309,
+        "max_dd_pct": 20.43,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -0.882,
+      "elapsed_sec": 1.8
     },
     {
       "id": "midcap_ret_dominant",
@@ -952,6 +970,78 @@
         "green_w": 0.2,
         "smooth_w": 0.15,
         "resilience_w": 0.0
+      },
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.4,
+        "rs_w": 0.25,
+        "green_w": 0.2,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "total_return_pct": 6.5,
+        "alpha_pct": -91.7,
+        "sharpe": 0.585,
+        "max_dd_pct": 23.87,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.606,
+      "elapsed_sec": 1.8
+    },
+    {
+      "id": "midcap_lookback100",
+      "desc": "中型株ユニバース×lookback=100日で中期モメンタム強化",
+      "theory": "バックテストでlookback=80 > lookback=60が明確（Sharpe 2.191 vs 1.309）。この単調増加トレンドが100日まで続くか検証。100日（=約5ヶ月）は機関投資家の四半期〜半期サイクルと一致し、中型株へのアナリストカバレッジ拡大に伴う情報伝播遅延を十分に捉えられる。80日よりも情報伝播の完了を待った分だけ「乗り遅れリスク」が下がり、かつまだピークに達していない上昇トレンドを捕捉できる可能性がある。universe_midcapのユニバースはそのまま維持し、lookbackのみ変更することで単独効果を測定。",
+      "params": {
+        "lookback": 100,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "status": "pending"
+    },
+    {
+      "id": "midcap_top7_concentrated",
+      "desc": "中型株ユニバース×top_n=7で高集中ポートフォリオ",
+      "theory": "top_n=15で分散強化は失敗（Sharpe 0.775）、top_n=10がベースライン（Sharpe 2.191）。top_n縮小方向（集中化）の効果はtop_n=8が異なるユニバース（200-1500億）と同時変更で失敗したため純粋な集中効果が未測定。元のuniverse（100-3000億）でtop_n=7のみ変更することで、上位7銘柄の高純度シグナルがシャープレシオを改善するか検証。中型株では流動性コストがあるため銘柄数削減でターンオーバー・スリッページも改善する可能性がある。green_w=0.2とsmooth_w=0.2の両方が高い高品質銘柄が集中的に残る設計。",
+      "params": {
+        "lookback": 80,
+        "top_n": 7,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "status": "pending"
+    },
+    {
+      "id": "midcap_regime_bull_concentrate",
+      "desc": "レジーム連動型: 強気確認時top_n=7集中×通常時top_n=10（攻め特化型）",
+      "theory": "これまでのレジーム仮説は全て「弱気時に守る」防御型で失敗（Sharpe 0.263-0.667）。逆転の発想：bull相場（日経225が50MA上かつ直近4週リターンが+2%超）という「確信度の高い強気局面」でtop_n=7に集中してアルファを最大化、それ以外（不確実な局面）はtop_n=10で通常運転。regime_countsではbullが74%と圧倒的多数のため、bull時の集中効果が全体パフォーマンスに直接寄与する。防御ではなく攻撃的レジーム連動として初めて検証する。50MAは20MAより滑らかで誤シグナルが少なく、4週+2%条件で過去の上昇モメンタムを確認する二重フィルター設計。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "regime_mode": "bull_concentrate",
+        "regime_ma_period": 50,
+        "regime_bull_weeks": 4,
+        "regime_bull_threshold": 0.02,
+        "bull_top_n": 7,
+        "nonbull_top_n": 10
       },
       "status": "pending"
     }
