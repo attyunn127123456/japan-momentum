@@ -20,32 +20,26 @@
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "midcap_regime_bull_concentrate",
+    "id": "midcap_green_dominant",
     "result": {
       "lookback": 80,
       "top_n": 10,
       "rebalance": "weekly",
       "ret_w": 0.3,
       "rs_w": 0.3,
-      "green_w": 0.2,
-      "smooth_w": 0.2,
+      "green_w": 0.35,
+      "smooth_w": 0.05,
       "resilience_w": 0.0,
-      "regime_mode": "bull_concentrate",
-      "regime_ma_period": 50,
-      "regime_bull_weeks": 4,
-      "regime_bull_threshold": 0.02,
-      "bull_top_n": 7,
-      "nonbull_top_n": 10,
-      "total_return_pct": 1.39,
-      "alpha_pct": -96.81,
-      "sharpe": 0.263,
-      "max_dd_pct": 23.65,
+      "total_return_pct": 3.13,
+      "alpha_pct": -95.07,
+      "sharpe": 0.376,
+      "max_dd_pct": 23.51,
       "nikkei_pct": 98.2,
       "n_trades": 116
     },
-    "delta_sharpe": -1.928,
+    "delta_sharpe": -1.815,
     "win": false,
-    "at": "2026-03-05T10:10:38.347575"
+    "at": "2026-03-05T10:12:20.808287"
   },
   "queue": [
     {
@@ -1125,7 +1119,25 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 70,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "total_return_pct": 18.16,
+        "alpha_pct": -80.04,
+        "sharpe": 1.338,
+        "max_dd_pct": 21.51,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -0.853,
+      "elapsed_sec": 2.3
     },
     {
       "id": "midcap_rs_dominant",
@@ -1141,7 +1153,25 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.4,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "total_return_pct": 1.39,
+        "alpha_pct": -96.81,
+        "sharpe": 0.263,
+        "max_dd_pct": 23.65,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.928,
+      "elapsed_sec": 1.8
     },
     {
       "id": "midcap_green_dominant",
@@ -1156,6 +1186,76 @@
         "green_w": 0.35,
         "smooth_w": 0.05,
         "resilience_w": 0.0
+      },
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.35,
+        "smooth_w": 0.05,
+        "resilience_w": 0.0,
+        "total_return_pct": 3.13,
+        "alpha_pct": -95.07,
+        "sharpe": 0.376,
+        "max_dd_pct": 23.51,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.815,
+      "elapsed_sec": 1.8
+    },
+    {
+      "id": "midcap_equal_weight",
+      "desc": "中型株ユニバース×4シグナル等重み（0.25×4）",
+      "theory": "現行(ret_w=0.3, rs_w=0.3, green_w=0.2, smooth_w=0.2)はret/rs重視の非対称設計だが、これはバックテスト期間特有の環境への過学習の可能性がある。ret_dominantもrs_dominantも失敗し、pure_momentum_concentrationも惨敗した事実は、4シグナルの均等な貢献が重要であることを示唆している。等重み(0.25×4)は最もシンプルで過学習リスクが低く、greenとsmoothを0.05増やすことで品質シグナルを適切に評価できる。過去の失敗パターン（重みの偏り）を排除した最もロバストな設計。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.25,
+        "smooth_w": 0.25,
+        "resilience_w": 0.0
+      },
+      "status": "pending"
+    },
+    {
+      "id": "midcap_upper_expand",
+      "desc": "中型株ユニバース上限拡大：時価総額100〜5000億",
+      "theory": "universe_midcap(100〜3000億)が唯一の成功。上限を5000億に拡大することで、3000〜5000億帯（大型株の中で機関投資家が注目し始めているが情報がまだ完全には織り込まれていない境界層）を追加捕捉できる。midcap_sweet_spot(200〜1500×top_n=8)は上限を下げて失敗したが、上限の拡張方向は未検証。top_n=10を維持することでスコア上位10銘柄の選別品質を保ちながら、より広いユニバースから最強モメンタム銘柄を選べる。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "market_cap_min_bn": 100,
+        "market_cap_max_bn": 5000
+      },
+      "status": "pending"
+    },
+    {
+      "id": "midcap_lower_raise",
+      "desc": "中型株ユニバース下限引き上げ：時価総額300〜3000億",
+      "theory": "universe_midcap(100〜3000億)の成功要因はユニバース絞り込みだが、100〜300億帯の小型株は流動性が低くスリッページが大きい。週次リバランスでこれらの銘柄を売買すると執行コストで損失が生じる。300億以上に絞ることで流動性品質を向上させ、モメンタムシグナルが純粋に機能する環境を作れる。midcap_sweet_spot(200〜1500×top_n=8)は2変数同時変更だったため、本仮説は下限のみ変更して単独効果を測定する。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "market_cap_min_bn": 300,
+        "market_cap_max_bn": 3000
       },
       "status": "pending"
     }
