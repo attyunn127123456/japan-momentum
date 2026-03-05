@@ -1,7 +1,9 @@
-tunnel: japan-momentum
+tunnel: a1148589-9147-4780-bdb2-1b72b0c459e2
 credentials-file: /Users/panda/.cloudflared/japan-momentum.json
 
 ingress:
-  - hostname: momentum.akplabo.io   # 変更可能
+  - hostname: jpmomentum.com
+    service: http://localhost:8080
+  - hostname: www.jpmomentum.com
     service: http://localhost:8080
   - service: http_status:404
