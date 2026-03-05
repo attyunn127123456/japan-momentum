@@ -51,13 +51,6 @@ def signals_history():
         return []
     return json.loads(p.read_text())
 
-@app.get("/api/portfolio")
-def portfolio():
-    p = BASE / "portfolio.json"
-    if not p.exists():
-        return {"holdings": [], "updated": ""}
-    return json.loads(p.read_text())
-
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
 
 @app.get("/")
