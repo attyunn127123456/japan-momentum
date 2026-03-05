@@ -4,16 +4,41 @@
     "total_pct": 31.7,
     "alpha_pct": -66.5,
     "max_dd_pct": 21.5,
-    "params": {"lookback": 60, "top_n": 5, "rebalance": "weekly", "ret_w": 0.3, "rs_w": 0.3, "green_w": 0.2, "smooth_w": 0.2, "resilience_w": 0.0},
+    "params": {
+      "lookback": 60,
+      "top_n": 5,
+      "rebalance": "weekly",
+      "ret_w": 0.3,
+      "rs_w": 0.3,
+      "green_w": 0.2,
+      "smooth_w": 0.2,
+      "resilience_w": 0.0
+    },
     "date": "2026-03-05"
   },
-  "running": false,
-  "current_hypothesis": null,
+  "running": true,
+  "current_hypothesis": "universe_midcap",
   "last_result": null,
   "queue": [
-    {"id": "universe_midcap", "desc": "ユニバース→時価総額100〜3000億の中型株", "status": "pending"},
-    {"id": "new_high_breakout", "desc": "過去60日高値更新をエントリー条件に追加", "status": "pending"},
-    {"id": "vol_candle_exit", "desc": "大出来高陰線でエグジットシグナル追加", "status": "pending"},
-    {"id": "resilience_upgrade", "desc": "下落日相対強度を主要ファクターに昇格(w=0.3)", "status": "pending"}
+    {
+      "id": "universe_midcap",
+      "desc": "ユニバース→時価総額100〜3000億の中型株",
+      "status": "running"
+    },
+    {
+      "id": "new_high_breakout",
+      "desc": "過去60日高値更新をエントリー条件に追加",
+      "status": "pending"
+    },
+    {
+      "id": "vol_candle_exit",
+      "desc": "大出来高陰線でエグジットシグナル追加",
+      "status": "pending"
+    },
+    {
+      "id": "resilience_upgrade",
+      "desc": "下落日相対強度を主要ファクターに昇格(w=0.3)",
+      "status": "pending"
+    }
   ]
 }
