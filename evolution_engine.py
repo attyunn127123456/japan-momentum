@@ -432,7 +432,7 @@ def run_evolution():
         'status': 'done',
         'id': 'evolution_cycle',
         'win': 1,
-        'delta_sharpe': baseline['sharpe'] - json.loads(QUEUE_FILE.read_text()))['baseline'].get('sharpe', 0),
+        'delta_sharpe': baseline['sharpe'] - json.loads(QUEUE_FILE.read_text())['baseline'].get('sharpe', 0),
         'result': baseline,
         'at': datetime.now().isoformat(),
     }, ensure_ascii=False, indent=2))
