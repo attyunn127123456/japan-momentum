@@ -20,77 +20,11 @@
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "regime_adaptive_weights",
-    "result": {
-      "type": "regime",
-      "total_return_pct": 21.52,
-      "alpha_pct": -76.68,
-      "sharpe": 0.667,
-      "max_dd_pct": 20.8,
-      "nikkei_pct": 98.2,
-      "n_trades": 116,
-      "regime_counts": {
-        "bear": 8,
-        "bull": 86,
-        "neutral": 14,
-        "high_vol": 8
-      },
-      "regime_log_tail": [
-        {
-          "date": "2025-11-10",
-          "regime": "bull",
-          "ret": 0.0218
-        },
-        {
-          "date": "2025-12-01",
-          "regime": "bull",
-          "ret": 0.0133
-        },
-        {
-          "date": "2025-12-08",
-          "regime": "bull",
-          "ret": 0.0149
-        },
-        {
-          "date": "2025-12-15",
-          "regime": "bull",
-          "ret": -0.0061
-        },
-        {
-          "date": "2025-12-22",
-          "regime": "bull",
-          "ret": 0.0114
-        },
-        {
-          "date": "2025-12-29",
-          "regime": "bull",
-          "ret": 0.0116
-        },
-        {
-          "date": "2026-01-19",
-          "regime": "bull",
-          "ret": -0.0265
-        },
-        {
-          "date": "2026-01-26",
-          "regime": "bull",
-          "ret": -0.0119
-        },
-        {
-          "date": "2026-02-02",
-          "regime": "bull",
-          "ret": 0.0179
-        },
-        {
-          "date": "2026-02-09",
-          "regime": "bull",
-          "ret": -0.0024
-        }
-      ]
-    },
-    "delta_sharpe": -1.524,
+    "id": "lookback_ensemble",
+    "result": null,
+    "delta_sharpe": null,
     "win": false,
-    "at": "2026-03-05T09:55:26.111359"
+    "at": "2026-03-05T09:57:05.528217"
   },
   "queue": [
     {
@@ -416,7 +350,10 @@
         "resilience_w": 0.0,
         "green_smooth_synergy_w": 0.2
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": null,
+      "delta_sharpe": null,
+      "elapsed_sec": 0.0
     },
     {
       "id": "regime_bear_defense",
@@ -438,7 +375,10 @@
         "nonbull_smooth_w": 0.3,
         "regime_ma_period": 20
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": null,
+      "delta_sharpe": null,
+      "elapsed_sec": 0.0
     },
     {
       "id": "lookback_ensemble",
@@ -457,6 +397,65 @@
         "green_w": 0.2,
         "smooth_w": 0.2,
         "resilience_w": 0.0
+      },
+      "status": "done_lose",
+      "result": null,
+      "delta_sharpe": null,
+      "elapsed_sec": 0.0
+    },
+    {
+      "id": "regime_cash_buffer",
+      "desc": "レジーム連動型: non-bull時にキャッシュバッファ30%（top_n=7に削減）",
+      "theory": "regime_adaptive_weightsは重み切り替えという複雑な手法で失敗（Sharpe 0.667）。bull相場が74%を占め、わずか14%のnon-bull局面のために複雑な重みセットを用意しても過学習になる。より単純な「non-bull時はtop_nを10→7に削減して実質ポジション30%縮小」で対処する。重みは変えず銘柄数のみ調整することで、変数を最小化して汎化性を保つ。green_w/smooth_wの高い銘柄が自然と残るため守備力も上がる。日経225の20MAクロスでのみ切り替えるシンプルな2状態モデル。",
+      "params": {
+        "lookback": 80,
+        "rebalance": "weekly",
+        "regime_mode": "cash_buffer",
+        "regime_ma_period": 20,
+        "bull_top_n": 10,
+        "nonbull_top_n": 7,
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "status": "pending",
+      "type": "regime"
+    },
+    {
+      "id": "ret_rs_dual_rank",
+      "desc": "ret×rs 2段フィルタ: RS上位40%絞り込み後にretスコアでtop_n選択",
+      "theory": "universe_midcapではret_w=0.3とrs_w=0.3を独立加算しているが、どちらか片方だけ高い銘柄もtop_nに入り込む。両シグナルが同時に高い銘柄は「市場全体が下がる中でも日経を上回るリターン」を出している高純度の強い銘柄。まずRS（対日経相対強度）で上位40%に絞り込み、その中でretスコア上位top_n=10を選ぶ2段フィルタにより、シグナル品質を向上させる。独立加算では見えなかった両シグナル同時高の銘柄を確実に捉える。universe_midcapの成功（ユニバース絞り込み効果）の延長線上にある発想。OHLCVのみで実装可能。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.35,
+        "rs_w": 0.35,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "rs_prefilter_pct": 0.4,
+        "dual_rank_mode": true
+      },
+      "status": "pending"
+    },
+    {
+      "id": "midcap_volume_stable",
+      "desc": "中型株×出来高安定フィルター: 週次出来高CV低位銘柄を優遇",
+      "theory": "universe_midcapが唯一の成功仮説であり、ユニバース品質の絞り込みが最も効果的。週次リバランスでは流動性が不安定な銘柄はスリッページが大きく、シグナルが正しくても執行コストで損する。過去20週の週次出来高の変動係数（CV=標準偏差/平均）が低い銘柄は、機関投資家が継続的に売買している安定した需給の銘柄。CVを追加スコアとして組み込むことで、smooth_trendシグナルが捉える「価格軌跡の安定性」と出来高安定性を組み合わせた高品質銘柄選別ができる。universe_midcap×vol安定の相乗効果を検証。OHLCVのみで計算可能。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "vol_stability_w": 0.1,
+        "vol_stability_weeks": 20
       },
       "status": "pending"
     }
