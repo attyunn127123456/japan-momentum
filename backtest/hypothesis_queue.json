@@ -17,14 +17,30 @@
     "date": "2026-03-05",
     "hypothesis": "universe_midcap"
   },
-  "running": false,
-  "current_hypothesis": null,
+  "running": true,
+  "current_hypothesis": "biweekly_midcap",
   "last_result": {
-    "id": "high52_midcap",
-    "result": null,
-    "delta_sharpe": null,
+    "id": "rank_product_midcap",
+    "result": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.25,
+      "rs_w": 0.25,
+      "green_w": 0.25,
+      "smooth_w": 0.25,
+      "resilience_w": 0.0,
+      "score_mode": "rank_product",
+      "total_return_pct": 6.63,
+      "alpha_pct": -91.57,
+      "sharpe": 0.863,
+      "max_dd_pct": 10.98,
+      "nikkei_pct": 98.2,
+      "n_trades": 116
+    },
+    "delta_sharpe": -1.328,
     "win": false,
-    "at": "2026-03-05T10:18:25.908763"
+    "at": "2026-03-05T10:20:18.279443"
   },
   "queue": [
     {
@@ -1316,7 +1332,26 @@
         "resilience_w": 0.0,
         "score_mode": "rank_product"
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.25,
+        "smooth_w": 0.25,
+        "resilience_w": 0.0,
+        "score_mode": "rank_product",
+        "total_return_pct": 6.63,
+        "alpha_pct": -91.57,
+        "sharpe": 0.863,
+        "max_dd_pct": 10.98,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.328,
+      "elapsed_sec": 2.2
     },
     {
       "id": "biweekly_midcap",
@@ -1332,7 +1367,7 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       },
-      "status": "pending"
+      "status": "running"
     },
     {
       "id": "high52_midcap",
