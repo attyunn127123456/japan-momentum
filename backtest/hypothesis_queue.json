@@ -118,6 +118,59 @@
       },
       "delta_sharpe": -1.764,
       "elapsed_sec": 0.9
+    },
+    {
+      "id": "sector_neutral_momentum",
+      "desc": "セクター中立モメンタム：同セクター内相対強度でランキング",
+      "theory": "日本株はセクター相関が高く、セクターローテーションがリターンの多くを説明する。セクター内での相対順位を使うことでマクロ/セクターノイズを除去し、純粋な銘柄固有モメンタムを捉えられる。アナリストカバレッジが薄い中型株ではセクター内の情報伝播が遅いため効果が持続しやすい。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "sector_neutral": true
+      },
+      "status": "pending"
+    },
+    {
+      "id": "short_squeeze_momentum",
+      "desc": "信用倍率低位（空売り過多）×価格モメンタム強のショートスクイーズ狙い",
+      "theory": "信用倍率（信用買い残/信用売り残）が低い＝空売りが積み上がっている銘柄が上昇モメンタムに乗ると、ショートカバー（強制買戻し）が連鎖して上昇が加速するショートスクイーズ効果が働く。日本の個人投資家は信用売りを好む傾向があり、機関の逆張りと衝突するタイミングでスクイーズが発生しやすい。short_ratioデータが利用可能なため実装可能。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "short_ratio_filter": "low_tercile",
+        "short_ratio_w": 0.05
+      },
+      "status": "pending"
+    },
+    {
+      "id": "smart_money_flow",
+      "desc": "機関投資家買い越し×個人売り越し銘柄フィルター（investor_types活用）",
+      "theory": "investor_typesデータで外国人・信託銀行（機関）が買い越し、個人が売り越している銘柄は'スマートマネー'が拾っている状態。個人の売りは感情的・短期的なことが多く、機関の買いは中長期的評価に基づく。このフロー乖離が持続する間は価格上昇モメンタムが続きやすい。日本固有の週次投資家別売買統計が使えることが優位性の源泉。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "investor_flow_filter": "institution_buy_retail_sell",
+        "investor_flow_w": 0.15
+      },
+      "status": "pending"
     }
   ],
   "tested_factors": [
