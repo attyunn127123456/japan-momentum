@@ -101,7 +101,7 @@ def run_screener(top_n: int = 20, universe_size: int = 500) -> list[dict]:
     print(f"[{datetime.now().strftime('%H:%M:%S')}] {len(codes)}銘柄スコア計算中...")
     results = []
     with ThreadPoolExecutor(max_workers=12) as exe:
-        futures = {exe.submit(score_ticker, c, start, end, nikkei, sector_map.get(c, "")): c for c in codes}
+        futures = {exe.submit(score_ticker, c, start, end, nikkei, sector_map.get(c, ""), name_map.get(c, "")): c for c in codes}
         done = 0
         for f in as_completed(futures):
             done += 1
