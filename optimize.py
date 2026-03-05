@@ -5,6 +5,16 @@ import pandas as pd
 from datetime import datetime, timedelta
 from pathlib import Path
 
+def _fb(o):
+    """bool/NaN/Inf をJSONシリアライズ可能に変換"""
+    if isinstance(o, bool): return int(o)
+    if isinstance(o, dict): return {k: _fb(v) for k, v in o.items()}
+    if isinstance(o, list): return [_fb(i) for i in o]
+    import math
+    if isinstance(o, float) and (math.isnan(o) or math.isinf(o)): return None
+    return o
+
+
 from fetch_cache import read_ohlcv
 from universe import get_top_liquid_tickers
 from backtest import get_rebalance_dates, get_nikkei_history
@@ -225,7 +235,7 @@ def run_grid(start="2023-01-01", end="2026-03-05", n_codes=2000):
     out = {"run_at":datetime.now().isoformat(),"start":start,"end":end,
            "total_tested":len(results),"nikkei_pct":nk_pct,"top10":results[:10],"all":results[:300]}
     Path("backtest").mkdir(exist_ok=True)
-    Path("backtest/optimize_latest.json").write_text(json.dumps(out,ensure_ascii=False,indent=2))
+    Path("backtest/optimize_latest.json").write_text(json.dumps(_fb(out),ensure_ascii=False,indent=2))
     print(f"\n完了 ({time.time()-t0:.0f}秒) → backtest/optimize_latest.json")
     return results
 

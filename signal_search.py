@@ -12,6 +12,16 @@ import pandas as pd
 from datetime import datetime, timedelta
 from pathlib import Path
 
+def _fb(o):
+    """bool/NaN/Inf をJSONシリアライズ可能に変換"""
+    if isinstance(o, bool): return int(o)
+    if isinstance(o, dict): return {k: _fb(v) for k, v in o.items()}
+    if isinstance(o, list): return [_fb(i) for i in o]
+    import math
+    if isinstance(o, float) and (math.isnan(o) or math.isinf(o)): return None
+    return o
+
+
 from fetch_cache import read_ohlcv
 from universe import get_top_liquid_tickers
 from backtest import get_rebalance_dates, get_nikkei_history
@@ -33,7 +43,7 @@ def load_library():
 
 def save_library(lib):
     lib["last_updated"] = datetime.now().strftime("%Y-%m-%d")
-    LIBRARY_FILE.write_text(json.dumps(lib, ensure_ascii=False, indent=2))
+    LIBRARY_FILE.write_text(json.dumps(_fb(lib), ensure_ascii=False, indent=2))
 
 
 def load_queue():
@@ -41,7 +51,7 @@ def load_queue():
 
 
 def save_queue(q):
-    QUEUE_FILE.write_text(json.dumps(q, ensure_ascii=False, indent=2))
+    QUEUE_FILE.write_text(json.dumps(_fb(q), ensure_ascii=False, indent=2))
 
 
 def load_prices_and_factors():

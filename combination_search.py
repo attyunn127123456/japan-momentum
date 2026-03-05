@@ -8,6 +8,16 @@ import pandas as pd
 from datetime import datetime, timedelta
 from pathlib import Path
 
+def _fb(o):
+    """bool/NaN/Inf をJSONシリアライズ可能に変換"""
+    if isinstance(o, bool): return int(o)
+    if isinstance(o, dict): return {k: _fb(v) for k, v in o.items()}
+    if isinstance(o, list): return [_fb(i) for i in o]
+    import math
+    if isinstance(o, float) and (math.isnan(o) or math.isinf(o)): return None
+    return o
+
+
 from fetch_cache import read_ohlcv
 from universe import get_top_liquid_tickers
 from backtest import get_rebalance_dates, get_nikkei_history
@@ -195,7 +205,7 @@ def run_combination_search():
                 'date':       datetime.now().strftime('%Y-%m-%d'),
                 'hypothesis': combo_id,
             }
-            QUEUE_FILE.write_text(json.dumps(queue, ensure_ascii=False, indent=2))
+            QUEUE_FILE.write_text(json.dumps(_fb(queue), ensure_ascii=False, indent=2))
             baseline = queue['baseline']
 
     existing = json.loads(COMBO_LOG.read_text()) if COMBO_LOG.exists() else []
@@ -206,7 +216,7 @@ def run_combination_search():
         if isinstance(obj, dict): return {k: _fix_bools(v) for k,v in obj.items()}
         if isinstance(obj, list): return [_fix_bools(i) for i in obj]
         return obj
-    COMBO_LOG.write_text(json.dumps(_fix_bools(existing[-300:]), ensure_ascii=False, indent=2))
+    COMBO_LOG.write_text(json.dumps(_fb(_fix_bools(existing[-300:])), ensure_ascii=False, indent=2))
     print(f'組み合わせテスト完了: {len(combo_results)}件 / combo_log保存', flush=True)
 
 

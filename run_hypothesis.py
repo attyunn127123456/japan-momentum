@@ -10,6 +10,16 @@ import pandas as pd
 from datetime import datetime, timedelta
 from pathlib import Path
 
+def _fb(o):
+    """bool/NaN/Inf をJSONシリアライズ可能に変換"""
+    if isinstance(o, bool): return int(o)
+    if isinstance(o, dict): return {k: _fb(v) for k, v in o.items()}
+    if isinstance(o, list): return [_fb(i) for i in o]
+    import math
+    if isinstance(o, float) and (math.isnan(o) or math.isinf(o)): return None
+    return o
+
+
 from fetch_cache import read_ohlcv
 from universe import get_top_liquid_tickers
 from backtest import get_rebalance_dates, get_nikkei_history
@@ -28,7 +38,7 @@ def load_queue():
 
 
 def save_queue(q):
-    QUEUE_FILE.write_text(json.dumps(q, ensure_ascii=False, indent=2))
+    QUEUE_FILE.write_text(json.dumps(_fb(q), ensure_ascii=False, indent=2))
 
 
 def run_baseline(prices_dict, nikkei, factor_dfs, return_df, rebal_dates):
@@ -145,7 +155,7 @@ def append_evolution_log(hid, desc, result, win, delta):
     # シャープ順でソートしてtop50を保持
     valid = [x for x in log if x["sharpe"] is not None]
     valid.sort(key=lambda x: x["sharpe"], reverse=True)
-    log_file.write_text(json.dumps({"best10": valid[:10], "all": valid[:200], "total": len(log)}, ensure_ascii=False, indent=2))
+    log_file.write_text(json.dumps(_fb({"best10": valid[:10]), "all": valid[:200], "total": len(log)}, ensure_ascii=False, indent=2))
 
 
 SIGNAL_LIBRARY_FILE = Path("backtest/signal_library.json")
@@ -198,7 +208,7 @@ def update_signal_library(hid, desc, result, win, delta):
                         sig["sharpe_contribution"] = round(delta, 4)
                 else:
                     sig["status"] = "candidate"  # 単体効果ゼロでも相性候補として保持
-        SIGNAL_LIBRARY_FILE.write_text(json.dumps(lib, ensure_ascii=False, indent=2))
+        SIGNAL_LIBRARY_FILE.write_text(json.dumps(_fb(lib), ensure_ascii=False, indent=2))
         return
     # 新規追加
     from datetime import datetime as _dt
@@ -219,7 +229,7 @@ def update_signal_library(hid, desc, result, win, delta):
             lib["current_weights"].update(weights)
             lib["baseline_sharpe"] = result.get("sharpe", lib.get("baseline_sharpe", 0))
     lib["signals"].append(new_sig)
-    SIGNAL_LIBRARY_FILE.write_text(json.dumps(lib, ensure_ascii=False, indent=2))
+    SIGNAL_LIBRARY_FILE.write_text(json.dumps(_fb(lib), ensure_ascii=False, indent=2))
 
 
 
@@ -229,7 +239,7 @@ def main():
     # 次の未実施仮説を取得
     next_h = next((h for h in queue["queue"] if h["status"] == "pending"), None)
     if not next_h:
-        DONE_FILE.write_text(json.dumps({"status":"all_done","at":datetime.now().isoformat()}, ensure_ascii=False))
+        DONE_FILE.write_text(json.dumps(_fb({"status":"all_done"),"at":datetime.now().isoformat()}, ensure_ascii=False))
         print("全仮説完了")
         return
 
@@ -251,9 +261,9 @@ def main():
         queue["running"] = False
         queue["current_hypothesis"] = None
         save_queue(queue)
-        DONE_FILE.write_text(json.dumps(
+        DONE_FILE.write_text(json.dumps(_fb(
             {"status": "added_to_ga", "id": hid, "factor": factor_key,
-             "at": datetime.now().isoformat()},
+             "at": datetime.now()).isoformat()},
             ensure_ascii=False
         ))
         print(f"完了: {hid} | status=added_to_ga | factor={factor_key}")
@@ -557,10 +567,10 @@ def main():
             }
 
         save_queue(queue)
-        DONE_FILE.write_text(json.dumps({
+        DONE_FILE.write_text(json.dumps(_fb({
             "status": "done", "id": hid, "win": win,
             "delta_sharpe": delta, "result": result,
-            "at": datetime.now().isoformat()
+            "at": datetime.now()).isoformat()
         }, ensure_ascii=False, indent=2))
         print(f"完了: {hid} | delta_sharpe={delta} | {'✅ WIN' if win else '❌ LOSE'} | {elapsed:.0f}秒")
         append_evolution_log(hid, next_h["desc"], result, win, delta)
@@ -573,7 +583,7 @@ def main():
         queue["running"] = False
         queue["current_hypothesis"] = None
         save_queue(queue)
-        DONE_FILE.write_text(json.dumps({"status":"error","id":hid,"error":str(e)}, ensure_ascii=False))
+        DONE_FILE.write_text(json.dumps(_fb({"status":"error"),"id":hid,"error":str(e)}, ensure_ascii=False))
         print(f"エラー: {e}")
         traceback.print_exc()
 

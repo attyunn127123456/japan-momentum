@@ -6,41 +6,41 @@
       "id": "ret",
       "desc": "80日リターン",
       "status": "rejected",
-      "best_weight": 0.2,
+      "best_weight": 0.0,
       "sharpe_contribution": null
     },
     {
       "id": "rs",
       "desc": "日経対比相対強度",
       "status": "active",
-      "best_weight": 0.2,
+      "best_weight": 0.1333,
       "sharpe_contribution": 0.322
     },
     {
       "id": "green",
       "desc": "陽線率",
       "status": "candidate",
-      "best_weight": 0.125,
+      "best_weight": 0.3333,
       "sharpe_contribution": -0.032
     },
     {
       "id": "smooth",
       "desc": "上昇の滑らかさ",
       "status": "candidate",
-      "best_weight": 0.125,
+      "best_weight": 0.0667,
       "sharpe_contribution": -1.321
     },
     {
       "id": "high52",
       "desc": "52週高値への近さ",
       "status": "candidate",
-      "best_weight": 0.35,
+      "best_weight": 0.4667,
       "sharpe_contribution": -0.104
     },
     {
       "id": "resilience",
       "desc": "下落相場での耐性",
-      "status": "active",
+      "status": "rejected",
       "best_weight": 0.0,
       "sharpe_contribution": 0.024
     },
@@ -60,15 +60,13 @@
     }
   ],
   "current_weights": {
+    "rs_w": 0.1333,
+    "green_w": 0.3333,
+    "smooth_w": 0.0667,
+    "high52_w": 0.4667,
     "ret_w": 0.0,
-    "rs_w": 0.1334,
-    "green_w": 0.0508,
-    "smooth_w": 0.326,
-    "resilience_w": 0.0736,
-    "high52_w": 0.4162,
-    "omega_w": 0.0,
-    "short_momentum_w": 0.0
+    "resilience_w": 0.0
   },
-  "baseline_sharpe": 1.021,
+  "baseline_sharpe": 2.46,
   "last_updated": "2026-03-05"
 }

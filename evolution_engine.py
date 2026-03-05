@@ -9,6 +9,16 @@
 import itertools, time, traceback
 import json_safe as json
 
+def _fb(o):
+    """bool/NaN/Inf をJSONシリアライズ可能に変換"""
+    if isinstance(o, bool): return int(o)
+    if isinstance(o, dict): return {k: _fb(v) for k, v in o.items()}
+    if isinstance(o, list): return [_fb(i) for i in o]
+    import math
+    if isinstance(o, float) and (math.isnan(o) or math.isinf(o)): return None
+    return o
+
+
 def sanitize(obj):
     """bool/NaN/Inf をJSONシリアライズ可能にする"""
     import math
@@ -352,7 +362,7 @@ def run_evolution():
                 'date': datetime.now().strftime('%Y-%m-%d'),
                 'hypothesis': 'local_search',
             }
-            QUEUE_FILE.write_text(json.dumps(sanitize(queue), ensure_ascii=False, indent=2))
+            QUEUE_FILE.write_text(json.dumps(_fb(sanitize(queue)), ensure_ascii=False, indent=2))
             baseline = queue['baseline']
 
         # GA local_search 完了後にファクター整理を実行（best result のパラメータで）
@@ -406,7 +416,7 @@ def run_evolution():
             queue['baseline'] = {**baseline, 'date': datetime.now().strftime('%Y-%m-%d'), 'hypothesis': f'factor_{factor_name}'}
             print(f'  → ベースライン更新: sharpe={r_train["sharpe"]}', flush=True)
         
-        QUEUE_FILE.write_text(json.dumps(sanitize(queue), ensure_ascii=False, indent=2))
+        QUEUE_FILE.write_text(json.dumps(_fb(sanitize(queue)), ensure_ascii=False, indent=2))
         time.sleep(1)
     
     # ---- Step4: 組み合わせテスト ----
@@ -418,11 +428,11 @@ def run_evolution():
     run_signal_search()
 
     # ---- 完了シグナル ----
-    DONE_FILE.write_text(json.dumps({
+    DONE_FILE.write_text(json.dumps(_fb({
         'status': 'done',
         'id': 'evolution_cycle',
         'win': 1,
-        'delta_sharpe': baseline['sharpe'] - json.loads(QUEUE_FILE.read_text())['baseline'].get('sharpe', 0),
+        'delta_sharpe': baseline['sharpe'] - json.loads(QUEUE_FILE.read_text()))['baseline'].get('sharpe', 0),
         'result': baseline,
         'at': datetime.now().isoformat(),
     }, ensure_ascii=False, indent=2))
@@ -460,7 +470,7 @@ def cleanup_weak_signals(baseline_params):
                 changed += 1
                 print(f'  🗑️  {sig["id"]}: weight={w:.3f} → rejected', flush=True)
         if changed:
-            lib_path.write_text(json.dumps(lib, indent=2, ensure_ascii=False))
+            lib_path.write_text(json.dumps(_fb(lib), indent=2, ensure_ascii=False))
             print(f'  cleanup_weak_signals: {changed} シグナルを rejected に変更', flush=True)
         else:
             print('  cleanup_weak_signals: 変更なし', flush=True)
@@ -482,7 +492,7 @@ def append_log(hid, desc, result, win, delta):
     all_entries = log.get('all', []) + [entry]
     valid = sorted([x for x in all_entries if x.get('sharpe') is not None],
                    key=lambda x: x['sharpe'], reverse=True)
-    EVO_LOG.write_text(json.dumps(sanitize({'best10': valid[:10], 'all': valid[:300], 'total': len(all_entries)}),
+    EVO_LOG.write_text(json.dumps(_fb(sanitize({'best10': valid[:10]), 'all': valid[:300], 'total': len(all_entries)}),
                                    ensure_ascii=False, indent=2))
 
 
@@ -492,4 +502,4 @@ if __name__ == '__main__':
     except Exception as e:
         print(f'エラー: {e}')
         traceback.print_exc()
-        DONE_FILE.write_text(json.dumps({'status':'error','id':'evolution','error':str(e)}, ensure_ascii=False))
+        DONE_FILE.write_text(json.dumps(_fb({'status':'error'),'id':'evolution','error':str(e)}, ensure_ascii=False))
