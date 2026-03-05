@@ -29,6 +29,13 @@ def today():
     if not p.exists():
         return JSONResponse({"error": "no data"}, status_code=404)
     data = json.loads(p.read_text())
+    # total_return_pct 降順でソート
+    if isinstance(data, list):
+        data = sorted(data, key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        return JSONResponse(sanitize({'best10': data[:10], 'all': data, 'total': len(data)}))
+    if 'all' in data:
+        data['all'] = sorted(data['all'], key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        data['best10'] = data['all'][:10]
     return JSONResponse(sanitize(data))
 
 @app.get("/api/history")
@@ -44,6 +51,13 @@ def results(date: str):
     if not p.exists():
         return JSONResponse({"error": "not found"}, status_code=404)
     data = json.loads(p.read_text())
+    # total_return_pct 降順でソート
+    if isinstance(data, list):
+        data = sorted(data, key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        return JSONResponse(sanitize({'best10': data[:10], 'all': data, 'total': len(data)}))
+    if 'all' in data:
+        data['all'] = sorted(data['all'], key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        data['best10'] = data['all'][:10]
     return JSONResponse(sanitize(data))
 
 @app.get("/api/backtest")
@@ -52,6 +66,13 @@ def backtest():
     if not p.exists():
         return JSONResponse({"error": "no backtest data"}, status_code=404)
     data = json.loads(p.read_text())
+    # total_return_pct 降順でソート
+    if isinstance(data, list):
+        data = sorted(data, key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        return JSONResponse(sanitize({'best10': data[:10], 'all': data, 'total': len(data)}))
+    if 'all' in data:
+        data['all'] = sorted(data['all'], key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        data['best10'] = data['all'][:10]
     return JSONResponse(sanitize(data))
 
 @app.get("/api/backtest/optimize")
@@ -60,6 +81,13 @@ def backtest_optimize():
     if not p.exists():
         return JSONResponse({"error": "no optimize data"}, status_code=404)
     data = json.loads(p.read_text())
+    # total_return_pct 降順でソート
+    if isinstance(data, list):
+        data = sorted(data, key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        return JSONResponse(sanitize({'best10': data[:10], 'all': data, 'total': len(data)}))
+    if 'all' in data:
+        data['all'] = sorted(data['all'], key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        data['best10'] = data['all'][:10]
     return JSONResponse(sanitize(data))
 
 @app.get("/api/backtest/hypothesis")
@@ -68,6 +96,13 @@ def backtest_hypothesis():
     if not p.exists():
         return JSONResponse({"error": "no hypothesis data"}, status_code=404)
     data = json.loads(p.read_text())
+    # total_return_pct 降順でソート
+    if isinstance(data, list):
+        data = sorted(data, key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        return JSONResponse(sanitize({'best10': data[:10], 'all': data, 'total': len(data)}))
+    if 'all' in data:
+        data['all'] = sorted(data['all'], key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        data['best10'] = data['all'][:10]
     return JSONResponse(sanitize(data))
 
 @app.get("/api/signals")
@@ -92,6 +127,13 @@ def signals_history():
     if not p.exists():
         return JSONResponse(sanitize([]))
     data = json.loads(p.read_text())
+    # total_return_pct 降順でソート
+    if isinstance(data, list):
+        data = sorted(data, key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        return JSONResponse(sanitize({'best10': data[:10], 'all': data, 'total': len(data)}))
+    if 'all' in data:
+        data['all'] = sorted(data['all'], key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        data['best10'] = data['all'][:10]
     return JSONResponse(sanitize(data))
 
 @app.get("/api/regime")
@@ -100,6 +142,13 @@ def regime():
     if not p.exists():
         return JSONResponse({"error": "no regime data"}, status_code=404)
     data = json.loads(p.read_text())
+    # total_return_pct 降順でソート
+    if isinstance(data, list):
+        data = sorted(data, key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        return JSONResponse(sanitize({'best10': data[:10], 'all': data, 'total': len(data)}))
+    if 'all' in data:
+        data['all'] = sorted(data['all'], key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        data['best10'] = data['all'][:10]
     return JSONResponse(sanitize(data))
 
 @app.get("/api/backtest/evolution")
@@ -108,6 +157,13 @@ def backtest_evolution():
     if not p.exists():
         return JSONResponse(sanitize({"best10": [], "all": [], "total": 0}))
     data = json.loads(p.read_text())
+    # total_return_pct 降順でソート
+    if isinstance(data, list):
+        data = sorted(data, key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        return JSONResponse(sanitize({'best10': data[:10], 'all': data, 'total': len(data)}))
+    if 'all' in data:
+        data['all'] = sorted(data['all'], key=lambda x: x.get('total_return_pct', 0), reverse=True)
+        data['best10'] = data['all'][:10]
     return JSONResponse(sanitize(data))
 
 

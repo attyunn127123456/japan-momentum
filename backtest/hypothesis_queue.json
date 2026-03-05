@@ -1,23 +1,25 @@
 {
   "baseline": {
-    "sharpe": 2.53,
-    "total_pct": 50.26,
-    "max_dd_pct": 15.5,
+    "sharpe": 3.574,
+    "total_pct": 135.33,
+    "alpha_pct": 37.13,
+    "max_dd_pct": 23.33,
     "params": {
-      "lookback": 80,
-      "top_n": 5,
+      "lookback": 60,
+      "top_n": 3,
       "rebalance": "weekly",
-      "ret_w": 0.2,
-      "rs_w": 0.2,
-      "green_w": 0.125,
-      "smooth_w": 0.125,
-      "resilience_w": 0.0,
-      "high52_w": 0.35,
+      "ret_w": 0.3216,
+      "rs_w": 0.2557,
+      "green_w": 0.1025,
+      "smooth_w": 0.1058,
+      "resilience_w": 0.1072,
+      "high52_w": 0.1072,
       "omega_w": 0.0,
-      "short_momentum_w": 0.0
+      "short_momentum_w": 0.0,
+      "cluster_boost_w": 0.1
     },
     "date": "2026-03-05",
-    "hypothesis": "return_maximization_start"
+    "hypothesis": "local_search"
   },
   "running": false,
   "current_hypothesis": null,
