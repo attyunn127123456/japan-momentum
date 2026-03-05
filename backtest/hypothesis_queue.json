@@ -20,11 +20,28 @@
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "midcap_volume_stable",
-    "result": null,
-    "delta_sharpe": null,
+    "id": "ret_rs_dual_rank",
+    "result": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.35,
+      "rs_w": 0.35,
+      "green_w": 0.15,
+      "smooth_w": 0.15,
+      "resilience_w": 0.0,
+      "rs_prefilter_pct": 0.4,
+      "dual_rank_mode": true,
+      "total_return_pct": 5.52,
+      "alpha_pct": -92.68,
+      "sharpe": 0.525,
+      "max_dd_pct": 23.98,
+      "nikkei_pct": 98.2,
+      "n_trades": 116
+    },
+    "delta_sharpe": -1.666,
     "win": false,
-    "at": "2026-03-05T09:58:39.711828"
+    "at": "2026-03-05T10:03:57.209804"
   },
   "queue": [
     {
@@ -53,10 +70,10 @@
     {
       "id": "new_high_breakout",
       "desc": "過去60日高値更新をエントリー条件に追加",
-      "status": "pending",
+      "status": "done_lose",
       "result": null,
       "delta_sharpe": null,
-      "elapsed_sec": 0.9
+      "elapsed_sec": 0.8
     },
     {
       "id": "vol_candle_exit",
@@ -119,10 +136,26 @@
         "resilience_w": 0.0,
         "sector_neutral": true
       },
-      "status": "pending",
-      "result": null,
-      "delta_sharpe": null,
-      "elapsed_sec": 0.0
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "sector_neutral": true,
+        "total_return_pct": 1.39,
+        "alpha_pct": -96.81,
+        "sharpe": 0.263,
+        "max_dd_pct": 23.65,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.928,
+      "elapsed_sec": 1.8
     },
     {
       "id": "short_squeeze_momentum",
@@ -140,10 +173,27 @@
         "short_ratio_filter": "low_tercile",
         "short_ratio_w": 0.05
       },
-      "status": "pending",
-      "result": null,
-      "delta_sharpe": null,
-      "elapsed_sec": 0.0
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "short_ratio_filter": "low_tercile",
+        "short_ratio_w": 0.05,
+        "total_return_pct": 3.88,
+        "alpha_pct": -94.32,
+        "sharpe": 0.425,
+        "max_dd_pct": 23.75,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.766,
+      "elapsed_sec": 1.9
     },
     {
       "id": "smart_money_flow",
@@ -161,40 +211,102 @@
         "investor_flow_filter": "institution_buy_retail_sell",
         "investor_flow_w": 0.15
       },
-      "status": "pending",
-      "result": null,
-      "delta_sharpe": null,
-      "elapsed_sec": 0.0
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "investor_flow_filter": "institution_buy_retail_sell",
+        "investor_flow_w": 0.15,
+        "total_return_pct": 3.85,
+        "alpha_pct": -94.35,
+        "sharpe": 0.421,
+        "max_dd_pct": 23.98,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.77,
+      "elapsed_sec": 1.8
     },
     {
       "id": "trend_filter_regime",
       "desc": "日経225の200MA上/下でポジションサイズを切り替え",
       "theory": "相場局面（強気/弱気）を判定してモメンタム戦略のエクスポージャーを調整。高ボラ時は守り。OHLCVのみで実装可能",
       "params": {},
-      "status": "pending",
-      "result": null,
-      "delta_sharpe": null,
-      "elapsed_sec": 0.0
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "total_return_pct": 1.39,
+        "alpha_pct": -96.81,
+        "sharpe": 0.263,
+        "max_dd_pct": 23.65,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.928,
+      "elapsed_sec": 1.9
     },
     {
       "id": "volume_price_divergence",
       "desc": "価格上昇＋出来高急減の銘柄をフィルタ除外",
       "theory": "出来高なき上昇は持続しにくい。需給ロジックでノイズ銘柄を除去してポートフォリオ品質を上げる",
       "params": {},
-      "status": "pending",
-      "result": null,
-      "delta_sharpe": null,
-      "elapsed_sec": 0.0
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "total_return_pct": 1.39,
+        "alpha_pct": -96.81,
+        "sharpe": 0.263,
+        "max_dd_pct": 23.65,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.928,
+      "elapsed_sec": 1.8
     },
     {
       "id": "adaptive_lookback",
       "desc": "ATRに応じてルックバック期間を動的調整",
       "theory": "高ボラ時は短期シグナル、低ボラ時は長期シグナルを使う。市場環境への適応性向上",
       "params": {},
-      "status": "pending",
-      "result": null,
-      "delta_sharpe": null,
-      "elapsed_sec": 0.0
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "total_return_pct": 1.39,
+        "alpha_pct": -96.81,
+        "sharpe": 0.263,
+        "max_dd_pct": 23.65,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.928,
+      "elapsed_sec": 1.9
     },
     {
       "id": "short_term_reversal_filter",
@@ -213,10 +325,28 @@
         "short_reversal_days": 5,
         "short_reversal_pct": 0.25
       },
-      "status": "pending",
-      "result": null,
-      "delta_sharpe": null,
-      "elapsed_sec": 0.0
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "short_reversal_filter": true,
+        "short_reversal_days": 5,
+        "short_reversal_pct": 0.25,
+        "total_return_pct": 1.39,
+        "alpha_pct": -96.81,
+        "sharpe": 0.263,
+        "max_dd_pct": 23.65,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.928,
+      "elapsed_sec": 1.9
     },
     {
       "id": "midcap_top15_momentum",
@@ -232,10 +362,25 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       },
-      "status": "pending",
-      "result": null,
-      "delta_sharpe": null,
-      "elapsed_sec": 0.0
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 15,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "total_return_pct": 8.55,
+        "alpha_pct": -89.65,
+        "sharpe": 0.775,
+        "max_dd_pct": 21.01,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.416,
+      "elapsed_sec": 1.9
     },
     {
       "id": "momentum_acceleration",
@@ -253,10 +398,27 @@
         "momentum_accel_w": 0.05,
         "accel_half_period": 40
       },
-      "status": "pending",
-      "result": null,
-      "delta_sharpe": null,
-      "elapsed_sec": 0.0
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "momentum_accel_w": 0.05,
+        "accel_half_period": 40,
+        "total_return_pct": 3.88,
+        "alpha_pct": -94.32,
+        "sharpe": 0.425,
+        "max_dd_pct": 23.75,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.766,
+      "elapsed_sec": 1.8
     },
     {
       "id": "regime_adaptive_weights",
@@ -350,10 +512,26 @@
         "resilience_w": 0.0,
         "green_smooth_synergy_w": 0.2
       },
-      "status": "pending",
-      "result": null,
-      "delta_sharpe": null,
-      "elapsed_sec": 0.0
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.1,
+        "smooth_w": 0.1,
+        "resilience_w": 0.0,
+        "green_smooth_synergy_w": 0.2,
+        "total_return_pct": 5.99,
+        "alpha_pct": -92.21,
+        "sharpe": 0.554,
+        "max_dd_pct": 23.07,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.637,
+      "elapsed_sec": 1.9
     },
     {
       "id": "regime_bear_defense",
@@ -375,10 +553,37 @@
         "nonbull_smooth_w": 0.3,
         "regime_ma_period": 20
       },
-      "status": "pending",
-      "result": null,
-      "delta_sharpe": null,
-      "elapsed_sec": 0.0
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "regime_mode": "bull_defense",
+        "bull_top_n": 10,
+        "bull_ret_w": 0.3,
+        "bull_rs_w": 0.3,
+        "bull_green_w": 0.2,
+        "bull_smooth_w": 0.2,
+        "nonbull_top_n": 5,
+        "nonbull_ret_w": 0.2,
+        "nonbull_rs_w": 0.3,
+        "nonbull_green_w": 0.2,
+        "nonbull_smooth_w": 0.3,
+        "regime_ma_period": 20,
+        "total_return_pct": 1.39,
+        "alpha_pct": -96.81,
+        "sharpe": 0.263,
+        "max_dd_pct": 23.65,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.928,
+      "elapsed_sec": 1.8
     },
     {
       "id": "lookback_ensemble",
@@ -398,10 +603,30 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       },
-      "status": "pending",
-      "result": null,
-      "delta_sharpe": null,
-      "elapsed_sec": 0.0
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "lookback_list": [
+          60,
+          80
+        ],
+        "ensemble_mode": "mean",
+        "total_return_pct": 1.39,
+        "alpha_pct": -96.81,
+        "sharpe": 0.263,
+        "max_dd_pct": 23.65,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.928,
+      "elapsed_sec": 1.9
     },
     {
       "id": "regime_cash_buffer",
@@ -508,10 +733,27 @@
         "rs_prefilter_pct": 0.4,
         "dual_rank_mode": true
       },
-      "status": "pending",
-      "result": null,
-      "delta_sharpe": null,
-      "elapsed_sec": 0.0
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.35,
+        "rs_w": 0.35,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "rs_prefilter_pct": 0.4,
+        "dual_rank_mode": true,
+        "total_return_pct": 5.52,
+        "alpha_pct": -92.68,
+        "sharpe": 0.525,
+        "max_dd_pct": 23.98,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.666,
+      "elapsed_sec": 1.8
     },
     {
       "id": "midcap_volume_stable",
@@ -529,10 +771,82 @@
         "vol_stability_w": 0.1,
         "vol_stability_weeks": 20
       },
-      "status": "pending",
-      "result": null,
-      "delta_sharpe": null,
-      "elapsed_sec": 0.0
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "vol_stability_w": 0.1,
+        "vol_stability_weeks": 20,
+        "total_return_pct": 5.96,
+        "alpha_pct": -92.24,
+        "sharpe": 0.553,
+        "max_dd_pct": 24.2,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.638,
+      "elapsed_sec": 1.9
+    },
+    {
+      "id": "midcap_sweet_spot",
+      "desc": "時価総額200〜1500億の甘いスポットユニバース × top_n=8で集中",
+      "theory": "universe_midcapが100〜3000億で成功したが、100億台の小型株は流動性リスク（スリッページ・出来高枯れ）が高く、2000億超はアナリストカバレッジが厚く機関投資家が既に織り込み済み。200〜1500億が「機関投資家が注目し始めているが完全には織り込まれていない」甘いスポット。さらにtop_n=10→8に削減してポートフォリオ品質を集中させる。universe_midcapの成功仮説を精緻化する自然な延長線。",
+      "params": {
+        "lookback": 80,
+        "top_n": 8,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "market_cap_min_bn": 200,
+        "market_cap_max_bn": 1500
+      },
+      "status": "pending"
+    },
+    {
+      "id": "regime_extreme_bear_cash",
+      "desc": "レジーム連動型: 極端弱気局面（日経200MA下+直近4週-5%超）のみ全キャッシュ退避",
+      "theory": "過去のレジーム仮説（regime_adaptive_weights、regime_cash_buffer、regime_bear_defense）が全て失敗した原因は「切り替え頻度が多すぎた」こと。bullが86週/116週（74%）と支配的な環境では、頻繁なレジーム切替がシグナルノイズになる。本仮説は「日経225が200MA下かつ直近4週累積リターンが-5%以下」という極端な弱気局面のみをターゲット。このような局面はバックテスト期間中おそらく1〜3回程度で、それ以外は完全に通常運転。最小限の介入で最大の損失保護を狙う。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "regime_mode": "extreme_bear_cash",
+        "regime_ma_period": 200,
+        "regime_bear_weeks": 4,
+        "regime_bear_threshold": -0.05,
+        "regime_bear_top_n": 0
+      },
+      "status": "pending"
+    },
+    {
+      "id": "pure_momentum_concentration",
+      "desc": "ret×rs集中型: モメンタム2シグナルに0.9集中、green/smooth最小化",
+      "theory": "signal_libraryのsharpe_contributionを見ると、green/smooth両シグナルはcontributionがnull（未測定）で、過去の失敗仮説でgreen_w/smooth_wを削減した場合（green_smooth_synergy: green_w=0.1, smooth_w=0.1）でもSharpe 0.554と大幅悪化した。しかしこれは元の0.2から削減した分が別シグナル（synergy_w）に移動したため。本仮説は純粋に「ret_w=0.45, rs_w=0.45, green_w=0.05, smooth_w=0.05」として合計を1に維持しながらモメンタムシグナルに極度集中する。OHLCVモメンタム（ret/rs）が本質的なドライバーで、green/smoothは補助的ノイズの可能性を検証。universe_midcapとの組み合わせ効果も期待。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.45,
+        "rs_w": 0.45,
+        "green_w": 0.05,
+        "smooth_w": 0.05,
+        "resilience_w": 0.0
+      },
+      "status": "pending"
     }
   ],
   "tested_factors": [
