@@ -30,7 +30,7 @@ def precompute(prices_dict, nikkei, lookbacks):
     down_mask = (nk_rets < -0.01).astype(float)
     
     # lb -> factor -> {code: Series}
-    data = {lb: {"ret":{},"rs":{},"green":{},"smooth":{},"resilience":{},"ret5":{},"ret10":{}} for lb in lookbacks}
+    data = {lb: {"ret":{},"rs":{},"green":{},"smooth":{},"resilience":{},"ret5":{},"ret10":{},"omega":{},"high52":{}} for lb in lookbacks}
     
     for code, df in prices_dict.items():
         p = df["AdjC"].dropna()
@@ -38,6 +38,9 @@ def precompute(prices_dict, nikkei, lookbacks):
         # 短期リターン（ルックバック非依存、最初に計算）
         ret5  = (p / p.shift(5) - 1).astype(float)
         ret10 = (p / p.shift(10) - 1).astype(float)
+        # 52週高値proximity（ルックバック非依存）
+        h52   = p.rolling(252, min_periods=60).max()
+        high52 = (p / h52.replace(0, np.nan)).clip(0, 1).astype(float)
         for lb in lookbacks:
             ret    = (p / p.shift(lb) - 1).astype(float)
             nk_ret = (nikkei / nikkei.shift(lb) - 1).astype(float)
@@ -48,6 +51,11 @@ def precompute(prices_dict, nikkei, lookbacks):
             nk_dm  = down_mask.reindex(nk_rets.index, fill_value=0)
             n_d    = dm.rolling(lb).sum().replace(0, np.nan)
             res    = ((dr*dm).rolling(lb).sum() - (nk_rets*nk_dm).rolling(lb).sum().reindex(dr.index)) / n_d
+            # Omega比（上昇/下落の非対称性）
+            dr_lb    = dr.rolling(lb)
+            up_mean  = dr_lb.apply(lambda x: float(x[x>0].mean())  if (x>0).any() else 0.0, raw=True)
+            dn_mean  = dr_lb.apply(lambda x: float(-x[x<0].mean()) if (x<0).any() else 1e-8, raw=True)
+            omega    = (up_mean / dn_mean.replace(0, 1e-8)).astype(float)
             
             data[lb]["ret"][code]        = ret
             data[lb]["rs"][code]         = rs
@@ -56,6 +64,8 @@ def precompute(prices_dict, nikkei, lookbacks):
             data[lb]["resilience"][code] = res.astype(float)
             data[lb]["ret5"][code]       = ret5
             data[lb]["ret10"][code]      = ret10
+            data[lb]["omega"][code]      = omega
+            data[lb]["high52"][code]     = high52
     
     # DataFrameに変換
     factor_dfs = {}
@@ -97,6 +107,24 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
             score_df = short_mom_ranked * short_momentum_w
         else:
             score_df = score_df + short_mom_ranked * short_momentum_w
+
+    # 52週高値proximityファクター
+    high52_w = params.get('high52_w', 0.0)
+    if high52_w > 0 and lb in factor_dfs and 'high52' in factor_dfs[lb]:
+        high52_ranked = factor_dfs[lb]['high52'].rank(axis=1, pct=True)
+        if score_df is None:
+            score_df = high52_ranked * high52_w
+        else:
+            score_df = score_df + high52_ranked * high52_w
+
+    # Omega比ファクター（上昇/下落の非対称性）
+    omega_w = params.get('omega_w', 0.0)
+    if omega_w > 0 and lb in factor_dfs and 'omega' in factor_dfs[lb]:
+        omega_ranked = factor_dfs[lb]['omega'].rank(axis=1, pct=True)
+        if score_df is None:
+            score_df = omega_ranked * omega_w
+        else:
+            score_df = score_df + omega_ranked * omega_w
 
     if score_df is None:
         return None

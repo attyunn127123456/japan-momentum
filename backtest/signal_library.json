@@ -469,6 +469,26 @@
       "best_weight": null,
       "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
+    },
+    {
+      "id": "short_term_accel",
+      "desc": "長期トレンド×直近加速: 短期リターン（5-10日）ファクターを追加（w=0.2）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -0.816,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "short_term_dominant",
+      "desc": "短期モメンタム主力: short_momentum_wを0.35に増強",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -0.105,
+      "added_at": "2026-03-05"
     }
   ],
   "current_weights": {

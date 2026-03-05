@@ -22,6 +22,27 @@
       }
     },
     {
+      "at": "2026-03-05T11:51:34.041016",
+      "id": "short_term_dominant",
+      "desc": "短期モメンタム主力: short_momentum_wを0.35に増強",
+      "win": false,
+      "delta_sharpe": -0.105,
+      "sharpe": 2.425,
+      "total_return_pct": 48.96,
+      "alpha_pct": -49.24,
+      "max_dd_pct": 21.78,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.1,
+        "rs_w": 0.1,
+        "green_w": 0.1,
+        "smooth_w": 0.1,
+        "resilience_w": 0.0
+      }
+    },
+    {
       "at": "2026-03-05T11:31:03.741088",
       "id": "local_search",
       "desc": "局所探索ベスト lb=80 tn=10",
@@ -170,27 +191,6 @@
       "alpha_pct": -66.48,
       "max_dd_pct": 21.53,
       "params": {}
-    },
-    {
-      "at": "2026-03-05T10:12:16.308649",
-      "id": "midcap_lookback70",
-      "desc": "中型株ユニバース×lookback=70日（60日と80日の中間探索）",
-      "win": false,
-      "delta_sharpe": -0.853,
-      "sharpe": 1.338,
-      "total_return_pct": 18.16,
-      "alpha_pct": -80.04,
-      "max_dd_pct": 21.51,
-      "params": {
-        "lookback": 70,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.3,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0
-      }
     }
   ],
   "all": [
@@ -216,6 +216,27 @@
       }
     },
     {
+      "at": "2026-03-05T11:51:34.041016",
+      "id": "short_term_dominant",
+      "desc": "短期モメンタム主力: short_momentum_wを0.35に増強",
+      "win": false,
+      "delta_sharpe": -0.105,
+      "sharpe": 2.425,
+      "total_return_pct": 48.96,
+      "alpha_pct": -49.24,
+      "max_dd_pct": 21.78,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.1,
+        "rs_w": 0.1,
+        "green_w": 0.1,
+        "smooth_w": 0.1,
+        "resilience_w": 0.0
+      }
+    },
+    {
       "at": "2026-03-05T11:31:03.741088",
       "id": "local_search",
       "desc": "局所探索ベスト lb=80 tn=10",
@@ -364,6 +385,27 @@
       "alpha_pct": -66.48,
       "max_dd_pct": 21.53,
       "params": {}
+    },
+    {
+      "at": "2026-03-05T11:50:22.040837",
+      "id": "short_term_accel",
+      "desc": "長期トレンド×直近加速: 短期リターン（5-10日）ファクターを追加（w=0.2）",
+      "win": false,
+      "delta_sharpe": -0.816,
+      "sharpe": 1.714,
+      "total_return_pct": 31.83,
+      "alpha_pct": -66.37,
+      "max_dd_pct": 22.26,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.15,
+        "rs_w": 0.15,
+        "green_w": 0.1,
+        "smooth_w": 0.1,
+        "resilience_w": 0.0
+      }
     },
     {
       "at": "2026-03-05T10:12:16.308649",
@@ -1326,5 +1368,5 @@
       }
     }
   ],
-  "total": 56
+  "total": 58
 }

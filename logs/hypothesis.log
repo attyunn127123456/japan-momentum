@@ -892,3 +892,23 @@ openclaw system event 送信完了
 完了: high52_all_universe | delta_sharpe=0.233 | ✅ WIN | 4秒
 全仮説消化。即opusに新仮説生成を依頼します。
 openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: short_term_accel - 長期トレンド×直近加速: 短期リターン（5-10日）ファクターを追加（w=0.2）
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 500銘柄×3lb / 4.0秒
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:458: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: short_term_dominant - 短期モメンタム主力: short_momentum_wを0.35に増強
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 500銘柄×3lb / 3.9秒
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:458: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+完了: short_term_accel | delta_sharpe=-0.816 | ❌ LOSE | 5秒
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+完了: short_term_dominant | delta_sharpe=-0.105 | ❌ LOSE | 5秒
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了

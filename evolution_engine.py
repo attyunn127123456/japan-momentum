@@ -146,38 +146,93 @@ def load_fundamental_factors():
     return factors
 
 
-# ========== 局所探索 ==========
+# ========== 局所探索 (GA版) ==========
 def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fund_factors=None):
-    """現ベストパラメータ周辺をグリッド探索"""
-    results = []
+    """遺伝的アルゴリズムで局所探索（全網羅の代わりに進化的探索）"""
+    import random
+    random.seed(42)
+
     bp = baseline_params
-    
-    # 各パラメータを±1ステップずつ変える
-    param_grid = {
-        'lookback':     sorted(set([max(40, bp['lookback']-20), bp['lookback'], min(100, bp['lookback']+20)])),
-        'top_n':        [max(3, bp['top_n']-5), bp['top_n'], bp['top_n']+5],
-        'rebalance':    [bp['rebalance']],
-        'ret_w':        [max(0.1, bp['ret_w']-0.1), bp['ret_w'], min(0.8, bp['ret_w']+0.1)],
-        'rs_w':         [max(0.05, bp['rs_w']-0.1), bp['rs_w'], min(0.5, bp['rs_w']+0.1)],
-        'green_w':      [max(0.05, bp['green_w']-0.05), bp['green_w'], min(0.3, bp['green_w']+0.05)],
-        'smooth_w':     [max(0.0, bp['smooth_w']-0.05), bp['smooth_w'], min(0.4, bp['smooth_w']+0.05)],
+    best_params = dict(bp)
+    best_sharpe = bp.get('sharpe', 0)
+
+    # return_dfを1回だけ計算（パフォーマンス改善）
+    return_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
+
+    # パラメータ範囲定義（factor_dfsで利用可能なlookbackのみ）
+    RANGES = {
+        'lookback':     [lb for lb in [40, 60, 80, 100, 120] if lb in factor_dfs],
+        'top_n':        [5, 7, 10, 12, 15, 20],
+        'ret_w':        [0.0, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4],
+        'rs_w':         [0.0, 0.1, 0.15, 0.2, 0.25, 0.3],
+        'green_w':      [0.0, 0.05, 0.1, 0.15, 0.2],
+        'smooth_w':     [0.0, 0.05, 0.1, 0.15, 0.2],
         'resilience_w': [0.0, 0.05, 0.1],
+        'high52_w':     [0.0, 0.1, 0.2, 0.25, 0.3, 0.35, 0.4],
     }
-    
-    combos = list(itertools.product(*param_grid.values()))
-    print(f'局所探索: {len(combos)}パターン', flush=True)
-    
-    for vals in combos:
-        p = dict(zip(param_grid.keys(), vals))
-        # ベースラインと同じなら skip
-        if all(p[k] == bp.get(k) for k in p):
-            continue
-        r = eval_params(p, factor_dfs, prices_dict, date_map[p['rebalance']], nikkei, START_TRAIN,
-                        pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change())
-        if r:
-            results.append((p, r))
-    
-    return results
+
+    def mutate(params):
+        """1〜3個のパラメータをランダムに変異"""
+        p = dict(params)
+        keys = random.sample(list(RANGES.keys()), random.randint(1, 3))
+        for k in keys:
+            p[k] = random.choice(RANGES[k])
+        # 重みを正規化
+        weight_keys = ['ret_w', 'rs_w', 'green_w', 'smooth_w', 'resilience_w', 'high52_w']
+        total = sum(p.get(k, 0) for k in weight_keys)
+        if total > 0:
+            for k in weight_keys:
+                p[k] = round(p.get(k, 0) / total, 4)
+        p['rebalance'] = bp.get('rebalance', 'weekly')
+        return p
+
+    def eval_params_local(p):
+        try:
+            return eval_params(p, factor_dfs, prices_dict, date_map[p['rebalance']],
+                               nikkei, START_TRAIN, return_df)
+        except Exception:
+            return None
+
+    # 初期母集団（ベスト + ランダム変異19個）
+    population = [dict(bp)]
+    for _ in range(19):
+        population.append(mutate(bp))
+
+    results = []
+    POP_SIZE = 20
+    N_GENERATIONS = 10
+
+    print(f'局所探索(GA): {POP_SIZE}個×{N_GENERATIONS}世代 = 最大{POP_SIZE*N_GENERATIONS}パターン', flush=True)
+
+    for gen in range(N_GENERATIONS):
+        gen_results = []
+        for p in population:
+            r = eval_params_local(p)
+            if r:
+                gen_results.append((r['sharpe'], p, r))
+
+        gen_results.sort(key=lambda x: -x[0])
+        results.extend(gen_results)
+
+        if gen_results:
+            best_gen_sharpe = gen_results[0][0]
+            print(f'  世代{gen+1}: best_sharpe={best_gen_sharpe:.3f}', flush=True)
+            if best_gen_sharpe > best_sharpe:
+                best_sharpe = best_gen_sharpe
+                best_params = gen_results[0][1]
+
+        # 上位5を残して15個を変異
+        survivors = [p for _, p, _ in gen_results[:5]]
+        if not survivors:
+            break
+        population = list(survivors)
+        for _ in range(POP_SIZE - len(survivors)):
+            parent = random.choice(survivors)
+            population.append(mutate(parent))
+
+    results.sort(key=lambda x: -x[0])
+    # 既存の消費コードに合わせて (params, result) 形式で返す
+    return [(p, r) for _, p, r in results]
 
 
 # ========== 新ファクター試験 ==========

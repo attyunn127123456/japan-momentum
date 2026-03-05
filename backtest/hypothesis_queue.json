@@ -21,27 +21,28 @@
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "high52_all_universe",
+    "id": "short_term_dominant",
     "result": {
       "lookback": 80,
       "top_n": 10,
       "rebalance": "weekly",
-      "ret_w": 0.2,
-      "rs_w": 0.2,
-      "green_w": 0.125,
-      "smooth_w": 0.125,
+      "ret_w": 0.1,
+      "rs_w": 0.1,
+      "green_w": 0.1,
+      "smooth_w": 0.1,
       "resilience_w": 0.0,
-      "high52_w": 0.35,
-      "total_return_pct": 50.26,
-      "alpha_pct": -47.94,
-      "sharpe": 2.53,
-      "max_dd_pct": 15.5,
+      "high52_w": 0.25,
+      "short_momentum_w": 0.35,
+      "total_return_pct": 48.96,
+      "alpha_pct": -49.24,
+      "sharpe": 2.425,
+      "max_dd_pct": 21.78,
       "nikkei_pct": 98.2,
       "n_trades": 116
     },
-    "delta_sharpe": 0.233,
-    "win": true,
-    "at": "2026-03-05T10:25:13.647653"
+    "delta_sharpe": -0.105,
+    "win": false,
+    "at": "2026-03-05T11:51:34.039574"
   },
   "queue": [
     {
@@ -1448,15 +1449,75 @@
       "id": "short_term_accel",
       "desc": "長期トレンド×直近加速: 短期リターン（5-10日）ファクターを追加（w=0.2）",
       "theory": "80日モメンタムで長期トレンドを確認しつつ、直近5-10日のリターンで『今週強い銘柄』に寄せる。モメンタム投資の本質は長期で上がり続ける銘柄の中でも今この瞬間に最も強いものを選ぶこと。",
-      "params": {"lookback": 80, "top_n": 10, "rebalance": "weekly", "ret_w": 0.15, "rs_w": 0.15, "green_w": 0.1, "smooth_w": 0.1, "high52_w": 0.3, "short_momentum_w": 0.2},
-      "status": "pending"
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.15,
+        "rs_w": 0.15,
+        "green_w": 0.1,
+        "smooth_w": 0.1,
+        "high52_w": 0.3,
+        "short_momentum_w": 0.2
+      },
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.15,
+        "rs_w": 0.15,
+        "green_w": 0.1,
+        "smooth_w": 0.1,
+        "resilience_w": 0.0,
+        "high52_w": 0.3,
+        "short_momentum_w": 0.2,
+        "total_return_pct": 31.83,
+        "alpha_pct": -66.37,
+        "sharpe": 1.714,
+        "max_dd_pct": 22.26,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -0.816,
+      "elapsed_sec": 4.9
     },
     {
       "id": "short_term_dominant",
       "desc": "短期モメンタム主力: short_momentum_wを0.35に増強",
       "theory": "short_term_accelの発展型。直近5-10日リターンをhigh52と並ぶ主要ファクターに昇格させて『今週最も強い銘柄』への集中を強化。",
-      "params": {"lookback": 80, "top_n": 10, "rebalance": "weekly", "ret_w": 0.1, "rs_w": 0.1, "green_w": 0.1, "smooth_w": 0.1, "high52_w": 0.25, "short_momentum_w": 0.35},
-      "status": "pending"
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.1,
+        "rs_w": 0.1,
+        "green_w": 0.1,
+        "smooth_w": 0.1,
+        "high52_w": 0.25,
+        "short_momentum_w": 0.35
+      },
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.1,
+        "rs_w": 0.1,
+        "green_w": 0.1,
+        "smooth_w": 0.1,
+        "resilience_w": 0.0,
+        "high52_w": 0.25,
+        "short_momentum_w": 0.35,
+        "total_return_pct": 48.96,
+        "alpha_pct": -49.24,
+        "sharpe": 2.425,
+        "max_dd_pct": 21.78,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -0.105,
+      "elapsed_sec": 4.7
     },
     {
       "id": "rs_accel_primary",
@@ -1762,6 +1823,23 @@
       },
       "delta_sharpe": 0.233,
       "elapsed_sec": 4.3
+    },
+    {
+      "id": "omega_factor",
+      "desc": "Omega比ファクター追加: 上昇速度÷下落幅の非対称性スコア（w=0.2）",
+      "theory": "上がりが早くて下りが少ない銘柄を定量化。Omega比（上昇日平均リターン÷下落日平均下落幅）はモメンタムの質を測る。単なるリターンや陽線率と異なり、上昇の勢いと下落の浅さを同時に評価できる。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.15,
+        "rs_w": 0.15,
+        "green_w": 0.1,
+        "smooth_w": 0.1,
+        "high52_w": 0.3,
+        "omega_w": 0.2
+      },
+      "status": "pending"
     }
   ],
   "tested_factors": [
