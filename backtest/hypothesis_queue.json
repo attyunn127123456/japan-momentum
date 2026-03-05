@@ -20,28 +20,26 @@
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "ret_rs_dual_rank",
+    "id": "pure_momentum_concentration",
     "result": {
       "lookback": 80,
       "top_n": 10,
       "rebalance": "weekly",
-      "ret_w": 0.35,
-      "rs_w": 0.35,
-      "green_w": 0.15,
-      "smooth_w": 0.15,
+      "ret_w": 0.45,
+      "rs_w": 0.45,
+      "green_w": 0.05,
+      "smooth_w": 0.05,
       "resilience_w": 0.0,
-      "rs_prefilter_pct": 0.4,
-      "dual_rank_mode": true,
-      "total_return_pct": 5.52,
-      "alpha_pct": -92.68,
-      "sharpe": 0.525,
-      "max_dd_pct": 23.98,
+      "total_return_pct": 0.68,
+      "alpha_pct": -97.52,
+      "sharpe": 0.22,
+      "max_dd_pct": 23.9,
       "nikkei_pct": 98.2,
       "n_trades": 116
     },
-    "delta_sharpe": -1.666,
+    "delta_sharpe": -1.971,
     "win": false,
-    "at": "2026-03-05T10:03:57.209804"
+    "at": "2026-03-05T10:06:39.143608"
   },
   "queue": [
     {
@@ -809,7 +807,27 @@
         "market_cap_min_bn": 200,
         "market_cap_max_bn": 1500
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 8,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "market_cap_min_bn": 200,
+        "market_cap_max_bn": 1500,
+        "total_return_pct": -0.38,
+        "alpha_pct": -98.58,
+        "sharpe": 0.155,
+        "max_dd_pct": 24.72,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -2.036,
+      "elapsed_sec": 1.8
     },
     {
       "id": "regime_extreme_bear_cash",
@@ -830,7 +848,30 @@
         "regime_bear_threshold": -0.05,
         "regime_bear_top_n": 0
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "regime_mode": "extreme_bear_cash",
+        "regime_ma_period": 200,
+        "regime_bear_weeks": 4,
+        "regime_bear_threshold": -0.05,
+        "regime_bear_top_n": 0,
+        "total_return_pct": 1.39,
+        "alpha_pct": -96.81,
+        "sharpe": 0.263,
+        "max_dd_pct": 23.65,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.928,
+      "elapsed_sec": 1.8
     },
     {
       "id": "pure_momentum_concentration",
@@ -844,6 +885,72 @@
         "rs_w": 0.45,
         "green_w": 0.05,
         "smooth_w": 0.05,
+        "resilience_w": 0.0
+      },
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.45,
+        "rs_w": 0.45,
+        "green_w": 0.05,
+        "smooth_w": 0.05,
+        "resilience_w": 0.0,
+        "total_return_pct": 0.68,
+        "alpha_pct": -97.52,
+        "sharpe": 0.22,
+        "max_dd_pct": 23.9,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.971,
+      "elapsed_sec": 1.8
+    },
+    {
+      "id": "midcap_monthly_rebalance",
+      "desc": "中型株ユニバース×月次リバランスで取引コスト削減",
+      "theory": "universe_midcapは週次リバランスで116トレードを実施しているが、中型株の流動性を考えると週次リバランスのスリッページ・コストが累積リターンを圧迫している可能性がある。月次リバランスに切り替えることでトレード回数を約26回に削減し、取引コストを75%削減できる。中型株のモメンタムは数週間〜数ヶ月持続する傾向があるため（アナリストカバレッジが薄く情報伝播が遅い）、月次でも信号強度は維持できるはず。唯一成功したuniverse_midcapの絞り込み効果を保ちつつ、執行コスト削減で純パフォーマンスを改善する最もシンプルな延長。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "monthly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "status": "pending"
+    },
+    {
+      "id": "midcap_lookback60",
+      "desc": "中型株ユニバース×lookback=60日で短期モメンタム強化",
+      "theory": "vol_candle_exitのresultがlookback=60で走っておりSharpe 1.773（2位）を記録。universe_midcapはlookback=80で最適化されているが、中型株の情報伝播速度を考えると60日の方が適切な期間かもしれない。80日では「終わりかけのモメンタム」を掴んでしまうリスクがあり、60日にすることで鮮度の高いモメンタムシグナルを使える。また60日ルックバックは週次リバランスとの相性が良く（60/5=12週=3ヶ月サイクル）、自然なリズムで銘柄入れ替えが発生する。universe_midcap（唯一の成功）×lookback=60の組み合わせ効果を検証。",
+      "params": {
+        "lookback": 60,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "status": "pending"
+    },
+    {
+      "id": "midcap_ret_dominant",
+      "desc": "中型株ユニバース×絶対リターン重視スコア（ret_w=0.4に増加）",
+      "theory": "現行のret_w=0.3とrs_w=0.3は等重みだが、rs（対日経相対強度）は市場全体の動きをキャンセルした後の残差であるのに対し、ret（絶対リターン）はより直接的な価格上昇力を反映する。中型株ユニバースでは既にマクロフィルタとして「時価総額100〜3000億」でスクリーニングしているため、残差としてのrsよりも絶対リターンの方が銘柄固有の強さを反映しやすい。ret_w=0.4に増加し（rs_w=0.25, green_w=0.2, smooth_w=0.15）、合計1.0を維持しながら絶対リターン主導のスコアに変更する。pure_momentum_concentration（ret=rs=0.45）が大幅失敗したため、小幅調整（ret+0.1のみ）で純粋な効果を測定する。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.4,
+        "rs_w": 0.25,
+        "green_w": 0.2,
+        "smooth_w": 0.15,
         "resilience_w": 0.0
       },
       "status": "pending"
