@@ -18,28 +18,28 @@
     "hypothesis": "universe_midcap"
   },
   "running": false,
-  "current_hypothesis": "new_high_breakout",
+  "current_hypothesis": null,
   "last_result": {
-    "id": "universe_midcap",
+    "id": "resilience_upgrade",
     "result": {
-      "lookback": 80,
-      "top_n": 10,
+      "lookback": 60,
+      "top_n": 5,
       "rebalance": "weekly",
-      "ret_w": 0.3,
-      "rs_w": 0.3,
-      "green_w": 0.2,
+      "ret_w": 0.2,
+      "rs_w": 0.2,
+      "green_w": 0.1,
       "smooth_w": 0.2,
-      "resilience_w": 0.0,
-      "total_return_pct": 36.78,
-      "alpha_pct": -61.42,
-      "sharpe": 2.191,
-      "max_dd_pct": 18.36,
+      "resilience_w": 0.3,
+      "total_return_pct": 4.09,
+      "alpha_pct": -94.11,
+      "sharpe": 0.427,
+      "max_dd_pct": 27.05,
       "nikkei_pct": 98.2,
       "n_trades": 116
     },
-    "delta_sharpe": 0.421,
-    "win": true,
-    "at": "2026-03-05T08:28:59.280784"
+    "delta_sharpe": -1.764,
+    "win": false,
+    "at": "2026-03-05T08:42:26.539438"
   },
   "queue": [
     {
@@ -68,17 +68,56 @@
     {
       "id": "new_high_breakout",
       "desc": "過去60日高値更新をエントリー条件に追加",
-      "status": "pending"
+      "status": "done_lose",
+      "result": null,
+      "delta_sharpe": null,
+      "elapsed_sec": 0.9
     },
     {
       "id": "vol_candle_exit",
       "desc": "大出来高陰線でエグジットシグナル追加",
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 60,
+        "top_n": 5,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "total_return_pct": 31.72,
+        "alpha_pct": -66.48,
+        "sharpe": 1.773,
+        "max_dd_pct": 21.53,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -0.418,
+      "elapsed_sec": 0.9
     },
     {
       "id": "resilience_upgrade",
       "desc": "下落日相対強度を主要ファクターに昇格(w=0.3)",
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 60,
+        "top_n": 5,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.2,
+        "green_w": 0.1,
+        "smooth_w": 0.2,
+        "resilience_w": 0.3,
+        "total_return_pct": 4.09,
+        "alpha_pct": -94.11,
+        "sharpe": 0.427,
+        "max_dd_pct": 27.05,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.764,
+      "elapsed_sec": 0.9
     }
   ]
 }

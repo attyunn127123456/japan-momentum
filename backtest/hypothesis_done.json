@@ -1,1 +1,23 @@
-{"status": "error", "id": "new_high_breakout", "error": "'int' object is not subscriptable"}
+{
+  "status": "done",
+  "id": "resilience_upgrade",
+  "win": false,
+  "delta_sharpe": -1.764,
+  "result": {
+    "lookback": 60,
+    "top_n": 5,
+    "rebalance": "weekly",
+    "ret_w": 0.2,
+    "rs_w": 0.2,
+    "green_w": 0.1,
+    "smooth_w": 0.2,
+    "resilience_w": 0.3,
+    "total_return_pct": 4.09,
+    "alpha_pct": -94.11,
+    "sharpe": 0.427,
+    "max_dd_pct": 27.05,
+    "nikkei_pct": 98.2,
+    "n_trades": 116
+  },
+  "at": "2026-03-05T08:42:26.539724"
+}

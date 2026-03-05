@@ -61,7 +61,7 @@ def run_new_high_breakout(prices_dict, nikkei, rebal_dates, return_df):
     for code, df in prices_dict.items():
         p = df["AdjC"]
         new_high = (p >= p.rolling(60).max().shift(1)).astype(float)
-        if (60, ) in [k[1:] for k in factor_dfs if k[0]==code]:
+        if (code, 60) in factor_dfs:
             factor_dfs[(code, 60)]["new_high"] = new_high
 
     # new_highを追加したevalを実行
@@ -266,10 +266,6 @@ def main():
         traceback.print_exc()
 
 
-if __name__ == "__main__":
-    main()
-    auto_next()
-
 def auto_next():
     """完了後に次の未実施仮説があれば自分自身を再起動"""
     import subprocess, sys
@@ -285,3 +281,7 @@ def auto_next():
         )
     else:
         print("全仮説完了！heartbeatで分析・新仮説生成を行います。", flush=True)
+if __name__ == "__main__":
+    main()
+    auto_next()
+
