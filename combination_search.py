@@ -179,7 +179,7 @@ def run_combination_search():
             'max_dd_pct':       r_train.get('max_dd_pct'),
             'delta_sharpe':     delta_sharpe,
             'score':            score,
-            'adopted':          adopted,
+            'adopted': int(adopted),
             'reasons':          reasons,
         }
         combo_results.append(entry)

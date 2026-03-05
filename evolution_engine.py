@@ -471,7 +471,7 @@ def cleanup_weak_signals(baseline_params):
 def append_log(hid, desc, result, win, delta):
     log = json.loads(EVO_LOG.read_text()) if EVO_LOG.exists() else {'best10':[], 'all':[], 'total':0}
     entry = {
-        'at': datetime.now().isoformat(), 'id': hid, 'desc': desc, 'win': win,
+        'at': datetime.now().isoformat(), 'id': hid, 'desc': desc, 'win': int(win),
         'delta_sharpe': delta,
         'sharpe': result.get('sharpe') if result else None,
         'total_return_pct': result.get('total_return_pct') if result else None,
