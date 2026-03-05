@@ -20,11 +20,77 @@
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "momentum_acceleration",
-    "result": null,
-    "delta_sharpe": null,
+    "id": "regime_adaptive_weights",
+    "result": {
+      "type": "regime",
+      "total_return_pct": 21.52,
+      "alpha_pct": -76.68,
+      "sharpe": 0.667,
+      "max_dd_pct": 20.8,
+      "nikkei_pct": 98.2,
+      "n_trades": 116,
+      "regime_counts": {
+        "bear": 8,
+        "bull": 86,
+        "neutral": 14,
+        "high_vol": 8
+      },
+      "regime_log_tail": [
+        {
+          "date": "2025-11-10",
+          "regime": "bull",
+          "ret": 0.0218
+        },
+        {
+          "date": "2025-12-01",
+          "regime": "bull",
+          "ret": 0.0133
+        },
+        {
+          "date": "2025-12-08",
+          "regime": "bull",
+          "ret": 0.0149
+        },
+        {
+          "date": "2025-12-15",
+          "regime": "bull",
+          "ret": -0.0061
+        },
+        {
+          "date": "2025-12-22",
+          "regime": "bull",
+          "ret": 0.0114
+        },
+        {
+          "date": "2025-12-29",
+          "regime": "bull",
+          "ret": 0.0116
+        },
+        {
+          "date": "2026-01-19",
+          "regime": "bull",
+          "ret": -0.0265
+        },
+        {
+          "date": "2026-01-26",
+          "regime": "bull",
+          "ret": -0.0119
+        },
+        {
+          "date": "2026-02-02",
+          "regime": "bull",
+          "ret": 0.0179
+        },
+        {
+          "date": "2026-02-09",
+          "regime": "bull",
+          "ret": -0.0024
+        }
+      ]
+    },
+    "delta_sharpe": -1.524,
     "win": false,
-    "at": "2026-03-05T09:46:49.198327"
+    "at": "2026-03-05T09:55:26.111359"
   },
   "queue": [
     {
@@ -263,8 +329,136 @@
       "desc": "レジーム連動型重み（強気/弱気/高ボラで自動切替）",
       "theory": "相場局面によって最適シグナルは異なる。日経225の200MAとボラティリティでレジームを判定し、事前最適化した重みセットに切り替える",
       "params": {},
-      "status": "pending",
-      "type": "regime"
+      "status": "done_lose",
+      "type": "regime",
+      "result": {
+        "type": "regime",
+        "total_return_pct": 21.52,
+        "alpha_pct": -76.68,
+        "sharpe": 0.667,
+        "max_dd_pct": 20.8,
+        "nikkei_pct": 98.2,
+        "n_trades": 116,
+        "regime_counts": {
+          "bear": 8,
+          "bull": 86,
+          "neutral": 14,
+          "high_vol": 8
+        },
+        "regime_log_tail": [
+          {
+            "date": "2025-11-10",
+            "regime": "bull",
+            "ret": 0.0218
+          },
+          {
+            "date": "2025-12-01",
+            "regime": "bull",
+            "ret": 0.0133
+          },
+          {
+            "date": "2025-12-08",
+            "regime": "bull",
+            "ret": 0.0149
+          },
+          {
+            "date": "2025-12-15",
+            "regime": "bull",
+            "ret": -0.0061
+          },
+          {
+            "date": "2025-12-22",
+            "regime": "bull",
+            "ret": 0.0114
+          },
+          {
+            "date": "2025-12-29",
+            "regime": "bull",
+            "ret": 0.0116
+          },
+          {
+            "date": "2026-01-19",
+            "regime": "bull",
+            "ret": -0.0265
+          },
+          {
+            "date": "2026-01-26",
+            "regime": "bull",
+            "ret": -0.0119
+          },
+          {
+            "date": "2026-02-02",
+            "regime": "bull",
+            "ret": 0.0179
+          },
+          {
+            "date": "2026-02-09",
+            "regime": "bull",
+            "ret": -0.0024
+          }
+        ]
+      },
+      "delta_sharpe": -1.524,
+      "elapsed_sec": 10.3
+    },
+    {
+      "id": "green_smooth_synergy",
+      "desc": "green_candle × smooth_trend 合成スコアで銘柄純度向上",
+      "theory": "signal_libraryでgreen_w=0.2とsmooth_w=0.2は両方activeで同重みだが、両スコアが同時に高い銘柄は「陽線が多く、かつトレンドが滑らか」= 機関投資家の継続的・計画的な買い増しが行われている状態を示す。独立加算では個別に高い銘柄が残るが、積スコア（乗算）にすることで両指標が揃った高純度銘柄を強く選別できる。OHLCVのみで実装可能。universe_midcapの既存4シグナルを維持しつつ合成スコアをgreen_w/smooth_w削減分で補完する設計。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.1,
+        "smooth_w": 0.1,
+        "resilience_w": 0.0,
+        "green_smooth_synergy_w": 0.2
+      },
+      "status": "pending"
+    },
+    {
+      "id": "regime_bear_defense",
+      "desc": "レジーム連動型: bull時フルポジ×non-bull時top_n半減+smooth重視",
+      "theory": "regime_adaptive_weightsはbull/bear/high_vol全レジームで異なる重みを使おうとして複雑化し失敗。regime_countsでbullが74%（86/116）と支配的な一方、bear+high_vol=16/116(14%)のみ防御が必要。シンプルに「bull相場（日経225が20MA上）ならtop_n=10で通常通り、non-bull時はtop_n=5+smooth_w増加で守りに入る」とする2状態モデルにより、過学習リスクを下げつつ損失局面の保護を強化する。",
+      "params": {
+        "lookback": 80,
+        "rebalance": "weekly",
+        "regime_mode": "bull_defense",
+        "bull_top_n": 10,
+        "bull_ret_w": 0.3,
+        "bull_rs_w": 0.3,
+        "bull_green_w": 0.2,
+        "bull_smooth_w": 0.2,
+        "nonbull_top_n": 5,
+        "nonbull_ret_w": 0.2,
+        "nonbull_rs_w": 0.3,
+        "nonbull_green_w": 0.2,
+        "nonbull_smooth_w": 0.3,
+        "regime_ma_period": 20
+      },
+      "status": "pending"
+    },
+    {
+      "id": "lookback_ensemble",
+      "desc": "lookback 60日・80日のスコアをアンサンブル平均してランキング",
+      "theory": "universe_midcapはlookback=80でSharpe2.191、local_searchはlookback=60でSharpe2.019と近い値を出しており、両期間でシグナルが相補的に機能している可能性がある。単一lookbackに依存すると特定の相場サイクルにオーバーフィットするリスクがあるが、60日・80日スコアの単純平均をとることで異なる周期のモメンタムを重ねて捉えられる。momentum_12_1(長期)が失敗した一方でこの2期間は近い水準のSharpeを示しているため、組み合わせによるアンサンブル効果が期待できる。実装はOHLCVのみで可能。",
+      "params": {
+        "lookback_list": [
+          60,
+          80
+        ],
+        "ensemble_mode": "mean",
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "status": "pending"
     }
   ],
   "tested_factors": [
