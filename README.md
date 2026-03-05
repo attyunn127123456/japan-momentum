@@ -2,60 +2,84 @@
 
 日本株テーマモメンタム投資スクリーナー
 
-## セットアップ
+## アーキテクチャ
 
-```bash
-pip install -r requirements.txt
+```
+Mac mini (常時稼働)
+├── screener.py     毎朝0:30 UTC (9:30 JST) cron実行
+├── daily_signal.py 前日比シグナル生成
+├── dashboard/      FastAPI ポート8080
+└── cloudflared     Cloudflare Tunnel → 外部公開
 ```
 
-## 環境変数（Discord通知用）
+## セットアップ
 
+### 1. 依存パッケージ
 ```bash
-export DISCORD_BOT_TOKEN=your_bot_token
-export DISCORD_USER_ID=717228195161571459
+pip3 install -r requirements.txt
+```
+
+### 2. Cloudflare Tunnelセットアップ（初回のみ）
+```bash
+# ログイン（ブラウザが開く）
+cloudflared tunnel login
+
+# トンネル作成
+cloudflared tunnel create japan-momentum
+
+# 作成されたトンネルIDを infra/tunnel.yml に記入
+# credentials-file のパスも確認
+```
+
+### 3. cron設定（毎朝9:30 JST自動実行）
+```bash
+bash infra/setup_cron.sh
+```
+
+### 4. ダッシュボード常時起動
+```bash
+# 手動起動（テスト用）
+bash infra/start.sh
+
+# LaunchAgent登録（Mac再起動後も自動起動）
+launchctl load ~/Library/LaunchAgents/io.akplabo.japan-momentum.plist
 ```
 
 ## 使い方
 
-### 毎日スクリーニング実行
+### 手動実行
 ```bash
-python run_daily.py           # スクリーニング + Discord通知
-python run_daily.py --skip-discord  # 通知なし（テスト用）
+python3 screener.py              # スクリーニング
+python3 daily_signal.py          # シグナル生成
+python3 run_daily.py             # 全部まとめて
+python3 run_daily.py --skip-push # git pushなし
 ```
 
-### スクリーニングのみ
+### バックテスト
 ```bash
-python screener.py
+python3 backtest.py
+python3 backtest.py --start 2022-01-01 --top-n 5 --rebalance weekly
 ```
 
-### バックテスト（過去3年）
+### ログ確認
 ```bash
-python backtest.py
-python backtest.py --start 2022-01-01 --top-n 5 --rebalance weekly
-python backtest.py --start 2023-01-01 --top-n 10 --rebalance monthly
-```
-
-### ダッシュボード起動
-```bash
-python dashboard/app.py
-# → http://localhost:8080
-```
-
-## Cron設定（毎朝9:30 JST = 0:30 UTC）
-
-```cron
-30 0 * * 1-5 cd /Users/panda/Projects/japan-momentum && python run_daily.py >> logs/daily.log 2>&1
+tail -f logs/daily.log
+tail -f logs/dashboard.log
 ```
 
 ## スコアロジック
 
 ```
 momentum_score =
-  return_5_25d * 0.40    # 5〜25日前の累積リターン（直近3日除外でポンプ銘柄を排除）
-  + volume_acceleration * 0.30  # 週次出来高トレンド（W1<W2<W3<W4）
+  return_5_25d * 0.40    # 5〜25日前の累積リターン（直近3日除外）
+  + volume_acceleration * 0.30  # 週次出来高トレンド
   + green_day_ratio * 0.20      # 直近25日の陽線比率
   + rs_acceleration * 0.10      # RSスコアの1ヶ月前比改善度
 ```
 
-RS（相対強度）= 日経225対比の加重平均リターン
-- 63日: 40%、126日: 30%、252日: 20%、21日: 10%
+## 環境変数（オプション）
+```bash
+export JQUANTS_API_KEY=your_key      # デフォルト値あり
+export DISCORD_BOT_TOKEN=your_token  # Discord通知用
+export DISCORD_USER_ID=717228195161571459
+```

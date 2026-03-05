@@ -1,0 +1,7 @@
+tunnel: japan-momentum
+credentials-file: /Users/panda/.cloudflared/japan-momentum.json
+
+ingress:
+  - hostname: momentum.akplabo.io   # 変更可能
+    service: http://localhost:8080
+  - service: http_status:404
