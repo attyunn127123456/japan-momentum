@@ -3,7 +3,8 @@
 heartbeatからバックグラウンドで呼ばれる。
 完了後 backtest/hypothesis_done.json を書く。
 """
-import json, time, sys, traceback
+import json_safe as json
+import time, sys, traceback
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta

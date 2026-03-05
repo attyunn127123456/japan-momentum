@@ -7,7 +7,6 @@ Usage:
   python3 backtest.py --start 2022-01-01 --end 2025-01-01 --top-n 5 --rebalance weekly
 """
 import argparse
-import json
 import json_safe as json
 from datetime import datetime, timedelta
 from pathlib import Path
