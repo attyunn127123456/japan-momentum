@@ -1907,6 +1907,70 @@
       },
       "delta_sharpe": -1.164,
       "elapsed_sec": 12.7
+    },
+    {
+      "id": "ret_skip_w",
+      "desc": "スキップウィーク・モメンタム: 直近5日をスキップした60日リターンで短期反転ノイズを除去",
+      "theory": "Jegadeesh-Titman(1993)の標準手法。現在のret_wは直近5日を含むため、週次リバランスで「先週急騰した銘柄」を掴んで翌週リバーサルで損する。top_n=3の極集中ポートフォリオでは1銘柄の反転が全体に壊滅的影響を与える。price[t-5]/price[t-65]で計算するスキップモメンタムは短期反転を自動回避し、「本物の中期トレンド」だけを捉える。世界中のモメンタム戦略で実証済みだが、日本の3銘柄集中×週次リバランスという極端な条件では特に効果が大きいはず。",
+      "factor_to_add": "ret_skip_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.1,
+        "smooth_w": 0.0,
+        "high52_w": 0.1,
+        "short_momentum_w": 0.1,
+        "cluster_boost_w": 0.1,
+        "ret_skip_w": 0.1,
+        "skip_days": 5
+      },
+      "status": "pending"
+    },
+    {
+      "id": "volume_confirm_w",
+      "desc": "出来高確認ファクター: 直近5日出来高÷60日平均で機関投資家の本格参入を検出",
+      "theory": "52週高値更新や強いモメンタムでも出来高が伴わなければ「空洞化した上昇」で持続しない。逆に出来高急増を伴う上昇は機関投資家の本格的な買い増しを示し、モメンタム持続力が高い。top_n=3では3銘柄全てが「本物の上昇」でなければならず、出来高確認は偽シグナル除去に決定的。volume_ratio = mean(vol[-5:]) / mean(vol[-60:]) のランクスコアをファクターに追加。high52_w（高値近接）+ volume_confirm（出来高裏付け）の組み合わせは「出来高を伴う高値更新」= 最も信頼性の高いブレイクアウトを捉える。",
+      "factor_to_add": "volume_confirm_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.2,
+        "green_w": 0.1,
+        "smooth_w": 0.0,
+        "high52_w": 0.1,
+        "short_momentum_w": 0.1,
+        "cluster_boost_w": 0.1,
+        "volume_confirm_w": 0.15,
+        "vol_confirm_short": 5,
+        "vol_confirm_long": 60
+      },
+      "status": "pending"
+    },
+    {
+      "id": "gap_momentum_w",
+      "desc": "ギャップアップ頻度ファクター: ルックバック期間中のギャップアップ発生頻度で「発見されつつある銘柄」を検出",
+      "theory": "ギャップアップ（始値>前日終値×1.005）は夜間に新情報が到着して翌朝の需要が急増した証拠。海外機関投資家の買い、決算サプライズ、セクター・テーマの波及は全てギャップとして現れる。既存ファクター（ret/rs/green/smooth/high52）は全て終値ベースだが、ギャップは始値と終値の関係を使う完全に直交した情報源。ギャップが頻発する銘柄は「外部から継続的に新しい買い材料が到着している」状態であり、モメンタムが自己強化的に持続する。top_n=3で爆発的リターンを取るには「次々と良いニュースが来る銘柄」を選ぶ必要があり、ギャップ頻度はその最良の代理変数。",
+      "factor_to_add": "gap_momentum_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.2,
+        "green_w": 0.1,
+        "smooth_w": 0.0,
+        "high52_w": 0.1,
+        "short_momentum_w": 0.1,
+        "cluster_boost_w": 0.1,
+        "gap_momentum_w": 0.15,
+        "gap_threshold": 0.005
+      },
+      "status": "pending"
     }
   ],
   "tested_factors": [
