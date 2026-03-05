@@ -46,3 +46,363 @@ INFO:     Waiting for application shutdown.
 INFO:     Application shutdown complete.
 /Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
 /Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (67094) - No such process
+INFO:     Started server process [67116]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (67116) - No such process
+INFO:     Started server process [67126]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (67126) - No such process
+INFO:     Started server process [67130]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (67130) - No such process
+INFO:     Started server process [67139]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (67139) - No such process
+INFO:     Started server process [67148]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (67148) - No such process
+INFO:     Started server process [67152]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (67152) - No such process
+INFO:     Started server process [67158]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (67158) - No such process
+INFO:     Started server process [67163]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (67163) - No such process
+INFO:     Started server process [67167]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (67167) - No such process
+INFO:     Started server process [67172]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (67172) - No such process
+INFO:     Started server process [67178]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (67178) - No such process
+INFO:     Started server process [67182]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (67182) - No such process
+INFO:     Started server process [67188]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (67188) - No such process
+INFO:     Started server process [67193]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67193]
+INFO:     Started server process [67197]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67197]
+INFO:     Started server process [67203]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67203]
+INFO:     Started server process [67215]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67215]
+INFO:     Started server process [67219]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67219]
+INFO:     Started server process [67224]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67224]
+INFO:     Started server process [67229]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67229]
+INFO:     Started server process [67233]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67233]
+INFO:     Started server process [67238]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67238]
+INFO:     Started server process [67243]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67243]
+INFO:     Started server process [67255]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67255]
+INFO:     Started server process [67260]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67260]
+INFO:     Started server process [67268]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67268]
+INFO:     Started server process [67280]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67280]
+INFO:     Started server process [67288]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67288]
+INFO:     Started server process [67293]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67293]
+INFO:     Started server process [67300]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67300]
+INFO:     Started server process [67305]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67305]
+INFO:     Started server process [67310]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67310]
+INFO:     Started server process [67314]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67314]
+INFO:     Started server process [67319]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67319]
+INFO:     Started server process [67324]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67324]
+INFO:     Started server process [67333]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67333]
+INFO:     Started server process [67337]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67337]
+INFO:     Started server process [67344]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67344]
+INFO:     Started server process [67352]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67352]
+INFO:     Started server process [67356]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67356]
+INFO:     Started server process [67362]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [67362]
+INFO:     Started server process [67378]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)

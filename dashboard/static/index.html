@@ -71,9 +71,9 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
       <input class="search-box" id="sig-search" placeholder="銘柄/セクター検索" oninput="filterSig(curFilter)">
     </div>
     <table><thead><tr>
-      <th onclick="sortSig(0)">順位</th><th onclick="sortSig(1)">銘柄</th><th onclick="sortSig(2)">セクター</th>
-      <th onclick="sortSig(3)">スコア↓</th><th onclick="sortSig(4)">前日比</th><th onclick="sortSig(5)">中期リターン</th>
-      <th onclick="sortSig(6)">出来高</th><th onclick="sortSig(7)">陽線率</th><th onclick="sortSig(8)">RS</th>
+      <th onclick="sortSig(0)">順位</th><th onclick="sortSig(1)">銘柄</th><th onclick="sortSig(2)">銘柄名</th><th onclick="sortSig(3)">セクター</th>
+      <th onclick="sortSig(4)">スコア↓</th><th onclick="sortSig(5)">前日比</th><th onclick="sortSig(6)">中期リターン</th>
+      <th onclick="sortSig(7)">出来高</th><th onclick="sortSig(8)">陽線率</th><th onclick="sortSig(9)">RS</th>
       <th>シグナル</th><th>現在値</th>
     </tr></thead><tbody id="signals-body"></tbody></table>
   </div>
@@ -83,9 +83,9 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
   <div id="ranking-loading" class="empty-state">データ取得中...</div>
   <div id="ranking-wrap" style="display:none">
     <table><thead><tr>
-      <th onclick="sortRank(0)">#</th><th onclick="sortRank(1)">銘柄</th><th onclick="sortRank(2)">セクター</th>
-      <th onclick="sortRank(3)">スコア↓</th><th onclick="sortRank(4)">RS</th><th onclick="sortRank(5)">中期リターン</th>
-      <th onclick="sortRank(6)">出来高</th><th onclick="sortRank(7)">陽線率</th><th onclick="sortRank(8)">RS加速</th><th>現在値</th>
+      <th onclick="sortRank(0)">#</th><th onclick="sortRank(1)">銘柄</th><th onclick="sortRank(2)">銘柄名</th><th onclick="sortRank(3)">セクター</th>
+      <th onclick="sortRank(4)">スコア↓</th><th onclick="sortRank(5)">RS</th><th onclick="sortRank(6)">中期リターン</th>
+      <th onclick="sortRank(7)">出来高</th><th onclick="sortRank(8)">陽線率</th><th onclick="sortRank(9)">RS加速</th><th>現在値</th>
     </tr></thead><tbody id="ranking-body"></tbody></table>
   </div>
 </div>
@@ -198,7 +198,8 @@ function renderSig(rows){
   document.getElementById('signals-body').innerHTML=rows.map(r=>'<tr>'
     +'<td class="dim">'+r.rank_today+(r.rank_yesterday!==r.rank_today?'<span style="font-size:10px;color:#8b949e"> ←'+r.rank_yesterday+'</span>':'')+'</td>'
     +'<td><strong>'+r.code+'</strong></td>'
-    +'<td class="dim">'+(r.sector||'').slice(0,10)+'</td>'
+    +'<td style="max-width:120px;overflow:hidden;text-overflow:ellipsis">'+(r.name||'')+'</td>'
+    +'<td class="dim">'+(r.sector||'').slice(0,8)+'</td>'
     +'<td><span class="'+sc(r.score_today)+'">'+r.score_today.toFixed(1)+'</span></td>'
     +'<td>'+fD(r.score_delta)+'</td>'
     +'<td>'+fR(r.return_5_25d)+'</td>'
@@ -233,7 +234,8 @@ function renderRank(rows){
   document.getElementById('ranking-body').innerHTML=rows.slice(0,50).map((r,i)=>'<tr>'
     +'<td class="dim">'+(i+1)+'</td>'
     +'<td><strong>'+(r.ticker||r.code||'').replace('.T','')+'</strong></td>'
-    +'<td class="dim">'+(r.sector||'').slice(0,10)+'</td>'
+    +'<td style="max-width:120px;overflow:hidden;text-overflow:ellipsis">'+(r.name||'')+'</td>'
+    +'<td class="dim">'+(r.sector||'').slice(0,8)+'</td>'
     +'<td><span class="'+sc(r.score)+'">'+r.score.toFixed(1)+'</span></td>'
     +'<td class="'+rc(r.rs_score)+'">'+(r.rs_score>0?'+':'')+r.rs_score.toFixed(1)+'</td>'
     +'<td>'+fR(r.return_5_25d)+'</td>'

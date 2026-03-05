@@ -43,7 +43,7 @@ def get_nikkei(start: str, end: str) -> pd.Series:
     return df.set_index("Date").sort_index()["C"].dropna()
 
 
-def score_ticker(code: str, start: str, end: str, nikkei: pd.Series, sector: str = "") -> dict:
+def score_ticker(code: str, start: str, end: str, nikkei: pd.Series, sector: str = "", name: str = "") -> dict:
     try:
         df = get_daily_quotes_code(code, start, end)
     except Exception:
@@ -69,6 +69,7 @@ def score_ticker(code: str, start: str, end: str, nikkei: pd.Series, sector: str
     return {
         "ticker": f"{code}.T",
         "code": code,
+        "name": name,
         "sector": sector,
         "score": scores["total"],
         "rs_score": round(scores["rs_score"], 2),
@@ -91,6 +92,7 @@ def run_screener(top_n: int = 20, universe_size: int = 500) -> list[dict]:
     from jquants import get_master
     master = get_master()
     sector_map = dict(zip(master["Code"].astype(str), master["S17Nm"]))
+    name_map = dict(zip(master["Code"].astype(str), master["CoName"]))
 
     print(f"[{datetime.now().strftime('%H:%M:%S')}] 日経/TOPIX取得中...")
     nikkei = get_nikkei(start, end)
@@ -128,3 +130,45 @@ def run_screener(top_n: int = 20, universe_size: int = 500) -> list[dict]:
 
 if __name__ == "__main__":
     run_screener()
+
+
+def run_screener_date(date_str: str):
+    """指定日付でスクリーニング実行（過去日付対応）"""
+    end = date_str
+    start = (datetime.strptime(date_str, "%Y-%m-%d") - timedelta(days=400)).strftime("%Y-%m-%d")
+
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] ユニバース選定中...")
+    codes = get_top_liquid_tickers(500)
+
+    from jquants import get_master
+    master = get_master()
+    sector_map = dict(zip(master["Code"].astype(str), master["S17Nm"]))
+    name_map = dict(zip(master["Code"].astype(str), master["CoName"]))
+
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] 指数取得中（〜{end}）...")
+    nikkei = get_nikkei(start, end)
+
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] {len(codes)}銘柄スコア計算中...")
+    results = []
+    with ThreadPoolExecutor(max_workers=12) as exe:
+        futures = {exe.submit(score_ticker, c, start, end, nikkei, sector_map.get(c,""), name_map.get(c,"")): c for c in codes}
+        done = 0
+        for f in as_completed(futures):
+            done += 1
+            r = f.result()
+            if r: results.append(r)
+            if done % 100 == 0:
+                print(f"  {done}/{len(codes)} 処理済, {len(results)} 有効")
+
+    results.sort(key=lambda x: x["score"], reverse=True)
+    top = results[:20]
+
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    for fname in [f"{date_str}.json"]:
+        with open(RESULTS_DIR / fname, "w") as f:
+            json.dump({"date": date_str, "results": results, "top": top}, f, ensure_ascii=False, indent=2)
+
+    print(f"\n=== TOP 20 ({date_str}) ===")
+    for i, r in enumerate(top, 1):
+        print(f"{i:2}. {r['code']:6} [{r['sector'][:8]:8}] スコア:{r['score']:5.1f}")
+    return top
