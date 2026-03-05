@@ -20,26 +20,32 @@
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "midcap_ret_dominant",
+    "id": "midcap_regime_bull_concentrate",
     "result": {
       "lookback": 80,
       "top_n": 10,
       "rebalance": "weekly",
-      "ret_w": 0.4,
-      "rs_w": 0.25,
+      "ret_w": 0.3,
+      "rs_w": 0.3,
       "green_w": 0.2,
-      "smooth_w": 0.15,
+      "smooth_w": 0.2,
       "resilience_w": 0.0,
-      "total_return_pct": 6.5,
-      "alpha_pct": -91.7,
-      "sharpe": 0.585,
-      "max_dd_pct": 23.87,
+      "regime_mode": "bull_concentrate",
+      "regime_ma_period": 50,
+      "regime_bull_weeks": 4,
+      "regime_bull_threshold": 0.02,
+      "bull_top_n": 7,
+      "nonbull_top_n": 10,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "sharpe": 0.263,
+      "max_dd_pct": 23.65,
       "nikkei_pct": 98.2,
       "n_trades": 116
     },
-    "delta_sharpe": -1.606,
+    "delta_sharpe": -1.928,
     "win": false,
-    "at": "2026-03-05T10:08:43.268023"
+    "at": "2026-03-05T10:10:38.347575"
   },
   "queue": [
     {
@@ -1005,7 +1011,25 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 100,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "total_return_pct": 8.46,
+        "alpha_pct": -89.74,
+        "sharpe": 0.736,
+        "max_dd_pct": 21.47,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.455,
+      "elapsed_sec": 2.3
     },
     {
       "id": "midcap_top7_concentrated",
@@ -1021,7 +1045,25 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 7,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "total_return_pct": 1.34,
+        "alpha_pct": -96.86,
+        "sharpe": 0.266,
+        "max_dd_pct": 25.64,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.925,
+      "elapsed_sec": 1.8
     },
     {
       "id": "midcap_regime_bull_concentrate",
@@ -1042,6 +1084,78 @@
         "regime_bull_threshold": 0.02,
         "bull_top_n": 7,
         "nonbull_top_n": 10
+      },
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "regime_mode": "bull_concentrate",
+        "regime_ma_period": 50,
+        "regime_bull_weeks": 4,
+        "regime_bull_threshold": 0.02,
+        "bull_top_n": 7,
+        "nonbull_top_n": 10,
+        "total_return_pct": 1.39,
+        "alpha_pct": -96.81,
+        "sharpe": 0.263,
+        "max_dd_pct": 23.65,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.928,
+      "elapsed_sec": 1.8
+    },
+    {
+      "id": "midcap_lookback70",
+      "desc": "中型株ユニバース×lookback=70日（60日と80日の中間探索）",
+      "theory": "lookback=60はSharpe 1.309、lookback=80はSharpe 2.191と80日が大幅優秀。しかしlookback=70（中間値）は未試験で、80日の成功が70〜80日の甘いスポットに起因する可能性がある。70日は中型株の情報伝播サイクル（約3.5ヶ月）と一致する可能性があり、lb=80が唯一最適かを確認することでlookback方向の探索を完結させる。",
+      "params": {
+        "lookback": 70,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "status": "pending"
+    },
+    {
+      "id": "midcap_rs_dominant",
+      "desc": "中型株ユニバース×相対強度重視スコア（rs_w=0.4に増加）",
+      "theory": "ret_dominant（ret_w=0.4）はSharpe 0.585と失敗。対称的にrs_w=0.4の方向は未試験。相対強度（日経比）は市場全体のベータを除去した純粋な銘柄固有強度を示す。中型株ユニバースでは既にユニバースフィルターで絞り込んでおり、そこからさらに日経を上回る銘柄を重視することで「市場ベータに依存しない真のアルファ」を持つ銘柄を選べる。ret_w=0.2にしrs_wを主導的ファクターとすることでret主導型との対称比較が可能。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.4,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "status": "pending"
+    },
+    {
+      "id": "midcap_green_dominant",
+      "desc": "中型株ユニバース×陽線比率重視スコア（green_w=0.35に増加）",
+      "theory": "green_smooth_synergyでgreen_w=0.1に削減したらSharpe 0.554と失敗したことで、green信号はコアシグナルとして重要性が示された。逆方向（green_w増加）の効果は未試験。陽線比率は機関投資家の継続的な買い増しを反映し、週次リバランスで銘柄品質フィルターとして機能する。ret_w=0.3、rs_w=0.3を維持しsmooth_w=0.05に削減してgreen_w=0.35に配分することで、greenシグナルの上限効果を測定する。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.35,
+        "smooth_w": 0.05,
+        "resilience_w": 0.0
       },
       "status": "pending"
     }
