@@ -18,7 +18,7 @@ QUEUE_FILE = Path("backtest/hypothesis_queue.json")
 DONE_FILE  = Path("backtest/hypothesis_done.json")
 START = "2023-01-01"
 END   = datetime.now().strftime("%Y-%m-%d")
-N_CODES = 200
+N_CODES = 2000
 
 
 def load_queue():

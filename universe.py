@@ -10,19 +10,20 @@ import pandas as pd
 
 from jquants import get_daily_quotes_date, get_master
 
-CACHE_PATH = Path("data/universe_cache.json")
 CACHE_TTL_HOURS = 24  # 1日キャッシュ
 
 
-def get_top_liquid_tickers(n: int = 500) -> list[str]:
+def get_top_liquid_tickers(n: int = 2000) -> list[str]:
     """売買代金上位N銘柄のコードリスト（4桁）を返す"""
     import time
 
+    cache_path = Path(f"data/universe_cache_{n}.json")
+
     # キャッシュ確認
-    if CACHE_PATH.exists():
-        age = time.time() - CACHE_PATH.stat().st_mtime
+    if cache_path.exists():
+        age = time.time() - cache_path.stat().st_mtime
         if age < CACHE_TTL_HOURS * 3600:
-            data = json.loads(CACHE_PATH.read_text())
+            data = json.loads(cache_path.read_text())
             print(f"  ユニバース: キャッシュから{len(data['tickers'])}銘柄読み込み")
             return data["tickers"][:n]
 
@@ -65,8 +66,8 @@ def get_top_liquid_tickers(n: int = 500) -> list[str]:
     top_codes = [code for code, _ in ranked if code not in exclude_codes][:n]
 
     # キャッシュ保存
-    CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    CACHE_PATH.write_text(json.dumps({
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    cache_path.write_text(json.dumps({
         "updated": datetime.now().isoformat(),
         "tickers": top_codes,
         "turnover": dict(ranked[:n]),
@@ -77,5 +78,5 @@ def get_top_liquid_tickers(n: int = 500) -> list[str]:
 
 
 if __name__ == "__main__":
-    tickers = get_top_liquid_tickers(500)
+    tickers = get_top_liquid_tickers(2000)
     print(f"\nTop 20: {tickers[:20]}")

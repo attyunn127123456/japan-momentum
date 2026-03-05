@@ -1,6 +1,27 @@
 {
   "best10": [
     {
+      "at": "2026-03-05T10:20:22.952476",
+      "id": "high52_midcap",
+      "desc": "52週高値proximity因子×中型株: 年初来高値への近さをモメンタムシグナルとして追加",
+      "win": true,
+      "delta_sharpe": 0.106,
+      "sharpe": 2.297,
+      "total_return_pct": 38.5,
+      "alpha_pct": -59.69,
+      "max_dd_pct": 16.23,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0
+      }
+    },
+    {
       "at": "2026-03-05T10:01:38.727353",
       "id": "universe_midcap",
       "desc": "ユニバース→時価総額100〜3000億の中型株",
@@ -25,6 +46,132 @@
       "params": {}
     },
     {
+      "at": "2026-03-05T10:12:16.308649",
+      "id": "midcap_lookback70",
+      "desc": "中型株ユニバース×lookback=70日（60日と80日の中間探索）",
+      "win": false,
+      "delta_sharpe": -0.853,
+      "sharpe": 1.338,
+      "total_return_pct": 18.16,
+      "alpha_pct": -80.04,
+      "max_dd_pct": 21.51,
+      "params": {
+        "lookback": 70,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:08:40.986324",
+      "id": "midcap_lookback60",
+      "desc": "中型株ユニバース×lookback=60日で短期モメンタム強化",
+      "win": false,
+      "delta_sharpe": -0.882,
+      "sharpe": 1.309,
+      "total_return_pct": 18.44,
+      "alpha_pct": -79.76,
+      "max_dd_pct": 20.43,
+      "params": {
+        "lookback": 60,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:20:18.280674",
+      "id": "rank_product_midcap",
+      "desc": "ランク積スコア×中型株: 4ファクターの百分位ランクの幾何平均でスコア計算",
+      "win": false,
+      "delta_sharpe": -1.328,
+      "sharpe": 0.863,
+      "total_return_pct": 6.63,
+      "alpha_pct": -91.57,
+      "max_dd_pct": 10.98,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.25,
+        "smooth_w": 0.25,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:13.315815",
+      "id": "midcap_top15_momentum",
+      "desc": "universe_midcap×top_n=15で分散強化（local_search知見の組み合わせ）",
+      "win": false,
+      "delta_sharpe": -1.416,
+      "sharpe": 0.775,
+      "total_return_pct": 8.55,
+      "alpha_pct": -89.65,
+      "max_dd_pct": 21.01,
+      "params": {
+        "lookback": 80,
+        "top_n": 15,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:10:33.890339",
+      "id": "midcap_lookback100",
+      "desc": "中型株ユニバース×lookback=100日で中期モメンタム強化",
+      "win": false,
+      "delta_sharpe": -1.455,
+      "sharpe": 0.736,
+      "total_return_pct": 8.46,
+      "alpha_pct": -89.74,
+      "max_dd_pct": 21.47,
+      "params": {
+        "lookback": 100,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:14:32.965631",
+      "id": "midcap_equal_weight",
+      "desc": "中型株ユニバース×4シグナル等重み（0.25×4）",
+      "win": false,
+      "delta_sharpe": -1.468,
+      "sharpe": 0.723,
+      "total_return_pct": 8.09,
+      "alpha_pct": -90.11,
+      "max_dd_pct": 21.41,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.25,
+        "smooth_w": 0.25,
+        "resilience_w": 0.0
+      }
+    },
+    {
       "at": "2026-03-05T10:01:38.727378",
       "id": "regime_adaptive_weights",
       "desc": "レジーム連動型重み（強気/弱気/高ボラで自動切替）",
@@ -34,35 +181,32 @@
       "total_return_pct": 21.52,
       "alpha_pct": -76.68,
       "max_dd_pct": 20.8,
-      "params": {}
-    },
-    {
-      "at": "2026-03-05T10:01:38.727384",
-      "id": "regime_cash_buffer",
-      "desc": "レジーム連動型: non-bull時にキャッシュバッファ30%（top_n=7に削減）",
-      "win": false,
-      "delta_sharpe": -1.524,
-      "sharpe": 0.667,
-      "total_return_pct": 21.52,
-      "alpha_pct": -76.68,
-      "max_dd_pct": 20.8,
-      "params": {}
-    },
-    {
-      "at": "2026-03-05T10:01:38.727364",
-      "id": "resilience_upgrade",
-      "desc": "下落日相対強度を主要ファクターに昇格(w=0.3)",
-      "win": false,
-      "delta_sharpe": -1.764,
-      "sharpe": 0.427,
-      "total_return_pct": 4.09,
-      "alpha_pct": -94.11,
-      "max_dd_pct": 27.05,
       "params": {}
     }
   ],
   "all": [
     {
+      "at": "2026-03-05T10:20:22.952476",
+      "id": "high52_midcap",
+      "desc": "52週高値proximity因子×中型株: 年初来高値への近さをモメンタムシグナルとして追加",
+      "win": true,
+      "delta_sharpe": 0.106,
+      "sharpe": 2.297,
+      "total_return_pct": 38.5,
+      "alpha_pct": -59.69,
+      "max_dd_pct": 16.23,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0
+      }
+    },
+    {
       "at": "2026-03-05T10:01:38.727353",
       "id": "universe_midcap",
       "desc": "ユニバース→時価総額100〜3000億の中型株",
@@ -85,6 +229,132 @@
       "alpha_pct": -66.48,
       "max_dd_pct": 21.53,
       "params": {}
+    },
+    {
+      "at": "2026-03-05T10:12:16.308649",
+      "id": "midcap_lookback70",
+      "desc": "中型株ユニバース×lookback=70日（60日と80日の中間探索）",
+      "win": false,
+      "delta_sharpe": -0.853,
+      "sharpe": 1.338,
+      "total_return_pct": 18.16,
+      "alpha_pct": -80.04,
+      "max_dd_pct": 21.51,
+      "params": {
+        "lookback": 70,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:08:40.986324",
+      "id": "midcap_lookback60",
+      "desc": "中型株ユニバース×lookback=60日で短期モメンタム強化",
+      "win": false,
+      "delta_sharpe": -0.882,
+      "sharpe": 1.309,
+      "total_return_pct": 18.44,
+      "alpha_pct": -79.76,
+      "max_dd_pct": 20.43,
+      "params": {
+        "lookback": 60,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:20:18.280674",
+      "id": "rank_product_midcap",
+      "desc": "ランク積スコア×中型株: 4ファクターの百分位ランクの幾何平均でスコア計算",
+      "win": false,
+      "delta_sharpe": -1.328,
+      "sharpe": 0.863,
+      "total_return_pct": 6.63,
+      "alpha_pct": -91.57,
+      "max_dd_pct": 10.98,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.25,
+        "smooth_w": 0.25,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:13.315815",
+      "id": "midcap_top15_momentum",
+      "desc": "universe_midcap×top_n=15で分散強化（local_search知見の組み合わせ）",
+      "win": false,
+      "delta_sharpe": -1.416,
+      "sharpe": 0.775,
+      "total_return_pct": 8.55,
+      "alpha_pct": -89.65,
+      "max_dd_pct": 21.01,
+      "params": {
+        "lookback": 80,
+        "top_n": 15,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:10:33.890339",
+      "id": "midcap_lookback100",
+      "desc": "中型株ユニバース×lookback=100日で中期モメンタム強化",
+      "win": false,
+      "delta_sharpe": -1.455,
+      "sharpe": 0.736,
+      "total_return_pct": 8.46,
+      "alpha_pct": -89.74,
+      "max_dd_pct": 21.47,
+      "params": {
+        "lookback": 100,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:14:32.965631",
+      "id": "midcap_equal_weight",
+      "desc": "中型株ユニバース×4シグナル等重み（0.25×4）",
+      "win": false,
+      "delta_sharpe": -1.468,
+      "sharpe": 0.723,
+      "total_return_pct": 8.09,
+      "alpha_pct": -90.11,
+      "max_dd_pct": 21.41,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.25,
+        "smooth_w": 0.25,
+        "resilience_w": 0.0
+      }
     },
     {
       "at": "2026-03-05T10:01:38.727378",
@@ -111,6 +381,237 @@
       "params": {}
     },
     {
+      "at": "2026-03-05T10:08:43.268947",
+      "id": "midcap_ret_dominant",
+      "desc": "中型株ユニバース×絶対リターン重視スコア（ret_w=0.4に増加）",
+      "win": false,
+      "delta_sharpe": -1.606,
+      "sharpe": 0.585,
+      "total_return_pct": 6.5,
+      "alpha_pct": -91.7,
+      "max_dd_pct": 23.87,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.4,
+        "rs_w": 0.25,
+        "green_w": 0.2,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:20:27.405712",
+      "id": "open_universe_rs_dynamic",
+      "desc": "完全オープンユニバース: 時価総額フィルター廃止×RS上位30%動的絞り込みでtop10選択",
+      "win": false,
+      "delta_sharpe": -1.712,
+      "sharpe": 0.585,
+      "total_return_pct": 6.5,
+      "alpha_pct": -91.7,
+      "max_dd_pct": 23.87,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.35,
+        "green_w": 0.2,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:15.646974",
+      "id": "green_smooth_synergy",
+      "desc": "green_candle × smooth_trend 合成スコアで銘柄純度向上",
+      "win": false,
+      "delta_sharpe": -1.637,
+      "sharpe": 0.554,
+      "total_return_pct": 5.99,
+      "alpha_pct": -92.21,
+      "max_dd_pct": 23.07,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.1,
+        "smooth_w": 0.1,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:20.373423",
+      "id": "midcap_volume_stable",
+      "desc": "中型株×出来高安定フィルター: 週次出来高CV低位銘柄を優遇",
+      "win": false,
+      "delta_sharpe": -1.638,
+      "sharpe": 0.553,
+      "total_return_pct": 5.96,
+      "alpha_pct": -92.24,
+      "max_dd_pct": 24.2,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:20.293452",
+      "id": "ret_rs_dual_rank",
+      "desc": "ret×rs 2段フィルタ: RS上位40%絞り込み後にretスコアでtop_n選択",
+      "win": false,
+      "delta_sharpe": -1.666,
+      "sharpe": 0.525,
+      "total_return_pct": 5.52,
+      "alpha_pct": -92.68,
+      "max_dd_pct": 23.98,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.35,
+        "rs_w": 0.35,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:57.210618",
+      "id": "ret_rs_dual_rank",
+      "desc": "ret×rs 2段フィルタ: RS上位40%絞り込み後にretスコアでtop_n選択",
+      "win": false,
+      "delta_sharpe": -1.666,
+      "sharpe": 0.525,
+      "total_return_pct": 5.52,
+      "alpha_pct": -92.68,
+      "max_dd_pct": 23.98,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.35,
+        "rs_w": 0.35,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:22:18.251481",
+      "id": "vol_adj_momentum",
+      "desc": "ボラティリティ調整済みモメンタム: リターン÷ATRで計算したリスク調整後シグナルをメイン指標に",
+      "win": false,
+      "delta_sharpe": -1.803,
+      "sharpe": 0.494,
+      "total_return_pct": 4.68,
+      "alpha_pct": -93.52,
+      "max_dd_pct": 20.63,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.0,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:18:23.704519",
+      "id": "biweekly_midcap",
+      "desc": "中型株ユニバース×2週間リバランス: 取引コスト削減と中期モメンタム活用",
+      "win": false,
+      "delta_sharpe": -1.732,
+      "sharpe": 0.459,
+      "total_return_pct": 1.83,
+      "alpha_pct": -96.37,
+      "max_dd_pct": 13.83,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "biweekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:20:20.446687",
+      "id": "biweekly_midcap",
+      "desc": "中型株ユニバース×2週間リバランス: 取引コスト削減と中期モメンタム活用",
+      "win": false,
+      "delta_sharpe": -1.732,
+      "sharpe": 0.459,
+      "total_return_pct": 1.83,
+      "alpha_pct": -96.37,
+      "max_dd_pct": 13.83,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "biweekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:22:13.772167",
+      "id": "high52_broad_universe",
+      "desc": "high52シグナル × 時価総額フィルター廃止: 52週高値75%以上をユニバース条件に（大型株もキャプチャ）",
+      "win": false,
+      "delta_sharpe": -1.865,
+      "sharpe": 0.432,
+      "total_return_pct": 4.02,
+      "alpha_pct": -94.18,
+      "max_dd_pct": 23.78,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:22:15.990335",
+      "id": "dual_momentum_confirm",
+      "desc": "短期×中期モメンタム方向一致フィルター: 20日と80日の両方で正リターンの銘柄のみを対象",
+      "win": false,
+      "delta_sharpe": -1.865,
+      "sharpe": 0.432,
+      "total_return_pct": 4.02,
+      "alpha_pct": -94.18,
+      "max_dd_pct": 23.78,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0
+      }
+    },
+    {
       "at": "2026-03-05T10:01:38.727364",
       "id": "resilience_upgrade",
       "desc": "下落日相対強度を主要ファクターに昇格(w=0.3)",
@@ -121,7 +622,574 @@
       "alpha_pct": -94.11,
       "max_dd_pct": 27.05,
       "params": {}
+    },
+    {
+      "at": "2026-03-05T10:03:06.359703",
+      "id": "short_squeeze_momentum",
+      "desc": "信用倍率低位（空売り過多）×価格モメンタム強のショートスクイーズ狙い",
+      "win": false,
+      "delta_sharpe": -1.766,
+      "sharpe": 0.425,
+      "total_return_pct": 3.88,
+      "alpha_pct": -94.32,
+      "max_dd_pct": 23.75,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:15.491004",
+      "id": "momentum_acceleration",
+      "desc": "モメンタム加速度ファクター追加（後半40日 > 前半40日で加点）",
+      "win": false,
+      "delta_sharpe": -1.766,
+      "sharpe": 0.425,
+      "total_return_pct": 3.88,
+      "alpha_pct": -94.32,
+      "max_dd_pct": 23.75,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:52.592033",
+      "id": "momentum_acceleration",
+      "desc": "モメンタム加速度ファクター追加（後半40日 > 前半40日で加点）",
+      "win": false,
+      "delta_sharpe": -1.766,
+      "sharpe": 0.425,
+      "total_return_pct": 3.88,
+      "alpha_pct": -94.32,
+      "max_dd_pct": 23.75,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:08.435276",
+      "id": "smart_money_flow",
+      "desc": "機関投資家買い越し×個人売り越し銘柄フィルター（investor_types活用）",
+      "win": false,
+      "delta_sharpe": -1.77,
+      "sharpe": 0.421,
+      "total_return_pct": 3.85,
+      "alpha_pct": -94.35,
+      "max_dd_pct": 23.98,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:45.627439",
+      "id": "smart_money_flow",
+      "desc": "機関投資家買い越し×個人売り越し銘柄フィルター（investor_types活用）",
+      "win": false,
+      "delta_sharpe": -1.77,
+      "sharpe": 0.421,
+      "total_return_pct": 3.85,
+      "alpha_pct": -94.35,
+      "max_dd_pct": 23.98,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:12:20.809366",
+      "id": "midcap_green_dominant",
+      "desc": "中型株ユニバース×陽線比率重視スコア（green_w=0.35に増加）",
+      "win": false,
+      "delta_sharpe": -1.815,
+      "sharpe": 0.376,
+      "total_return_pct": 3.13,
+      "alpha_pct": -95.07,
+      "max_dd_pct": 23.51,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.35,
+        "smooth_w": 0.05,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:20:25.262869",
+      "id": "rs_accel_primary",
+      "desc": "RS加速度を主力ファクター(w=0.35)に昇格: 前半40日→後半40日でRS改善幅をメインシグナル化",
+      "win": false,
+      "delta_sharpe": -1.992,
+      "sharpe": 0.305,
+      "total_return_pct": 2.04,
+      "alpha_pct": -96.16,
+      "max_dd_pct": 23.92,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.2,
+        "green_w": 0.1,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:10:36.113102",
+      "id": "midcap_top7_concentrated",
+      "desc": "中型株ユニバース×top_n=7で高集中ポートフォリオ",
+      "win": false,
+      "delta_sharpe": -1.925,
+      "sharpe": 0.266,
+      "total_return_pct": 1.34,
+      "alpha_pct": -96.86,
+      "max_dd_pct": 25.64,
+      "params": {
+        "lookback": 80,
+        "top_n": 7,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:06.125770",
+      "id": "sector_neutral_momentum",
+      "desc": "セクター中立モメンタム：同セクター内相対強度でランキング",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:08.653140",
+      "id": "trend_filter_regime",
+      "desc": "日経225の200MA上/下でポジションサイズを切り替え",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:10.750697",
+      "id": "volume_price_divergence",
+      "desc": "価格上昇＋出来高急減の銘柄をフィルタ除外",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:10.958423",
+      "id": "adaptive_lookback",
+      "desc": "ATRに応じてルックバック期間を動的調整",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:13.130985",
+      "id": "short_term_reversal_filter",
+      "desc": "直近5日急騰銘柄をフィルタ除外（短期リバーサル回避）",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:17.849408",
+      "id": "regime_bear_defense",
+      "desc": "レジーム連動型: bull時フルポジ×non-bull時top_n半減+smooth重視",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:17.983810",
+      "id": "lookback_ensemble",
+      "desc": "lookback 60日・80日のスコアをアンサンブル平均してランキング",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:43.314893",
+      "id": "sector_neutral_momentum",
+      "desc": "セクター中立モメンタム：同セクター内相対強度でランキング",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:47.924703",
+      "id": "volume_price_divergence",
+      "desc": "価格上昇＋出来高急減の銘柄をフィルタ除外",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:50.275276",
+      "id": "short_term_reversal_filter",
+      "desc": "直近5日急騰銘柄をフィルタ除外（短期リバーサル回避）",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:03:54.890696",
+      "id": "regime_bear_defense",
+      "desc": "レジーム連動型: bull時フルポジ×non-bull時top_n半減+smooth重視",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:06:36.886603",
+      "id": "regime_extreme_bear_cash",
+      "desc": "レジーム連動型: 極端弱気局面（日経200MA下+直近4週-5%超）のみ全キャッシュ退避",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:10:38.348604",
+      "id": "midcap_regime_bull_concentrate",
+      "desc": "レジーム連動型: 強気確認時top_n=7集中×通常時top_n=10（攻め特化型）",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:12:18.555936",
+      "id": "midcap_rs_dominant",
+      "desc": "中型株ユニバース×相対強度重視スコア（rs_w=0.4に増加）",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.4,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:14:35.224356",
+      "id": "midcap_upper_expand",
+      "desc": "中型株ユニバース上限拡大：時価総額100〜5000億",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:14:37.511947",
+      "id": "midcap_lower_raise",
+      "desc": "中型株ユニバース下限引き上げ：時価総額300〜3000億",
+      "win": false,
+      "delta_sharpe": -1.928,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:20:25.090516",
+      "id": "vol_surge_breakout_universe",
+      "desc": "動的ユニバース: 出来高急増×価格ブレイクアウト銘柄を動的選択（時価総額フィルター廃止）",
+      "win": false,
+      "delta_sharpe": -2.034,
+      "sharpe": 0.263,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "max_dd_pct": 23.65,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:06:39.144473",
+      "id": "pure_momentum_concentration",
+      "desc": "ret×rs集中型: モメンタム2シグナルに0.9集中、green/smooth最小化",
+      "win": false,
+      "delta_sharpe": -1.971,
+      "sharpe": 0.22,
+      "total_return_pct": 0.68,
+      "alpha_pct": -97.52,
+      "max_dd_pct": 23.9,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.45,
+        "rs_w": 0.45,
+        "green_w": 0.05,
+        "smooth_w": 0.05,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T10:06:34.634365",
+      "id": "midcap_sweet_spot",
+      "desc": "時価総額200〜1500億の甘いスポットユニバース × top_n=8で集中",
+      "win": false,
+      "delta_sharpe": -2.036,
+      "sharpe": 0.155,
+      "total_return_pct": -0.38,
+      "alpha_pct": -98.58,
+      "max_dd_pct": 24.72,
+      "params": {
+        "lookback": 80,
+        "top_n": 8,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
     }
   ],
-  "total": 20
+  "total": 50
 }

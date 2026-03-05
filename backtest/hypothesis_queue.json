@@ -18,8 +18,8 @@
     "date": "2026-03-05",
     "hypothesis": "high52_midcap"
   },
-  "running": false,
-  "current_hypothesis": null,
+  "running": true,
+  "current_hypothesis": "high52_w_boost",
   "last_result": {
     "id": "vol_adj_momentum",
     "result": {
@@ -1656,7 +1656,7 @@
         "high52_w": 0.3,
         "rebalance": "weekly"
       },
-      "status": "pending"
+      "status": "running"
     },
     {
       "id": "high52_accel_combo",

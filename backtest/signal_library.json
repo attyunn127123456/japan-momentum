@@ -109,6 +109,336 @@
       "best_weight": null,
       "sharpe_contribution": null,
       "added_at": "2026-03-05"
+    },
+    {
+      "id": "new_high_breakout",
+      "desc": "過去60日高値更新をエントリー条件に追加",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": null,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "sector_neutral_momentum",
+      "desc": "セクター中立モメンタム：同セクター内相対強度でランキング",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.928,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "short_squeeze_momentum",
+      "desc": "信用倍率低位（空売り過多）×価格モメンタム強のショートスクイーズ狙い",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.766,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "smart_money_flow",
+      "desc": "機関投資家買い越し×個人売り越し銘柄フィルター（investor_types活用）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.77,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "trend_filter_regime",
+      "desc": "日経225の200MA上/下でポジションサイズを切り替え",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.928,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "volume_price_divergence",
+      "desc": "価格上昇＋出来高急減の銘柄をフィルタ除外",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.928,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "adaptive_lookback",
+      "desc": "ATRに応じてルックバック期間を動的調整",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.928,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "short_term_reversal_filter",
+      "desc": "直近5日急騰銘柄をフィルタ除外（短期リバーサル回避）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.928,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "midcap_top15_momentum",
+      "desc": "universe_midcap×top_n=15で分散強化（local_search知見の組み合わせ）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.416,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "momentum_acceleration",
+      "desc": "モメンタム加速度ファクター追加（後半40日 > 前半40日で加点）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.766,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "midcap_sweet_spot",
+      "desc": "時価総額200〜1500億の甘いスポットユニバース × top_n=8で集中",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -2.036,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "regime_extreme_bear_cash",
+      "desc": "レジーム連動型: 極端弱気局面（日経200MA下+直近4週-5%超）のみ全キャッシュ退避",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.928,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "pure_momentum_concentration",
+      "desc": "ret×rs集中型: モメンタム2シグナルに0.9集中、green/smooth最小化",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.971,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "midcap_lookback60",
+      "desc": "中型株ユニバース×lookback=60日で短期モメンタム強化",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -0.882,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "midcap_ret_dominant",
+      "desc": "中型株ユニバース×絶対リターン重視スコア（ret_w=0.4に増加）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.606,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "midcap_lookback100",
+      "desc": "中型株ユニバース×lookback=100日で中期モメンタム強化",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.455,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "midcap_top7_concentrated",
+      "desc": "中型株ユニバース×top_n=7で高集中ポートフォリオ",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.925,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "midcap_regime_bull_concentrate",
+      "desc": "レジーム連動型: 強気確認時top_n=7集中×通常時top_n=10（攻め特化型）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.928,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "midcap_lookback70",
+      "desc": "中型株ユニバース×lookback=70日（60日と80日の中間探索）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -0.853,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "midcap_rs_dominant",
+      "desc": "中型株ユニバース×相対強度重視スコア（rs_w=0.4に増加）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.928,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "midcap_green_dominant",
+      "desc": "中型株ユニバース×陽線比率重視スコア（green_w=0.35に増加）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.815,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "midcap_equal_weight",
+      "desc": "中型株ユニバース×4シグナル等重み（0.25×4）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.468,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "midcap_upper_expand",
+      "desc": "中型株ユニバース上限拡大：時価総額100〜5000億",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.928,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "midcap_lower_raise",
+      "desc": "中型株ユニバース下限引き上げ：時価総額300〜3000億",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.928,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "rank_product_midcap",
+      "desc": "ランク積スコア×中型株: 4ファクターの百分位ランクの幾何平均でスコア計算",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": null,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "biweekly_midcap",
+      "desc": "中型株ユニバース×2週間リバランス: 取引コスト削減と中期モメンタム活用",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.732,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "high52_midcap",
+      "desc": "52週高値proximity因子×中型株: 年初来高値への近さをモメンタムシグナルとして追加",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "active",
+      "best_weight": null,
+      "sharpe_contribution": 0.106,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "vol_surge_breakout_universe",
+      "desc": "動的ユニバース: 出来高急増×価格ブレイクアウト銘柄を動的選択（時価総額フィルター廃止）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -2.034,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "rs_accel_primary",
+      "desc": "RS加速度を主力ファクター(w=0.35)に昇格: 前半40日→後半40日でRS改善幅をメインシグナル化",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.992,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "open_universe_rs_dynamic",
+      "desc": "完全オープンユニバース: 時価総額フィルター廃止×RS上位30%動的絞り込みでtop10選択",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.712,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "high52_broad_universe",
+      "desc": "high52シグナル × 時価総額フィルター廃止: 52週高値75%以上をユニバース条件に（大型株もキャプチャ）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.865,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "dual_momentum_confirm",
+      "desc": "短期×中期モメンタム方向一致フィルター: 20日と80日の両方で正リターンの銘柄のみを対象",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.865,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "vol_adj_momentum",
+      "desc": "ボラティリティ調整済みモメンタム: リターン÷ATRで計算したリスク調整後シグナルをメイン指標に",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.803,
+      "added_at": "2026-03-05"
     }
   ],
   "current_weights": {

@@ -128,7 +128,7 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
             "n_trades": len(returns)}
 
 
-def run_grid(start="2023-01-01", end="2026-03-05", n_codes=200):
+def run_grid(start="2023-01-01", end="2026-03-05", n_codes=2000):
     t0 = time.time()
     print(f"データ読み込み ({n_codes}銘柄)...", flush=True)
     codes = get_top_liquid_tickers(n_codes)
