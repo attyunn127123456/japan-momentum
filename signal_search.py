@@ -399,7 +399,7 @@ def run_regime_optimization(prices_dict, nikkei, rebal_dates, return_df):
     out = {**best_by_regime,
            "updated_at": _dt.now().strftime("%Y-%m-%d")}
     out_path = Path("backtest/regime_weights.json")
-    out_path.write_text(__import__("json").dumps(out, ensure_ascii=False, indent=2))
+    out_path.write_text(json.dumps(_fb(out), ensure_ascii=False, indent=2))
     print(f"  regime_weights.json 保存完了: {out_path}", flush=True)
     return best_by_regime
 
