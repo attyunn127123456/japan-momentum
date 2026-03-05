@@ -20,11 +20,11 @@
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "adaptive_lookback",
+    "id": "momentum_acceleration",
     "result": null,
     "delta_sharpe": null,
     "win": false,
-    "at": "2026-03-05T09:44:41.068403"
+    "at": "2026-03-05T09:46:49.198327"
   },
   "queue": [
     {
@@ -213,7 +213,10 @@
         "short_reversal_days": 5,
         "short_reversal_pct": 0.25
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": null,
+      "delta_sharpe": null,
+      "elapsed_sec": 0.0
     },
     {
       "id": "midcap_top15_momentum",
@@ -229,7 +232,10 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": null,
+      "delta_sharpe": null,
+      "elapsed_sec": 0.0
     },
     {
       "id": "momentum_acceleration",
@@ -247,7 +253,10 @@
         "momentum_accel_w": 0.05,
         "accel_half_period": 40
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": null,
+      "delta_sharpe": null,
+      "elapsed_sec": 0.0
     }
   ],
   "tested_factors": [

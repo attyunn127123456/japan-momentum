@@ -295,3 +295,40 @@ AttributeError: 'dict' object has no attribute 'append'
 エラー: 'dict' object has no attribute 'append'
 全仮説消化。即opusに新仮説生成を依頼します。
 openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: trend_filter_regime - 日経225の200MA上/下でポジションサイズを切り替え
+完了: trend_filter_regime | delta_sharpe=None | ❌ LOSE | 0秒
+次の仮説を自動起動: volume_price_divergence
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: volume_price_divergence - 価格上昇＋出来高急減の銘柄をフィルタ除外
+完了: volume_price_divergence | delta_sharpe=None | ❌ LOSE | 0秒
+次の仮説を自動起動: adaptive_lookback
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: adaptive_lookback - ATRに応じてルックバック期間を動的調整
+完了: adaptive_lookback | delta_sharpe=None | ❌ LOSE | 0秒
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: short_term_reversal_filter - 直近5日急騰銘柄をフィルタ除外（短期リバーサル回避）
+完了: short_term_reversal_filter | delta_sharpe=None | ❌ LOSE | 0秒
+次の仮説を自動起動: midcap_top15_momentum
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: midcap_top15_momentum - universe_midcap×top_n=15で分散強化（local_search知見の組み合わせ）
+完了: midcap_top15_momentum | delta_sharpe=None | ❌ LOSE | 0秒
+次の仮説を自動起動: momentum_acceleration
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: momentum_acceleration - モメンタム加速度ファクター追加（後半40日 > 前半40日で加点）
+完了: momentum_acceleration | delta_sharpe=None | ❌ LOSE | 0秒
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了

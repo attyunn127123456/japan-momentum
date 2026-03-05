@@ -1,0 +1,53 @@
+{
+  "signals": [
+    {
+      "id": "ret_5_25d",
+      "desc": "5〜25日リターン（短期モメンタム）",
+      "type": "ohlcv",
+      "param_key": "ret_w",
+      "status": "active",
+      "best_weight": 0.3,
+      "sharpe_contribution": null,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "relative_strength",
+      "desc": "相対強度（日経比）",
+      "type": "ohlcv",
+      "param_key": "rs_w",
+      "status": "active",
+      "best_weight": 0.3,
+      "sharpe_contribution": null,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "green_candle",
+      "desc": "陽線比率",
+      "type": "ohlcv",
+      "param_key": "green_w",
+      "status": "active",
+      "best_weight": 0.2,
+      "sharpe_contribution": null,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "smooth_trend",
+      "desc": "トレンド滑らかさ（価格軌跡の平滑度）",
+      "type": "ohlcv",
+      "param_key": "smooth_w",
+      "status": "active",
+      "best_weight": 0.2,
+      "sharpe_contribution": null,
+      "added_at": "2026-03-05"
+    }
+  ],
+  "current_weights": {
+    "ret_w": 0.3,
+    "rs_w": 0.3,
+    "green_w": 0.2,
+    "smooth_w": 0.2,
+    "resilience_w": 0.0
+  },
+  "baseline_sharpe": 2.191,
+  "last_updated": "2026-03-05"
+}

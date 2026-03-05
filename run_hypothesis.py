@@ -146,6 +146,50 @@ def append_evolution_log(hid, desc, result, win, delta):
     log_file.write_text(json.dumps({"best10": valid[:10], "all": valid[:200], "total": len(log)}, ensure_ascii=False, indent=2))
 
 
+SIGNAL_LIBRARY_FILE = Path("backtest/signal_library.json")
+
+
+def update_signal_library(hid, desc, result, win, delta):
+    """採用/棄却に関わらずシグナルをsignal_libraryに記録"""
+    if not SIGNAL_LIBRARY_FILE.exists():
+        return
+    lib = json.loads(SIGNAL_LIBRARY_FILE.read_text())
+    existing_ids = {s["id"] for s in lib["signals"]}
+    if hid in existing_ids:
+        # 既存エントリを更新
+        for sig in lib["signals"]:
+            if sig["id"] == hid:
+                if win:
+                    sig["status"] = "active"
+                    if result and delta:
+                        sig["sharpe_contribution"] = round(delta, 4)
+                else:
+                    sig["status"] = "candidate"  # 単体効果ゼロでも相性候補として保持
+        SIGNAL_LIBRARY_FILE.write_text(json.dumps(lib, ensure_ascii=False, indent=2))
+        return
+    # 新規追加
+    from datetime import datetime as _dt
+    new_sig = {
+        "id": hid,
+        "desc": desc,
+        "type": "hypothesis",
+        "param_key": None,
+        "status": "active" if win else "candidate",
+        "best_weight": None,
+        "sharpe_contribution": round(delta, 4) if delta else None,
+        "added_at": _dt.now().strftime("%Y-%m-%d"),
+    }
+    if win and result:
+        # 現在の重みを current_weights に反映
+        weights = {k: result[k] for k in result if "_w" in k}
+        if weights:
+            lib["current_weights"].update(weights)
+            lib["baseline_sharpe"] = result.get("sharpe", lib.get("baseline_sharpe", 0))
+    lib["signals"].append(new_sig)
+    SIGNAL_LIBRARY_FILE.write_text(json.dumps(lib, ensure_ascii=False, indent=2))
+
+
+
 def main():
     queue = load_queue()
 
@@ -247,7 +291,7 @@ def main():
         elapsed = time.time() - t0
         baseline = queue["baseline"]
         delta = round((result["sharpe"] - baseline["sharpe"]), 3) if result else None
-        win = delta is not None and delta > 0.05
+        win = delta is not None and delta > 0.01
 
         next_h["status"] = "done_win" if win else "done_lose"
         next_h["result"] = result
@@ -280,6 +324,9 @@ def main():
         }, ensure_ascii=False, indent=2))
         print(f"完了: {hid} | delta_sharpe={delta} | {'✅ WIN' if win else '❌ LOSE'} | {elapsed:.0f}秒")
         append_evolution_log(hid, next_h["desc"], result, win, delta)
+
+        # signal_library.json を更新
+        update_signal_library(hid, next_h["desc"], result, win, delta)
 
     except Exception as e:
         next_h["status"] = "done_error"

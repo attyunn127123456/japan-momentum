@@ -355,6 +355,10 @@ def run_evolution():
     from combination_search import run_combination_search
     run_combination_search()
 
+    # ---- Step4b: シグナル積み上げ最適化 ----
+    from signal_search import run_signal_search
+    run_signal_search()
+
     # ---- 完了シグナル ----
     DONE_FILE.write_text(json.dumps({
         'status': 'done',

@@ -17,6 +17,11 @@
    - 例: 訓練/検証期間の分割、ベンチマーク変更、ユニバース拡大など
    - 必要なら run_hypothesis.py にコードを追加
 
+## シグナルライブラリ分析
+- `backtest/signal_library.json` を読んで、どのシグナルの組み合わせが有望かを考察すること
+- 各シグナルの `sharpe_contribution` と `status` を確認し、active/candidate/rejectedの状態を参考にする
+- 複数シグナルの相乗効果（synergy）を意識した新仮説を提案すること
+
 ## 組み合わせ評価
 - `backtest/combination_log.json` も読むこと
 - 「組み合わせで効いたパターンから、共通する市場メカニズムを抽出」すること
