@@ -191,7 +191,7 @@ function filterSig(f,btn){
   else if(curFilter==='WATCH')rows=rows.filter(r=>r.verdict==='WATCH');
   else if(curFilter==='NEW')rows=rows.filter(r=>r.rank_today<=20&&r.rank_yesterday>20);
   else if(curFilter==='TOP20')rows=rows.filter(r=>r.rank_today<=20);
-  if(q)rows=rows.filter(r=>r.code.includes(q)||(r.sector||'').includes(q));
+  if(q)rows=rows.filter(r=>r.code.includes(q)||(r.sector||'').includes(q)||(r.name||'').includes(q));
   renderSig(rows);
 }
 function renderSig(rows){

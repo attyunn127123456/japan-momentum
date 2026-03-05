@@ -55,7 +55,10 @@ app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), na
 
 @app.get("/")
 def index():
-    return FileResponse(Path(__file__).parent / "static/index.html")
+    from fastapi.responses import FileResponse as FR
+    r = FR(Path(__file__).parent / "static/index.html")
+    r.headers["Cache-Control"] = "no-store"
+    return r
 
 if __name__ == "__main__":
     import uvicorn
