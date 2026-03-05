@@ -351,6 +351,10 @@ def run_evolution():
         QUEUE_FILE.write_text(json.dumps(queue, ensure_ascii=False, indent=2))
         time.sleep(1)
     
+    # ---- Step4: 組み合わせテスト ----
+    from combination_search import run_combination_search
+    run_combination_search()
+
     # ---- 完了シグナル ----
     DONE_FILE.write_text(json.dumps({
         'status': 'done',
