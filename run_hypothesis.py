@@ -155,7 +155,7 @@ def append_evolution_log(hid, desc, result, win, delta):
     # シャープ順でソートしてtop50を保持
     valid = [x for x in log if x["sharpe"] is not None]
     valid.sort(key=lambda x: x["sharpe"], reverse=True)
-    log_file.write_text(json.dumps(_fb({"best10": valid[:10]), "all": valid[:200], "total": len(log)}, ensure_ascii=False, indent=2))
+    log_file.write_text(json.dumps(_fb({"best10": valid[:10], "all": valid[:200], "total": len(log)}), ensure_ascii=False, indent=2))
 
 
 SIGNAL_LIBRARY_FILE = Path("backtest/signal_library.json")
@@ -239,7 +239,7 @@ def main():
     # 次の未実施仮説を取得
     next_h = next((h for h in queue["queue"] if h["status"] == "pending"), None)
     if not next_h:
-        DONE_FILE.write_text(json.dumps(_fb({"status":"all_done"),"at":datetime.now().isoformat()}, ensure_ascii=False))
+        DONE_FILE.write_text(json.dumps(_fb({"status": "all_done", "at": datetime.now().isoformat()}), ensure_ascii=False))
         print("全仮説完了")
         return
 
@@ -263,7 +263,7 @@ def main():
         save_queue(queue)
         DONE_FILE.write_text(json.dumps(_fb(
             {"status": "added_to_ga", "id": hid, "factor": factor_key,
-             "at": datetime.now()).isoformat()},
+             "at": datetime.now().isoformat()}),
             ensure_ascii=False
         ))
         print(f"完了: {hid} | status=added_to_ga | factor={factor_key}")
@@ -570,8 +570,8 @@ def main():
         DONE_FILE.write_text(json.dumps(_fb({
             "status": "done", "id": hid, "win": win,
             "delta_sharpe": delta, "result": result,
-            "at": datetime.now()).isoformat()
-        }, ensure_ascii=False, indent=2))
+            "at": datetime.now().isoformat()
+        }), ensure_ascii=False, indent=2))
         print(f"完了: {hid} | delta_sharpe={delta} | {'✅ WIN' if win else '❌ LOSE'} | {elapsed:.0f}秒")
         append_evolution_log(hid, next_h["desc"], result, win, delta)
 
@@ -583,7 +583,7 @@ def main():
         queue["running"] = False
         queue["current_hypothesis"] = None
         save_queue(queue)
-        DONE_FILE.write_text(json.dumps(_fb({"status":"error"),"id":hid,"error":str(e)}, ensure_ascii=False))
+        DONE_FILE.write_text(json.dumps(_fb({"status": "error", "id": hid, "error": str(e)}), ensure_ascii=False))
         print(f"エラー: {e}")
         traceback.print_exc()
 

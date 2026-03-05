@@ -362,7 +362,7 @@ def run_evolution():
                 'date': datetime.now().strftime('%Y-%m-%d'),
                 'hypothesis': 'local_search',
             }
-            QUEUE_FILE.write_text(json.dumps(_fb(sanitize(queue)), ensure_ascii=False, indent=2))
+            QUEUE_FILE.write_text(json.dumps(_fb(queue), ensure_ascii=False, indent=2))
             baseline = queue['baseline']
 
         # GA local_search 完了後にファクター整理を実行（best result のパラメータで）
@@ -416,7 +416,7 @@ def run_evolution():
             queue['baseline'] = {**baseline, 'date': datetime.now().strftime('%Y-%m-%d'), 'hypothesis': f'factor_{factor_name}'}
             print(f'  → ベースライン更新: sharpe={r_train["sharpe"]}', flush=True)
         
-        QUEUE_FILE.write_text(json.dumps(_fb(sanitize(queue)), ensure_ascii=False, indent=2))
+        QUEUE_FILE.write_text(json.dumps(_fb(queue), ensure_ascii=False, indent=2))
         time.sleep(1)
     
     # ---- Step4: 組み合わせテスト ----
@@ -502,4 +502,4 @@ if __name__ == '__main__':
     except Exception as e:
         print(f'エラー: {e}')
         traceback.print_exc()
-        DONE_FILE.write_text(json.dumps(_fb({'status':'error'),'id':'evolution','error':str(e)}, ensure_ascii=False))
+        DONE_FILE.write_text(json.dumps(_fb({'status': 'error', 'id': 'evolution', 'error': str(e)}), ensure_ascii=False))
