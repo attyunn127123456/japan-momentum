@@ -134,6 +134,7 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
 <div id="panel-backtest" class="panel">
   <div id="bt-loading" class="empty-state">データ取得中...</div>
   <div id="bt-wrap" style="display:none">
+    <div style="text-align:right;font-size:11px;color:#8b949e;margin-bottom:8px" id="bt-last-updated"></div>
 
     <!-- ベースライン -->
     <div class="section-title">📊 現在のベースライン</div>
@@ -325,7 +326,17 @@ function sortRank(col){
 
 // BACKTEST (統合)
 let btLoaded = false;
-async function loadBacktest(){
+let btInterval = null;
+function btUpdateTimestamp(){
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  const ss = String(now.getSeconds()).padStart(2,'0');
+  const el = document.getElementById('bt-last-updated');
+  if(el) el.textContent = '🔄 最終更新: '+hh+':'+mm+':'+ss;
+}
+async function loadBacktest(silent){
+  const isFirst = !btLoaded;
   btLoaded = true;
   try {
     // 仮説キュー
@@ -341,10 +352,18 @@ async function loadBacktest(){
       const opt = await oRes.json();
       renderOptimize(opt);
     }
-    document.getElementById('bt-loading').style.display='none';
-    document.getElementById('bt-wrap').style.display='block';
+    if(isFirst){
+      document.getElementById('bt-loading').style.display='none';
+      document.getElementById('bt-wrap').style.display='block';
+    }
+    btUpdateTimestamp();
+    // 初回ロード時にポーリング開始
+    if(isFirst && !btInterval){
+      btInterval = setInterval(()=>loadBacktest(true), 30000);
+    }
   } catch(e) {
-    document.getElementById('bt-loading').textContent='⚠️ データ取得エラー: '+e.message;
+    if(isFirst) document.getElementById('bt-loading').textContent='⚠️ データ取得エラー: '+e.message;
+    console.error('loadBacktest error:', e);
   }
 }
 

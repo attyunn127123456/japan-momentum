@@ -22,6 +22,27 @@
       }
     },
     {
+      "at": "2026-03-05T09:21:04.799240",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=15",
+      "win": false,
+      "delta_sharpe": -0.1719999999999997,
+      "sharpe": 2.019,
+      "total_return_pct": 25.32,
+      "alpha_pct": -72.88,
+      "max_dd_pct": 15.06,
+      "params": {
+        "lookback": 60,
+        "top_n": 15,
+        "rebalance": "weekly",
+        "ret_w": 0.19999999999999998,
+        "rs_w": 0.3,
+        "green_w": 0.25,
+        "smooth_w": 0.25,
+        "resilience_w": 0.1
+      }
+    },
+    {
       "at": "2026-03-05T08:28:00",
       "id": "vol_candle_exit",
       "desc": "大出来高陰線でエグジットシグナル追加",
@@ -40,6 +61,138 @@
         "green_w": 0.2,
         "smooth_w": 0.2,
         "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T09:21:04.866510",
+      "id": "factor_eps_growth",
+      "desc": "新ファクター: eps_growth",
+      "win": false,
+      "delta_sharpe": -1.5019999999999998,
+      "sharpe": 0.689,
+      "total_return_pct": 7.92,
+      "alpha_pct": -90.28,
+      "max_dd_pct": 22.66,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "eps_growth_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T09:21:06.098399",
+      "id": "factor_rev_growth",
+      "desc": "新ファクター: rev_growth",
+      "win": false,
+      "delta_sharpe": -1.5019999999999998,
+      "sharpe": 0.689,
+      "total_return_pct": 7.92,
+      "alpha_pct": -90.28,
+      "max_dd_pct": 22.66,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "rev_growth_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T09:21:07.328339",
+      "id": "factor_credit_ratio",
+      "desc": "新ファクター: credit_ratio",
+      "win": false,
+      "delta_sharpe": -1.5019999999999998,
+      "sharpe": 0.689,
+      "total_return_pct": 7.92,
+      "alpha_pct": -90.28,
+      "max_dd_pct": 22.66,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "credit_ratio_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T09:21:08.557825",
+      "id": "factor_rsi14",
+      "desc": "新ファクター: rsi14",
+      "win": false,
+      "delta_sharpe": -1.5019999999999998,
+      "sharpe": 0.689,
+      "total_return_pct": 7.92,
+      "alpha_pct": -90.28,
+      "max_dd_pct": 22.66,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "rsi14_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T09:21:09.779229",
+      "id": "factor_ma_deviation",
+      "desc": "新ファクター: ma_deviation",
+      "win": false,
+      "delta_sharpe": -1.5019999999999998,
+      "sharpe": 0.689,
+      "total_return_pct": 7.92,
+      "alpha_pct": -90.28,
+      "max_dd_pct": 22.66,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "ma_deviation_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T09:21:11.010319",
+      "id": "factor_momentum_12_1",
+      "desc": "新ファクター: momentum_12_1",
+      "win": false,
+      "delta_sharpe": -1.5019999999999998,
+      "sharpe": 0.689,
+      "total_return_pct": 7.92,
+      "alpha_pct": -90.28,
+      "max_dd_pct": 22.66,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "momentum_12_1_w": 0.1
       }
     },
     {
@@ -87,6 +240,27 @@
       }
     },
     {
+      "at": "2026-03-05T09:21:04.799240",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=15",
+      "win": false,
+      "delta_sharpe": -0.1719999999999997,
+      "sharpe": 2.019,
+      "total_return_pct": 25.32,
+      "alpha_pct": -72.88,
+      "max_dd_pct": 15.06,
+      "params": {
+        "lookback": 60,
+        "top_n": 15,
+        "rebalance": "weekly",
+        "ret_w": 0.19999999999999998,
+        "rs_w": 0.3,
+        "green_w": 0.25,
+        "smooth_w": 0.25,
+        "resilience_w": 0.1
+      }
+    },
+    {
       "at": "2026-03-05T08:28:00",
       "id": "vol_candle_exit",
       "desc": "大出来高陰線でエグジットシグナル追加",
@@ -105,6 +279,138 @@
         "green_w": 0.2,
         "smooth_w": 0.2,
         "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T09:21:04.866510",
+      "id": "factor_eps_growth",
+      "desc": "新ファクター: eps_growth",
+      "win": false,
+      "delta_sharpe": -1.5019999999999998,
+      "sharpe": 0.689,
+      "total_return_pct": 7.92,
+      "alpha_pct": -90.28,
+      "max_dd_pct": 22.66,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "eps_growth_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T09:21:06.098399",
+      "id": "factor_rev_growth",
+      "desc": "新ファクター: rev_growth",
+      "win": false,
+      "delta_sharpe": -1.5019999999999998,
+      "sharpe": 0.689,
+      "total_return_pct": 7.92,
+      "alpha_pct": -90.28,
+      "max_dd_pct": 22.66,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "rev_growth_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T09:21:07.328339",
+      "id": "factor_credit_ratio",
+      "desc": "新ファクター: credit_ratio",
+      "win": false,
+      "delta_sharpe": -1.5019999999999998,
+      "sharpe": 0.689,
+      "total_return_pct": 7.92,
+      "alpha_pct": -90.28,
+      "max_dd_pct": 22.66,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "credit_ratio_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T09:21:08.557825",
+      "id": "factor_rsi14",
+      "desc": "新ファクター: rsi14",
+      "win": false,
+      "delta_sharpe": -1.5019999999999998,
+      "sharpe": 0.689,
+      "total_return_pct": 7.92,
+      "alpha_pct": -90.28,
+      "max_dd_pct": 22.66,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "rsi14_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T09:21:09.779229",
+      "id": "factor_ma_deviation",
+      "desc": "新ファクター: ma_deviation",
+      "win": false,
+      "delta_sharpe": -1.5019999999999998,
+      "sharpe": 0.689,
+      "total_return_pct": 7.92,
+      "alpha_pct": -90.28,
+      "max_dd_pct": 22.66,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "ma_deviation_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T09:21:11.010319",
+      "id": "factor_momentum_12_1",
+      "desc": "新ファクター: momentum_12_1",
+      "win": false,
+      "delta_sharpe": -1.5019999999999998,
+      "sharpe": 0.689,
+      "total_return_pct": 7.92,
+      "alpha_pct": -90.28,
+      "max_dd_pct": 22.66,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "momentum_12_1_w": 0.1
       }
     },
     {
@@ -129,5 +435,5 @@
       }
     }
   ],
-  "total": 3
+  "total": 10
 }

@@ -9,3 +9,16 @@ fins_summary 取得中...
   200/500
   250/500
   300/500
+  350/500
+  400/500
+  450/500
+  500/500
+fins_summary: 35980行保存
+margin_interest 取得中...
+margin_interest エラー: 400 Client Error: Bad Request for url: https://api.jquants.com/v2/markets/margin-interest?from=2022-01-01
+investor_types 取得中...
+investor_types: 206行保存
+short_ratio 取得中...
+short_ratio エラー: 400 Client Error: Bad Request for url: https://api.jquants.com/v2/markets/short-ratio?from=2022-01-01
+indices 取得中...
+全データ取得完了

@@ -119,5 +119,13 @@
       "delta_sharpe": -1.764,
       "elapsed_sec": 0.9
     }
+  ],
+  "tested_factors": [
+    "ma_deviation",
+    "momentum_12_1",
+    "rev_growth",
+    "eps_growth",
+    "rsi14",
+    "credit_ratio"
   ]
 }
