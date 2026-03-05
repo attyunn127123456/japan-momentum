@@ -21,7 +21,7 @@
     "date": "2026-03-05",
     "hypothesis": "local_search"
   },
-  "running": false,
+  "running": 0,
   "current_hypothesis": null,
   "last_result": {
     "id": "vol_surge_breakout_universe",
@@ -47,7 +47,7 @@
       "n_trades": 116
     },
     "delta_sharpe": -1.531,
-    "win": false,
+    "win": 0,
     "at": "2026-03-05T12:10:06.484562"
   },
   "queue": [
@@ -141,7 +141,7 @@
         "green_w": 0.2,
         "smooth_w": 0.2,
         "resilience_w": 0.0,
-        "sector_neutral": true
+        "sector_neutral": 1
       },
       "status": "done_lose",
       "result": {
@@ -153,7 +153,7 @@
         "green_w": 0.2,
         "smooth_w": 0.2,
         "resilience_w": 0.0,
-        "sector_neutral": true,
+        "sector_neutral": 1,
         "total_return_pct": 1.39,
         "alpha_pct": -96.81,
         "sharpe": 0.263,
@@ -328,7 +328,7 @@
         "green_w": 0.2,
         "smooth_w": 0.2,
         "resilience_w": 0.0,
-        "short_reversal_filter": true,
+        "short_reversal_filter": 1,
         "short_reversal_days": 5,
         "short_reversal_pct": 0.25
       },
@@ -342,7 +342,7 @@
         "green_w": 0.2,
         "smooth_w": 0.2,
         "resilience_w": 0.0,
-        "short_reversal_filter": true,
+        "short_reversal_filter": 1,
         "short_reversal_days": 5,
         "short_reversal_pct": 0.25,
         "total_return_pct": 1.39,
@@ -738,7 +738,7 @@
         "smooth_w": 0.15,
         "resilience_w": 0.0,
         "rs_prefilter_pct": 0.4,
-        "dual_rank_mode": true
+        "dual_rank_mode": 1
       },
       "status": "done_lose",
       "result": {
@@ -751,7 +751,7 @@
         "smooth_w": 0.15,
         "resilience_w": 0.0,
         "rs_prefilter_pct": 0.4,
-        "dual_rank_mode": true,
+        "dual_rank_mode": 1,
         "total_return_pct": 5.52,
         "alpha_pct": -92.68,
         "sharpe": 0.525,
@@ -1694,9 +1694,9 @@
         "smooth_w": 0.15,
         "resilience_w": 0.0,
         "high52_w": 0.2,
-        "dual_momentum_filter": true,
+        "dual_momentum_filter": 1,
         "short_lookback": 20,
-        "require_both_positive": true
+        "require_both_positive": 1
       },
       "status": "done_lose",
       "result": {
@@ -1709,9 +1709,9 @@
         "smooth_w": 0.15,
         "resilience_w": 0.0,
         "high52_w": 0.2,
-        "dual_momentum_filter": true,
+        "dual_momentum_filter": 1,
         "short_lookback": 20,
-        "require_both_positive": true,
+        "require_both_positive": 1,
         "total_return_pct": 4.02,
         "alpha_pct": -94.18,
         "sharpe": 0.432,
@@ -1927,7 +1927,7 @@
         "ret_skip_w": 0.1,
         "skip_days": 5
       },
-      "status": "pending"
+      "status": "done_win"
     },
     {
       "id": "volume_confirm_w",
@@ -1949,7 +1949,7 @@
         "vol_confirm_short": 5,
         "vol_confirm_long": 60
       },
-      "status": "pending"
+      "status": "done_win"
     },
     {
       "id": "gap_momentum_w",
@@ -1969,6 +1969,69 @@
         "cluster_boost_w": 0.1,
         "gap_momentum_w": 0.15,
         "gap_threshold": 0.005
+      },
+      "status": "done_win"
+    },
+    {
+      "id": "close_location_w",
+      "desc": "終値位置ファクター: (close-low)/(high-low)の平均で機関投資家の引け買い圧力を検出",
+      "theory": "終値がレンジの上部に集中する銘柄は、引けにかけて大口買いが入っている証拠。特にtop_n=3の極集中ポートフォリオでは、1銘柄の「買い圧力の質」が全体リターンを支配する。green_wは陽線かどうかの2値だが、close_location_wは「どれだけ強く引けたか」の連続値で、より精密に機関投資家の継続的な買い増しパターンを捉える。ルックバック期間中のclose_location_valueの平均値をランクスコア化。OHLCのみで計算可能で、既存ファクターと完全に直交した情報源。",
+      "factor_to_add": "close_location_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.23,
+        "green_w": 0.08,
+        "smooth_w": 0.0,
+        "high52_w": 0.1,
+        "short_momentum_w": 0.12,
+        "cluster_boost_w": 0.07,
+        "close_location_w": 0.1
+      },
+      "status": "pending"
+    },
+    {
+      "id": "range_expand_w",
+      "desc": "レンジ拡大ファクター: ATR(5)/ATR(40)比率でボラティリティ拡大中の銘柄（ブレイクアウト初期）を検出",
+      "theory": "ボラティリティは収縮→拡大のサイクルを繰り返す。直近5日ATRが40日ATRを上回り始めた銘柄は、レンジ相場から新しいトレンドに入った初期段階。vol_adj_momentum（ret/ATR）は既に失敗したが、あれはATRで割る＝低ボラ銘柄優遇。本ファクターは逆にATR拡大＝「今まさに動き出した」銘柄を捕捉する。top_n=3では爆発的に動く銘柄を早期に掴むことが+300%への鍵。52週高値更新+レンジ拡大の組み合わせは「出来高を伴うブレイクアウト」と並ぶ最強のエントリーシグナル。",
+      "factor_to_add": "range_expand_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.23,
+        "green_w": 0.08,
+        "smooth_w": 0.0,
+        "high52_w": 0.1,
+        "short_momentum_w": 0.12,
+        "cluster_boost_w": 0.07,
+        "range_expand_w": 0.1,
+        "atr_short": 5,
+        "atr_long": 40
+      },
+      "status": "pending"
+    },
+    {
+      "id": "win_streak_w",
+      "desc": "連騰ファクター: 直近N日間の最大連続陽線日数で「勢いが途切れていない」銘柄を検出",
+      "theory": "green_wはルックバック期間全体の陽線率だが、古い情報も含まれる。win_streakは直近20日の最大連続上昇日数に特化し、「今この瞬間の勢い」を捕捉する。連騰中の銘柄は短期的な需給不均衡（売りが枯れた状態）にあり、わずかな買いでも価格が上昇し続ける。3銘柄集中×週次リバランスでは「今週最も勢いがある銘柄」を正確に選ぶことが決定的に重要。short_momentum_w（直近5-10日リターン）は価格変化量を見るが、win_streakは連続性（途切れていない）を見る点で直交的。連騰が長い銘柄ほど翌週も上昇を続ける日本株の短期持続効果を利用。",
+      "factor_to_add": "win_streak_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.23,
+        "green_w": 0.05,
+        "smooth_w": 0.0,
+        "high52_w": 0.1,
+        "short_momentum_w": 0.12,
+        "cluster_boost_w": 0.07,
+        "win_streak_w": 0.13,
+        "streak_window": 20
       },
       "status": "pending"
     }
