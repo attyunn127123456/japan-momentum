@@ -326,7 +326,7 @@ function sortRank(col){
 
 // BACKTEST (統合)
 let btLoaded = false;
-let btInterval = null;
+
 function btUpdateTimestamp(){
   const now = new Date();
   const hh = String(now.getHours()).padStart(2,'0');
@@ -357,10 +357,7 @@ async function loadBacktest(silent){
       document.getElementById('bt-wrap').style.display='block';
     }
     btUpdateTimestamp();
-    // 初回ロード時にポーリング開始
-    if(isFirst && !btInterval){
-      btInterval = setInterval(()=>loadBacktest(true), 30000);
-    }
+    // SSEで更新するためポーリング不要
   } catch(e) {
     if(isFirst) document.getElementById('bt-loading').textContent='⚠️ データ取得エラー: '+e.message;
     console.error('loadBacktest error:', e);
@@ -471,6 +468,24 @@ async function loadHistoryDate(date){
 }
 
 loadSignals(); loadRanking(); loadHistory();
+
+// SSE: バックテストのリアルタイム更新
+(function setupSSE(){
+  let source;
+  function connect(){
+    source = new EventSource('/api/events');
+    source.onmessage = function(e){
+      if(e.data === 'update' && btLoaded){
+        loadBacktest(true);
+      }
+    };
+    source.onerror = function(){
+      source.close();
+      setTimeout(connect, 3000);
+    };
+  }
+  connect();
+})();
 </script>
 </body>
 </html>

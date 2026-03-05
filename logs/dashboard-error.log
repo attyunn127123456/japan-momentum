@@ -7607,3 +7607,67 @@ INFO:     Waiting for application shutdown.
 INFO:     Application shutdown complete.
 /Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
 /Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (73727) - No such process
+INFO:     Started server process [73746]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (73746) - No such process
+INFO:     Started server process [73770]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (73770) - No such process
+INFO:     Started server process [73775]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (73775) - No such process
+INFO:     Started server process [73780]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (73780) - No such process
+INFO:     Started server process [73785]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (73785) - No such process
+INFO:     Started server process [73791]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (73791) - No such process
+INFO:     Started server process [73796]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (73796) - No such process
+INFO:     Started server process [73802]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 10: cloudflared: command not found
+/Users/panda/Projects/japan-momentum/infra/start.sh: line 12: kill: (73802) - No such process
