@@ -522,6 +522,7 @@ def main():
 def auto_next():
     """完了後に次の未実施仮説があれば即起動、なければopusをキックして新仮説を生成させる"""
     import subprocess, sys
+    time.sleep(60)  # 1分待つ（レート制限対策）
     queue = load_queue()
     next_h = next((h for h in queue["queue"] if h["status"] == "pending"), None)
     if next_h:
