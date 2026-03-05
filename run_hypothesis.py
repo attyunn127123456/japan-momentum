@@ -287,6 +287,7 @@ def main():
 
         elif hid == "rank_product_midcap":
             # ランク積スコア×中型株ユニバース
+            # factor_dfs構造: {lb: {factor_name: DataFrame(date x code)}}
             prices_dict = run_universe_midcap(nikkei)
             print(f"中型株ユニバース(rank_product): {len(prices_dict)}銘柄")
             factor_dfs = precompute(prices_dict, nikkei, [80])
@@ -294,50 +295,50 @@ def main():
             return_df = all_prices.pct_change()
             lb, tn = 80, 10
             factors = ["ret", "rs", "green", "smooth"]
+            fac_lb = factor_dfs[lb]  # {factor_name: DataFrame(date x code)}
             dates = [d for d in rebal_dates["weekly"] if str(d.date()) >= START]
             portfolio = 1_000_000.0
             returns = []
             for i, date in enumerate(dates[:-1]):
                 next_date = dates[i+1]
-                raw = {}
-                for code in prices_dict:
-                    fac = factor_dfs.get((code, lb))
-                    if fac is None or date not in fac.index: continue
-                    row = fac.loc[date]
-                    if row.isna().all(): continue
-                    vals = {}
-                    ok = True
-                    for f in factors:
-                        if f not in row.index or np.isnan(float(row[f])):
-                            ok = False; break
-                        vals[f] = float(row[f])
-                    if ok:
-                        raw[code] = vals
-                if len(raw) < tn * 2: continue
-                code_list = list(raw.keys())
+                # 各ファクターのdate行を取得
+                fac_rows = {}
                 for f in factors:
-                    vals = np.array([raw[c][f] for c in code_list])
-                    ranks = pd.Series(vals).rank(pct=True).values
-                    for j, c in enumerate(code_list):
-                        raw[c][f + "_rank"] = float(ranks[j])
-                scores = {}
-                for c in code_list:
-                    prod = 1.0
+                    df_f = fac_lb[f]
+                    if date not in df_f.index: break
+                    fac_rows[f] = df_f.loc[date].dropna()
+                else:
+                    # 全ファクターで有効な銘柄のみ
+                    valid_codes = set(fac_rows[factors[0]].index)
+                    for f in factors[1:]:
+                        valid_codes &= set(fac_rows[f].index)
+                    valid_codes = list(valid_codes)
+                    if len(valid_codes) < tn * 2:
+                        continue
+                    # 各ファクターでパーセンタイルランク計算
+                    rank_data = {}
                     for f in factors:
-                        prod *= raw[c][f + "_rank"]
-                    scores[c] = prod ** (1.0 / len(factors))
-                top = sorted(scores, key=lambda c: scores[c], reverse=True)[:tn]
-                tot, cnt = 0.0, 0
-                if date in return_df.index and next_date in return_df.index:
-                    for code in top:
-                        if code in return_df.columns:
-                            r = return_df.at[next_date, code]
-                            if not np.isnan(r):
-                                tot += r; cnt += 1
-                if cnt > 0:
-                    r = tot / cnt
-                    portfolio *= (1 + r)
-                    returns.append(r)
+                        vals = pd.Series({c: fac_rows[f][c] for c in valid_codes})
+                        rank_data[f] = vals.rank(pct=True)
+                    # 幾何平均ランク積スコア
+                    scores = {}
+                    for c in valid_codes:
+                        prod = 1.0
+                        for f in factors:
+                            prod *= rank_data[f][c]
+                        scores[c] = prod ** (1.0 / len(factors))
+                    top = sorted(scores, key=lambda c: scores[c], reverse=True)[:tn]
+                    tot, cnt = 0.0, 0
+                    if date in return_df.index and next_date in return_df.index:
+                        for code in top:
+                            if code in return_df.columns:
+                                r = return_df.at[next_date, code]
+                                if not np.isnan(r):
+                                    tot += r; cnt += 1
+                    if cnt > 0:
+                        r = tot / cnt
+                        portfolio *= (1 + r)
+                        returns.append(r)
             if len(returns) >= 5:
                 arr = np.array(returns)
                 tr = portfolio / 1_000_000 - 1
@@ -368,40 +369,41 @@ def main():
 
         elif hid == "high52_midcap":
             # 52週高値proximity因子×中型株ユニバース
+            # factor_dfs構造: {lb: {factor_name: DataFrame(date x code)}}
             prices_dict = run_universe_midcap(nikkei)
             print(f"中型株ユニバース(high52): {len(prices_dict)}銘柄")
             factor_dfs = precompute(prices_dict, nikkei, [80])
+            # high52 factorを追加（DataFrame date x code形式）
+            high52_data = {}
             for code, df in prices_dict.items():
-                if (code, 80) not in factor_dfs: continue
                 p = df["AdjC"].astype(float)
-                high52 = p.rolling(252, min_periods=60).max()
-                proximity = (p / high52).clip(0, 1)
-                factor_dfs[(code, 80)]["high52"] = proximity
+                h52 = p.rolling(252, min_periods=60).max()
+                high52_data[code] = (p / h52).clip(0, 1)
+            factor_dfs[80]["high52"] = pd.DataFrame(high52_data).astype(float)
             all_prices = pd.DataFrame({c: prices_dict[c]["AdjC"] for c in prices_dict}).astype(float)
             return_df = all_prices.pct_change()
-            weights = {"ret": 0.25, "rs": 0.25, "green": 0.15, "smooth": 0.15, "resilience": 0.0, "high52": 0.2}
+            # カスタム重みでbuild_score_df相当の処理
+            from optimize import build_score_df
+            # high52を含む擬似weightsでスコア計算
+            weights_h52 = {"ret": 0.25, "rs": 0.25, "green": 0.15, "smooth": 0.15, "resilience": 0.0, "high52": 0.2}
             lb, tn = 80, 10
+            fac_lb = factor_dfs[lb]
             dates = [d for d in rebal_dates["weekly"] if str(d.date()) >= START]
             portfolio = 1_000_000.0
             returns = []
             for i, date in enumerate(dates[:-1]):
                 next_date = dates[i+1]
-                scores = {}
-                for code in prices_dict:
-                    fac = factor_dfs.get((code, lb))
-                    if fac is None or date not in fac.index: continue
-                    row = fac.loc[date]
-                    if row.isna().all(): continue
-                    score = 0.0
-                    for f, w in weights.items():
-                        if w == 0: continue
-                        if f in row.index:
-                            v = float(row[f])
-                            if not np.isnan(v):
-                                score += w * v
-                    scores[code] = score
-                if not scores: continue
-                top = sorted(scores, key=lambda c: scores[c], reverse=True)[:tn]
+                score_series_list = []
+                for f, w in weights_h52.items():
+                    if w == 0 or f not in fac_lb: continue
+                    df_f = fac_lb[f]
+                    if date not in df_f.index: continue
+                    score_series_list.append(df_f.loc[date].dropna() * w)
+                if not score_series_list: continue
+                score_row = pd.concat(score_series_list, axis=1).sum(axis=1)
+                score_row = score_row.dropna()
+                if len(score_row) < tn: continue
+                top = score_row.nlargest(tn).index.tolist()
                 tot, cnt = 0.0, 0
                 if date in return_df.index and next_date in return_df.index:
                     for code in top:

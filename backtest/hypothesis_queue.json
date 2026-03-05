@@ -20,28 +20,11 @@
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "midcap_lower_raise",
-    "result": {
-      "lookback": 80,
-      "top_n": 10,
-      "rebalance": "weekly",
-      "ret_w": 0.3,
-      "rs_w": 0.3,
-      "green_w": 0.2,
-      "smooth_w": 0.2,
-      "resilience_w": 0.0,
-      "market_cap_min_bn": 300,
-      "market_cap_max_bn": 3000,
-      "total_return_pct": 1.39,
-      "alpha_pct": -96.81,
-      "sharpe": 0.263,
-      "max_dd_pct": 23.65,
-      "nikkei_pct": 98.2,
-      "n_trades": 116
-    },
-    "delta_sharpe": -1.928,
+    "id": "high52_midcap",
+    "result": null,
+    "delta_sharpe": null,
     "win": false,
-    "at": "2026-03-05T10:14:37.510853"
+    "at": "2026-03-05T10:18:25.908763"
   },
   "queue": [
     {
@@ -1365,6 +1348,60 @@
         "smooth_w": 0.15,
         "resilience_w": 0.0,
         "high52_w": 0.2
+      },
+      "status": "pending"
+    },
+    {
+      "id": "vol_surge_breakout_universe",
+      "desc": "動的ユニバース: 出来高急増×価格ブレイクアウト銘柄を動的選択（時価総額フィルター廃止）",
+      "theory": "時価総額フィルターは固定的で「相場の主役交代」に対応できない。キオクシア・フジクラのような大型株が急騰する局面では、それらが100-3000億フィルターから外れているため捕捉不可能。本仮説は時価総額フィルターを廃止し、代わりに「直近10日平均出来高が60日平均の1.5倍以上かつ価格が60日高値を更新」という動的フィルターでユニバースを構築。これは機関投資家が銘柄を「発見」して本格的に買い始めたフェーズを捉える条件であり、大型・中型・小型問わず離陸直後の銘柄が動的に入ってくる。週次リバランスのたびにユニバースが最新の強者に更新される設計。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "rebalance": "weekly",
+        "universe_mode": "vol_surge_breakout",
+        "vol_surge_ratio": 1.5,
+        "vol_surge_days_short": 10,
+        "vol_surge_days_long": 60,
+        "price_breakout_days": 60
+      },
+      "status": "pending"
+    },
+    {
+      "id": "rs_accel_primary",
+      "desc": "RS加速度を主力ファクター(w=0.35)に昇格: 前半40日→後半40日でRS改善幅をメインシグナル化",
+      "theory": "過去のmomentum_accelerationはaccel_w=0.05の補助的役割（失敗）。本仮説は加速度を主力ファクターw=0.35として位置づけ直す根本的な変更。RS加速度=(後半40日の対日経RS)-(前半40日の対日経RS)を計算し、これが正かつ大きい銘柄=「今まさに機関投資家が参入しているトレンド転換点の銘柄」を主に選ぶ。lookback=80日の前半では平凡だったが後半から加速している銘柄は、情報が段階的に伝播している最中であり、まだ上昇余地が大きい。キオクシアのような大型株の「離陸フェーズ」はまさにこのRS加速が急増する局面。既存4シグナルは補助として維持するがret/rs/green/smoothを削減してaccelを主役にする。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "ret_w": 0.2,
+        "rs_w": 0.2,
+        "green_w": 0.1,
+        "smooth_w": 0.15,
+        "rebalance": "weekly",
+        "rs_accel_w": 0.35,
+        "accel_split": 40
+      },
+      "status": "pending"
+    },
+    {
+      "id": "open_universe_rs_dynamic",
+      "desc": "完全オープンユニバース: 時価総額フィルター廃止×RS上位30%動的絞り込みでtop10選択",
+      "theory": "日本株相場には「小型株が強い時期」「大型株テーマ株が支配する時期」がある。100-3000億という固定フィルターは特定時期だけに最適化されたもの。本仮説は時価総額フィルターを完全廃止し、出来高上位500銘柄から「RSが上位30%」という動的条件だけで候補を絞り込む。相場ごとに強いセクター・規模の銘柄が自然と入ってくる純粋な動的選択。RSは対日経の相対リターンなので、「今の相場でどの銘柄が市場を引っ張っているか」を直接表す最も公平な指標。universe_midcapのRS優位仮説を一般化した形。lookback=80でrs_w=0.35に微増してRSシグナルの力を少し強調。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "ret_w": 0.3,
+        "rs_w": 0.35,
+        "green_w": 0.2,
+        "smooth_w": 0.15,
+        "rebalance": "weekly",
+        "universe_mode": "open_rs_dynamic",
+        "rs_dynamic_top_pct": 0.3
       },
       "status": "pending"
     }
