@@ -492,7 +492,7 @@ def append_log(hid, desc, result, win, delta):
     all_entries = log.get('all', []) + [entry]
     valid = sorted([x for x in all_entries if x.get('sharpe') is not None],
                    key=lambda x: x['sharpe'], reverse=True)
-    EVO_LOG.write_text(json.dumps(_fb(sanitize({'best10': valid[:10]), 'all': valid[:300], 'total': len(all_entries)}),
+    EVO_LOG.write_text(json.dumps(_fb({'best10': valid[:10], 'all': valid[:300], 'total': len(all_entries)}),
                                    ensure_ascii=False, indent=2))
 
 
