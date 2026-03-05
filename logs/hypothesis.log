@@ -861,3 +861,34 @@ openclaw system event 送信完了
 openclaw system event 送信完了
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
+仮説実行: high52_w_boost - 52週高値ファクターを主力に昇格（high52_w=0.3）: ベースラインのw=0.2からさらに増強
+  ユニバース: 直近20日の売買代金でランキング中...
+    5/20日 完了
+    10/20日 完了
+    15/20日 完了
+    除外: 投資信託/ETF 499銘柄
+  ユニバース: 売買代金上位2000銘柄を選定
+事前計算完了: 472銘柄×3lb / 3.5秒
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:458: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+完了: high52_w_boost | delta_sharpe=-0.006 | ❌ LOSE | 80秒
+次の仮説を自動起動: high52_accel_combo
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: high52_accel_combo - 52週高値近接×モメンタム加速の組み合わせ: 高値更新中かつ加速している銘柄を重点選択
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 472銘柄×3lb / 3.5秒
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:458: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+完了: high52_accel_combo | delta_sharpe=-0.145 | ❌ LOSE | 4秒
+次の仮説を自動起動: high52_all_universe
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: high52_all_universe - 52週高値効果×全銘柄ユニバース（大型含む）: high52_wを主力ファクター（w=0.35）に昇格して時価総額フィルター廃止
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 472銘柄×3lb / 3.6秒
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:458: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+完了: high52_all_universe | delta_sharpe=0.233 | ✅ WIN | 4秒
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了

@@ -1,6 +1,27 @@
 {
   "best10": [
     {
+      "at": "2026-03-05T10:25:13.649053",
+      "id": "high52_all_universe",
+      "desc": "52週高値効果×全銘柄ユニバース（大型含む）: high52_wを主力ファクター（w=0.35）に昇格して時価総額フィルター廃止",
+      "win": true,
+      "delta_sharpe": 0.233,
+      "sharpe": 2.53,
+      "total_return_pct": 50.26,
+      "alpha_pct": -47.94,
+      "max_dd_pct": 15.5,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.2,
+        "green_w": 0.125,
+        "smooth_w": 0.125,
+        "resilience_w": 0.0
+      }
+    },
+    {
       "at": "2026-03-05T10:20:22.952476",
       "id": "high52_midcap",
       "desc": "52週高値proximity因子×中型株: 年初来高値への近さをモメンタムシグナルとして追加",
@@ -22,6 +43,27 @@
       }
     },
     {
+      "at": "2026-03-05T10:25:04.134677",
+      "id": "high52_w_boost",
+      "desc": "52週高値ファクターを主力に昇格（high52_w=0.3）: ベースラインのw=0.2からさらに増強",
+      "win": false,
+      "delta_sharpe": -0.006,
+      "sharpe": 2.291,
+      "total_return_pct": 43.99,
+      "alpha_pct": -54.21,
+      "max_dd_pct": 15.23,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.2,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0
+      }
+    },
+    {
       "at": "2026-03-05T10:01:38.727353",
       "id": "universe_midcap",
       "desc": "ユニバース→時価総額100〜3000億の中型株",
@@ -32,6 +74,27 @@
       "alpha_pct": -61.42,
       "max_dd_pct": 18.36,
       "params": {}
+    },
+    {
+      "at": "2026-03-05T10:25:08.858690",
+      "id": "high52_accel_combo",
+      "desc": "52週高値近接×モメンタム加速の組み合わせ: 高値更新中かつ加速している銘柄を重点選択",
+      "win": false,
+      "delta_sharpe": -0.145,
+      "sharpe": 2.152,
+      "total_return_pct": 42.01,
+      "alpha_pct": -56.19,
+      "max_dd_pct": 17.33,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.25,
+        "green_w": 0.15,
+        "smooth_w": 0.1,
+        "resilience_w": 0.0
+      }
     },
     {
       "at": "2026-03-05T10:01:38.727362",
@@ -128,63 +191,30 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       }
-    },
+    }
+  ],
+  "all": [
     {
-      "at": "2026-03-05T10:10:33.890339",
-      "id": "midcap_lookback100",
-      "desc": "中型株ユニバース×lookback=100日で中期モメンタム強化",
-      "win": false,
-      "delta_sharpe": -1.455,
-      "sharpe": 0.736,
-      "total_return_pct": 8.46,
-      "alpha_pct": -89.74,
-      "max_dd_pct": 21.47,
-      "params": {
-        "lookback": 100,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.3,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0
-      }
-    },
-    {
-      "at": "2026-03-05T10:14:32.965631",
-      "id": "midcap_equal_weight",
-      "desc": "中型株ユニバース×4シグナル等重み（0.25×4）",
-      "win": false,
-      "delta_sharpe": -1.468,
-      "sharpe": 0.723,
-      "total_return_pct": 8.09,
-      "alpha_pct": -90.11,
-      "max_dd_pct": 21.41,
+      "at": "2026-03-05T10:25:13.649053",
+      "id": "high52_all_universe",
+      "desc": "52週高値効果×全銘柄ユニバース（大型含む）: high52_wを主力ファクター（w=0.35）に昇格して時価総額フィルター廃止",
+      "win": true,
+      "delta_sharpe": 0.233,
+      "sharpe": 2.53,
+      "total_return_pct": 50.26,
+      "alpha_pct": -47.94,
+      "max_dd_pct": 15.5,
       "params": {
         "lookback": 80,
         "top_n": 10,
         "rebalance": "weekly",
-        "ret_w": 0.25,
-        "rs_w": 0.25,
-        "green_w": 0.25,
-        "smooth_w": 0.25,
+        "ret_w": 0.2,
+        "rs_w": 0.2,
+        "green_w": 0.125,
+        "smooth_w": 0.125,
         "resilience_w": 0.0
       }
     },
-    {
-      "at": "2026-03-05T10:01:38.727378",
-      "id": "regime_adaptive_weights",
-      "desc": "レジーム連動型重み（強気/弱気/高ボラで自動切替）",
-      "win": false,
-      "delta_sharpe": -1.524,
-      "sharpe": 0.667,
-      "total_return_pct": 21.52,
-      "alpha_pct": -76.68,
-      "max_dd_pct": 20.8,
-      "params": {}
-    }
-  ],
-  "all": [
     {
       "at": "2026-03-05T10:20:22.952476",
       "id": "high52_midcap",
@@ -207,6 +237,27 @@
       }
     },
     {
+      "at": "2026-03-05T10:25:04.134677",
+      "id": "high52_w_boost",
+      "desc": "52週高値ファクターを主力に昇格（high52_w=0.3）: ベースラインのw=0.2からさらに増強",
+      "win": false,
+      "delta_sharpe": -0.006,
+      "sharpe": 2.291,
+      "total_return_pct": 43.99,
+      "alpha_pct": -54.21,
+      "max_dd_pct": 15.23,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.2,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0
+      }
+    },
+    {
       "at": "2026-03-05T10:01:38.727353",
       "id": "universe_midcap",
       "desc": "ユニバース→時価総額100〜3000億の中型株",
@@ -217,6 +268,27 @@
       "alpha_pct": -61.42,
       "max_dd_pct": 18.36,
       "params": {}
+    },
+    {
+      "at": "2026-03-05T10:25:08.858690",
+      "id": "high52_accel_combo",
+      "desc": "52週高値近接×モメンタム加速の組み合わせ: 高値更新中かつ加速している銘柄を重点選択",
+      "win": false,
+      "delta_sharpe": -0.145,
+      "sharpe": 2.152,
+      "total_return_pct": 42.01,
+      "alpha_pct": -56.19,
+      "max_dd_pct": 17.33,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.25,
+        "green_w": 0.15,
+        "smooth_w": 0.1,
+        "resilience_w": 0.0
+      }
     },
     {
       "at": "2026-03-05T10:01:38.727362",
@@ -1191,5 +1263,5 @@
       }
     }
   ],
-  "total": 50
+  "total": 53
 }

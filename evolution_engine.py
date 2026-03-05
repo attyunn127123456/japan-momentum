@@ -23,7 +23,7 @@ EVO_LOG     = Path('backtest/evolution_log.json')
 START_TRAIN = '2023-01-01'   # 訓練期間
 START_VAL   = '2025-01-01'   # 検証期間（汎化性チェック用）
 END         = datetime.now().strftime('%Y-%m-%d')
-N_CODES     = 200
+N_CODES     = 2000
 
 # ========== 複合評価ルール ==========
 def evaluate(result_train, result_val, baseline):

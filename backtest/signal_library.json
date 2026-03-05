@@ -439,15 +439,46 @@
       "best_weight": null,
       "sharpe_contribution": -1.803,
       "added_at": "2026-03-05"
+    },
+    {
+      "id": "high52_w_boost",
+      "desc": "52週高値ファクターを主力に昇格（high52_w=0.3）: ベースラインのw=0.2からさらに増強",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -0.006,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "high52_accel_combo",
+      "desc": "52週高値近接×モメンタム加速の組み合わせ: 高値更新中かつ加速している銘柄を重点選択",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -0.145,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "high52_all_universe",
+      "desc": "52週高値効果×全銘柄ユニバース（大型含む）: high52_wを主力ファクター（w=0.35）に昇格して時価総額フィルター廃止",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "active",
+      "best_weight": null,
+      "sharpe_contribution": 0.233,
+      "added_at": "2026-03-05"
     }
   ],
   "current_weights": {
-    "ret_w": 0.3,
-    "rs_w": 0.3,
-    "green_w": 0.2,
-    "smooth_w": 0.2,
-    "resilience_w": 0.0
+    "ret_w": 0.2,
+    "rs_w": 0.2,
+    "green_w": 0.125,
+    "smooth_w": 0.125,
+    "resilience_w": 0.0,
+    "high52_w": 0.35
   },
-  "baseline_sharpe": 2.191,
+  "baseline_sharpe": 2.53,
   "last_updated": "2026-03-05"
 }

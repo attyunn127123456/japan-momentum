@@ -1,49 +1,47 @@
 {
   "baseline": {
-    "sharpe": 2.297,
-    "total_pct": 38.5,
-    "alpha_pct": -59.69,
-    "max_dd_pct": 16.23,
+    "sharpe": 2.53,
+    "total_pct": 50.26,
+    "alpha_pct": -47.94,
+    "max_dd_pct": 15.5,
     "params": {
       "lookback": 80,
       "top_n": 10,
       "rebalance": "weekly",
-      "ret_w": 0.25,
-      "rs_w": 0.25,
-      "green_w": 0.15,
-      "smooth_w": 0.15,
+      "ret_w": 0.2,
+      "rs_w": 0.2,
+      "green_w": 0.125,
+      "smooth_w": 0.125,
       "resilience_w": 0.0,
-      "high52_w": 0.2
+      "high52_w": 0.35
     },
     "date": "2026-03-05",
-    "hypothesis": "high52_midcap"
+    "hypothesis": "high52_all_universe"
   },
-  "running": true,
-  "current_hypothesis": "high52_w_boost",
+  "running": false,
+  "current_hypothesis": null,
   "last_result": {
-    "id": "vol_adj_momentum",
+    "id": "high52_all_universe",
     "result": {
       "lookback": 80,
       "top_n": 10,
       "rebalance": "weekly",
-      "ret_w": 0.0,
-      "rs_w": 0.3,
-      "green_w": 0.2,
-      "smooth_w": 0.15,
+      "ret_w": 0.2,
+      "rs_w": 0.2,
+      "green_w": 0.125,
+      "smooth_w": 0.125,
       "resilience_w": 0.0,
-      "high52_w": 0.15,
-      "vol_adj_ret_w": 0.2,
-      "atr_period": 20,
-      "total_return_pct": 4.68,
-      "alpha_pct": -93.52,
-      "sharpe": 0.494,
-      "max_dd_pct": 20.63,
+      "high52_w": 0.35,
+      "total_return_pct": 50.26,
+      "alpha_pct": -47.94,
+      "sharpe": 2.53,
+      "max_dd_pct": 15.5,
       "nikkei_pct": 98.2,
       "n_trades": 116
     },
-    "delta_sharpe": -1.803,
-    "win": false,
-    "at": "2026-03-05T10:22:18.250214"
+    "delta_sharpe": 0.233,
+    "win": true,
+    "at": "2026-03-05T10:25:13.647653"
   },
   "queue": [
     {
@@ -1656,7 +1654,26 @@
         "high52_w": 0.3,
         "rebalance": "weekly"
       },
-      "status": "running"
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.2,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "high52_w": 0.3,
+        "total_return_pct": 43.99,
+        "alpha_pct": -54.21,
+        "sharpe": 2.291,
+        "max_dd_pct": 15.23,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -0.006,
+      "elapsed_sec": 80.0
     },
     {
       "id": "high52_accel_combo",
@@ -1674,7 +1691,28 @@
         "accel_split": 40,
         "rebalance": "weekly"
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.25,
+        "green_w": 0.15,
+        "smooth_w": 0.1,
+        "resilience_w": 0.0,
+        "high52_w": 0.2,
+        "ret_accel_w": 0.1,
+        "accel_split": 40,
+        "total_return_pct": 42.01,
+        "alpha_pct": -56.19,
+        "sharpe": 2.152,
+        "max_dd_pct": 17.33,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -0.145,
+      "elapsed_sec": 4.3
     },
     {
       "id": "high52_all_universe",
@@ -1690,7 +1728,26 @@
         "high52_w": 0.35,
         "rebalance": "weekly"
       },
-      "status": "pending"
+      "status": "done_win",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.2,
+        "green_w": 0.125,
+        "smooth_w": 0.125,
+        "resilience_w": 0.0,
+        "high52_w": 0.35,
+        "total_return_pct": 50.26,
+        "alpha_pct": -47.94,
+        "sharpe": 2.53,
+        "max_dd_pct": 15.5,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": 0.233,
+      "elapsed_sec": 4.3
     }
   ],
   "tested_factors": [
