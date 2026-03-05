@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Japan Momentum Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d1117; color: #e6edf3; font-family: -apple-system, sans-serif; }
+  .header { padding: 20px 24px; border-bottom: 1px solid #21262d; display: flex; justify-content: space-between; align-items: center; }
+  .header h1 { font-size: 20px; font-weight: 600; }
+  .header .date { color: #8b949e; font-size: 14px; }
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid #21262d; padding: 0 24px; }
+  .tab { padding: 12px 20px; cursor: pointer; color: #8b949e; border-bottom: 2px solid transparent; font-size: 14px; }
+  .tab.active { color: #58a6ff; border-bottom-color: #58a6ff; }
+  .content { padding: 24px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 10px 12px; background: #161b22; color: #8b949e; font-weight: 500; border-bottom: 1px solid #21262d; cursor: pointer; }
+  th:hover { color: #e6edf3; }
+  td { padding: 10px 12px; border-bottom: 1px solid #21262d; }
+  tr:hover td { background: #161b22; }
+  .score { font-weight: 700; }
+  .score-high { color: #3fb950; }
+  .score-mid { color: #d29922; }
+  .score-low { color: #8b949e; }
+  .ret-pos { color: #3fb950; }
+  .ret-neg { color: #f85149; }
+  .vol-bar { display: inline-block; background: #238636; height: 10px; border-radius: 2px; }
+  .rank { color: #8b949e; font-size: 12px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .stat-card { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 16px; }
+  .stat-card .label { font-size: 12px; color: #8b949e; margin-bottom: 6px; }
+  .stat-card .value { font-size: 24px; font-weight: 700; }
+  .stat-card .value.pos { color: #3fb950; }
+  .stat-card .value.neg { color: #f85149; }
+  .chart-container { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 16px; margin-top: 16px; }
+  .chart-container h3 { font-size: 14px; color: #8b949e; margin-bottom: 16px; }
+  select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding: 6px 10px; border-radius: 6px; font-size: 13px; }
+  .loading { color: #8b949e; text-align: center; padding: 40px; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .badge-up { background: #1c3227; color: #3fb950; }
+  .badge-down { background: #2d1619; color: #f85149; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🐼 Japan Momentum Dashboard</h1>
+  <span class="date" id="last-updated">読み込み中...</span>
+</div>
+<div class="tabs">
+  <div class="tab active" onclick="showTab('ranking')">📊 今日のランキング</div>
+  <div class="tab" onclick="showTab('backtest')">📈 バックテスト</div>
+  <div class="tab" onclick="showTab('history')">📅 履歴</div>
+</div>
+<div class="content">
+
+<!-- RANKING TAB -->
+<div id="panel-ranking" class="panel active">
+  <div id="ranking-loading" class="loading">データ取得中...</div>
+  <table id="ranking-table" style="display:none">
+    <thead>
+      <tr>
+        <th onclick="sortTable(0)">#</th>
+        <th onclick="sortTable(1)">銘柄</th>
+        <th onclick="sortTable(2)">スコア ↓</th>
+        <th onclick="sortTable(3)">RS</th>
+        <th onclick="sortTable(4)">中期リターン</th>
+        <th onclick="sortTable(5)">出来高加速</th>
+        <th onclick="sortTable(6)">陽線率</th>
+        <th onclick="sortTable(7)">RS加速</th>
+        <th>現在値</th>
+      </tr>
+    </thead>
+    <tbody id="ranking-body"></tbody>
+  </table>
+</div>
+
+<!-- BACKTEST TAB -->
+<div id="panel-backtest" class="panel">
+  <div id="bt-loading" class="loading">バックテストデータ取得中...</div>
+  <div id="bt-content" style="display:none">
+    <div class="stats-grid" id="bt-stats"></div>
+    <div class="chart-container">
+      <h3>ポートフォリオ vs 日経225（累積リターン）</h3>
+      <canvas id="equity-chart" height="80"></canvas>
+    </div>
+    <div class="chart-container" style="margin-top:16px">
+      <h3>直近の保有銘柄（週次）</h3>
+      <div id="holdings-table"></div>
+    </div>
+  </div>
+</div>
+
+<!-- HISTORY TAB -->
+<div id="panel-history" class="panel">
+  <div style="margin-bottom:16px">
+    <select id="date-picker" onchange="loadHistoryDate(this.value)">
+      <option>日付を選択...</option>
+    </select>
+  </div>
+  <div id="history-content"><div class="loading">日付を選択してください</div></div>
+</div>
+
+</div>
+
+<script>
+let rankingData = null;
+let sortAsc = false;
+let sortCol = 2;
+
+function showTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const tabs = ['ranking','backtest','history'];
+  document.querySelectorAll('.tab')[tabs.indexOf(name)].classList.add('active');
+  document.getElementById('panel-'+name).classList.add('active');
+}
+
+function scoreClass(s) {
+  if (s >= 65) return 'score-high';
+  if (s >= 50) return 'score-mid';
+  return 'score-low';
+}
+
+function volBars(v) {
+  const pct = Math.round(v * 100);
+  return `<div class="vol-bar" style="width:${pct}px" title="${pct}%"></div>`;
+}
+
+async function loadRanking() {
+  const res = await fetch('/api/today').catch(() => null);
+  if (!res || !res.ok) {
+    document.getElementById('ranking-loading').textContent = '❌ データなし。先に screener.py を実行してください。';
+    return;
+  }
+  const data = await res.json();
+  rankingData = data.results || data.top || [];
+  document.getElementById('last-updated').textContent = `最終更新: ${data.date}`;
+  renderRanking(rankingData);
+}
+
+function renderRanking(rows) {
+  const body = document.getElementById('ranking-body');
+  body.innerHTML = rows.slice(0,30).map((r,i) => {
+    const retClass = r.return_5_25d >= 0 ? 'ret-pos' : 'ret-neg';
+    const sc = scoreClass(r.score);
+    return `<tr>
+      <td class="rank">${i+1}</td>
+      <td><strong>${r.ticker.replace('.T','')}</strong></td>
+      <td><span class="score ${sc}">${r.score.toFixed(1)}</span></td>
+      <td class="${r.rs_score >= 0 ? 'ret-pos' : 'ret-neg'}">${r.rs_score > 0 ? '+' : ''}${r.rs_score.toFixed(1)}</td>
+      <td class="${retClass}">${r.return_5_25d > 0 ? '+' : ''}${r.return_5_25d.toFixed(1)}%</td>
+      <td>${volBars(r.volume_acceleration)}</td>
+      <td>${(r.green_day_ratio*100).toFixed(0)}%</td>
+      <td class="${r.rs_acceleration >= 0 ? 'ret-pos' : 'ret-neg'}">${r.rs_acceleration > 0 ? '+' : ''}${r.rs_acceleration.toFixed(2)}</td>
+      <td>¥${r.price ? r.price.toLocaleString() : '-'}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('ranking-loading').style.display = 'none';
+  document.getElementById('ranking-table').style.display = 'table';
+}
+
+function sortTable(col) {
+  if (sortCol === col) sortAsc = !sortAsc;
+  else { sortCol = col; sortAsc = false; }
+  const keys = [null,'ticker','score','rs_score','return_5_25d','volume_acceleration','green_day_ratio','rs_acceleration','price'];
+  const key = keys[col];
+  if (!key || !rankingData) return;
+  const sorted = [...rankingData].sort((a,b) => {
+    const av = a[key], bv = b[key];
+    if (typeof av === 'string') return sortAsc ? av.localeCompare(bv) : bv.localeCompare(av);
+    return sortAsc ? av - bv : bv - av;
+  });
+  renderRanking(sorted);
+}
+
+async function loadBacktest() {
+  const res = await fetch('/api/backtest').catch(() => null);
+  if (!res || !res.ok) {
+    document.getElementById('bt-loading').textContent = '❌ バックテストデータなし。backtest.py を実行してください。';
+    return;
+  }
+  const data = await res.json();
+  const s = data.summary;
+
+  document.getElementById('bt-stats').innerHTML = [
+    {label:'総リターン', value: s.total_return_pct, pct:true},
+    {label:'年率リターン', value: s.annual_return_pct, pct:true},
+    {label:'日経225リターン', value: s.nikkei_return_pct, pct:true},
+    {label:'アルファ', value: s.alpha_pct, pct:true},
+    {label:'保有銘柄数', value: s.top_n, pct:false},
+    {label:'リバランス回数', value: s.num_rebalances, pct:false},
+  ].map(item => {
+    const cls = item.pct ? (item.value >= 0 ? 'pos' : 'neg') : '';
+    const disp = item.pct ? `${item.value > 0 ? '+' : ''}${item.value}%` : item.value;
+    return `<div class="stat-card"><div class="label">${item.label}</div><div class="value ${cls}">${disp}</div></div>`;
+  }).join('');
+
+  // Equity chart
+  const eq = data.equity_curve || [];
+  const labels = eq.map(e => e.date);
+  const nikkei = eq.map(e => e.nikkei);
+
+  document.getElementById('bt-loading').style.display = 'none';
+  document.getElementById('bt-content').style.display = 'block';
+
+  new Chart(document.getElementById('equity-chart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: '日経225', data: nikkei, borderColor: '#8b949e', fill: false, pointRadius: 0, tension: 0.3 },
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#8b949e' } } },
+      scales: {
+        x: { ticks: { color: '#8b949e', maxTicksLimit: 12 }, grid: { color: '#21262d' } },
+        y: { ticks: { color: '#8b949e', callback: v => '¥'+v.toLocaleString() }, grid: { color: '#21262d' } }
+      }
+    }
+  });
+
+  // Holdings table
+  const holdings = (data.weekly_holdings || []).slice(-8).reverse();
+  document.getElementById('holdings-table').innerHTML = `
+    <table>
+      <thead><tr><th>週</th><th>保有銘柄（スコア順）</th></tr></thead>
+      <tbody>${holdings.map(h => `
+        <tr>
+          <td style="white-space:nowrap;color:#8b949e">${h.date}</td>
+          <td>${h.tickers.map(t => `<span class="badge badge-up" style="margin:2px">${t.replace('.T','')} ${h.scores[t] ? h.scores[t].toFixed(0) : ''}</span>`).join(' ')}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+async function loadHistory() {
+  const res = await fetch('/api/history').catch(() => null);
+  if (!res) return;
+  const dates = await res.json();
+  const picker = document.getElementById('date-picker');
+  dates.forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d; opt.textContent = d;
+    picker.appendChild(opt);
+  });
+}
+
+async function loadHistoryDate(date) {
+  if (!date || date === '日付を選択...') return;
+  const res = await fetch(`/api/results/${date}`).catch(() => null);
+  if (!res || !res.ok) return;
+  const data = await res.json();
+  const rows = (data.results || data.top || []).slice(0, 20);
+  document.getElementById('history-content').innerHTML = `
+    <table>
+      <thead><tr><th>#</th><th>銘柄</th><th>スコア</th><th>中期リターン</th><th>陽線率</th></tr></thead>
+      <tbody>${rows.map((r,i) => `<tr>
+        <td class="rank">${i+1}</td>
+        <td>${r.ticker.replace('.T','')}</td>
+        <td class="score ${scoreClass(r.score)}">${r.score.toFixed(1)}</td>
+        <td class="${r.return_5_25d >= 0 ? 'ret-pos':'ret-neg'}">${r.return_5_25d > 0 ? '+' : ''}${r.return_5_25d.toFixed(1)}%</td>
+        <td>${(r.green_day_ratio*100).toFixed(0)}%</td>
+      </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+// Init
+loadRanking();
+loadBacktest();
+loadHistory();
+</script>
+</body>
+</html>
