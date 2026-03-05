@@ -1,46 +1,48 @@
 {
   "baseline": {
-    "sharpe": 2.191,
-    "total_pct": 36.78,
-    "alpha_pct": -61.42,
-    "max_dd_pct": 18.36,
+    "sharpe": 2.297,
+    "total_pct": 38.5,
+    "alpha_pct": -59.69,
+    "max_dd_pct": 16.23,
     "params": {
-      "lookback": 80,
-      "top_n": 10,
-      "rebalance": "weekly",
-      "ret_w": 0.3,
-      "rs_w": 0.3,
-      "green_w": 0.2,
-      "smooth_w": 0.2,
-      "resilience_w": 0.0
-    },
-    "date": "2026-03-05",
-    "hypothesis": "universe_midcap"
-  },
-  "running": true,
-  "current_hypothesis": "biweekly_midcap",
-  "last_result": {
-    "id": "rank_product_midcap",
-    "result": {
       "lookback": 80,
       "top_n": 10,
       "rebalance": "weekly",
       "ret_w": 0.25,
       "rs_w": 0.25,
-      "green_w": 0.25,
-      "smooth_w": 0.25,
+      "green_w": 0.15,
+      "smooth_w": 0.15,
       "resilience_w": 0.0,
-      "score_mode": "rank_product",
-      "total_return_pct": 6.63,
-      "alpha_pct": -91.57,
-      "sharpe": 0.863,
-      "max_dd_pct": 10.98,
+      "high52_w": 0.2
+    },
+    "date": "2026-03-05",
+    "hypothesis": "high52_midcap"
+  },
+  "running": false,
+  "current_hypothesis": null,
+  "last_result": {
+    "id": "open_universe_rs_dynamic",
+    "result": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.3,
+      "rs_w": 0.35,
+      "green_w": 0.2,
+      "smooth_w": 0.15,
+      "resilience_w": 0.0,
+      "universe_mode": "open_rs_dynamic",
+      "rs_dynamic_top_pct": 0.3,
+      "total_return_pct": 6.5,
+      "alpha_pct": -91.7,
+      "sharpe": 0.585,
+      "max_dd_pct": 23.87,
       "nikkei_pct": 98.2,
       "n_trades": 116
     },
-    "delta_sharpe": -1.328,
+    "delta_sharpe": -1.712,
     "win": false,
-    "at": "2026-03-05T10:20:18.279443"
+    "at": "2026-03-05T10:20:27.404468"
   },
   "queue": [
     {
@@ -1367,7 +1369,25 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       },
-      "status": "running"
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "biweekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "total_return_pct": 1.83,
+        "alpha_pct": -96.37,
+        "sharpe": 0.459,
+        "max_dd_pct": 13.83,
+        "nikkei_pct": 98.2,
+        "n_trades": 50
+      },
+      "delta_sharpe": -1.732,
+      "elapsed_sec": 1.7
     },
     {
       "id": "high52_midcap",
@@ -1384,7 +1404,26 @@
         "resilience_w": 0.0,
         "high52_w": 0.2
       },
-      "status": "pending"
+      "status": "done_win",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "high52_w": 0.2,
+        "total_return_pct": 38.5,
+        "alpha_pct": -59.69,
+        "sharpe": 2.297,
+        "max_dd_pct": 16.23,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": 0.106,
+      "elapsed_sec": 2.0
     },
     {
       "id": "vol_surge_breakout_universe",
@@ -1404,7 +1443,7 @@
         "vol_surge_days_long": 60,
         "price_breakout_days": 60
       },
-      "status": "pending"
+      "status": "running"
     },
     {
       "id": "rs_accel_primary",
@@ -1421,7 +1460,27 @@
         "rs_accel_w": 0.35,
         "accel_split": 40
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.2,
+        "green_w": 0.1,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "rs_accel_w": 0.35,
+        "accel_split": 40,
+        "total_return_pct": 2.04,
+        "alpha_pct": -96.16,
+        "sharpe": 0.305,
+        "max_dd_pct": 23.92,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.992,
+      "elapsed_sec": 1.9
     },
     {
       "id": "open_universe_rs_dynamic",
@@ -1437,6 +1496,84 @@
         "rebalance": "weekly",
         "universe_mode": "open_rs_dynamic",
         "rs_dynamic_top_pct": 0.3
+      },
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.35,
+        "green_w": 0.2,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "universe_mode": "open_rs_dynamic",
+        "rs_dynamic_top_pct": 0.3,
+        "total_return_pct": 6.5,
+        "alpha_pct": -91.7,
+        "sharpe": 0.585,
+        "max_dd_pct": 23.87,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.712,
+      "elapsed_sec": 1.9
+    },
+    {
+      "id": "high52_broad_universe",
+      "desc": "high52シグナル × 時価総額フィルター廃止: 52週高値75%以上をユニバース条件に（大型株もキャプチャ）",
+      "theory": "high52_midcapがdelta_sharpe=+0.106で唯一の追加改善を達成した。52週高値近接は機関投資家の行動バイアスを利用した有効なシグナルであることが確認された。しかし現在は中型株(100-3000億)という時価総額フィルターと組み合わせている。キオクシア・フジクラのような大型株も52週高値圏でモメンタムを示す局面がある。本仮説では時価総額フィルターを廃止し、代わりに『現在価格が過去252日高値の75%以上』という条件だけでユニバースを動的に構築する。これにより相場の主役（大型・中型・小型問わず）が自然と入ってくる動的選択が実現する。high52成功の本質を抽出してユニバース設計に組み込んだ発展型。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "high52_w": 0.2,
+        "universe_mode": "high52_filter",
+        "high52_min_pct": 0.75
+      },
+      "status": "pending"
+    },
+    {
+      "id": "dual_momentum_confirm",
+      "desc": "短期×中期モメンタム方向一致フィルター: 20日と80日の両方で正リターンの銘柄のみを対象",
+      "theory": "加速度（rs_accel_primary）は失敗したが、それは『前半→後半の変化量』を計算するものだった。本仮説は異なるアプローチ：20日リターンと80日リターンの『両方が正』の銘柄のみを候補とする。短期モメンタムと中期モメンタムが同方向に揃っている銘柄は、モメンタムが加速フェーズで多重タイムフレームで確認されており、機関投資家の段階的な参入が短期にも中期にも反映されている状態。逆に80日は正でも直近20日で落ちている銘柄はモメンタムが峠を過ぎている可能性が高い。時価総額フィルターはhigh52_midcapのベースを踏襲しつつ、dual_positive条件を追加する。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "high52_w": 0.2,
+        "dual_momentum_filter": true,
+        "short_lookback": 20,
+        "require_both_positive": true
+      },
+      "status": "pending"
+    },
+    {
+      "id": "vol_adj_momentum",
+      "desc": "ボラティリティ調整済みモメンタム: リターン÷ATRで計算したリスク調整後シグナルをメイン指標に",
+      "theory": "現行のret_wはraw絶対リターンだが、高ボラ銘柄（急騰急落の繰り返し）と低ボラ銘柄（じわじわ上昇）を同列に評価してしまう。ボラ調整済みモメンタム（リターン÷ATR20日）は銘柄固有のボラティリティを除去した『ノイズ対比シグナル』の強度を示す。大型株の安定上昇も小型株のトレンドも公平にランク付けできる。高ボラ期待のみで選ばれた銘柄（短期急騰）が除外され、genuineなモメンタムを持つ銘柄が残る。この指標でtop10を選ぶことで、キオクシア・フジクラのような『大型株の安定したモメンタム加速』もhigh52と相性よく捉えられる。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.0,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "high52_w": 0.15,
+        "vol_adj_ret_w": 0.2,
+        "atr_period": 20
       },
       "status": "pending"
     }
