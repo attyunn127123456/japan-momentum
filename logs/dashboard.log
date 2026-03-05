@@ -126,3 +126,63 @@ INFO:     34.221.131.82:0 - "GET /api/today HTTP/1.1" 200 OK
 INFO:     34.221.131.82:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
 INFO:     34.221.131.82:0 - "GET /api/signals HTTP/1.1" 200 OK
 INFO:     34.221.131.82:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     103.4.250.173:0 - "GET / HTTP/1.1" 200 OK
+INFO:     152.53.195.17:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     185.177.72.60:0 - "GET /pricing HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /billing HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /plans HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /index.html HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /dashboard HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET / HTTP/1.1" 200 OK
+INFO:     185.177.72.60:0 - "GET /sitemap.xml HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /account HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /order HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /register HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /payment HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /subscribe HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /checkout HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /.env.production.local HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /signup HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /cart HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /.env.production HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /shop HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /donate HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     185.177.72.60:0 - "GET /admin HTTP/1.1" 404 Not Found
+INFO:     104.164.126.207:0 - "GET / HTTP/1.1" 200 OK
+INFO:     104.164.126.207:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK

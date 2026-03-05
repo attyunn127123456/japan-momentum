@@ -17,29 +17,14 @@
     "date": "2026-03-05",
     "hypothesis": "universe_midcap"
   },
-  "running": false,
-  "current_hypothesis": null,
+  "running": true,
+  "current_hypothesis": "sector_neutral_momentum",
   "last_result": {
-    "id": "resilience_upgrade",
-    "result": {
-      "lookback": 60,
-      "top_n": 5,
-      "rebalance": "weekly",
-      "ret_w": 0.2,
-      "rs_w": 0.2,
-      "green_w": 0.1,
-      "smooth_w": 0.2,
-      "resilience_w": 0.3,
-      "total_return_pct": 4.09,
-      "alpha_pct": -94.11,
-      "sharpe": 0.427,
-      "max_dd_pct": 27.05,
-      "nikkei_pct": 98.2,
-      "n_trades": 116
-    },
-    "delta_sharpe": -1.764,
+    "id": "sector_neutral_momentum",
+    "result": null,
+    "delta_sharpe": null,
     "win": false,
-    "at": "2026-03-05T08:42:26.539438"
+    "at": "2026-03-05T09:39:44.319311"
   },
   "queue": [
     {
@@ -134,7 +119,10 @@
         "resilience_w": 0.0,
         "sector_neutral": true
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": null,
+      "delta_sharpe": null,
+      "elapsed_sec": 0.0
     },
     {
       "id": "short_squeeze_momentum",
