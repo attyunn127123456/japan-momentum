@@ -421,7 +421,7 @@ def run_evolution():
     DONE_FILE.write_text(json.dumps({
         'status': 'done',
         'id': 'evolution_cycle',
-        'win': True,
+        'win': 1,
         'delta_sharpe': baseline['sharpe'] - json.loads(QUEUE_FILE.read_text())['baseline'].get('sharpe', 0),
         'result': baseline,
         'at': datetime.now().isoformat(),
