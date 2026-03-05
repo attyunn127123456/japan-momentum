@@ -20,11 +20,11 @@
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "smart_money_flow",
+    "id": "adaptive_lookback",
     "result": null,
     "delta_sharpe": null,
     "win": false,
-    "at": "2026-03-05T09:40:42.304392"
+    "at": "2026-03-05T09:44:41.068403"
   },
   "queue": [
     {
@@ -171,20 +171,82 @@
       "desc": "日経225の200MA上/下でポジションサイズを切り替え",
       "theory": "相場局面（強気/弱気）を判定してモメンタム戦略のエクスポージャーを調整。高ボラ時は守り。OHLCVのみで実装可能",
       "params": {},
-      "status": "pending"
+      "status": "done_lose",
+      "result": null,
+      "delta_sharpe": null,
+      "elapsed_sec": 0.0
     },
     {
       "id": "volume_price_divergence",
       "desc": "価格上昇＋出来高急減の銘柄をフィルタ除外",
       "theory": "出来高なき上昇は持続しにくい。需給ロジックでノイズ銘柄を除去してポートフォリオ品質を上げる",
       "params": {},
-      "status": "pending"
+      "status": "done_lose",
+      "result": null,
+      "delta_sharpe": null,
+      "elapsed_sec": 0.0
     },
     {
       "id": "adaptive_lookback",
       "desc": "ATRに応じてルックバック期間を動的調整",
       "theory": "高ボラ時は短期シグナル、低ボラ時は長期シグナルを使う。市場環境への適応性向上",
       "params": {},
+      "status": "done_lose",
+      "result": null,
+      "delta_sharpe": null,
+      "elapsed_sec": 0.0
+    },
+    {
+      "id": "short_term_reversal_filter",
+      "desc": "直近5日急騰銘柄をフィルタ除外（短期リバーサル回避）",
+      "theory": "日本の中型株は機関投資家の参加が薄く、個人投資家による短期的な過剰反応が生じやすい。週次リバランスでは直近週に急騰した銘柄が翌週リバーサルしやすい（mean-reversion）。universe_midcapの80日モメンタムシグナルを維持しつつ、直近5日リターンが上位25%の銘柄を除外することで、短期オーバーシュートを避けて中期モメンタムの純粋なシグナルを捉える。既存のret_w=0.3シグナルを汚染する短期ノイズを除去する効果が期待できる。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "short_reversal_filter": true,
+        "short_reversal_days": 5,
+        "short_reversal_pct": 0.25
+      },
+      "status": "pending"
+    },
+    {
+      "id": "midcap_top15_momentum",
+      "desc": "universe_midcap×top_n=15で分散強化（local_search知見の組み合わせ）",
+      "theory": "local_searchがtop_n=15でSharpe 2.019を達成した一方、universe_midcapはtop_n=10でSharpe 2.191。中型株ユニバース内でtop_n=15を使えば、銘柄固有リスクを分散しながら中型株モメンタム効果を享受できる。日本の中型株は個別流動性リスクが高いため、分散によるmax_dd改善効果が期待できる。universe_midcap（勝利）×local_search（次点）の組み合わせによる相乗効果を検証する。",
+      "params": {
+        "lookback": 80,
+        "top_n": 15,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "status": "pending"
+    },
+    {
+      "id": "momentum_acceleration",
+      "desc": "モメンタム加速度ファクター追加（後半40日 > 前半40日で加点）",
+      "theory": "ルックバック期間80日を前半40日・後半40日に分割し、後半のモメンタムが前半を上回る銘柄に加点する加速度スコアを導入。モメンタムが「加速している」銘柄はまだ情報が完全に織り込まれていない可能性が高い。中型株はアナリストカバレッジが薄いため好材料の情報伝播が遅く、機関投資家の認知が遅れて参入してくる段階でモメンタムが加速する。加速局面を捉えることでピーク後のモメンタムクラッシュを避けながら初期〜中期のトレンドに乗れる。OHLCVのみで計算可能。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "momentum_accel_w": 0.05,
+        "accel_half_period": 40
+      },
       "status": "pending"
     }
   ],
