@@ -285,6 +285,150 @@ def main():
                  "ret_w":0.2,"rs_w":0.2,"green_w":0.1,"smooth_w":0.2,"resilience_w":0.3}
             result = eval_params(p, factor_dfs, prices_dict, rebal_dates["weekly"], nikkei, START, return_df)
 
+        elif hid == "rank_product_midcap":
+            # ランク積スコア×中型株ユニバース
+            prices_dict = run_universe_midcap(nikkei)
+            print(f"中型株ユニバース(rank_product): {len(prices_dict)}銘柄")
+            factor_dfs = precompute(prices_dict, nikkei, [80])
+            all_prices = pd.DataFrame({c: prices_dict[c]["AdjC"] for c in prices_dict}).astype(float)
+            return_df = all_prices.pct_change()
+            lb, tn = 80, 10
+            factors = ["ret", "rs", "green", "smooth"]
+            dates = [d for d in rebal_dates["weekly"] if str(d.date()) >= START]
+            portfolio = 1_000_000.0
+            returns = []
+            for i, date in enumerate(dates[:-1]):
+                next_date = dates[i+1]
+                raw = {}
+                for code in prices_dict:
+                    fac = factor_dfs.get((code, lb))
+                    if fac is None or date not in fac.index: continue
+                    row = fac.loc[date]
+                    if row.isna().all(): continue
+                    vals = {}
+                    ok = True
+                    for f in factors:
+                        if f not in row.index or np.isnan(float(row[f])):
+                            ok = False; break
+                        vals[f] = float(row[f])
+                    if ok:
+                        raw[code] = vals
+                if len(raw) < tn * 2: continue
+                code_list = list(raw.keys())
+                for f in factors:
+                    vals = np.array([raw[c][f] for c in code_list])
+                    ranks = pd.Series(vals).rank(pct=True).values
+                    for j, c in enumerate(code_list):
+                        raw[c][f + "_rank"] = float(ranks[j])
+                scores = {}
+                for c in code_list:
+                    prod = 1.0
+                    for f in factors:
+                        prod *= raw[c][f + "_rank"]
+                    scores[c] = prod ** (1.0 / len(factors))
+                top = sorted(scores, key=lambda c: scores[c], reverse=True)[:tn]
+                tot, cnt = 0.0, 0
+                if date in return_df.index and next_date in return_df.index:
+                    for code in top:
+                        if code in return_df.columns:
+                            r = return_df.at[next_date, code]
+                            if not np.isnan(r):
+                                tot += r; cnt += 1
+                if cnt > 0:
+                    r = tot / cnt
+                    portfolio *= (1 + r)
+                    returns.append(r)
+            if len(returns) >= 5:
+                arr = np.array(returns)
+                tr = portfolio / 1_000_000 - 1
+                sharpe = float(arr.mean() / arr.std() * np.sqrt(252)) if arr.std() > 0 else 0
+                cum = np.cumprod(1 + arr); peak = np.maximum.accumulate(cum)
+                dd = float(abs(((cum - peak) / peak).min()))
+                nk = nikkei.loc[START:]; nk_ret = float(nk.iloc[-1] / nk.iloc[0] - 1) if len(nk) > 1 else 0
+                result = {"lookback": lb, "top_n": tn, "rebalance": "weekly",
+                          "ret_w": 0.25, "rs_w": 0.25, "green_w": 0.25, "smooth_w": 0.25, "resilience_w": 0.0,
+                          "score_mode": "rank_product",
+                          "total_return_pct": round(tr*100, 2), "alpha_pct": round((tr-nk_ret)*100, 2),
+                          "sharpe": round(sharpe, 3), "max_dd_pct": round(dd*100, 2),
+                          "nikkei_pct": round(nk_ret*100, 2), "n_trades": len(returns)}
+            else:
+                result = None
+
+        elif hid == "biweekly_midcap":
+            # 中型株ユニバース×2週間リバランス
+            prices_dict = run_universe_midcap(nikkei)
+            print(f"中型株ユニバース(biweekly): {len(prices_dict)}銘柄")
+            factor_dfs = precompute(prices_dict, nikkei, [80])
+            all_prices = pd.DataFrame({c: prices_dict[c]["AdjC"] for c in prices_dict}).astype(float)
+            return_df = all_prices.pct_change()
+            biweekly_dates = get_rebalance_dates(warmup, END, "biweekly")
+            p = {"lookback": 80, "top_n": 10, "rebalance": "biweekly",
+                 "ret_w": 0.3, "rs_w": 0.3, "green_w": 0.2, "smooth_w": 0.2, "resilience_w": 0.0}
+            result = eval_params(p, factor_dfs, prices_dict, biweekly_dates, nikkei, START, return_df)
+
+        elif hid == "high52_midcap":
+            # 52週高値proximity因子×中型株ユニバース
+            prices_dict = run_universe_midcap(nikkei)
+            print(f"中型株ユニバース(high52): {len(prices_dict)}銘柄")
+            factor_dfs = precompute(prices_dict, nikkei, [80])
+            for code, df in prices_dict.items():
+                if (code, 80) not in factor_dfs: continue
+                p = df["AdjC"].astype(float)
+                high52 = p.rolling(252, min_periods=60).max()
+                proximity = (p / high52).clip(0, 1)
+                factor_dfs[(code, 80)]["high52"] = proximity
+            all_prices = pd.DataFrame({c: prices_dict[c]["AdjC"] for c in prices_dict}).astype(float)
+            return_df = all_prices.pct_change()
+            weights = {"ret": 0.25, "rs": 0.25, "green": 0.15, "smooth": 0.15, "resilience": 0.0, "high52": 0.2}
+            lb, tn = 80, 10
+            dates = [d for d in rebal_dates["weekly"] if str(d.date()) >= START]
+            portfolio = 1_000_000.0
+            returns = []
+            for i, date in enumerate(dates[:-1]):
+                next_date = dates[i+1]
+                scores = {}
+                for code in prices_dict:
+                    fac = factor_dfs.get((code, lb))
+                    if fac is None or date not in fac.index: continue
+                    row = fac.loc[date]
+                    if row.isna().all(): continue
+                    score = 0.0
+                    for f, w in weights.items():
+                        if w == 0: continue
+                        if f in row.index:
+                            v = float(row[f])
+                            if not np.isnan(v):
+                                score += w * v
+                    scores[code] = score
+                if not scores: continue
+                top = sorted(scores, key=lambda c: scores[c], reverse=True)[:tn]
+                tot, cnt = 0.0, 0
+                if date in return_df.index and next_date in return_df.index:
+                    for code in top:
+                        if code in return_df.columns:
+                            r = return_df.at[next_date, code]
+                            if not np.isnan(r):
+                                tot += r; cnt += 1
+                if cnt > 0:
+                    r = tot / cnt
+                    portfolio *= (1 + r)
+                    returns.append(r)
+            if len(returns) >= 5:
+                arr = np.array(returns)
+                tr = portfolio / 1_000_000 - 1
+                sharpe = float(arr.mean() / arr.std() * np.sqrt(252)) if arr.std() > 0 else 0
+                cum = np.cumprod(1 + arr); peak = np.maximum.accumulate(cum)
+                dd = float(abs(((cum - peak) / peak).min()))
+                nk = nikkei.loc[START:]; nk_ret = float(nk.iloc[-1] / nk.iloc[0] - 1) if len(nk) > 1 else 0
+                result = {"lookback": lb, "top_n": tn, "rebalance": "weekly",
+                          "ret_w": 0.25, "rs_w": 0.25, "green_w": 0.15, "smooth_w": 0.15,
+                          "resilience_w": 0.0, "high52_w": 0.2,
+                          "total_return_pct": round(tr*100, 2), "alpha_pct": round((tr-nk_ret)*100, 2),
+                          "sharpe": round(sharpe, 3), "max_dd_pct": round(dd*100, 2),
+                          "nikkei_pct": round(nk_ret*100, 2), "n_trades": len(returns)}
+            else:
+                result = None
+
         elif next_h.get("type") == "regime" or hid == "regime_adaptive_weights":
             import regime_weights as _rw
             codes = get_top_liquid_tickers(N_CODES)

@@ -20,26 +20,28 @@
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "midcap_green_dominant",
+    "id": "midcap_lower_raise",
     "result": {
       "lookback": 80,
       "top_n": 10,
       "rebalance": "weekly",
       "ret_w": 0.3,
       "rs_w": 0.3,
-      "green_w": 0.35,
-      "smooth_w": 0.05,
+      "green_w": 0.2,
+      "smooth_w": 0.2,
       "resilience_w": 0.0,
-      "total_return_pct": 3.13,
-      "alpha_pct": -95.07,
-      "sharpe": 0.376,
-      "max_dd_pct": 23.51,
+      "market_cap_min_bn": 300,
+      "market_cap_max_bn": 3000,
+      "total_return_pct": 1.39,
+      "alpha_pct": -96.81,
+      "sharpe": 0.263,
+      "max_dd_pct": 23.65,
       "nikkei_pct": 98.2,
       "n_trades": 116
     },
-    "delta_sharpe": -1.815,
+    "delta_sharpe": -1.928,
     "win": false,
-    "at": "2026-03-05T10:12:20.808287"
+    "at": "2026-03-05T10:14:37.510853"
   },
   "queue": [
     {
@@ -1221,7 +1223,25 @@
         "smooth_w": 0.25,
         "resilience_w": 0.0
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.25,
+        "smooth_w": 0.25,
+        "resilience_w": 0.0,
+        "total_return_pct": 8.09,
+        "alpha_pct": -90.11,
+        "sharpe": 0.723,
+        "max_dd_pct": 21.41,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.468,
+      "elapsed_sec": 1.8
     },
     {
       "id": "midcap_upper_expand",
@@ -1239,7 +1259,27 @@
         "market_cap_min_bn": 100,
         "market_cap_max_bn": 5000
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "market_cap_min_bn": 100,
+        "market_cap_max_bn": 5000,
+        "total_return_pct": 1.39,
+        "alpha_pct": -96.81,
+        "sharpe": 0.263,
+        "max_dd_pct": 23.65,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.928,
+      "elapsed_sec": 1.8
     },
     {
       "id": "midcap_lower_raise",
@@ -1256,6 +1296,75 @@
         "resilience_w": 0.0,
         "market_cap_min_bn": 300,
         "market_cap_max_bn": 3000
+      },
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "market_cap_min_bn": 300,
+        "market_cap_max_bn": 3000,
+        "total_return_pct": 1.39,
+        "alpha_pct": -96.81,
+        "sharpe": 0.263,
+        "max_dd_pct": 23.65,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.928,
+      "elapsed_sec": 1.8
+    },
+    {
+      "id": "rank_product_midcap",
+      "desc": "ランク積スコア×中型株: 4ファクターの百分位ランクの幾何平均でスコア計算",
+      "theory": "現行の線形加重合成（ret_w×score + rs_w×score + ...）は1つのファクターが極端に高くても他が低い銘柄を拾ってしまう。ランク積（各ファクターの百分位ランクを乗算し幾何平均をとる）では全ファクターが揃って高い銘柄だけが上位に来る。universe_midcapの中型株ユニバースを維持しながら、スコア計算を根本的に変える初めての試み。George & Hwang(2004)的な「多指標同時充足」銘柄の選別は日本株でも有効な可能性がある。OHLCVのみで実装可能。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "score_mode": "rank_product"
+      },
+      "status": "pending"
+    },
+    {
+      "id": "biweekly_midcap",
+      "desc": "中型株ユニバース×2週間リバランス: 取引コスト削減と中期モメンタム活用",
+      "theory": "universe_midcapは週次116トレードだが、中型株は流動性リスクが高くスリッページが累積する。月次（monthly）はdone_errorで失敗。2週間（biweekly）は未試験で、週次と月次の中間として最適な可能性がある。backtest.pyはbiweeklyをすでにサポート（2W-MON）。中型株のモメンタムは1〜2週では反転リスクがあるが2週以上は持続する傾向があり、2週単位でのリバランスがシグナル/コストのバランスを最大化できる。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "biweekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "status": "pending"
+    },
+    {
+      "id": "high52_midcap",
+      "desc": "52週高値proximity因子×中型株: 年初来高値への近さをモメンタムシグナルとして追加",
+      "theory": "George & Hwang(2004)の52週高値効果: 年初来高値に近い銘柄は将来リターンが高い。アナリストは高値更新に心理的抵抗を示し、良いニュースでも高値付近の株のターゲット価格を控えめに設定する。その結果、情報が段階的にしか織り込まれずモメンタムが継続する。日本の中型株はアナリストカバレッジが薄く、この効果が強く残る可能性がある。high52スコア=(現在価格/過去252日高値)をfactor_dfsに追加し、existing 4ファクターと合成（ret_w=0.25, rs_w=0.25, green_w=0.15, smooth_w=0.15, high52_w=0.2）。OHLCVのみで計算可能。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "high52_w": 0.2
       },
       "status": "pending"
     }
