@@ -6,7 +6,7 @@
 4. 完了後にopusサブエージェントで仮説生成
 5. ノンストップで回り続ける
 """
-import itertools, json, time, traceback
+import itertools, time, traceback
 import json_safe as json
 
 def sanitize(obj):
