@@ -1,11 +1,9 @@
 """FastAPI dashboard for Japan Momentum Screener"""
-import asyncio
 import json
-import os
 from pathlib import Path
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
+from fastapi.responses import FileResponse, JSONResponse
 
 app = FastAPI()
 BASE = Path(__file__).parent.parent
@@ -67,51 +65,6 @@ def signals_history():
         return []
     return json.loads(p.read_text())
 
-@app.get("/api/events")
-async def events(request: Request):
-    """SSE endpoint: sends 'update' when watched files change, 'ping' every 30s."""
-    watch_files = [
-        BASE / "backtest/evolution_log.json",
-        BASE / "backtest/hypothesis_queue.json",
-    ]
-
-    def get_mtimes():
-        mtimes = {}
-        for p in watch_files:
-            try:
-                mtimes[str(p)] = os.path.getmtime(p)
-            except OSError:
-                mtimes[str(p)] = 0
-        return mtimes
-
-    async def generator():
-        last_mtimes = get_mtimes()
-        elapsed = 0
-        try:
-            while True:
-                if await request.is_disconnected():
-                    break
-                await asyncio.sleep(3)
-                elapsed += 3
-                current_mtimes = get_mtimes()
-                if current_mtimes != last_mtimes:
-                    last_mtimes = current_mtimes
-                    yield "data: update\n\n"
-                    elapsed = 0
-                elif elapsed >= 30:
-                    yield "data: ping\n\n"
-                    elapsed = 0
-        except asyncio.CancelledError:
-            pass
-
-    return StreamingResponse(
-        generator(),
-        media_type="text/event-stream",
-        headers={
-            "Cache-Control": "no-cache",
-            "X-Accel-Buffering": "no",
-        },
-    )
 
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
 

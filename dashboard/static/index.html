@@ -327,14 +327,6 @@ function sortRank(col){
 // BACKTEST (統合)
 let btLoaded = false;
 
-function btUpdateTimestamp(){
-  const now = new Date();
-  const hh = String(now.getHours()).padStart(2,'0');
-  const mm = String(now.getMinutes()).padStart(2,'0');
-  const ss = String(now.getSeconds()).padStart(2,'0');
-  const el = document.getElementById('bt-last-updated');
-  if(el) el.textContent = '🔄 最終更新: '+hh+':'+mm+':'+ss;
-}
 async function loadBacktest(silent){
   const isFirst = !btLoaded;
   btLoaded = true;
@@ -356,8 +348,6 @@ async function loadBacktest(silent){
       document.getElementById('bt-loading').style.display='none';
       document.getElementById('bt-wrap').style.display='block';
     }
-    btUpdateTimestamp();
-    // SSEで更新するためポーリング不要
   } catch(e) {
     if(isFirst) document.getElementById('bt-loading').textContent='⚠️ データ取得エラー: '+e.message;
     console.error('loadBacktest error:', e);
@@ -467,25 +457,8 @@ async function loadHistoryDate(date){
   }
 }
 
-loadSignals(); loadRanking(); loadHistory();
+loadSignals(); loadRanking(); loadHistory(); loadBacktest();
 
-// SSE: バックテストのリアルタイム更新
-(function setupSSE(){
-  let source;
-  function connect(){
-    source = new EventSource('/api/events');
-    source.onmessage = function(e){
-      if(e.data === 'update' && btLoaded){
-        loadBacktest(true);
-      }
-    };
-    source.onerror = function(){
-      source.close();
-      setTimeout(connect, 3000);
-    };
-  }
-  connect();
-})();
 </script>
 </body>
 </html>
