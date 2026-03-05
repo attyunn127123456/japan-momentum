@@ -270,3 +270,28 @@ NameError: name 'append_evolution_log' is not defined
 次の仮説を自動起動: sector_neutral_momentum
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+Traceback (most recent call last):
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 281, in main
+    append_evolution_log(hid, next_h["desc"], result, win, delta)
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 130, in append_evolution_log
+    log.append({
+AttributeError: 'dict' object has no attribute 'append'
+仮説実行: short_squeeze_momentum - 信用倍率低位（空売り過多）×価格モメンタム強のショートスクイーズ狙い
+完了: short_squeeze_momentum | delta_sharpe=None | ❌ LOSE | 0秒
+エラー: 'dict' object has no attribute 'append'
+次の仮説を自動起動: smart_money_flow
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+Traceback (most recent call last):
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 281, in main
+    append_evolution_log(hid, next_h["desc"], result, win, delta)
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 130, in append_evolution_log
+    log.append({
+AttributeError: 'dict' object has no attribute 'append'
+仮説実行: smart_money_flow - 機関投資家買い越し×個人売り越し銘柄フィルター（investor_types活用）
+完了: smart_money_flow | delta_sharpe=None | ❌ LOSE | 0秒
+エラー: 'dict' object has no attribute 'append'
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了

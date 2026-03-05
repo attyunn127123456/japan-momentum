@@ -126,7 +126,8 @@ def eval_params_with_filter(params, factor_dfs, prices_dict, rebal_dates, nikkei
 def append_evolution_log(hid, desc, result, win, delta):
     """全テスト結果をevolution_log.jsonに累積追記"""
     log_file = Path("backtest/evolution_log.json")
-    log = json.loads(log_file.read_text()) if log_file.exists() else []
+    raw = json.loads(log_file.read_text()) if log_file.exists() else []
+    log = raw.get("all", []) if isinstance(raw, dict) else raw
     log.append({
         "at": datetime.now().isoformat(),
         "id": hid,

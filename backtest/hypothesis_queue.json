@@ -17,14 +17,14 @@
     "date": "2026-03-05",
     "hypothesis": "universe_midcap"
   },
-  "running": true,
-  "current_hypothesis": "sector_neutral_momentum",
+  "running": false,
+  "current_hypothesis": null,
   "last_result": {
-    "id": "sector_neutral_momentum",
+    "id": "smart_money_flow",
     "result": null,
     "delta_sharpe": null,
     "win": false,
-    "at": "2026-03-05T09:39:44.319311"
+    "at": "2026-03-05T09:40:42.304392"
   },
   "queue": [
     {
@@ -140,7 +140,10 @@
         "short_ratio_filter": "low_tercile",
         "short_ratio_w": 0.05
       },
-      "status": "pending"
+      "status": "done_error",
+      "result": null,
+      "delta_sharpe": null,
+      "elapsed_sec": 0.0
     },
     {
       "id": "smart_money_flow",
@@ -158,6 +161,30 @@
         "investor_flow_filter": "institution_buy_retail_sell",
         "investor_flow_w": 0.15
       },
+      "status": "done_error",
+      "result": null,
+      "delta_sharpe": null,
+      "elapsed_sec": 0.0
+    },
+    {
+      "id": "trend_filter_regime",
+      "desc": "日経225の200MA上/下でポジションサイズを切り替え",
+      "theory": "相場局面（強気/弱気）を判定してモメンタム戦略のエクスポージャーを調整。高ボラ時は守り。OHLCVのみで実装可能",
+      "params": {},
+      "status": "pending"
+    },
+    {
+      "id": "volume_price_divergence",
+      "desc": "価格上昇＋出来高急減の銘柄をフィルタ除外",
+      "theory": "出来高なき上昇は持続しにくい。需給ロジックでノイズ銘柄を除去してポートフォリオ品質を上げる",
+      "params": {},
+      "status": "pending"
+    },
+    {
+      "id": "adaptive_lookback",
+      "desc": "ATRに応じてルックバック期間を動的調整",
+      "theory": "高ボラ時は短期シグナル、低ボラ時は長期シグナルを使う。市場環境への適応性向上",
+      "params": {},
       "status": "pending"
     }
   ],
