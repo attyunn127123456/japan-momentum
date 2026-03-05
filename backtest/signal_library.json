@@ -5,7 +5,7 @@
     {
       "id": "ret",
       "desc": "80日リターン",
-      "status": "active",
+      "status": "rejected",
       "best_weight": 0.2,
       "sharpe_contribution": null
     },
@@ -47,16 +47,26 @@
     {
       "id": "omega",
       "desc": "上昇速度÷下落幅（非対称性）",
-      "status": "active",
+      "status": "rejected",
       "best_weight": 0.0,
       "sharpe_contribution": null
     },
     {
       "id": "short_momentum",
       "desc": "直近5-10日短期リターン",
-      "status": "active",
+      "status": "rejected",
       "best_weight": 0.0,
       "sharpe_contribution": null
     }
-  ]
+  ],
+  "current_weights": {
+    "ret_w": 0.0,
+    "rs_w": 0.1334,
+    "green_w": 0.0508,
+    "smooth_w": 0.326,
+    "resilience_w": 0.0736,
+    "high52_w": 0.4162,
+    "omega_w": 0.0,
+    "short_momentum_w": 0.0
+  }
 }
