@@ -662,3 +662,126 @@ Traceback (most recent call last):
   File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 257, in iterencode
     return _iterencode(o, 0)
 ValueError: Out of range float values are not JSON compliant
+INFO:     Started server process [92205]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     Started server process [92209]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     127.0.0.1:60102 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60105 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "HEAD / HTTP/1.1" 405 Method Not Allowed
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [92205]
+INFO:     Started server process [92287]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:60131 - "HEAD / HTTP/1.1" 405 Method Not Allowed
+INFO:     127.0.0.1:60135 - "HEAD / HTTP/1.1" 405 Method Not Allowed
+INFO:     127.0.0.1:60138 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "HEAD / HTTP/1.1" 405 Method Not Allowed
+INFO:     111.102.197.97:0 - "HEAD / HTTP/1.1" 405 Method Not Allowed
+INFO:     127.0.0.1:60157 - "HEAD / HTTP/1.1" 405 Method Not Allowed
+INFO:     127.0.0.1:60162 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60179 - "HEAD /static/index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60181 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK

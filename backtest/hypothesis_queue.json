@@ -1445,6 +1445,20 @@
       "status": "running"
     },
     {
+      "id": "short_term_accel",
+      "desc": "長期トレンド×直近加速: 短期リターン（5-10日）ファクターを追加（w=0.2）",
+      "theory": "80日モメンタムで長期トレンドを確認しつつ、直近5-10日のリターンで『今週強い銘柄』に寄せる。モメンタム投資の本質は長期で上がり続ける銘柄の中でも今この瞬間に最も強いものを選ぶこと。",
+      "params": {"lookback": 80, "top_n": 10, "rebalance": "weekly", "ret_w": 0.15, "rs_w": 0.15, "green_w": 0.1, "smooth_w": 0.1, "high52_w": 0.3, "short_momentum_w": 0.2},
+      "status": "pending"
+    },
+    {
+      "id": "short_term_dominant",
+      "desc": "短期モメンタム主力: short_momentum_wを0.35に増強",
+      "theory": "short_term_accelの発展型。直近5-10日リターンをhigh52と並ぶ主要ファクターに昇格させて『今週最も強い銘柄』への集中を強化。",
+      "params": {"lookback": 80, "top_n": 10, "rebalance": "weekly", "ret_w": 0.1, "rs_w": 0.1, "green_w": 0.1, "smooth_w": 0.1, "high52_w": 0.25, "short_momentum_w": 0.35},
+      "status": "pending"
+    },
+    {
       "id": "rs_accel_primary",
       "desc": "RS加速度を主力ファクター(w=0.35)に昇格: 前半40日→後半40日でRS改善幅をメインシグナル化",
       "theory": "過去のmomentum_accelerationはaccel_w=0.05の補助的役割（失敗）。本仮説は加速度を主力ファクターw=0.35として位置づけ直す根本的な変更。RS加速度=(後半40日の対日経RS)-(前半40日の対日経RS)を計算し、これが正かつ大きい銘柄=「今まさに機関投資家が参入しているトレンド転換点の銘柄」を主に選ぶ。lookback=80日の前半では平凡だったが後半から加速している銘柄は、情報が段階的に伝播している最中であり、まだ上昇余地が大きい。キオクシアのような大型株の「離陸フェーズ」はまさにこのRS加速が急増する局面。既存4シグナルは補助として維持するがret/rs/green/smoothを削減してaccelを主役にする。",

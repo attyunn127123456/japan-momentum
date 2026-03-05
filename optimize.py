@@ -30,11 +30,14 @@ def precompute(prices_dict, nikkei, lookbacks):
     down_mask = (nk_rets < -0.01).astype(float)
     
     # lb -> factor -> {code: Series}
-    data = {lb: {"ret":{},"rs":{},"green":{},"smooth":{},"resilience":{}} for lb in lookbacks}
+    data = {lb: {"ret":{},"rs":{},"green":{},"smooth":{},"resilience":{},"ret5":{},"ret10":{}} for lb in lookbacks}
     
     for code, df in prices_dict.items():
         p = df["AdjC"].dropna()
         dr = p.pct_change()
+        # 短期リターン（ルックバック非依存、最初に計算）
+        ret5  = (p / p.shift(5) - 1).astype(float)
+        ret10 = (p / p.shift(10) - 1).astype(float)
         for lb in lookbacks:
             ret    = (p / p.shift(lb) - 1).astype(float)
             nk_ret = (nikkei / nikkei.shift(lb) - 1).astype(float)
@@ -51,6 +54,8 @@ def precompute(prices_dict, nikkei, lookbacks):
             data[lb]["green"][code]      = green
             data[lb]["smooth"][code]     = smooth
             data[lb]["resilience"][code] = res.astype(float)
+            data[lb]["ret5"][code]       = ret5
+            data[lb]["ret10"][code]      = ret10
     
     # DataFrameに変換
     factor_dfs = {}
@@ -81,6 +86,18 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
     weights = {k: params[k+"_w"] for k in ["ret","rs","green","smooth","resilience"]}
     
     score_df = build_score_df(factor_dfs, lb, weights)
+
+    # 短期モメンタムファクター（5日・10日リターンの百分位ランク平均）
+    short_momentum_w = params.get('short_momentum_w', 0.0)
+    if short_momentum_w > 0 and lb in factor_dfs and \
+       'ret5' in factor_dfs[lb] and 'ret10' in factor_dfs[lb]:
+        short_mom_df = (factor_dfs[lb]['ret5'] + factor_dfs[lb]['ret10']) / 2
+        short_mom_ranked = short_mom_df.rank(axis=1, pct=True)
+        if score_df is None:
+            score_df = short_mom_ranked * short_momentum_w
+        else:
+            score_df = score_df + short_mom_ranked * short_momentum_w
+
     if score_df is None:
         return None
     

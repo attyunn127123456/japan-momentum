@@ -5,9 +5,9 @@
       "desc": "5〜25日リターン（短期モメンタム）",
       "type": "ohlcv",
       "param_key": "ret_w",
-      "status": "active",
+      "status": "candidate",
       "best_weight": 0.3,
-      "sharpe_contribution": null,
+      "sharpe_contribution": -0.063,
       "added_at": "2026-03-05"
     },
     {
@@ -15,9 +15,9 @@
       "desc": "相対強度（日経比）",
       "type": "ohlcv",
       "param_key": "rs_w",
-      "status": "active",
+      "status": "candidate",
       "best_weight": 0.3,
-      "sharpe_contribution": null,
+      "sharpe_contribution": -0.063,
       "added_at": "2026-03-05"
     },
     {
@@ -27,7 +27,7 @@
       "param_key": "green_w",
       "status": "active",
       "best_weight": 0.2,
-      "sharpe_contribution": null,
+      "sharpe_contribution": 0.08,
       "added_at": "2026-03-05"
     },
     {
@@ -37,7 +37,7 @@
       "param_key": "smooth_w",
       "status": "active",
       "best_weight": 0.2,
-      "sharpe_contribution": null,
+      "sharpe_contribution": 0.448,
       "added_at": "2026-03-05"
     },
     {
@@ -47,7 +47,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.524,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -57,7 +57,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": null,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -67,7 +67,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": null,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -77,7 +77,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": null,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -87,7 +87,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.524,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -97,7 +97,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": null,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -107,7 +107,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": null,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -117,7 +117,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": null,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -127,7 +127,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.928,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -137,7 +137,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.766,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -147,7 +147,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.77,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -157,7 +157,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.928,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -167,7 +167,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.928,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -177,7 +177,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.928,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -187,7 +187,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.928,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -197,7 +197,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.416,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -207,7 +207,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.766,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -217,7 +217,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -2.036,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -227,7 +227,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.928,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -237,7 +237,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.971,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -247,7 +247,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -0.882,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -257,7 +257,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.606,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -267,7 +267,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.455,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -277,7 +277,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.925,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -287,7 +287,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.928,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -297,7 +297,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -0.853,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -307,7 +307,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.928,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -317,7 +317,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.815,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -327,7 +327,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.468,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -337,7 +337,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.928,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -347,7 +347,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.928,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -357,7 +357,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": null,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -367,7 +367,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.732,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -375,9 +375,9 @@
       "desc": "52週高値proximity因子×中型株: 年初来高値への近さをモメンタムシグナルとして追加",
       "type": "hypothesis",
       "param_key": null,
-      "status": "active",
+      "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 0.106,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -387,7 +387,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -2.034,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -397,7 +397,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.992,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -407,7 +407,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.712,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -417,7 +417,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.865,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -427,7 +427,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.865,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -437,7 +437,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -1.803,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -447,7 +447,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -0.006,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -457,7 +457,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": -0.145,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     },
     {
@@ -465,9 +465,9 @@
       "desc": "52週高値効果×全銘柄ユニバース（大型含む）: high52_wを主力ファクター（w=0.35）に昇格して時価総額フィルター廃止",
       "type": "hypothesis",
       "param_key": null,
-      "status": "active",
+      "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 0.233,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     }
   ],
@@ -479,6 +479,6 @@
     "resilience_w": 0.0,
     "high52_w": 0.35
   },
-  "baseline_sharpe": 2.53,
+  "baseline_sharpe": 0.647,
   "last_updated": "2026-03-05"
 }

@@ -115,13 +115,13 @@ app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), na
 
 @app.get("/")
 def index():
-    r = FileResponse(Path(__file__).parent / "static/index.html")
+    r = FileResponse(Path(__file__).parent / "static/index.html", media_type="text/html")
     r.headers["Cache-Control"] = "no-store"
     return r
 
 @app.get("/backtest")
 def backtest_page():
-    r = FileResponse(Path(__file__).parent / "static/index.html")
+    r = FileResponse(Path(__file__).parent / "static/index.html", media_type="text/html")
     r.headers["Cache-Control"] = "no-store"
     return r
 
