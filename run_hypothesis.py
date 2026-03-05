@@ -147,6 +147,37 @@ def append_evolution_log(hid, desc, result, win, delta):
 
 
 SIGNAL_LIBRARY_FILE = Path("backtest/signal_library.json")
+EVOLUTION_ENGINE_FILE = Path(__file__).parent / "evolution_engine.py"
+
+
+def _add_factor_to_ga_ranges(factor_key: str):
+    """evolution_engine.py の local_search 内 RANGES に新ファクターの重みキーを追加する。
+    既に存在する場合は何もしない。"""
+    import re
+    content = EVOLUTION_ENGINE_FILE.read_text()
+
+    # 既に RANGES に存在するか確認（シングル/ダブルクォート両対応）
+    if f"'{factor_key}'" in content or f'"{factor_key}"' in content:
+        print(f"  {factor_key} は既に RANGES に存在します（スキップ）")
+        return
+
+    # 'short_momentum_w': [...], の行を検索し、その直後に新エントリを挿入
+    new_entry = f"        '{factor_key}':          [0.0, 0.05, 0.1, 0.15, 0.2],\n"
+    marker = "'short_momentum_w': [0.0, 0.05, 0.1, 0.15, 0.2],\n"
+    if marker in content:
+        content = content.replace(marker, marker + new_entry)
+        EVOLUTION_ENGINE_FILE.write_text(content)
+        print(f"  ✅ {factor_key} を evolution_engine.py の RANGES に追加しました")
+    else:
+        # フォールバック: RANGES の閉じ括弧の直前に挿入
+        pattern = re.compile(r"(RANGES\s*=\s*\{[^}]+?)(\n\s*\})", re.DOTALL)
+        m = pattern.search(content)
+        if m:
+            content = content[:m.start(2)] + "\n" + new_entry.rstrip("\n") + content[m.start(2):]
+            EVOLUTION_ENGINE_FILE.write_text(content)
+            print(f"  ✅ {factor_key} を evolution_engine.py の RANGES に追加しました（fallback）")
+        else:
+            print(f"  ⚠️  RANGES への挿入位置が見つかりませんでした: {factor_key}")
 
 
 def update_signal_library(hid, desc, result, win, delta):
@@ -202,6 +233,31 @@ def main():
 
     hid = next_h["id"]
     print(f"仮説実行: {hid} - {next_h['desc']}")
+
+    # ── 新ロジック: factor_to_add があれば GA の RANGES に追加して終了 ──
+    if next_h.get("factor_to_add"):
+        factor_key = next_h["factor_to_add"]
+        print(f"  factor_to_add 検出: {factor_key} を GA の RANGES に追加します")
+        queue["running"] = True
+        queue["current_hypothesis"] = hid
+        next_h["status"] = "running"
+        save_queue(queue)
+
+        _add_factor_to_ga_ranges(factor_key)
+
+        next_h["status"] = "done_win"
+        queue["running"] = False
+        queue["current_hypothesis"] = None
+        save_queue(queue)
+        DONE_FILE.write_text(json.dumps(
+            {"status": "added_to_ga", "id": hid, "factor": factor_key,
+             "at": datetime.now().isoformat()},
+            ensure_ascii=False
+        ))
+        print(f"完了: {hid} | status=added_to_ga | factor={factor_key}")
+        return
+    # ── ここまで新ロジック ──
+
     queue["running"] = True
     queue["current_hypothesis"] = hid
     next_h["status"] = "running"

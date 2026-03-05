@@ -357,6 +357,10 @@ def run_evolution():
             }
             QUEUE_FILE.write_text(json.dumps(queue, ensure_ascii=False, indent=2))
             baseline = queue['baseline']
+
+        # GA local_search 完了後にファクター整理を実行（best result のパラメータで）
+        print('\n--- ファクター整理 (cleanup_weak_signals) ---', flush=True)
+        cleanup_weak_signals(p)
     
     # ---- Step3: 新ファクター試験 ----
     print('\n--- 新ファクター試験 ---', flush=True)
@@ -437,6 +441,34 @@ def run_evolution():
         capture_output=True
     )
     print('openclaw system event 送信完了', flush=True)
+
+
+def cleanup_weak_signals(baseline_params):
+    """weight が 0.02 以下のファクターを rejected に整理する。
+    signal_library.json が存在しない場合はスキップ（エラーにしない）。"""
+    lib_path = Path('backtest/signal_library.json')
+    if not lib_path.exists():
+        print('  signal_library.json が存在しないため cleanup_weak_signals をスキップ', flush=True)
+        return
+
+    try:
+        lib = json.loads(lib_path.read_text())
+        changed = 0
+        for sig in lib['signals']:
+            # param_key が直接設定されていればそれを使い、なければ id から推測
+            param_key = sig.get('param_key') or (sig['id'].replace('_factor', '') + '_w')
+            w = baseline_params.get(param_key, 0)
+            if w < 0.02 and sig.get('status') == 'active':
+                sig['status'] = 'rejected'
+                changed += 1
+                print(f'  🗑️  {sig["id"]}: weight={w:.3f} → rejected', flush=True)
+        if changed:
+            lib_path.write_text(json.dumps(lib, indent=2, ensure_ascii=False))
+            print(f'  cleanup_weak_signals: {changed} シグナルを rejected に変更', flush=True)
+        else:
+            print('  cleanup_weak_signals: 変更なし', flush=True)
+    except Exception as e:
+        print(f'  cleanup_weak_signals エラー（スキップ）: {e}', flush=True)
 
 
 def append_log(hid, desc, result, win, delta):

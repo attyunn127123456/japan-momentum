@@ -277,5 +277,962 @@
       "n_trades=116",
       "✅ 検証期間 sharpe=+1.009"
     ]
+  },
+  {
+    "at": "2026-03-05T11:57:20.158619",
+    "id": "combo_local_search+high52_all_universe",
+    "hypotheses": [
+      "local_search",
+      "high52_all_universe"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.1,
+      "rs_w": 0.22895000000000001,
+      "green_w": 0.0863,
+      "smooth_w": 0.1972,
+      "resilience_w": 0.0304,
+      "high52_w": 0.3643
+    },
+    "sharpe": 2.02,
+    "total_return_pct": 24.79,
+    "alpha_pct": -73.41,
+    "max_dd_pct": 15.02,
+    "delta_sharpe": -1.379,
+    "score": -0.081,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-1.379",
+      "❌ DD悪化 +4.1%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+3.852"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:57:20.212483",
+    "id": "combo_local_search+high52_midcap",
+    "hypotheses": [
+      "local_search",
+      "high52_midcap"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.125,
+      "rs_w": 0.25395,
+      "green_w": 0.0988,
+      "smooth_w": 0.2097,
+      "resilience_w": 0.0304,
+      "high52_w": 0.3643
+    },
+    "sharpe": 1.816,
+    "total_return_pct": 22.14,
+    "alpha_pct": -76.06,
+    "max_dd_pct": 15.93,
+    "delta_sharpe": -1.583,
+    "score": -0.218,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-1.583",
+      "❌ DD悪化 +5.0%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+3.577"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:57:20.265751",
+    "id": "combo_local_search+high52_w_boost",
+    "hypotheses": [
+      "local_search",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.1,
+      "rs_w": 0.22895000000000001,
+      "green_w": 0.0988,
+      "smooth_w": 0.2097,
+      "resilience_w": 0.0304,
+      "high52_w": 0.3643
+    },
+    "sharpe": 1.772,
+    "total_return_pct": 21.28,
+    "alpha_pct": -76.92,
+    "max_dd_pct": 15.72,
+    "delta_sharpe": -1.627,
+    "score": -0.226,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-1.627",
+      "❌ DD悪化 +4.8%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+3.622"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:57:20.311442",
+    "id": "combo_high52_all_universe+high52_midcap",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_midcap"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.682,
+    "total_return_pct": 7.8,
+    "alpha_pct": -90.4,
+    "max_dd_pct": 22.39,
+    "delta_sharpe": -2.717,
+    "score": -1.132,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-2.717",
+      "❌ DD悪化 +11.5%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+1.275"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:57:20.356845",
+    "id": "combo_high52_all_universe+high52_w_boost",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.2,
+      "rs_w": 0.2,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.483,
+    "total_return_pct": 4.73,
+    "alpha_pct": -93.47,
+    "max_dd_pct": 22.84,
+    "delta_sharpe": -2.916,
+    "score": -1.27,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-2.916",
+      "❌ DD悪化 +11.9%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+0.983"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:57:20.402082",
+    "id": "combo_high52_midcap+high52_w_boost",
+    "hypotheses": [
+      "high52_midcap",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.15,
+      "smooth_w": 0.15,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.453,
+    "total_return_pct": 4.27,
+    "alpha_pct": -93.93,
+    "max_dd_pct": 23.3,
+    "delta_sharpe": -2.946,
+    "score": -1.277,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-2.946",
+      "❌ DD悪化 +12.4%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+1.009"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:58:10.131538",
+    "id": "combo_local_search+high52_all_universe",
+    "hypotheses": [
+      "local_search",
+      "high52_all_universe"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.1,
+      "rs_w": 0.22895000000000001,
+      "green_w": 0.0863,
+      "smooth_w": 0.1972,
+      "resilience_w": 0.0304,
+      "high52_w": 0.3643
+    },
+    "sharpe": 1.273,
+    "total_return_pct": 16.24,
+    "alpha_pct": -81.96,
+    "max_dd_pct": 19.98,
+    "delta_sharpe": -1.257,
+    "score": -0.607,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-1.257",
+      "❌ DD悪化 +4.5%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+0.980"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:58:10.177852",
+    "id": "combo_local_search+high52_midcap",
+    "hypotheses": [
+      "local_search",
+      "high52_midcap"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.125,
+      "rs_w": 0.25395,
+      "green_w": 0.0988,
+      "smooth_w": 0.2097,
+      "resilience_w": 0.0304,
+      "high52_w": 0.3643
+    },
+    "sharpe": 1.484,
+    "total_return_pct": 18.86,
+    "alpha_pct": -79.34,
+    "max_dd_pct": 19.11,
+    "delta_sharpe": -1.0459999999999998,
+    "score": -0.517,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-1.046",
+      "❌ DD悪化 +3.6%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+1.008"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:58:10.223470",
+    "id": "combo_local_search+high52_w_boost",
+    "hypotheses": [
+      "local_search",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.1,
+      "rs_w": 0.22895000000000001,
+      "green_w": 0.0988,
+      "smooth_w": 0.2097,
+      "resilience_w": 0.0304,
+      "high52_w": 0.3643
+    },
+    "sharpe": 1.182,
+    "total_return_pct": 14.44,
+    "alpha_pct": -83.76,
+    "max_dd_pct": 18.79,
+    "delta_sharpe": -1.3479999999999999,
+    "score": -0.621,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-1.348",
+      "❌ DD悪化 +3.3%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+1.091"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:58:10.269238",
+    "id": "combo_high52_all_universe+high52_midcap",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_midcap"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.682,
+    "total_return_pct": 7.8,
+    "alpha_pct": -90.4,
+    "max_dd_pct": 22.39,
+    "delta_sharpe": -1.8479999999999999,
+    "score": -0.784,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-1.848",
+      "❌ DD悪化 +6.9%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+1.275"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:58:10.314765",
+    "id": "combo_high52_all_universe+high52_w_boost",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.2,
+      "rs_w": 0.2,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.483,
+    "total_return_pct": 4.73,
+    "alpha_pct": -93.47,
+    "max_dd_pct": 22.84,
+    "delta_sharpe": -2.0469999999999997,
+    "score": -0.922,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-2.047",
+      "❌ DD悪化 +7.3%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+0.983"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:58:10.360063",
+    "id": "combo_high52_midcap+high52_w_boost",
+    "hypotheses": [
+      "high52_midcap",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.15,
+      "smooth_w": 0.15,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.453,
+    "total_return_pct": 4.27,
+    "alpha_pct": -93.93,
+    "max_dd_pct": 23.3,
+    "delta_sharpe": -2.077,
+    "score": -0.929,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-2.077",
+      "❌ DD悪化 +7.8%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+1.009"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:59:14.927014",
+    "id": "combo_local_search+high52_all_universe",
+    "hypotheses": [
+      "local_search",
+      "high52_all_universe"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.1,
+      "rs_w": 0.22895000000000001,
+      "green_w": 0.0863,
+      "smooth_w": 0.1972,
+      "resilience_w": 0.0304,
+      "high52_w": 0.3643
+    },
+    "sharpe": 2.02,
+    "total_return_pct": 24.79,
+    "alpha_pct": -73.41,
+    "max_dd_pct": 15.02,
+    "delta_sharpe": -1.379,
+    "score": -0.081,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-1.379",
+      "❌ DD悪化 +4.1%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+3.852"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:59:15.075564",
+    "id": "combo_local_search+high52_midcap",
+    "hypotheses": [
+      "local_search",
+      "high52_midcap"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.125,
+      "rs_w": 0.25395,
+      "green_w": 0.0988,
+      "smooth_w": 0.2097,
+      "resilience_w": 0.0304,
+      "high52_w": 0.3643
+    },
+    "sharpe": 1.816,
+    "total_return_pct": 22.14,
+    "alpha_pct": -76.06,
+    "max_dd_pct": 15.93,
+    "delta_sharpe": -1.583,
+    "score": -0.218,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-1.583",
+      "❌ DD悪化 +5.0%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+3.577"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:59:15.857133",
+    "id": "combo_local_search+high52_w_boost",
+    "hypotheses": [
+      "local_search",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.1,
+      "rs_w": 0.22895000000000001,
+      "green_w": 0.0988,
+      "smooth_w": 0.2097,
+      "resilience_w": 0.0304,
+      "high52_w": 0.3643
+    },
+    "sharpe": 1.772,
+    "total_return_pct": 21.28,
+    "alpha_pct": -76.92,
+    "max_dd_pct": 15.72,
+    "delta_sharpe": -1.627,
+    "score": -0.226,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-1.627",
+      "❌ DD悪化 +4.8%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+3.622"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:59:15.933144",
+    "id": "combo_high52_all_universe+high52_midcap",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_midcap"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.682,
+    "total_return_pct": 7.8,
+    "alpha_pct": -90.4,
+    "max_dd_pct": 22.39,
+    "delta_sharpe": -2.717,
+    "score": -1.132,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-2.717",
+      "❌ DD悪化 +11.5%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+1.275"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:59:16.119459",
+    "id": "combo_high52_all_universe+high52_w_boost",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.2,
+      "rs_w": 0.2,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.483,
+    "total_return_pct": 4.73,
+    "alpha_pct": -93.47,
+    "max_dd_pct": 22.84,
+    "delta_sharpe": -2.916,
+    "score": -1.27,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-2.916",
+      "❌ DD悪化 +11.9%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+0.983"
+    ]
+  },
+  {
+    "at": "2026-03-05T11:59:16.178411",
+    "id": "combo_high52_midcap+high52_w_boost",
+    "hypotheses": [
+      "high52_midcap",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.15,
+      "smooth_w": 0.15,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.453,
+    "total_return_pct": 4.27,
+    "alpha_pct": -93.93,
+    "max_dd_pct": 23.3,
+    "delta_sharpe": -2.946,
+    "score": -1.277,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-2.946",
+      "❌ DD悪化 +12.4%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+1.009"
+    ]
+  },
+  {
+    "at": "2026-03-05T12:00:54.494058",
+    "id": "combo_local_search+high52_all_universe",
+    "hypotheses": [
+      "local_search",
+      "high52_all_universe"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 8,
+      "rebalance": "weekly",
+      "ret_w": 0.1,
+      "rs_w": 0.16410000000000002,
+      "green_w": 0.09455,
+      "smooth_w": 0.21915,
+      "resilience_w": 0.0354,
+      "high52_w": 0.4237,
+      "omega_w": 0.0,
+      "short_momentum_w": 0.0
+    },
+    "sharpe": 1.523,
+    "total_return_pct": 17.38,
+    "alpha_pct": -80.82,
+    "max_dd_pct": 15.74,
+    "delta_sharpe": -2.1550000000000002,
+    "score": -0.445,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-2.155",
+      "❌ DD悪化 +10.2%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+3.586"
+    ]
+  },
+  {
+    "at": "2026-03-05T12:00:54.543976",
+    "id": "combo_local_search+high52_midcap",
+    "hypotheses": [
+      "local_search",
+      "high52_midcap"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 8,
+      "rebalance": "weekly",
+      "ret_w": 0.125,
+      "rs_w": 0.1891,
+      "green_w": 0.10705,
+      "smooth_w": 0.23165000000000002,
+      "resilience_w": 0.0354,
+      "high52_w": 0.4237,
+      "omega_w": 0.0,
+      "short_momentum_w": 0.0
+    },
+    "sharpe": 1.767,
+    "total_return_pct": 20.95,
+    "alpha_pct": -77.25,
+    "max_dd_pct": 16.14,
+    "delta_sharpe": -1.911,
+    "score": -0.374,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-1.911",
+      "❌ DD悪化 +10.6%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+3.451"
+    ]
+  },
+  {
+    "at": "2026-03-05T12:00:54.593933",
+    "id": "combo_local_search+high52_w_boost",
+    "hypotheses": [
+      "local_search",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 8,
+      "rebalance": "weekly",
+      "ret_w": 0.1,
+      "rs_w": 0.16410000000000002,
+      "green_w": 0.10705,
+      "smooth_w": 0.23165000000000002,
+      "resilience_w": 0.0354,
+      "high52_w": 0.4237,
+      "omega_w": 0.0,
+      "short_momentum_w": 0.0
+    },
+    "sharpe": 1.707,
+    "total_return_pct": 19.82,
+    "alpha_pct": -78.38,
+    "max_dd_pct": 15.42,
+    "delta_sharpe": -1.9709999999999999,
+    "score": -0.345,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-1.971",
+      "❌ DD悪化 +9.9%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+3.716"
+    ]
+  },
+  {
+    "at": "2026-03-05T12:00:54.637883",
+    "id": "combo_high52_all_universe+high52_midcap",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_midcap"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.682,
+    "total_return_pct": 7.8,
+    "alpha_pct": -90.4,
+    "max_dd_pct": 22.39,
+    "delta_sharpe": -2.996,
+    "score": -1.243,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-2.996",
+      "❌ DD悪化 +16.9%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+1.275"
+    ]
+  },
+  {
+    "at": "2026-03-05T12:00:54.681462",
+    "id": "combo_high52_all_universe+high52_w_boost",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.2,
+      "rs_w": 0.2,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.483,
+    "total_return_pct": 4.73,
+    "alpha_pct": -93.47,
+    "max_dd_pct": 22.84,
+    "delta_sharpe": -3.195,
+    "score": -1.381,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-3.195",
+      "❌ DD悪化 +17.3%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+0.983"
+    ]
+  },
+  {
+    "at": "2026-03-05T12:00:54.724935",
+    "id": "combo_high52_midcap+high52_w_boost",
+    "hypotheses": [
+      "high52_midcap",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.15,
+      "smooth_w": 0.15,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.453,
+    "total_return_pct": 4.27,
+    "alpha_pct": -93.93,
+    "max_dd_pct": 23.3,
+    "delta_sharpe": -3.225,
+    "score": -1.388,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-3.225",
+      "❌ DD悪化 +17.8%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+1.009"
+    ]
+  },
+  {
+    "at": "2026-03-05T12:03:21.333055",
+    "id": "combo_local_search+high52_all_universe",
+    "hypotheses": [
+      "local_search",
+      "high52_all_universe"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 8,
+      "rebalance": "weekly",
+      "ret_w": 0.1,
+      "rs_w": 0.16565000000000002,
+      "green_w": 0.0953,
+      "smooth_w": 0.22295,
+      "resilience_w": 0.03625,
+      "high52_w": 0.4097,
+      "omega_w": 0.0,
+      "short_momentum_w": 0.0
+    },
+    "sharpe": 1.643,
+    "total_return_pct": 19.13,
+    "alpha_pct": -79.07,
+    "max_dd_pct": 15.8,
+    "delta_sharpe": -2.3289999999999997,
+    "score": -0.519,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-2.329",
+      "❌ DD悪化 +10.3%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+3.564"
+    ]
+  },
+  {
+    "at": "2026-03-05T12:03:21.380806",
+    "id": "combo_local_search+high52_midcap",
+    "hypotheses": [
+      "local_search",
+      "high52_midcap"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 8,
+      "rebalance": "weekly",
+      "ret_w": 0.125,
+      "rs_w": 0.19065,
+      "green_w": 0.1078,
+      "smooth_w": 0.23545,
+      "resilience_w": 0.03625,
+      "high52_w": 0.4097,
+      "omega_w": 0.0,
+      "short_momentum_w": 0.0
+    },
+    "sharpe": 1.755,
+    "total_return_pct": 20.75,
+    "alpha_pct": -77.45,
+    "max_dd_pct": 16.04,
+    "delta_sharpe": -2.217,
+    "score": -0.431,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-2.217",
+      "❌ DD悪化 +10.6%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+3.778"
+    ]
+  },
+  {
+    "at": "2026-03-05T12:03:21.428402",
+    "id": "combo_local_search+high52_w_boost",
+    "hypotheses": [
+      "local_search",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 8,
+      "rebalance": "weekly",
+      "ret_w": 0.1,
+      "rs_w": 0.16565000000000002,
+      "green_w": 0.1078,
+      "smooth_w": 0.23545,
+      "resilience_w": 0.03625,
+      "high52_w": 0.4097,
+      "omega_w": 0.0,
+      "short_momentum_w": 0.0
+    },
+    "sharpe": 1.889,
+    "total_return_pct": 22.56,
+    "alpha_pct": -75.64,
+    "max_dd_pct": 15.08,
+    "delta_sharpe": -2.083,
+    "score": -0.386,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-2.083",
+      "❌ DD悪化 +9.6%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+3.735"
+    ]
+  },
+  {
+    "at": "2026-03-05T12:03:21.470031",
+    "id": "combo_high52_all_universe+high52_midcap",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_midcap"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.682,
+    "total_return_pct": 7.8,
+    "alpha_pct": -90.4,
+    "max_dd_pct": 22.39,
+    "delta_sharpe": -3.29,
+    "score": -1.361,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-3.290",
+      "❌ DD悪化 +16.9%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+1.275"
+    ]
+  },
+  {
+    "at": "2026-03-05T12:03:21.511304",
+    "id": "combo_high52_all_universe+high52_w_boost",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.2,
+      "rs_w": 0.2,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.483,
+    "total_return_pct": 4.73,
+    "alpha_pct": -93.47,
+    "max_dd_pct": 22.84,
+    "delta_sharpe": -3.489,
+    "score": -1.499,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-3.489",
+      "❌ DD悪化 +17.4%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+0.983"
+    ]
+  },
+  {
+    "at": "2026-03-05T12:03:21.553533",
+    "id": "combo_high52_midcap+high52_w_boost",
+    "hypotheses": [
+      "high52_midcap",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.15,
+      "smooth_w": 0.15,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.453,
+    "total_return_pct": 4.27,
+    "alpha_pct": -93.93,
+    "max_dd_pct": 23.3,
+    "delta_sharpe": -3.519,
+    "score": -1.506,
+    "adopted": false,
+    "reasons": [
+      "sharpe_delta=-3.519",
+      "❌ DD悪化 +17.8%",
+      "n_trades=116",
+      "✅ 検証期間 sharpe=+1.009"
+    ]
   }
 ]

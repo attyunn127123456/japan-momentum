@@ -1,6 +1,98 @@
 {
   "best10": [
     {
+      "at": "2026-03-05T12:03:15.572882",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=40 tn=7",
+      "win": true,
+      "delta_sharpe": 0.29400000000000004,
+      "sharpe": 3.972,
+      "total_return_pct": 30.35,
+      "alpha_pct": -67.85,
+      "max_dd_pct": 5.48,
+      "params": {
+        "lookback": 40,
+        "top_n": 7,
+        "rebalance": "weekly",
+        "ret_w": 0.0,
+        "rs_w": 0.1313,
+        "green_w": 0.0656,
+        "smooth_w": 0.3209,
+        "resilience_w": 0.0725,
+        "high52_w": 0.4097,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T12:00:48.624340",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=40 tn=7",
+      "win": true,
+      "delta_sharpe": 0.2789999999999999,
+      "sharpe": 3.678,
+      "total_return_pct": 27.63,
+      "alpha_pct": -70.57,
+      "max_dd_pct": 5.53,
+      "params": {
+        "lookback": 40,
+        "top_n": 7,
+        "rebalance": "weekly",
+        "ret_w": 0.0,
+        "rs_w": 0.1282,
+        "green_w": 0.0641,
+        "smooth_w": 0.3133,
+        "resilience_w": 0.0708,
+        "high52_w": 0.4237,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T11:57:14.083656",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=40 tn=10",
+      "win": true,
+      "delta_sharpe": 0.8690000000000002,
+      "sharpe": 3.399,
+      "total_return_pct": 33.46,
+      "alpha_pct": -64.74,
+      "max_dd_pct": 10.9,
+      "params": {
+        "lookback": 40,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.0,
+        "rs_w": 0.2579,
+        "green_w": 0.0476,
+        "smooth_w": 0.2694,
+        "resilience_w": 0.0608,
+        "high52_w": 0.3643
+      }
+    },
+    {
+      "at": "2026-03-05T11:59:07.497662",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=40 tn=10",
+      "win": true,
+      "delta_sharpe": 0.8690000000000002,
+      "sharpe": 3.399,
+      "total_return_pct": 33.46,
+      "alpha_pct": -64.74,
+      "max_dd_pct": 10.9,
+      "params": {
+        "lookback": 40,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.0,
+        "rs_w": 0.2579,
+        "green_w": 0.0476,
+        "smooth_w": 0.2694,
+        "resilience_w": 0.0608,
+        "high52_w": 0.3643
+      }
+    },
+    {
       "at": "2026-03-05T10:25:13.649053",
       "id": "high52_all_universe",
       "desc": "52週高値効果×全銘柄ユニバース（大型含む）: high52_wを主力ファクター（w=0.35）に昇格して時価総額フィルター廃止",
@@ -106,95 +198,121 @@
       }
     },
     {
-      "at": "2026-03-05T10:20:22.952476",
-      "id": "high52_midcap",
-      "desc": "52週高値proximity因子×中型株: 年初来高値への近さをモメンタムシグナルとして追加",
-      "win": true,
-      "delta_sharpe": 0.106,
-      "sharpe": 2.297,
-      "total_return_pct": 38.5,
-      "alpha_pct": -59.69,
-      "max_dd_pct": 16.23,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.25,
-        "rs_w": 0.25,
-        "green_w": 0.15,
-        "smooth_w": 0.15,
-        "resilience_w": 0.0
-      }
-    },
-    {
-      "at": "2026-03-05T10:25:04.134677",
-      "id": "high52_w_boost",
-      "desc": "52週高値ファクターを主力に昇格（high52_w=0.3）: ベースラインのw=0.2からさらに増強",
+      "at": "2026-03-05T11:58:06.747618",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=80 tn=10",
       "win": false,
-      "delta_sharpe": -0.006,
-      "sharpe": 2.291,
-      "total_return_pct": 43.99,
-      "alpha_pct": -54.21,
-      "max_dd_pct": 15.23,
+      "delta_sharpe": -0.22499999999999964,
+      "sharpe": 2.305,
+      "total_return_pct": 39.44,
+      "alpha_pct": -58.76,
+      "max_dd_pct": 17.53,
       "params": {
         "lookback": 80,
         "top_n": 10,
         "rebalance": "weekly",
-        "ret_w": 0.2,
+        "ret_w": 0.1,
         "rs_w": 0.2,
-        "green_w": 0.15,
-        "smooth_w": 0.15,
+        "green_w": 0.075,
+        "smooth_w": 0.125,
         "resilience_w": 0.0
       }
-    },
-    {
-      "at": "2026-03-05T10:01:38.727353",
-      "id": "universe_midcap",
-      "desc": "ユニバース→時価総額100〜3000億の中型株",
-      "win": true,
-      "delta_sharpe": 0.421,
-      "sharpe": 2.191,
-      "total_return_pct": 36.78,
-      "alpha_pct": -61.42,
-      "max_dd_pct": 18.36,
-      "params": {}
-    },
-    {
-      "at": "2026-03-05T10:25:08.858690",
-      "id": "high52_accel_combo",
-      "desc": "52週高値近接×モメンタム加速の組み合わせ: 高値更新中かつ加速している銘柄を重点選択",
-      "win": false,
-      "delta_sharpe": -0.145,
-      "sharpe": 2.152,
-      "total_return_pct": 42.01,
-      "alpha_pct": -56.19,
-      "max_dd_pct": 17.33,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.2,
-        "rs_w": 0.25,
-        "green_w": 0.15,
-        "smooth_w": 0.1,
-        "resilience_w": 0.0
-      }
-    },
-    {
-      "at": "2026-03-05T10:01:38.727362",
-      "id": "vol_candle_exit",
-      "desc": "大出来高陰線でエグジットシグナル追加",
-      "win": false,
-      "delta_sharpe": -0.418,
-      "sharpe": 1.773,
-      "total_return_pct": 31.72,
-      "alpha_pct": -66.48,
-      "max_dd_pct": 21.53,
-      "params": {}
     }
   ],
   "all": [
     {
+      "at": "2026-03-05T12:03:15.572882",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=40 tn=7",
+      "win": true,
+      "delta_sharpe": 0.29400000000000004,
+      "sharpe": 3.972,
+      "total_return_pct": 30.35,
+      "alpha_pct": -67.85,
+      "max_dd_pct": 5.48,
+      "params": {
+        "lookback": 40,
+        "top_n": 7,
+        "rebalance": "weekly",
+        "ret_w": 0.0,
+        "rs_w": 0.1313,
+        "green_w": 0.0656,
+        "smooth_w": 0.3209,
+        "resilience_w": 0.0725,
+        "high52_w": 0.4097,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T12:00:48.624340",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=40 tn=7",
+      "win": true,
+      "delta_sharpe": 0.2789999999999999,
+      "sharpe": 3.678,
+      "total_return_pct": 27.63,
+      "alpha_pct": -70.57,
+      "max_dd_pct": 5.53,
+      "params": {
+        "lookback": 40,
+        "top_n": 7,
+        "rebalance": "weekly",
+        "ret_w": 0.0,
+        "rs_w": 0.1282,
+        "green_w": 0.0641,
+        "smooth_w": 0.3133,
+        "resilience_w": 0.0708,
+        "high52_w": 0.4237,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T11:57:14.083656",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=40 tn=10",
+      "win": true,
+      "delta_sharpe": 0.8690000000000002,
+      "sharpe": 3.399,
+      "total_return_pct": 33.46,
+      "alpha_pct": -64.74,
+      "max_dd_pct": 10.9,
+      "params": {
+        "lookback": 40,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.0,
+        "rs_w": 0.2579,
+        "green_w": 0.0476,
+        "smooth_w": 0.2694,
+        "resilience_w": 0.0608,
+        "high52_w": 0.3643
+      }
+    },
+    {
+      "at": "2026-03-05T11:59:07.497662",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=40 tn=10",
+      "win": true,
+      "delta_sharpe": 0.8690000000000002,
+      "sharpe": 3.399,
+      "total_return_pct": 33.46,
+      "alpha_pct": -64.74,
+      "max_dd_pct": 10.9,
+      "params": {
+        "lookback": 40,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.0,
+        "rs_w": 0.2579,
+        "green_w": 0.0476,
+        "smooth_w": 0.2694,
+        "resilience_w": 0.0608,
+        "high52_w": 0.3643
+      }
+    },
+    {
       "at": "2026-03-05T10:25:13.649053",
       "id": "high52_all_universe",
       "desc": "52週高値効果×全銘柄ユニバース（大型含む）: high52_wを主力ファクター（w=0.35）に昇格して時価総額フィルター廃止",
@@ -280,6 +398,27 @@
     },
     {
       "at": "2026-03-05T11:39:51.970486",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=80 tn=10",
+      "win": false,
+      "delta_sharpe": -0.22499999999999964,
+      "sharpe": 2.305,
+      "total_return_pct": 39.44,
+      "alpha_pct": -58.76,
+      "max_dd_pct": 17.53,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.1,
+        "rs_w": 0.2,
+        "green_w": 0.075,
+        "smooth_w": 0.125,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T11:58:06.747618",
       "id": "local_search",
       "desc": "局所探索ベスト lb=80 tn=10",
       "win": false,
@@ -396,6 +535,27 @@
       "total_return_pct": 31.83,
       "alpha_pct": -66.37,
       "max_dd_pct": 22.26,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.15,
+        "rs_w": 0.15,
+        "green_w": 0.1,
+        "smooth_w": 0.1,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T11:57:24.452379",
+      "id": "omega_factor",
+      "desc": "Omega比ファクター追加: 上昇速度÷下落幅の非対称性スコア（w=0.2）",
+      "win": false,
+      "delta_sharpe": -1.164,
+      "sharpe": 1.366,
+      "total_return_pct": 21.38,
+      "alpha_pct": -76.82,
+      "max_dd_pct": 23.14,
       "params": {
         "lookback": 80,
         "top_n": 10,
@@ -1368,5 +1528,5 @@
       }
     }
   ],
-  "total": 58
+  "total": 64
 }

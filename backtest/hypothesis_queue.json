@@ -1,48 +1,50 @@
 {
   "baseline": {
-    "sharpe": 2.53,
-    "total_pct": 50.26,
-    "alpha_pct": -47.94,
-    "max_dd_pct": 15.5,
+    "sharpe": 3.972,
+    "total_pct": 30.35,
+    "alpha_pct": -67.85,
+    "max_dd_pct": 5.48,
     "params": {
-      "lookback": 80,
-      "top_n": 10,
+      "lookback": 40,
+      "top_n": 7,
       "rebalance": "weekly",
-      "ret_w": 0.2,
-      "rs_w": 0.2,
-      "green_w": 0.125,
-      "smooth_w": 0.125,
-      "resilience_w": 0.0,
-      "high52_w": 0.35
+      "ret_w": 0.0,
+      "rs_w": 0.1313,
+      "green_w": 0.0656,
+      "smooth_w": 0.3209,
+      "resilience_w": 0.0725,
+      "high52_w": 0.4097,
+      "omega_w": 0.0,
+      "short_momentum_w": 0.0
     },
     "date": "2026-03-05",
-    "hypothesis": "high52_all_universe"
+    "hypothesis": "local_search"
   },
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "short_term_dominant",
+    "id": "omega_factor",
     "result": {
       "lookback": 80,
       "top_n": 10,
       "rebalance": "weekly",
-      "ret_w": 0.1,
-      "rs_w": 0.1,
+      "ret_w": 0.15,
+      "rs_w": 0.15,
       "green_w": 0.1,
       "smooth_w": 0.1,
       "resilience_w": 0.0,
-      "high52_w": 0.25,
-      "short_momentum_w": 0.35,
-      "total_return_pct": 48.96,
-      "alpha_pct": -49.24,
-      "sharpe": 2.425,
-      "max_dd_pct": 21.78,
+      "high52_w": 0.3,
+      "omega_w": 0.2,
+      "total_return_pct": 21.38,
+      "alpha_pct": -76.82,
+      "sharpe": 1.366,
+      "max_dd_pct": 23.14,
       "nikkei_pct": 98.2,
       "n_trades": 116
     },
-    "delta_sharpe": -0.105,
+    "delta_sharpe": -1.164,
     "win": false,
-    "at": "2026-03-05T11:51:34.039574"
+    "at": "2026-03-05T11:57:24.450753"
   },
   "queue": [
     {
@@ -1443,7 +1445,25 @@
         "vol_surge_days_long": 60,
         "price_breakout_days": 60
       },
-      "status": "running"
+      "status": "pending"
+    },
+    {
+      "id": "cluster_boost",
+      "desc": "クラスタリングによる自動テーマブースト",
+      "theory": "直近60日の価格相関からK-meansで自動テーマ分類し、強いクラスターの銘柄にブーストをかける",
+      "factor_to_add": "cluster_boost_w",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.18,
+        "rs_w": 0.18,
+        "green_w": 0.11,
+        "smooth_w": 0.11,
+        "high52_w": 0.32,
+        "cluster_boost_w": 0.1
+      },
+      "status": "pending"
     },
     {
       "id": "short_term_accel",
@@ -1839,7 +1859,27 @@
         "high52_w": 0.3,
         "omega_w": 0.2
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.15,
+        "rs_w": 0.15,
+        "green_w": 0.1,
+        "smooth_w": 0.1,
+        "resilience_w": 0.0,
+        "high52_w": 0.3,
+        "omega_w": 0.2,
+        "total_return_pct": 21.38,
+        "alpha_pct": -76.82,
+        "sharpe": 1.366,
+        "max_dd_pct": 23.14,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.164,
+      "elapsed_sec": 12.7
     }
   ],
   "tested_factors": [

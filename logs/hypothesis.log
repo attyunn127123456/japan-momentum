@@ -912,3 +912,13 @@ openclaw system event 送信完了
 完了: short_term_dominant | delta_sharpe=-0.105 | ❌ LOSE | 5秒
 全仮説消化。即opusに新仮説生成を依頼します。
 openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: omega_factor - Omega比ファクター追加: 上昇速度÷下落幅の非対称性スコア（w=0.2）
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 500銘柄×3lb / 11.7秒
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:458: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+完了: omega_factor | delta_sharpe=-1.164 | ❌ LOSE | 13秒
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
