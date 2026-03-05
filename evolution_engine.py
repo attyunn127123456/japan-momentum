@@ -435,7 +435,7 @@ def run_evolution():
         'delta_sharpe': baseline['sharpe'] - json.loads(QUEUE_FILE.read_text())['baseline'].get('sharpe', 0),
         'result': baseline,
         'at': datetime.now().isoformat(),
-    }, ensure_ascii=False, indent=2))
+    }), ensure_ascii=False, indent=2)
     
     print('\n=== Evolution cycle 完了 ===', flush=True)
     
