@@ -2,7 +2,7 @@
 有望仮説の組み合わせテスト。
 evolution_log.jsonから有望仮説を抽出し、2〜3つの組み合わせをバックテストする。
 """
-import json, time, itertools
+import json_safe as json, time, itertools
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta

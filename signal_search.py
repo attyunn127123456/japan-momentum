@@ -6,7 +6,7 @@ Step2: 新シグナル追加テスト（delta_sharpe > 0.01 なら candidate に
 Step3: 全シグナル同時重み最適化（グリッドサーチ）
 Step4: 結果をベースラインとして hypothesis_queue.json を更新
 """
-import json, itertools, time
+import json_safe as json, itertools, time
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
