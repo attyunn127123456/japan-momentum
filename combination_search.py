@@ -200,7 +200,13 @@ def run_combination_search():
 
     existing = json.loads(COMBO_LOG.read_text()) if COMBO_LOG.exists() else []
     existing.extend(combo_results)
-    COMBO_LOG.write_text(json.dumps(existing[-300:], ensure_ascii=False, indent=2))
+    # bool→intに変換してから保存
+    def _fix_bools(obj):
+        if isinstance(obj, bool): return int(obj)
+        if isinstance(obj, dict): return {k: _fix_bools(v) for k,v in obj.items()}
+        if isinstance(obj, list): return [_fix_bools(i) for i in obj]
+        return obj
+    COMBO_LOG.write_text(json.dumps(_fix_bools(existing[-300:]), ensure_ascii=False, indent=2))
     print(f'組み合わせテスト完了: {len(combo_results)}件 / combo_log保存', flush=True)
 
 
