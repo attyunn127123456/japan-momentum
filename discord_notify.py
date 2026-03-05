@@ -76,3 +76,18 @@ if __name__ == "__main__":
     print("\nSending to Discord...")
     ok = send_discord_dm(token, user_id, msg)
     print("✅ Sent!" if ok else "❌ Failed")
+
+
+def send_signal_report(holdings: list[str]):
+    """保有銘柄シグナルチェックしてDiscordに送信"""
+    token = os.environ.get("DISCORD_BOT_TOKEN")
+    user_id = os.environ.get("DISCORD_USER_ID")
+    if not token or not user_id:
+        print("Discord env vars not set")
+        return
+
+    from daily_signal import run_signal_check, format_report
+    from datetime import datetime
+    results = run_signal_check(holdings)
+    msg = format_report(results, datetime.now().strftime("%Y-%m-%d"))
+    send_discord_dm(token, user_id, msg)
