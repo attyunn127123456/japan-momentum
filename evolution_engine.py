@@ -351,7 +351,7 @@ def run_evolution():
                 'date': datetime.now().strftime('%Y-%m-%d'),
                 'hypothesis': 'local_search',
             }
-            QUEUE_FILE.write_text(json.dumps(queue, ensure_ascii=False, indent=2))
+            QUEUE_FILE.write_text(json.dumps(sanitize(queue), ensure_ascii=False, indent=2))
             baseline = queue['baseline']
 
         # GA local_search 完了後にファクター整理を実行（best result のパラメータで）
@@ -405,7 +405,7 @@ def run_evolution():
             queue['baseline'] = {**baseline, 'date': datetime.now().strftime('%Y-%m-%d'), 'hypothesis': f'factor_{factor_name}'}
             print(f'  → ベースライン更新: sharpe={r_train["sharpe"]}', flush=True)
         
-        QUEUE_FILE.write_text(json.dumps(queue, ensure_ascii=False, indent=2))
+        QUEUE_FILE.write_text(json.dumps(sanitize(queue), ensure_ascii=False, indent=2))
         time.sleep(1)
     
     # ---- Step4: 組み合わせテスト ----
@@ -481,7 +481,7 @@ def append_log(hid, desc, result, win, delta):
     all_entries = log.get('all', []) + [entry]
     valid = sorted([x for x in all_entries if x.get('sharpe') is not None],
                    key=lambda x: x['sharpe'], reverse=True)
-    EVO_LOG.write_text(json.dumps({'best10': valid[:10], 'all': valid[:300], 'total': len(all_entries)},
+    EVO_LOG.write_text(json.dumps(sanitize({'best10': valid[:10], 'all': valid[:300], 'total': len(all_entries)}),
                                    ensure_ascii=False, indent=2))
 
 
