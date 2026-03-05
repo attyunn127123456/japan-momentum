@@ -13,29 +13,29 @@
       "id": "rs",
       "desc": "日経対比相対強度",
       "status": "active",
-      "best_weight": 0.1333,
-      "sharpe_contribution": 0.322
+      "best_weight": 0.1176,
+      "sharpe_contribution": 0.162
     },
     {
       "id": "green",
       "desc": "陽線率",
-      "status": "candidate",
-      "best_weight": 0.3333,
-      "sharpe_contribution": -0.032
+      "status": "active",
+      "best_weight": 0.4118,
+      "sharpe_contribution": 0.391
     },
     {
       "id": "smooth",
       "desc": "上昇の滑らかさ",
-      "status": "candidate",
-      "best_weight": 0.0667,
-      "sharpe_contribution": -1.321
+      "status": "rejected",
+      "best_weight": 0.0,
+      "sharpe_contribution": 0.22
     },
     {
       "id": "high52",
       "desc": "52週高値への近さ",
-      "status": "candidate",
-      "best_weight": 0.4667,
-      "sharpe_contribution": -0.104
+      "status": "active",
+      "best_weight": 0.4706,
+      "sharpe_contribution": 1.544
     },
     {
       "id": "resilience",
@@ -60,13 +60,13 @@
     }
   ],
   "current_weights": {
-    "rs_w": 0.1333,
-    "green_w": 0.3333,
-    "smooth_w": 0.0667,
-    "high52_w": 0.4667,
+    "rs_w": 0.1176,
+    "green_w": 0.4118,
+    "high52_w": 0.4706,
     "ret_w": 0.0,
+    "smooth_w": 0.0,
     "resilience_w": 0.0
   },
-  "baseline_sharpe": 2.46,
+  "baseline_sharpe": 2.522,
   "last_updated": "2026-03-05"
 }

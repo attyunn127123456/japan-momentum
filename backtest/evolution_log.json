@@ -26,6 +26,81 @@
       }
     },
     {
+      "at": "2026-03-05T14:27:07.148977",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=3",
+      "win": 0,
+      "delta_sharpe": 0.02400000000000002,
+      "sharpe": 4.28,
+      "total_return_pct": 167.9,
+      "alpha_pct": 69.7,
+      "max_dd_pct": 18.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3519,
+        "rs_w": 0.2673,
+        "green_w": 0.1122,
+        "smooth_w": 0.0,
+        "resilience_w": 0.0,
+        "high52_w": 0.1172,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.1514,
+        "cluster_boost_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T14:55:04.320050",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=3",
+      "win": 0,
+      "delta_sharpe": 0.02400000000000002,
+      "sharpe": 4.28,
+      "total_return_pct": 167.9,
+      "alpha_pct": 69.7,
+      "max_dd_pct": 18.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3519,
+        "rs_w": 0.2673,
+        "green_w": 0.1122,
+        "smooth_w": 0.0,
+        "resilience_w": 0.0,
+        "high52_w": 0.1172,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.1514,
+        "cluster_boost_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T15:17:10.938905",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=3",
+      "win": 0,
+      "delta_sharpe": 0.02400000000000002,
+      "sharpe": 4.28,
+      "total_return_pct": 167.9,
+      "alpha_pct": 69.7,
+      "max_dd_pct": 18.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3519,
+        "rs_w": 0.2673,
+        "green_w": 0.1122,
+        "smooth_w": 0.0,
+        "resilience_w": 0.0,
+        "high52_w": 0.1172,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.1514,
+        "cluster_boost_w": 0.1
+      }
+    },
+    {
       "at": "2026-03-05T12:34:19.401289",
       "id": "local_search",
       "desc": "局所探索ベスト lb=60 tn=3",
@@ -170,76 +245,86 @@
         "short_momentum_w": 0.0,
         "cluster_boost_w": 0.1
       }
-    },
-    {
-      "at": "2026-03-05T11:57:14.083656",
-      "id": "local_search",
-      "desc": "局所探索ベスト lb=40 tn=10",
-      "win": 1,
-      "delta_sharpe": 0.8690000000000002,
-      "sharpe": 3.399,
-      "total_return_pct": 33.46,
-      "alpha_pct": -64.74,
-      "max_dd_pct": 10.9,
-      "params": {
-        "lookback": 40,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.0,
-        "rs_w": 0.2579,
-        "green_w": 0.0476,
-        "smooth_w": 0.2694,
-        "resilience_w": 0.0608,
-        "high52_w": 0.3643
-      }
-    },
-    {
-      "at": "2026-03-05T11:59:07.497662",
-      "id": "local_search",
-      "desc": "局所探索ベスト lb=40 tn=10",
-      "win": 1,
-      "delta_sharpe": 0.8690000000000002,
-      "sharpe": 3.399,
-      "total_return_pct": 33.46,
-      "alpha_pct": -64.74,
-      "max_dd_pct": 10.9,
-      "params": {
-        "lookback": 40,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.0,
-        "rs_w": 0.2579,
-        "green_w": 0.0476,
-        "smooth_w": 0.2694,
-        "resilience_w": 0.0608,
-        "high52_w": 0.3643
-      }
-    },
-    {
-      "at": "2026-03-05T10:25:13.649053",
-      "id": "high52_all_universe",
-      "desc": "52週高値効果×全銘柄ユニバース（大型含む）: high52_wを主力ファクター（w=0.35）に昇格して時価総額フィルター廃止",
-      "win": 1,
-      "delta_sharpe": 0.233,
-      "sharpe": 2.53,
-      "total_return_pct": 50.26,
-      "alpha_pct": -47.94,
-      "max_dd_pct": 15.5,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.2,
-        "rs_w": 0.2,
-        "green_w": 0.125,
-        "smooth_w": 0.125,
-        "resilience_w": 0.0
-      }
     }
   ],
   "all": [
     {
       "at": "2026-03-05T12:54:56.489970",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=3",
+      "win": 0,
+      "delta_sharpe": 0.02400000000000002,
+      "sharpe": 4.28,
+      "total_return_pct": 167.9,
+      "alpha_pct": 69.7,
+      "max_dd_pct": 18.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3519,
+        "rs_w": 0.2673,
+        "green_w": 0.1122,
+        "smooth_w": 0.0,
+        "resilience_w": 0.0,
+        "high52_w": 0.1172,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.1514,
+        "cluster_boost_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T14:27:07.148977",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=3",
+      "win": 0,
+      "delta_sharpe": 0.02400000000000002,
+      "sharpe": 4.28,
+      "total_return_pct": 167.9,
+      "alpha_pct": 69.7,
+      "max_dd_pct": 18.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3519,
+        "rs_w": 0.2673,
+        "green_w": 0.1122,
+        "smooth_w": 0.0,
+        "resilience_w": 0.0,
+        "high52_w": 0.1172,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.1514,
+        "cluster_boost_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T14:55:04.320050",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=3",
+      "win": 0,
+      "delta_sharpe": 0.02400000000000002,
+      "sharpe": 4.28,
+      "total_return_pct": 167.9,
+      "alpha_pct": 69.7,
+      "max_dd_pct": 18.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3519,
+        "rs_w": 0.2673,
+        "green_w": 0.1122,
+        "smooth_w": 0.0,
+        "resilience_w": 0.0,
+        "high52_w": 0.1172,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.1514,
+        "cluster_boost_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T15:17:10.938905",
       "id": "local_search",
       "desc": "局所探索ベスト lb=60 tn=3",
       "win": 0,
@@ -1690,5 +1775,5 @@
       }
     }
   ],
-  "total": 70
+  "total": 73
 }

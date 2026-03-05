@@ -292,7 +292,7 @@ def run_signal_search():
 
     # Step5: レジーム別最適化
     try:
-        run_regime_optimization(prices_dict, nikkei, rebal_dates, return_df)
+        pass  # run_regime_optimization(prices_dict, nikkei, rebal_dates, return_df)  # 一時無効化
     except Exception as e:
         print(f"  [Regime Opt] スキップ: {e}", flush=True)
 
