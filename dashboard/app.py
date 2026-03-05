@@ -36,6 +36,20 @@ def backtest():
         return JSONResponse({"error": "no backtest data"}, status_code=404)
     return json.loads(p.read_text())
 
+@app.get("/api/backtest/optimize")
+def backtest_optimize():
+    p = BASE / "backtest/optimize_latest.json"
+    if not p.exists():
+        return JSONResponse({"error": "no optimize data"}, status_code=404)
+    return json.loads(p.read_text())
+
+@app.get("/api/backtest/hypothesis")
+def backtest_hypothesis():
+    p = BASE / "backtest/hypothesis_queue.json"
+    if not p.exists():
+        return JSONResponse({"error": "no hypothesis data"}, status_code=404)
+    return json.loads(p.read_text())
+
 @app.get("/api/signals")
 def signals():
     p = BASE / "data/signal_history.json"
@@ -55,8 +69,13 @@ app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), na
 
 @app.get("/")
 def index():
-    from fastapi.responses import FileResponse as FR
-    r = FR(Path(__file__).parent / "static/index.html")
+    r = FileResponse(Path(__file__).parent / "static/index.html")
+    r.headers["Cache-Control"] = "no-store"
+    return r
+
+@app.get("/backtest")
+def backtest_page():
+    r = FileResponse(Path(__file__).parent / "static/backtest.html")
     r.headers["Cache-Control"] = "no-store"
     return r
 

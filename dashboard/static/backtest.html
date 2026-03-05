@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>バックテスト結果 | Japan Momentum</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f1117; color: #e2e8f0; font-family: -apple-system, sans-serif; padding: 20px; }
+  h1 { color: #60a5fa; font-size: 1.4rem; margin-bottom: 4px; }
+  .sub { color: #64748b; font-size: 0.85rem; margin-bottom: 24px; }
+  a.back { color: #60a5fa; text-decoration: none; font-size: 0.85rem; display: inline-block; margin-bottom: 16px; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .card { background: #1e2130; border-radius: 10px; padding: 16px; }
+  .card .label { color: #64748b; font-size: 0.75rem; margin-bottom: 6px; }
+  .card .val { font-size: 1.4rem; font-weight: 700; }
+  .pos { color: #34d399; }
+  .neg { color: #f87171; }
+  .neu { color: #60a5fa; }
+
+  h2 { font-size: 1rem; color: #94a3b8; margin: 24px 0 12px; }
+
+  .hypothesis { background: #1e2130; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+  .hypothesis .title { font-weight: 600; margin-bottom: 6px; }
+  .hypothesis .desc { color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px; }
+  .badge { display: inline-block; font-size: 0.7rem; padding: 2px 8px; border-radius: 99px; }
+  .badge.pending { background: #374151; color: #9ca3af; }
+  .badge.running { background: #1d4ed8; color: #93c5fd; }
+  .badge.done-win { background: #065f46; color: #34d399; }
+  .badge.done-lose { background: #7f1d1d; color: #fca5a5; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th { background: #1e2130; color: #64748b; text-align: left; padding: 8px 10px; position: sticky; top: 0; }
+  td { padding: 7px 10px; border-bottom: 1px solid #1e2130; }
+  tr:hover td { background: #1e2130; }
+  .tbl-wrap { overflow-x: auto; background: #0f1117; border-radius: 10px; }
+
+  .running-badge { display: inline-flex; align-items: center; gap: 6px; background: #1d4ed8; color: #93c5fd;
+    font-size: 0.8rem; padding: 4px 12px; border-radius: 99px; margin-left: 12px; }
+  .dot { width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; animation: pulse 1.2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+</style>
+</head>
+<body>
+<a class="back" href="/">← スクリーナーに戻る</a>
+<h1>🔬 バックテスト & 改善ループ</h1>
+<div class="sub" id="run-at">読み込み中...</div>
+
+<div id="status-area"></div>
+
+<h2>📊 ベースライン</h2>
+<div class="cards" id="baseline-cards"></div>
+
+<h2>🧪 仮説キュー</h2>
+<div id="hypothesis-list"></div>
+
+<h2>🏆 グリッドサーチ TOP10</h2>
+<div class="tbl-wrap">
+  <table>
+    <thead><tr>
+      <th>#</th><th>シャープ</th><th>リターン</th><th>α</th><th>最大DD</th>
+      <th>lb</th><th>top_n</th><th>頻度</th><th>ret_w</th><th>rs_w</th><th>gr_w</th><th>sm_w</th>
+    </tr></thead>
+    <tbody id="opt-tbody"></tbody>
+  </table>
+</div>
+
+<script>
+async function load() {
+  // 仮説キュー
+  try {
+    const h = await fetch('/api/backtest/hypothesis').then(r=>r.json());
+    document.getElementById('run-at').textContent = `最終更新: ${h.baseline?.date || '-'}`;
+
+    // ベースライン
+    const bl = h.baseline || {};
+    document.getElementById('baseline-cards').innerHTML = `
+      <div class="card"><div class="label">シャープレシオ</div><div class="val neu">${bl.sharpe ?? '-'}</div></div>
+      <div class="card"><div class="label">トータルリターン</div><div class="val ${bl.total_pct>=0?'pos':'neg'}">${bl.total_pct!=null?(bl.total_pct>=0?'+':'')+bl.total_pct+'%':'-'}</div></div>
+      <div class="card"><div class="label">最大DD</div><div class="val neg">${bl.max_dd_pct != null ? bl.max_dd_pct+'%' : '-'}</div></div>
+      <div class="card"><div class="label">ステータス</div><div class="val neu">${h.running ? '🔄 実行中' : '⏸ 待機中'}</div></div>
+    `;
+
+    // 仮説リスト
+    const queue = h.queue || [];
+    document.getElementById('hypothesis-list').innerHTML = queue.map(q => {
+      const cls = q.status === 'pending' ? 'pending' : q.status === 'running' ? 'running' :
+                  q.status === 'done_win' ? 'done-win' : 'done-lose';
+      const label = q.status === 'pending' ? '未実施' : q.status === 'running' ? '実行中' :
+                    q.status === 'done_win' ? `✅ +${q.delta_sharpe?.toFixed(2)} sharpe` : `❌ 改善なし`;
+      return `<div class="hypothesis">
+        <div class="title">${q.desc} <span class="badge ${cls}">${label}</span></div>
+        ${q.result ? `<div style="color:#94a3b8;font-size:0.8rem;margin-top:6px">sharpe=${q.result.sharpe} / total=${q.result.total_pct}% / alpha=${q.result.alpha_pct}%</div>` : ''}
+      </div>`;
+    }).join('');
+  } catch(e) { console.error(e); }
+
+  // グリッドサーチTOP10
+  try {
+    const opt = await fetch('/api/backtest/optimize').then(r=>r.json());
+    document.getElementById('run-at').textContent = `グリッドサーチ実行: ${opt.run_at?.slice(0,16).replace('T',' ')} | テスト: ${opt.total_tested}パターン | 日経: ${opt.nikkei_pct>=0?'+':''}${opt.nikkei_pct}%`;
+    const tbody = document.getElementById('opt-tbody');
+    tbody.innerHTML = (opt.top10 || []).map((r,i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td class="neu">${r.sharpe >= 0 ? '+' : ''}${r.sharpe}</td>
+        <td class="${r.total_return_pct>=0?'pos':'neg'}">${r.total_return_pct>=0?'+':''}${r.total_return_pct}%</td>
+        <td class="${r.alpha_pct>=0?'pos':'neg'}">${r.alpha_pct>=0?'+':''}${r.alpha_pct}%</td>
+        <td class="neg">${r.max_dd_pct}%</td>
+        <td>${r.lookback}</td><td>${r.top_n}</td>
+        <td>${r.rebalance === 'weekly' ? '週次' : '日次'}</td>
+        <td>${r.ret_w}</td><td>${r.rs_w}</td><td>${r.green_w}</td><td>${r.smooth_w}</td>
+      </tr>`).join('');
+  } catch(e) { console.error(e); }
+}
+load();
+</script>
+</body>
+</html>
