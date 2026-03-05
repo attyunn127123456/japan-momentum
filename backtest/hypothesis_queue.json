@@ -21,28 +21,29 @@
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "open_universe_rs_dynamic",
+    "id": "vol_adj_momentum",
     "result": {
       "lookback": 80,
       "top_n": 10,
       "rebalance": "weekly",
-      "ret_w": 0.3,
-      "rs_w": 0.35,
+      "ret_w": 0.0,
+      "rs_w": 0.3,
       "green_w": 0.2,
       "smooth_w": 0.15,
       "resilience_w": 0.0,
-      "universe_mode": "open_rs_dynamic",
-      "rs_dynamic_top_pct": 0.3,
-      "total_return_pct": 6.5,
-      "alpha_pct": -91.7,
-      "sharpe": 0.585,
-      "max_dd_pct": 23.87,
+      "high52_w": 0.15,
+      "vol_adj_ret_w": 0.2,
+      "atr_period": 20,
+      "total_return_pct": 4.68,
+      "alpha_pct": -93.52,
+      "sharpe": 0.494,
+      "max_dd_pct": 20.63,
       "nikkei_pct": 98.2,
       "n_trades": 116
     },
-    "delta_sharpe": -1.712,
+    "delta_sharpe": -1.803,
     "win": false,
-    "at": "2026-03-05T10:20:27.404468"
+    "at": "2026-03-05T10:22:18.250214"
   },
   "queue": [
     {
@@ -1536,7 +1537,28 @@
         "universe_mode": "high52_filter",
         "high52_min_pct": 0.75
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "high52_w": 0.2,
+        "universe_mode": "high52_filter",
+        "high52_min_pct": 0.75,
+        "total_return_pct": 4.02,
+        "alpha_pct": -94.18,
+        "sharpe": 0.432,
+        "max_dd_pct": 23.78,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.865,
+      "elapsed_sec": 1.8
     },
     {
       "id": "dual_momentum_confirm",
@@ -1556,7 +1578,29 @@
         "short_lookback": 20,
         "require_both_positive": true
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.25,
+        "rs_w": 0.25,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "high52_w": 0.2,
+        "dual_momentum_filter": true,
+        "short_lookback": 20,
+        "require_both_positive": true,
+        "total_return_pct": 4.02,
+        "alpha_pct": -94.18,
+        "sharpe": 0.432,
+        "max_dd_pct": 23.78,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.865,
+      "elapsed_sec": 1.8
     },
     {
       "id": "vol_adj_momentum",
@@ -1574,6 +1618,77 @@
         "high52_w": 0.15,
         "vol_adj_ret_w": 0.2,
         "atr_period": 20
+      },
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.0,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.15,
+        "resilience_w": 0.0,
+        "high52_w": 0.15,
+        "vol_adj_ret_w": 0.2,
+        "atr_period": 20,
+        "total_return_pct": 4.68,
+        "alpha_pct": -93.52,
+        "sharpe": 0.494,
+        "max_dd_pct": 20.63,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.803,
+      "elapsed_sec": 1.8
+    },
+    {
+      "id": "high52_w_boost",
+      "desc": "52週高値ファクターを主力に昇格（high52_w=0.3）: ベースラインのw=0.2からさらに増強",
+      "theory": "high52_midcapはhigh52_w=0.2でdelta_sharpe=+0.106を達成した唯一の追加改善。George & Hwang(2004)の52週高値効果は日本中型株でも有効と確認された。重みを0.2→0.3に増加してさらなるSharpe改善を狙う。ret_w/rs_wを0.25→0.2に削減して合計1.0を維持。52週高値近接は機関投資家の心理的価格抵抗と情報の段階的織り込みを捉えるシグナルで、重みを増やすほど効果が増幅される可能性がある。既存ユニバース（中型株）は維持してhigh52_wのみ変更する最小限の探索。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "ret_w": 0.2,
+        "rs_w": 0.2,
+        "green_w": 0.15,
+        "smooth_w": 0.15,
+        "high52_w": 0.3,
+        "rebalance": "weekly"
+      },
+      "status": "pending"
+    },
+    {
+      "id": "high52_accel_combo",
+      "desc": "52週高値近接×モメンタム加速の組み合わせ: 高値更新中かつ加速している銘柄を重点選択",
+      "theory": "high52_midcapが成功し、momentum_acceleration（単体w=0.05）は失敗した。しかし両者の組み合わせは未試験。52週高値に近い銘柄（high値圏）の中でさらに後半40日リターンが前半40日を上回る（加速中）銘柄は、情報の段階的織り込みが進行中かつまだ完了していない最良のタイミングにある。高値更新直前の加速フェーズを捉えることで、ピーク後のモメンタムクラッシュを避けつつ上昇の初期〜中期に集中できる。ret_accel_wを追加して前半/後半リターン差をスコア化し、high52_wと合わせて両指標が揃った銘柄を選ぶ。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "ret_w": 0.2,
+        "rs_w": 0.25,
+        "green_w": 0.15,
+        "smooth_w": 0.1,
+        "high52_w": 0.2,
+        "ret_accel_w": 0.1,
+        "accel_split": 40,
+        "rebalance": "weekly"
+      },
+      "status": "pending"
+    },
+    {
+      "id": "high52_all_universe",
+      "desc": "52週高値効果×全銘柄ユニバース（大型含む）: high52_wを主力ファクター（w=0.35）に昇格して時価総額フィルター廃止",
+      "theory": "high52_broad_universe（ユニバースフィルター条件として高52週高値75%以上を使用）は失敗したが、それはユニバースを絞るアプローチだった。本仮説は逆：ユニバースフィルターを一切廃止してhigh52_wを0.35という主力ファクターとして位置づけることで、大型株も中型株も含めた全銘柄から「52週高値に最も近い銘柄」を動的に選ぶ。キオクシア・フジクラのような大型株も52週高値更新フェーズでは強いモメンタムを示す。固定ユニバース排除という新方針に沿い、かつhigh52効果が最も強い銘柄を大型含む全銘柄から捕捉する設計。universe_modeは使わずhigh52_w=0.35のスコアで自然と高値圏銘柄が上位に来る。",
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "ret_w": 0.2,
+        "rs_w": 0.2,
+        "green_w": 0.125,
+        "smooth_w": 0.125,
+        "high52_w": 0.35,
+        "rebalance": "weekly"
       },
       "status": "pending"
     }
