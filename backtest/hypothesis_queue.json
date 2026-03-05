@@ -1,12 +1,12 @@
 {
   "baseline": {
-    "sharpe": 1.77,
-    "total_pct": 31.7,
-    "alpha_pct": -66.5,
-    "max_dd_pct": 21.5,
+    "sharpe": 2.191,
+    "total_pct": 36.78,
+    "alpha_pct": -61.42,
+    "max_dd_pct": 18.36,
     "params": {
-      "lookback": 60,
-      "top_n": 5,
+      "lookback": 80,
+      "top_n": 10,
       "rebalance": "weekly",
       "ret_w": 0.3,
       "rs_w": 0.3,
@@ -14,16 +14,56 @@
       "smooth_w": 0.2,
       "resilience_w": 0.0
     },
-    "date": "2026-03-05"
+    "date": "2026-03-05",
+    "hypothesis": "universe_midcap"
   },
-  "running": true,
-  "current_hypothesis": "universe_midcap",
-  "last_result": null,
+  "running": false,
+  "current_hypothesis": null,
+  "last_result": {
+    "id": "universe_midcap",
+    "result": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.3,
+      "rs_w": 0.3,
+      "green_w": 0.2,
+      "smooth_w": 0.2,
+      "resilience_w": 0.0,
+      "total_return_pct": 36.78,
+      "alpha_pct": -61.42,
+      "sharpe": 2.191,
+      "max_dd_pct": 18.36,
+      "nikkei_pct": 98.2,
+      "n_trades": 116
+    },
+    "delta_sharpe": 0.421,
+    "win": true,
+    "at": "2026-03-05T08:28:59.280784"
+  },
   "queue": [
     {
       "id": "universe_midcap",
       "desc": "ユニバース→時価総額100〜3000億の中型株",
-      "status": "running"
+      "status": "done_win",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "total_return_pct": 36.78,
+        "alpha_pct": -61.42,
+        "sharpe": 2.191,
+        "max_dd_pct": 18.36,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": 0.421,
+      "elapsed_sec": 4.4
     },
     {
       "id": "new_high_breakout",

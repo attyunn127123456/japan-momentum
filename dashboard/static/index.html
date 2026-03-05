@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Japan Momentum</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: #0d1117; color: #e6edf3; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; }
@@ -48,10 +47,21 @@ tr:hover td { background: #161b22; }
 .b-buy { background: #1c3a4a; color: #58a6ff; } .b-sell { background: #2d1619; color: #f85149; }
 .b-watch { background: #2d2111; color: #d29922; } .b-hold { background: #1c3227; color: #3fb950; }
 .b-new { background: #2d1e4a; color: #bc8cff; }
+.b-pending { background: #21262d; color: #8b949e; }
+.b-running { background: #1c3a4a; color: #58a6ff; }
+.b-win { background: #0f2d1a; color: #3fb950; }
+.b-lose { background: #2d1619; color: #f85149; }
 .vol-bar-wrap { display: inline-flex; gap: 2px; align-items: center; }
 .vb { width: 7px; height: 12px; border-radius: 2px; background: #21262d; } .vb.on { background: #3fb950; }
-.chart-wrap { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 14px; margin-top: 14px; }
-.chart-wrap h3 { font-size: 12px; color: #8b949e; margin-bottom: 10px; }
+.section-title { font-size: 12px; color: #8b949e; font-weight: 600; margin: 20px 0 10px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #21262d; padding-bottom: 6px; }
+.hypothesis-card { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; }
+.hypothesis-card .h-title { font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+.hypothesis-card .h-theory { font-size: 12px; color: #8b949e; margin-bottom: 8px; }
+.hypothesis-card .h-result { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; }
+.hypothesis-card .h-metric { display: flex; flex-direction: column; gap: 2px; }
+.hypothesis-card .h-metric .hml { color: #64748b; font-size: 10px; }
+.pulse { display: inline-block; width: 8px; height: 8px; background: #58a6ff; border-radius: 50%; animation: pulse 1.2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
 .empty-state { color: #8b949e; text-align: center; padding: 48px 0; }
 select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding: 5px 10px; border-radius: 8px; font-size: 13px; }
 .mobile-only { display: flex; flex-direction: column; gap: 8px; }
@@ -71,11 +81,12 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
 <div class="tabs">
   <div class="tab active" onclick="showTab('signals')">🔔 シグナル</div>
   <div class="tab" onclick="showTab('ranking')">📊 ランキング</div>
-  <div class="tab" onclick="showTab('backtest')">📈 バックテスト</div>
+  <div class="tab" onclick="showTab('backtest')" id="bt-tab">📈 バックテスト</div>
   <div class="tab" onclick="showTab('history')">📅 履歴</div>
 </div>
 <div class="content">
 
+<!-- SIGNALS -->
 <div id="panel-signals" class="panel active">
   <div id="signals-loading" class="empty-state">データ取得中...</div>
   <div id="signals-wrap" style="display:none">
@@ -102,6 +113,7 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
   </div>
 </div>
 
+<!-- RANKING -->
 <div id="panel-ranking" class="panel">
   <div id="ranking-loading" class="empty-state">データ取得中...</div>
   <div id="ranking-wrap" style="display:none">
@@ -118,15 +130,37 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
   </div>
 </div>
 
+<!-- BACKTEST (統合版) -->
 <div id="panel-backtest" class="panel">
   <div id="bt-loading" class="empty-state">データ取得中...</div>
   <div id="bt-wrap" style="display:none">
-    <div class="stats-grid" id="bt-stats"></div>
-    <div class="chart-wrap"><h3>累積リターン比較</h3><canvas id="equity-chart" height="80"></canvas></div>
-    <div class="chart-wrap" style="margin-top:12px"><h3>直近の保有銘柄（週次）</h3><div id="holdings-table"></div></div>
+
+    <!-- ベースライン -->
+    <div class="section-title">📊 現在のベースライン</div>
+    <div class="stats-grid" id="bt-baseline-stats"></div>
+    <div id="bt-running-banner" style="display:none; background:#1c3a4a; border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:13px; color:#58a6ff;">
+      <span class="pulse"></span> 仮説検証中...
+    </div>
+
+    <!-- 仮説キュー -->
+    <div class="section-title">🧪 改善仮説キュー</div>
+    <div id="bt-hypothesis"></div>
+
+    <!-- グリッドサーチTOP10 -->
+    <div class="section-title">🏆 グリッドサーチ TOP10 <span id="bt-grid-meta" style="font-weight:400;font-size:11px;text-transform:none"></span></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>#</th><th>シャープ</th><th>リターン</th><th>α</th><th>最大DD</th>
+          <th>lb</th><th>top_n</th><th>頻度</th><th>ret_w</th><th>rs_w</th><th>gr_w</th><th>sm_w</th><th>取引数</th>
+        </tr></thead>
+        <tbody id="bt-opt-tbody"></tbody>
+      </table>
+    </div>
   </div>
 </div>
 
+<!-- HISTORY -->
 <div id="panel-history" class="panel">
   <div style="margin-bottom:12px">
     <select id="date-picker" onchange="loadHistoryDate(this.value)"><option>日付を選択...</option></select>
@@ -143,13 +177,17 @@ function rc(v){ return v>=0?'pos':'neg'; }
 function fR(v){ return '<span class="'+rc(v)+'">'+(v>0?'+':'')+v.toFixed(1)+'%</span>'; }
 function fD(v){ return '<span class="'+rc(v)+'">'+(v>0?'+':'')+v.toFixed(0)+'</span>'; }
 function vb(v){ const n=Math.round(v*3); return '<div class="vol-bar-wrap">'+[0,1,2].map(i=>'<div class="vb'+(i<n?' on':'')+'"></div>').join('')+'</div>'; }
+function pct(v,d=1){ return (v>0?'+':'')+v.toFixed(d)+'%'; }
+
 function showTab(n){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   ['signals','ranking','backtest','history'].forEach((x,i)=>{
     if(x===n){ document.querySelectorAll('.tab')[i].classList.add('active'); document.getElementById('panel-'+x).classList.add('active'); }
   });
+  if(n==='backtest' && !btLoaded) loadBacktest();
 }
+
 function badges(r){
   const t=[];
   if(r.rank_today<=20&&(r.rank_yesterday||999)>20) t.push('<span class="badge b-new">⭐New</span>');
@@ -158,12 +196,10 @@ function badges(r){
   if(r.verdict==='WATCH') t.push('<span class="badge b-watch">🟡注意</span>');
   return t.join(' ');
 }
-
 function makeCard(r, rank, isRank){
   const code = isRank ? (r.ticker||r.code||'').replace('.T','') : r.code;
   const score = isRank ? r.score : r.score_today;
-  const ret = r.return_5_25d;
-  const rs = r.rs_score;
+  const ret = r.return_5_25d; const rs = r.rs_score;
   const rankStr = isRank ? '#'+(rank+1) : '#'+r.rank_today+(r.rank_yesterday&&r.rank_yesterday!==r.rank_today?' ←'+r.rank_yesterday:'');
   const b = isRank ? '' : badges(r);
   return '<div class="stock-card">'
@@ -172,20 +208,14 @@ function makeCard(r, rank, isRank){
     +'<span style="font-size:11px;color:#8b949e">'+rankStr+'</span>'
     +'<span class="card-code">'+code+'</span>'
     +'<span style="font-size:15px;font-weight:600">'+(r.name||'')+'</span>'
-    +'</div>'
-    +'<div class="card-sector">'+(r.sector||'')+'</div>'
-    +'</div>'
-    +'<div class="card-score '+sc(score)+'">'+score.toFixed(0)+'</div>'
-    +'</div>'
+    +'</div><div class="card-sector">'+(r.sector||'')+'</div></div>'
+    +'<div class="card-score '+sc(score)+'">'+score.toFixed(0)+'</div></div>'
     +'<div class="card-metrics">'
     +'<div class="card-metric"><div class="mk">中期リターン</div><div class="mv '+rc(ret)+'">'+(ret>0?'+':'')+ret.toFixed(1)+'%</div></div>'
     +'<div class="card-metric"><div class="mk">RS</div><div class="mv '+rc(rs)+'">'+(rs>0?'+':'')+rs.toFixed(1)+'</div></div>'
     +'<div class="card-metric"><div class="mk">現在値</div><div class="mv">¥'+(r.price||0).toLocaleString()+'</div></div>'
-    +(isRank?''
-      :'<div class="card-metric"><div class="mk">前日比</div><div class="mv '+rc(r.score_delta)+'">'+(r.score_delta>0?'+':'')+r.score_delta.toFixed(0)+'</div></div>')
-    +'</div>'
-    +(b?'<div class="card-badges">'+b+'</div>':'')
-    +'</div>';
+    +(isRank?'':'<div class="card-metric"><div class="mk">前日比</div><div class="mv '+rc(r.score_delta)+'">'+(r.score_delta>0?'+':'')+r.score_delta.toFixed(0)+'</div></div>')
+    +'</div>'+(b?'<div class="card-badges">'+b+'</div>':'')+'</div>';
 }
 
 // SIGNALS
@@ -193,9 +223,7 @@ let sigData=[], curFilter='ALL';
 async function loadSignals(){
   let data;
   try { const r=await fetch('/api/signals'); if(r.ok) data=await r.json(); } catch(e){}
-  if(!data){
-    try { const r=await fetch(GITHUB_RAW+'/data/signal_history.json'); if(r.ok){ const h=await r.json(); data=h[h.length-1]; } } catch(e){}
-  }
+  if(!data){ try { const r=await fetch(GITHUB_RAW+'/data/signal_history.json'); if(r.ok){ const h=await r.json(); data=h[h.length-1]; } } catch(e){} }
   if(!data){ document.getElementById('signals-loading').textContent='⚠️ daily_signal.py を実行してください'; return; }
   sigData=data.results||[];
   document.getElementById('last-updated').textContent=(data.date||'')+' ← '+(data.prev_date||'');
@@ -241,8 +269,7 @@ function renderSig(rows){
     +'<td>'+vb(r.volume_acceleration)+'</td>'
     +'<td class="'+rc(r.green_day_ratio-0.5)+'">'+(r.green_day_ratio*100).toFixed(0)+'%</td>'
     +'<td class="'+rc(r.rs_score)+'">'+(r.rs_score>0?'+':'')+r.rs_score.toFixed(1)+'</td>'
-    +'<td>'+badges(r)+'</td>'
-    +'<td class="dim">¥'+(r.price||0).toLocaleString()+'</td>'
+    +'<td>'+badges(r)+'</td><td class="dim">¥'+(r.price||0).toLocaleString()+'</td>'
     +'</tr>').join('');
 }
 function sortSig(col){
@@ -257,9 +284,7 @@ let rankData=[];
 async function loadRanking(){
   let data;
   try { const r=await fetch('/api/today'); if(r.ok) data=await r.json(); } catch(e){}
-  if(!data){
-    try { const r=await fetch(GITHUB_RAW+'/results/latest.json'); if(r.ok) data=await r.json(); } catch(e){}
-  }
+  if(!data){ try { const r=await fetch(GITHUB_RAW+'/results/latest.json'); if(r.ok) data=await r.json(); } catch(e){} }
   if(!data){ document.getElementById('ranking-loading').textContent='⚠️ screener.py を実行してください'; return; }
   rankData=data.results||[];
   renderRank(rankData);
@@ -272,12 +297,10 @@ function renderRank(rows){
   document.getElementById('ranking-body').innerHTML=top.map((r,i)=>'<tr>'
     +'<td class="dim">'+(i+1)+'</td>'
     +'<td><strong>'+(r.ticker||r.code||'').replace('.T','')+'</strong></td>'
-    +'<td>'+(r.name||'')+'</td>'
-    +'<td class="dim">'+(r.sector||'').slice(0,8)+'</td>'
+    +'<td>'+(r.name||'')+'</td><td class="dim">'+(r.sector||'').slice(0,8)+'</td>'
     +'<td><span class="'+sc(r.score)+'">'+r.score.toFixed(1)+'</span></td>'
     +'<td class="'+rc(r.rs_score)+'">'+(r.rs_score>0?'+':'')+r.rs_score.toFixed(1)+'</td>'
-    +'<td>'+fR(r.return_5_25d)+'</td>'
-    +'<td>'+vb(r.volume_acceleration)+'</td>'
+    +'<td>'+fR(r.return_5_25d)+'</td><td>'+vb(r.volume_acceleration)+'</td>'
     +'<td class="'+rc(r.green_day_ratio-0.5)+'">'+(r.green_day_ratio*100).toFixed(0)+'%</td>'
     +'<td class="'+rc(r.rs_acceleration)+'">'+(r.rs_acceleration>0?'+':'')+r.rs_acceleration.toFixed(2)+'</td>'
     +'<td class="dim">¥'+(r.price||0).toLocaleString()+'</td>'
@@ -286,39 +309,98 @@ function renderRank(rows){
 function sortRank(col){
   const keys=[null,'code','sector','score','rs_score','return_5_25d','volume_acceleration','green_day_ratio','rs_acceleration'];
   const key=keys[col]; if(!key||!rankData) return;
-  const s=[...rankData].sort((a,b)=>{const av=a[key],bv=b[key]; return typeof av==='string'?bv.localeCompare(av):bv-av;});
-  renderRank(s);
+  renderRank([...rankData].sort((a,b)=>{ const av=a[key],bv=b[key]; return typeof av==='string'?bv.localeCompare(av):bv-av; }));
 }
 
-// BACKTEST
+// BACKTEST (統合)
+let btLoaded = false;
 async function loadBacktest(){
-  let data;
-  try { const r=await fetch('/api/backtest'); if(r.ok) data=await r.json(); } catch(e){}
-  if(!data){
-    try { const r=await fetch(GITHUB_RAW+'/backtest/latest.json'); if(r.ok) data=await r.json(); } catch(e){}
+  btLoaded = true;
+  try {
+    // 仮説キュー
+    const hRes = await fetch('/api/backtest/hypothesis');
+    if(hRes.ok){
+      const h = await hRes.json();
+      renderHypothesis(h);
+    }
+    // グリッドサーチ
+    const oRes = await fetch('/api/backtest/optimize');
+    if(oRes.ok){
+      const opt = await oRes.json();
+      renderOptimize(opt);
+    }
+    document.getElementById('bt-loading').style.display='none';
+    document.getElementById('bt-wrap').style.display='block';
+  } catch(e) {
+    document.getElementById('bt-loading').textContent='⚠️ データ取得エラー: '+e.message;
   }
-  if(!data){ document.getElementById('bt-loading').textContent='⚠️ backtest.py を実行してください'; return; }
-  const s=data.summary;
-  document.getElementById('bt-stats').innerHTML=[
-    {l:'総リターン',v:s.total_return_pct,p:true},{l:'年率',v:s.annual_return_pct,p:true},
-    {l:'日経225',v:s.nikkei_return_pct,p:true},{l:'アルファ',v:s.alpha_pct,p:true},
-    {l:'保有数',v:s.top_n,p:false},{l:'リバランス',v:s.num_rebalances+'回',p:false},
-  ].map(({l,v,p})=>'<div class="stat-card"><div class="lbl">'+l+'</div><div class="val '+(p?(v>=0?'pos':'neg'):'')+'">'+(p?(v>0?'+':'')+v+'%':v)+'</div></div>').join('');
-  const eq=data.equity_curve||[];
-  document.getElementById('bt-loading').style.display='none';
-  document.getElementById('bt-wrap').style.display='block';
-  new Chart(document.getElementById('equity-chart'),{type:'line',data:{labels:eq.map(e=>e.date),datasets:[{label:'日経225',data:eq.map(e=>e.nikkei),borderColor:'#8b949e',fill:false,pointRadius:0,tension:0.3}]},options:{responsive:true,plugins:{legend:{labels:{color:'#8b949e'}}},scales:{x:{ticks:{color:'#8b949e',maxTicksLimit:10},grid:{color:'#21262d'}},y:{ticks:{color:'#8b949e'},grid:{color:'#21262d'}}}}});
-  const h=(data.weekly_holdings||[]).slice(-8).reverse();
-  document.getElementById('holdings-table').innerHTML='<div class="table-wrap"><table><thead><tr><th>週</th><th>保有銘柄</th></tr></thead><tbody>'+h.map(r=>'<tr><td class="dim">'+r.date+'</td><td>'+r.tickers.map(t=>'<span class="badge b-hold">'+t.replace('.T','')+'</span>').join(' ')+'</td></tr>').join('')+'</tbody></table></div>';
+}
+
+function renderHypothesis(h){
+  const bl = h.baseline || {};
+  // ベースライン
+  document.getElementById('bt-baseline-stats').innerHTML = [
+    {l:'シャープレシオ', v: bl.sharpe != null ? (bl.sharpe>=0?'+':'')+bl.sharpe : '-', c:''},
+    {l:'トータルリターン', v: bl.total_pct != null ? pct(bl.total_pct) : '-', c: bl.total_pct>=0?'pos':'neg'},
+    {l:'最大ドローダウン', v: bl.max_dd_pct != null ? bl.max_dd_pct+'%' : '-', c:'neg'},
+    {l:'起源仮説', v: bl.hypothesis || 'initial', c:''},
+    {l:'更新日', v: bl.date || '-', c:''},
+  ].map(({l,v,c})=>'<div class="stat-card"><div class="lbl">'+l+'</div><div class="val '+c+'">'+v+'</div></div>').join('');
+
+  // 実行中バナー
+  document.getElementById('bt-running-banner').style.display = h.running ? 'block' : 'none';
+
+  // 仮説リスト
+  const queue = h.queue || [];
+  document.getElementById('bt-hypothesis').innerHTML = queue.map(q => {
+    const statusMap = {
+      pending:   ['b-pending','⏳ 未実施'],
+      running:   ['b-running','🔄 実行中'],
+      done_win:  ['b-win', '✅ 採用 +'+( q.delta_sharpe ? q.delta_sharpe.toFixed(3) : '?')+' sharpe'],
+      done_lose: ['b-lose','❌ 不採用'],
+    };
+    const [cls, label] = statusMap[q.status] || ['b-pending','未実施'];
+    const res = q.result;
+    return '<div class="hypothesis-card">'
+      +'<div class="h-title">'
+      +(q.status==='running' ? '<span class="pulse"></span> ' : '')
+      +q.desc
+      +' <span class="badge '+cls+'">'+label+'</span>'
+      +'</div>'
+      +(q.theory ? '<div class="h-theory">💡 '+q.theory+'</div>' : '')
+      +(res ? '<div class="h-result">'
+        +'<div class="h-metric"><span class="hml">シャープ</span><span class="'+(res.sharpe>=0?'pos':'neg')+'">'+(res.sharpe>=0?'+':'')+res.sharpe+'</span></div>'
+        +'<div class="h-metric"><span class="hml">リターン</span><span class="'+(res.total_return_pct>=0?'pos':'neg')+'">'+pct(res.total_return_pct)+'</span></div>'
+        +'<div class="h-metric"><span class="hml">α</span><span class="'+(res.alpha_pct>=0?'pos':'neg')+'">'+pct(res.alpha_pct)+'</span></div>'
+        +'<div class="h-metric"><span class="hml">最大DD</span><span class="neg">'+res.max_dd_pct+'%</span></div>'
+        +(q.elapsed_sec ? '<div class="h-metric"><span class="hml">実行時間</span><span>'+q.elapsed_sec+'秒</span></div>' : '')
+        +'</div>' : '')
+      +'</div>';
+  }).join('') || '<div class="empty-state">仮説なし</div>';
+}
+
+function renderOptimize(opt){
+  document.getElementById('bt-grid-meta').textContent =
+    '| '+opt.total_tested+'パターン | 日経: '+(opt.nikkei_pct>=0?'+':'')+opt.nikkei_pct+'% | '+
+    (opt.run_at||'').slice(0,16).replace('T',' ');
+  document.getElementById('bt-opt-tbody').innerHTML = (opt.top10||[]).map((r,i)=>'<tr>'
+    +'<td class="dim">'+(i+1)+'</td>'
+    +'<td class="'+(r.sharpe>=0?'pos':'neg')+'">'+(r.sharpe>=0?'+':'')+r.sharpe+'</td>'
+    +'<td class="'+(r.total_return_pct>=0?'pos':'neg')+'">'+pct(r.total_return_pct)+'</td>'
+    +'<td class="'+(r.alpha_pct>=0?'pos':'neg')+'">'+pct(r.alpha_pct)+'</td>'
+    +'<td class="neg">'+r.max_dd_pct+'%</td>'
+    +'<td>'+r.lookback+'</td><td>'+r.top_n+'</td>'
+    +'<td>'+(r.rebalance==='weekly'?'週次':'日次')+'</td>'
+    +'<td>'+r.ret_w+'</td><td>'+r.rs_w+'</td><td>'+r.green_w+'</td><td>'+r.smooth_w+'</td>'
+    +'<td class="dim">'+r.n_trades+'</td>'
+    +'</tr>').join('');
 }
 
 // HISTORY
 async function loadHistory(){
   let dates=[];
   try { const r=await fetch('/api/history'); if(r.ok) dates=await r.json(); } catch(e){}
-  if(!dates.length){
-    try { const r=await fetch(GITHUB_RAW+'/results/index.json'); if(r.ok) dates=await r.json(); } catch(e){}
-  }
+  if(!dates.length){ try { const r=await fetch(GITHUB_RAW+'/results/index.json'); if(r.ok) dates=await r.json(); } catch(e){} }
   const pk=document.getElementById('date-picker');
   dates.forEach(d=>{ const o=document.createElement('option'); o.value=d; o.textContent=d; pk.appendChild(o); });
 }
@@ -326,20 +408,17 @@ async function loadHistoryDate(date){
   if(!date||date.includes('選択')) return;
   let data;
   try { const r=await fetch('/api/results/'+date); if(r.ok) data=await r.json(); } catch(e){}
-  if(!data){
-    try { const r=await fetch(GITHUB_RAW+'/results/'+date+'.json'); if(r.ok) data=await r.json(); } catch(e){}
-  }
+  if(!data){ try { const r=await fetch(GITHUB_RAW+'/results/'+date+'.json'); if(r.ok) data=await r.json(); } catch(e){} }
   if(!data) return;
   const rows=(data.results||data.top||[]).slice(0,20);
-  const isMobile=window.innerWidth<768;
-  if(isMobile){
+  if(window.innerWidth<768){
     document.getElementById('history-content').innerHTML='<div class="card-list">'+rows.map((r,i)=>makeCard(r,i,true)).join('')+'</div>';
   } else {
     document.getElementById('history-content').innerHTML='<div class="table-wrap"><table><thead><tr><th>#</th><th>銘柄</th><th>銘柄名</th><th>セクター</th><th>スコア</th><th>中期リターン</th><th>陽線率</th></tr></thead><tbody>'+rows.map((r,i)=>'<tr><td class="dim">'+(i+1)+'</td><td><strong>'+(r.ticker||r.code||'').replace('.T','')+'</strong></td><td>'+(r.name||'')+'</td><td class="dim">'+(r.sector||'').slice(0,10)+'</td><td><span class="'+sc(r.score)+'">'+r.score.toFixed(1)+'</span></td><td>'+fR(r.return_5_25d)+'</td><td class="'+rc(r.green_day_ratio-0.5)+'">'+(r.green_day_ratio*100).toFixed(0)+'%</td></tr>').join('')+'</tbody></table></div>';
   }
 }
 
-loadSignals(); loadRanking(); loadBacktest(); loadHistory();
+loadSignals(); loadRanking(); loadHistory();
 </script>
 </body>
 </html>
