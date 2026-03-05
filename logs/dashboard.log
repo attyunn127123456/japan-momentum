@@ -541,3 +541,64 @@ Traceback (most recent call last):
   File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 257, in iterencode
     return _iterencode(o, 0)
 ValueError: Out of range float values are not JSON compliant
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/uvicorn/protocols/http/h11_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/fastapi/applications.py", line 1138, in __call__
+    await super().__call__(scope, receive, send)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/starlette/applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/fastapi/routing.py", line 121, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/fastapi/routing.py", line 107, in app
+    response = await f(request)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/fastapi/routing.py", line 460, in app
+    response = actual_response_class(content, **response_args)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/starlette/responses.py", line 189, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/starlette/responses.py", line 46, in __init__
+    self.body = self.render(content)
+  File "/Users/panda/Library/Python/3.9/lib/python/site-packages/starlette/responses.py", line 192, in render
+    return json.dumps(
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+ValueError: Out of range float values are not JSON compliant
+INFO:     98.80.159.239:0 - "GET / HTTP/1.1" 200 OK

@@ -53,7 +53,7 @@
     {
       "id": "new_high_breakout",
       "desc": "過去60日高値更新をエントリー条件に追加",
-      "status": "done_lose",
+      "status": "pending",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.9
@@ -119,7 +119,7 @@
         "resilience_w": 0.0,
         "sector_neutral": true
       },
-      "status": "done_lose",
+      "status": "pending",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.0
@@ -140,7 +140,7 @@
         "short_ratio_filter": "low_tercile",
         "short_ratio_w": 0.05
       },
-      "status": "done_error",
+      "status": "pending",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.0
@@ -161,7 +161,7 @@
         "investor_flow_filter": "institution_buy_retail_sell",
         "investor_flow_w": 0.15
       },
-      "status": "done_error",
+      "status": "pending",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.0
@@ -171,7 +171,7 @@
       "desc": "日経225の200MA上/下でポジションサイズを切り替え",
       "theory": "相場局面（強気/弱気）を判定してモメンタム戦略のエクスポージャーを調整。高ボラ時は守り。OHLCVのみで実装可能",
       "params": {},
-      "status": "done_lose",
+      "status": "pending",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.0
@@ -181,7 +181,7 @@
       "desc": "価格上昇＋出来高急減の銘柄をフィルタ除外",
       "theory": "出来高なき上昇は持続しにくい。需給ロジックでノイズ銘柄を除去してポートフォリオ品質を上げる",
       "params": {},
-      "status": "done_lose",
+      "status": "pending",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.0
@@ -191,7 +191,7 @@
       "desc": "ATRに応じてルックバック期間を動的調整",
       "theory": "高ボラ時は短期シグナル、低ボラ時は長期シグナルを使う。市場環境への適応性向上",
       "params": {},
-      "status": "done_lose",
+      "status": "pending",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.0
@@ -213,7 +213,7 @@
         "short_reversal_days": 5,
         "short_reversal_pct": 0.25
       },
-      "status": "done_lose",
+      "status": "pending",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.0
@@ -232,7 +232,7 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       },
-      "status": "done_lose",
+      "status": "pending",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.0
@@ -253,7 +253,7 @@
         "momentum_accel_w": 0.05,
         "accel_half_period": 40
       },
-      "status": "done_lose",
+      "status": "pending",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.0
@@ -350,7 +350,7 @@
         "resilience_w": 0.0,
         "green_smooth_synergy_w": 0.2
       },
-      "status": "done_lose",
+      "status": "pending",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.0
@@ -375,7 +375,7 @@
         "nonbull_smooth_w": 0.3,
         "regime_ma_period": 20
       },
-      "status": "done_lose",
+      "status": "pending",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.0
@@ -398,7 +398,7 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       },
-      "status": "done_lose",
+      "status": "pending",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.0
@@ -508,7 +508,7 @@
         "rs_prefilter_pct": 0.4,
         "dual_rank_mode": true
       },
-      "status": "done_lose",
+      "status": "pending",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.0
@@ -529,7 +529,7 @@
         "vol_stability_w": 0.1,
         "vol_stability_weeks": 20
       },
-      "status": "done_lose",
+      "status": "pending",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.0

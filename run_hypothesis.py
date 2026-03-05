@@ -300,7 +300,28 @@ def main():
             )
 
         else:
-            result = None
+            # 汎用フォールバック: eval_paramsでバックテスト
+            codes = get_top_liquid_tickers(N_CODES)
+            prices_dict = {}
+            for c in codes:
+                df = read_ohlcv(c, warmup, END)
+                if df is not None and not df.empty and "AdjC" in df.columns:
+                    prices_dict[c] = df
+            factor_dfs = precompute(prices_dict, nikkei, [40, 60, 80])
+            all_prices = pd.DataFrame({c: prices_dict[c]["AdjC"] for c in prices_dict}).astype(float)
+            return_df = all_prices.pct_change()
+            baseline_params = {
+                'lookback': queue['baseline'].get('params', {}).get('lookback', 80),
+                'top_n': queue['baseline'].get('params', {}).get('top_n', 10),
+                'rebalance': 'weekly',
+                'ret_w': 0.3, 'rs_w': 0.3, 'green_w': 0.2, 'smooth_w': 0.2, 'resilience_w': 0.0
+            }
+            test_params = {**baseline_params, **next_h.get('params', {})}
+            lb = test_params['lookback']
+            if lb not in [40, 60, 80]:
+                factor_dfs.update(precompute(prices_dict, nikkei, [lb]))
+            result = eval_params(test_params, factor_dfs, prices_dict,
+                                 rebal_dates[test_params['rebalance']], nikkei, START, return_df)
 
         elapsed = time.time() - t0
         baseline = queue["baseline"]
