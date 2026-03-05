@@ -7,6 +7,7 @@
 5. ノンストップで回り続ける
 """
 import itertools, json, time, traceback
+import json_safe as json
 
 def sanitize(obj):
     """bool/NaN/Inf をJSONシリアライズ可能にする"""

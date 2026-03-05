@@ -8,6 +8,7 @@ Usage:
 """
 import argparse
 import json
+import json_safe as json
 from datetime import datetime, timedelta
 from pathlib import Path
 

@@ -1,6 +1,31 @@
 {
   "best10": [
     {
+      "at": "2026-03-05T12:34:19.401289",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=3",
+      "win": true,
+      "delta_sharpe": 0.6820000000000004,
+      "sharpe": 4.256,
+      "total_return_pct": 166.54,
+      "alpha_pct": 68.34,
+      "max_dd_pct": 18.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3291,
+        "rs_w": 0.2367,
+        "green_w": 0.1049,
+        "smooth_w": 0.0,
+        "resilience_w": 0.078,
+        "high52_w": 0.1096,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.1416,
+        "cluster_boost_w": 0.1
+      }
+    },
+    {
       "at": "2026-03-05T12:17:10.200492",
       "id": "local_search",
       "desc": "局所探索ベスト lb=40 tn=7",
@@ -206,30 +231,34 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       }
-    },
-    {
-      "at": "2026-03-05T11:51:34.041016",
-      "id": "short_term_dominant",
-      "desc": "短期モメンタム主力: short_momentum_wを0.35に増強",
-      "win": false,
-      "delta_sharpe": -0.105,
-      "sharpe": 2.425,
-      "total_return_pct": 48.96,
-      "alpha_pct": -49.24,
-      "max_dd_pct": 21.78,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.1,
-        "rs_w": 0.1,
-        "green_w": 0.1,
-        "smooth_w": 0.1,
-        "resilience_w": 0.0
-      }
     }
   ],
   "all": [
+    {
+      "at": "2026-03-05T12:34:19.401289",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=3",
+      "win": true,
+      "delta_sharpe": 0.6820000000000004,
+      "sharpe": 4.256,
+      "total_return_pct": 166.54,
+      "alpha_pct": 68.34,
+      "max_dd_pct": 18.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3291,
+        "rs_w": 0.2367,
+        "green_w": 0.1049,
+        "smooth_w": 0.0,
+        "resilience_w": 0.078,
+        "high52_w": 0.1096,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.1416,
+        "cluster_boost_w": 0.1
+      }
+    },
     {
       "at": "2026-03-05T12:17:10.200492",
       "id": "local_search",
@@ -1632,5 +1661,5 @@
       }
     }
   ],
-  "total": 68
+  "total": 69
 }
