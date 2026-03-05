@@ -33,3 +33,10 @@ def dumps(obj, **kwargs):
 
 def dump(obj, fp, **kwargs):
     fp.write(dumps(obj, **kwargs))
+
+# read ops はオリジナルjsonに委譲
+def loads(s, **kwargs):
+    return _json.loads(s, **kwargs)
+
+def load(fp, **kwargs):
+    return _json.load(fp, **kwargs)
