@@ -332,3 +332,47 @@ openclaw system event 送信完了
 完了: momentum_acceleration | delta_sharpe=None | ❌ LOSE | 0秒
 全仮説消化。即opusに新仮説生成を依頼します。
 openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:297: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+仮説実行: regime_adaptive_weights - レジーム連動型重み（強気/弱気/高ボラで自動切替）
+  ユニバース: キャッシュから500銘柄読み込み
+完了: regime_adaptive_weights | delta_sharpe=-1.524 | ❌ LOSE | 10秒
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: green_smooth_synergy - green_candle × smooth_trend 合成スコアで銘柄純度向上
+完了: green_smooth_synergy | delta_sharpe=None | ❌ LOSE | 0秒
+次の仮説を自動起動: regime_bear_defense
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: regime_bear_defense - レジーム連動型: bull時フルポジ×non-bull時top_n半減+smooth重視
+完了: regime_bear_defense | delta_sharpe=None | ❌ LOSE | 0秒
+次の仮説を自動起動: lookback_ensemble
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: lookback_ensemble - lookback 60日・80日のスコアをアンサンブル平均してランキング
+完了: lookback_ensemble | delta_sharpe=None | ❌ LOSE | 0秒
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:297: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+仮説実行: regime_cash_buffer - レジーム連動型: non-bull時にキャッシュバッファ30%（top_n=7に削減）
+  ユニバース: キャッシュから500銘柄読み込み
+完了: regime_cash_buffer | delta_sharpe=-1.524 | ❌ LOSE | 10秒
+次の仮説を自動起動: ret_rs_dual_rank
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: ret_rs_dual_rank - ret×rs 2段フィルタ: RS上位40%絞り込み後にretスコアでtop_n選択
+完了: ret_rs_dual_rank | delta_sharpe=None | ❌ LOSE | 0秒
+次の仮説を自動起動: midcap_volume_stable
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: midcap_volume_stable - 中型株×出来高安定フィルター: 週次出来高CV低位銘柄を優遇
+完了: midcap_volume_stable | delta_sharpe=None | ❌ LOSE | 0秒
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了

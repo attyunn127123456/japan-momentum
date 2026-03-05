@@ -95,7 +95,7 @@ def index():
 
 @app.get("/backtest")
 def backtest_page():
-    r = FileResponse(Path(__file__).parent / "static/backtest.html")
+    r = FileResponse(Path(__file__).parent / "static/index.html")
     r.headers["Cache-Control"] = "no-store"
     return r
 

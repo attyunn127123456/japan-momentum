@@ -20,11 +20,11 @@
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "lookback_ensemble",
+    "id": "midcap_volume_stable",
     "result": null,
     "delta_sharpe": null,
     "win": false,
-    "at": "2026-03-05T09:57:05.528217"
+    "at": "2026-03-05T09:58:39.711828"
   },
   "queue": [
     {
@@ -420,8 +420,77 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       },
-      "status": "pending",
-      "type": "regime"
+      "status": "done_lose",
+      "type": "regime",
+      "result": {
+        "type": "regime",
+        "total_return_pct": 21.52,
+        "alpha_pct": -76.68,
+        "sharpe": 0.667,
+        "max_dd_pct": 20.8,
+        "nikkei_pct": 98.2,
+        "n_trades": 116,
+        "regime_counts": {
+          "bear": 8,
+          "bull": 86,
+          "neutral": 14,
+          "high_vol": 8
+        },
+        "regime_log_tail": [
+          {
+            "date": "2025-11-10",
+            "regime": "bull",
+            "ret": 0.0218
+          },
+          {
+            "date": "2025-12-01",
+            "regime": "bull",
+            "ret": 0.0133
+          },
+          {
+            "date": "2025-12-08",
+            "regime": "bull",
+            "ret": 0.0149
+          },
+          {
+            "date": "2025-12-15",
+            "regime": "bull",
+            "ret": -0.0061
+          },
+          {
+            "date": "2025-12-22",
+            "regime": "bull",
+            "ret": 0.0114
+          },
+          {
+            "date": "2025-12-29",
+            "regime": "bull",
+            "ret": 0.0116
+          },
+          {
+            "date": "2026-01-19",
+            "regime": "bull",
+            "ret": -0.0265
+          },
+          {
+            "date": "2026-01-26",
+            "regime": "bull",
+            "ret": -0.0119
+          },
+          {
+            "date": "2026-02-02",
+            "regime": "bull",
+            "ret": 0.0179
+          },
+          {
+            "date": "2026-02-09",
+            "regime": "bull",
+            "ret": -0.0024
+          }
+        ]
+      },
+      "delta_sharpe": -1.524,
+      "elapsed_sec": 9.6
     },
     {
       "id": "ret_rs_dual_rank",
@@ -439,7 +508,10 @@
         "rs_prefilter_pct": 0.4,
         "dual_rank_mode": true
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": null,
+      "delta_sharpe": null,
+      "elapsed_sec": 0.0
     },
     {
       "id": "midcap_volume_stable",
@@ -457,7 +529,10 @@
         "vol_stability_w": 0.1,
         "vol_stability_weeks": 20
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": null,
+      "delta_sharpe": null,
+      "elapsed_sec": 0.0
     }
   ],
   "tested_factors": [

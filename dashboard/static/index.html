@@ -71,6 +71,24 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
   .desktop-only { display: block; }
   .content { padding: 20px 24px; }
 }
+
+/* Regime & Signal Library */
+.regime-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 8px; margin-bottom: 14px; }
+.regime-panel { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 12px 14px; }
+.regime-panel .r-title { font-size: 12px; font-weight: 600; margin-bottom: 8px; }
+.regime-panel .r-sharpe { font-size: 11px; color: #8b949e; margin-bottom: 6px; }
+.bar-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; font-size: 11px; }
+.bar-row .bar-label { width: 52px; color: #8b949e; flex-shrink: 0; }
+.bar-track { flex: 1; background: #0d1117; border-radius: 3px; height: 6px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s; }
+.bar-row .bar-val { width: 30px; text-align: right; flex-shrink: 0; }
+.regime-badge-sm { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; }
+.regime-bull { background: #052e16; color: #3fb950; }
+.regime-bear { background: #450a0a; color: #f85149; }
+.regime-highvol { background: #451a03; color: #d29922; }
+.regime-neutral { background: #21262d; color: #8b949e; }
+.prog-track { width: 80px; background: #0d1117; border-radius: 3px; height: 5px; display: inline-block; overflow: hidden; vertical-align: middle; }
+.prog-fill { height: 100%; border-radius: 3px; background: #58a6ff; }
 </style>
 </head>
 <body>
@@ -142,6 +160,21 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
     <div id="bt-running-banner" style="display:none; background:#1c3a4a; border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:13px; color:#58a6ff;">
       <span class="pulse"></span> 仮説検証中...
     </div>
+
+    <!-- シグナルライブラリ -->
+    <div class="section-title">📡 シグナルライブラリ</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>シグナル</th><th>ステータス</th><th>重み</th><th>Sharpe貢献</th>
+        </tr></thead>
+        <tbody id="bt-signal-tbody"><tr><td colspan="4" class="dim" style="text-align:center;padding:12px">読み込み中...</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- レジーム別重みセット -->
+    <div class="section-title">🌐 レジーム別重みセット <span id="bt-regime-current" style="font-weight:400;font-size:11px;text-transform:none"></span></div>
+    <div class="regime-grid" id="bt-regime-grid"><div class="dim">読み込み中...</div></div>
 
     <!-- 仮説キュー -->
     <div class="section-title">🧪 改善仮説キュー</div>
@@ -337,6 +370,10 @@ async function loadBacktest(silent){
       const h = await hRes.json();
       renderHypothesis(h);
     }
+    // シグナルライブラリ
+    await loadSignalLibrary();
+    // レジーム
+    await loadRegime();
     // グリッドサーチ
     await loadEvolution();
     const oRes = await fetch('/api/backtest/optimize');
@@ -395,6 +432,65 @@ function renderHypothesis(h){
         +'</div>' : '')
       +'</div>';
   }).join('') || '<div class="empty-state">仮説なし</div>';
+}
+
+const STATUS_ICON = { active: '🟢', candidate: '🟡', rejected: '❌', pending: '⚪' };
+const BAR_COLORS = { ret_w: '#58a6ff', rs_w: '#3fb950', green_w: '#4ade80', smooth_w: '#bc8cff' };
+const REGIME_EMOJI = { Bull: '🟢', Bear: '🔴', HighVol: '🟡', Neutral: '⚪' };
+const REGIME_CLS = { Bull: 'regime-bull', Bear: 'regime-bear', HighVol: 'regime-highvol', Neutral: 'regime-neutral' };
+
+async function loadSignalLibrary(){
+  try {
+    const res = await fetch('/api/backtest/signal_library');
+    if(!res.ok) return;
+    const data = await res.json();
+    const signals = data.signals || [];
+    const tbody = document.getElementById('bt-signal-tbody');
+    if(!signals.length){ tbody.innerHTML='<tr><td colspan="4" class="dim" style="text-align:center;padding:12px">シグナルデータなし</td></tr>'; return; }
+    const maxW = Math.max(...signals.map(s=>s.best_weight||0), 0.01);
+    tbody.innerHTML = signals.map(s=>{
+      const icon = STATUS_ICON[s.status]||'⚪';
+      const p = Math.round(((s.best_weight||0)/maxW)*100);
+      const contrib = s.sharpe_contribution!=null?(s.sharpe_contribution>=0?'+':'')+Number(s.sharpe_contribution).toFixed(3):'-';
+      return '<tr>'+
+        '<td><strong style="font-size:12px">'+s.id+'</strong><br><span class="dim" style="font-size:11px">'+(s.desc||'')+'</span></td>'+
+        '<td>'+icon+' <span class="dim">'+s.status+'</span></td>'+
+        '<td><span style="font-size:12px;min-width:28px;display:inline-block">'+Number(s.best_weight||0).toFixed(2)+'</span> <div class="prog-track"><div class="prog-fill" style="width:'+p+'%"></div></div></td>'+
+        '<td class="'+(s.sharpe_contribution!=null&&s.sharpe_contribution>=0?'pos':'dim')+'">'+contrib+'</td>'+
+        '</tr>';
+    }).join('');
+  } catch(e){ console.error('signalLibrary', e); }
+}
+
+async function loadRegime(){
+  try {
+    const res = await fetch('/api/regime');
+    if(!res.ok) return;
+    const reg = await res.json();
+    if(reg.error) return;
+    const cr = reg.current_regime||'Neutral';
+    const cls = REGIME_CLS[cr]||'regime-neutral';
+    const el = document.getElementById('bt-regime-current');
+    if(el) el.innerHTML = '| <span class="regime-badge-sm '+cls+'">'+(REGIME_EMOJI[cr]||'')+' '+cr+'</span>'+(reg.sharpe_with_regime!=null?' Sharpe: <strong class="pos">'+Number(reg.sharpe_with_regime).toFixed(2)+'</strong>':'');
+    const weightKeys = ['ret_w','rs_w','green_w','smooth_w'];
+    const wLabels = {ret_w:'リターン',rs_w:'相対強度',green_w:'陽線',smooth_w:'滑らか'};
+    const regimes = ['Bull','Bear','HighVol','Neutral'];
+    const grid = document.getElementById('bt-regime-grid');
+    grid.innerHTML = regimes.map(r=>{
+      const weights = (reg.regime_weights&&reg.regime_weights[r]) || reg[r] || null;
+      const rcls = REGIME_CLS[r]||'regime-neutral';
+      const sharpe = (reg.regime_sharpe&&reg.regime_sharpe[r]) || null;
+      if(!weights) return '<div class="regime-panel"><div class="r-title"><span class="regime-badge-sm '+rcls+'">'+REGIME_EMOJI[r]+' '+r+'</span></div><div class="dim" style="font-size:11px">データなし</div></div>';
+      const bars = weightKeys.map(k=>{
+        const v = weights[k]||0;
+        const p = Math.round(v*100);
+        const col = BAR_COLORS[k]||'#58a6ff';
+        return '<div class="bar-row"><span class="bar-label">'+wLabels[k]+'</span><div class="bar-track"><div class="bar-fill" style="width:'+p+'%;background:'+col+'"></div></div><span class="bar-val">'+v.toFixed(2)+'</span></div>';
+      }).join('');
+      return '<div class="regime-panel"><div class="r-title"><span class="regime-badge-sm '+rcls+'">'+REGIME_EMOJI[r]+' '+r+'</span></div>'+
+        (sharpe!=null?'<div class="r-sharpe">Sharpe: <strong>'+Number(sharpe).toFixed(2)+'</strong></div>':'')+bars+'</div>';
+    }).join('');
+  } catch(e){ console.error('regime', e); }
 }
 
 async function loadEvolution(){

@@ -39,6 +39,76 @@
       "best_weight": 0.2,
       "sharpe_contribution": null,
       "added_at": "2026-03-05"
+    },
+    {
+      "id": "regime_adaptive_weights",
+      "desc": "レジーム連動型重み（強気/弱気/高ボラで自動切替）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.524,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "green_smooth_synergy",
+      "desc": "green_candle × smooth_trend 合成スコアで銘柄純度向上",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": null,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "regime_bear_defense",
+      "desc": "レジーム連動型: bull時フルポジ×non-bull時top_n半減+smooth重視",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": null,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "lookback_ensemble",
+      "desc": "lookback 60日・80日のスコアをアンサンブル平均してランキング",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": null,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "regime_cash_buffer",
+      "desc": "レジーム連動型: non-bull時にキャッシュバッファ30%（top_n=7に削減）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -1.524,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "ret_rs_dual_rank",
+      "desc": "ret×rs 2段フィルタ: RS上位40%絞り込み後にretスコアでtop_n選択",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": null,
+      "added_at": "2026-03-05"
+    },
+    {
+      "id": "midcap_volume_stable",
+      "desc": "中型株×出来高安定フィルター: 週次出来高CV低位銘柄を優遇",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": null,
+      "added_at": "2026-03-05"
     }
   ],
   "current_weights": {
