@@ -40,8 +40,18 @@ def precompute(prices_dict, nikkei, lookbacks):
     down_mask = (nk_rets < -0.01).astype(float)
     
     # lb -> factor -> {code: Series}
-    data = {lb: {"ret":{},"rs":{},"green":{},"smooth":{},"resilience":{},"ret5":{},"ret10":{},"omega":{},"high52":{}} for lb in lookbacks}
-    
+    data = {lb: {"ret":{},"rs":{},"green":{},"smooth":{},"resilience":{},"ret5":{},"ret10":{},"omega":{},"high52":{},"close_location":{},"range_expand":{},"win_streak":{}} for lb in lookbacks}
+
+    def max_streak(x):
+        streak = max_s = 0
+        for v in x:
+            if v > 0:
+                streak += 1
+                max_s = max(max_s, streak)
+            else:
+                streak = 0
+        return float(max_s)
+
     for code, df in prices_dict.items():
         p = df["AdjC"].dropna()
         dr = p.pct_change()
@@ -51,6 +61,14 @@ def precompute(prices_dict, nikkei, lookbacks):
         # 52週高値proximity（ルックバック非依存）
         h52   = p.rolling(252, min_periods=60).max()
         high52 = (p / h52.replace(0, np.nan)).clip(0, 1).astype(float)
+        # 新ファクター（ルックバック非依存部分）
+        high = df["High"].reindex(p.index).ffill() if "High" in df.columns else pd.Series(np.nan, index=p.index)
+        low  = df["Low"].reindex(p.index).ffill()  if "Low"  in df.columns else pd.Series(np.nan, index=p.index)
+        rng  = (high - low).replace(0, np.nan)
+        atr5  = (high - low).rolling(5).mean()
+        atr40 = (high - low).rolling(40).mean().replace(0, np.nan)
+        range_expand = (atr5 / atr40).astype(float)
+        win_streak = dr.rolling(20).apply(max_streak, raw=True).astype(float)
         for lb in lookbacks:
             ret    = (p / p.shift(lb) - 1).astype(float)
             nk_ret = (nikkei / nikkei.shift(lb) - 1).astype(float)
@@ -76,6 +94,12 @@ def precompute(prices_dict, nikkei, lookbacks):
             data[lb]["ret10"][code]      = ret10
             data[lb]["omega"][code]      = omega
             data[lb]["high52"][code]     = high52
+            # 終値位置ファクター（lb依存: rolling(lb)）
+            close_loc = ((p - low) / rng).rolling(lb).mean().astype(float)
+            data[lb]["close_location"][code] = close_loc
+            # ATRブレイクアウト・連続陽線（lb非依存だが全lbに保存）
+            data[lb]["range_expand"][code] = range_expand
+            data[lb]["win_streak"][code]   = win_streak
     
     # DataFrameに変換
     factor_dfs = {}
@@ -135,6 +159,33 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
             score_df = omega_ranked * omega_w
         else:
             score_df = score_df + omega_ranked * omega_w
+
+    # 終値位置ファクター（引け買い圧力）
+    close_location_w = params.get('close_location_w', 0.0)
+    if close_location_w > 0 and lb in factor_dfs and 'close_location' in factor_dfs[lb]:
+        cl_ranked = factor_dfs[lb]['close_location'].rank(axis=1, pct=True)
+        if score_df is None:
+            score_df = cl_ranked * close_location_w
+        else:
+            score_df = score_df + cl_ranked * close_location_w
+
+    # ATRブレイクアウト検出ファクター
+    range_expand_w = params.get('range_expand_w', 0.0)
+    if range_expand_w > 0 and lb in factor_dfs and 'range_expand' in factor_dfs[lb]:
+        re_ranked = factor_dfs[lb]['range_expand'].rank(axis=1, pct=True)
+        if score_df is None:
+            score_df = re_ranked * range_expand_w
+        else:
+            score_df = score_df + re_ranked * range_expand_w
+
+    # 最大連続陽線日数ファクター
+    win_streak_w = params.get('win_streak_w', 0.0)
+    if win_streak_w > 0 and lb in factor_dfs and 'win_streak' in factor_dfs[lb]:
+        ws_ranked = factor_dfs[lb]['win_streak'].rank(axis=1, pct=True)
+        if score_df is None:
+            score_df = ws_ranked * win_streak_w
+        else:
+            score_df = score_df + ws_ranked * win_streak_w
 
     if score_df is None:
         return None

@@ -101,6 +101,57 @@
       }
     },
     {
+      "at": "2026-03-05T15:25:31.494329",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=3",
+      "win": 0,
+      "delta_sharpe": 0.02400000000000002,
+      "sharpe": 4.28,
+      "total_return_pct": 167.9,
+      "alpha_pct": 69.7,
+      "max_dd_pct": 18.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3519,
+        "rs_w": 0.2673,
+        "green_w": 0.1122,
+        "smooth_w": 0.0,
+        "resilience_w": 0.0,
+        "high52_w": 0.1172,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.1514,
+        "cluster_boost_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T15:44:19.912821",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=3",
+      "win": 0,
+      "delta_sharpe": 0.02400000000000002,
+      "sharpe": 4.28,
+      "total_return_pct": 167.9,
+      "alpha_pct": 69.7,
+      "max_dd_pct": 18.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3532,
+        "rs_w": 0.2683,
+        "green_w": 0.1088,
+        "smooth_w": 0.0,
+        "resilience_w": 0.0,
+        "high52_w": 0.1177,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.152,
+        "cluster_boost_w": 0.1,
+        "volume_confirm_w": 0.0
+      }
+    },
+    {
       "at": "2026-03-05T12:34:19.401289",
       "id": "local_search",
       "desc": "局所探索ベスト lb=60 tn=3",
@@ -195,55 +246,6 @@
         "high52_w": 0.4097,
         "omega_w": 0.0,
         "short_momentum_w": 0.0
-      }
-    },
-    {
-      "at": "2026-03-05T12:00:48.624340",
-      "id": "local_search",
-      "desc": "局所探索ベスト lb=40 tn=7",
-      "win": 1,
-      "delta_sharpe": 0.2789999999999999,
-      "sharpe": 3.678,
-      "total_return_pct": 27.63,
-      "alpha_pct": -70.57,
-      "max_dd_pct": 5.53,
-      "params": {
-        "lookback": 40,
-        "top_n": 7,
-        "rebalance": "weekly",
-        "ret_w": 0.0,
-        "rs_w": 0.1282,
-        "green_w": 0.0641,
-        "smooth_w": 0.3133,
-        "resilience_w": 0.0708,
-        "high52_w": 0.4237,
-        "omega_w": 0.0,
-        "short_momentum_w": 0.0
-      }
-    },
-    {
-      "at": "2026-03-05T12:26:01.406674",
-      "id": "local_search",
-      "desc": "局所探索ベスト lb=60 tn=3",
-      "win": 1,
-      "delta_sharpe": 1.044,
-      "sharpe": 3.574,
-      "total_return_pct": 135.33,
-      "alpha_pct": 37.13,
-      "max_dd_pct": 23.33,
-      "params": {
-        "lookback": 60,
-        "top_n": 3,
-        "rebalance": "weekly",
-        "ret_w": 0.3216,
-        "rs_w": 0.2557,
-        "green_w": 0.1025,
-        "smooth_w": 0.1058,
-        "resilience_w": 0.1072,
-        "high52_w": 0.1072,
-        "omega_w": 0.0,
-        "short_momentum_w": 0.0,
-        "cluster_boost_w": 0.1
       }
     }
   ],
@@ -346,6 +348,57 @@
         "omega_w": 0.0,
         "short_momentum_w": 0.1514,
         "cluster_boost_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T15:25:31.494329",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=3",
+      "win": 0,
+      "delta_sharpe": 0.02400000000000002,
+      "sharpe": 4.28,
+      "total_return_pct": 167.9,
+      "alpha_pct": 69.7,
+      "max_dd_pct": 18.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3519,
+        "rs_w": 0.2673,
+        "green_w": 0.1122,
+        "smooth_w": 0.0,
+        "resilience_w": 0.0,
+        "high52_w": 0.1172,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.1514,
+        "cluster_boost_w": 0.1
+      }
+    },
+    {
+      "at": "2026-03-05T15:44:19.912821",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=3",
+      "win": 0,
+      "delta_sharpe": 0.02400000000000002,
+      "sharpe": 4.28,
+      "total_return_pct": 167.9,
+      "alpha_pct": 69.7,
+      "max_dd_pct": 18.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3532,
+        "rs_w": 0.2683,
+        "green_w": 0.1088,
+        "smooth_w": 0.0,
+        "resilience_w": 0.0,
+        "high52_w": 0.1177,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.152,
+        "cluster_boost_w": 0.1,
+        "volume_confirm_w": 0.0
       }
     },
     {
@@ -1775,5 +1828,5 @@
       }
     }
   ],
-  "total": 73
+  "total": 75
 }

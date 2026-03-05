@@ -1102,3 +1102,125 @@ INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
 INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
 INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
 INFO:     195.211.77.141:0 - "HEAD / HTTP/1.1" 405 Method Not Allowed
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     1.115.89.191:0 - "GET / HTTP/1.1" 200 OK
+INFO:     1.115.89.191:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     1.115.89.191:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     1.115.89.191:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     1.115.89.191:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     1.115.89.191:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     1.115.89.191:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     1.115.89.191:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     1.115.89.191:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     3.236.231.166:0 - "GET / HTTP/1.1" 200 OK
+INFO:     3.236.231.166:0 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     3.236.231.166:0 - "GET /favicon.png HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     3.236.231.166:0 - "GET / HTTP/1.1" 200 OK
+INFO:     54.164.157.105:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
