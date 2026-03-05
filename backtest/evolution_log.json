@@ -1,7 +1,7 @@
 {
   "best10": [
     {
-      "at": "2026-03-05T08:28:00",
+      "at": "2026-03-05T10:01:38.727353",
       "id": "universe_midcap",
       "desc": "ユニバース→時価総額100〜3000億の中型株",
       "win": true,
@@ -10,249 +10,10 @@
       "total_return_pct": 36.78,
       "alpha_pct": -61.42,
       "max_dd_pct": 18.36,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.3,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0
-      }
-    },
-    {
-      "at": "2026-03-05T09:21:04.799240",
-      "id": "local_search",
-      "desc": "局所探索ベスト lb=60 tn=15",
-      "win": false,
-      "delta_sharpe": -0.1719999999999997,
-      "sharpe": 2.019,
-      "total_return_pct": 25.32,
-      "alpha_pct": -72.88,
-      "max_dd_pct": 15.06,
-      "params": {
-        "lookback": 60,
-        "top_n": 15,
-        "rebalance": "weekly",
-        "ret_w": 0.19999999999999998,
-        "rs_w": 0.3,
-        "green_w": 0.25,
-        "smooth_w": 0.25,
-        "resilience_w": 0.1
-      }
-    },
-    {
-      "at": "2026-03-05T08:28:00",
-      "id": "vol_candle_exit",
-      "desc": "大出来高陰線でエグジットシグナル追加",
-      "win": false,
-      "delta_sharpe": -0.418,
-      "sharpe": 1.773,
-      "total_return_pct": 31.72,
-      "alpha_pct": -66.48,
-      "max_dd_pct": 21.53,
-      "params": {
-        "lookback": 60,
-        "top_n": 5,
-        "rebalance": "weekly",
-        "ret_w": 0.3,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0
-      }
-    },
-    {
-      "at": "2026-03-05T09:21:04.866510",
-      "id": "factor_eps_growth",
-      "desc": "新ファクター: eps_growth",
-      "win": false,
-      "delta_sharpe": -1.5019999999999998,
-      "sharpe": 0.689,
-      "total_return_pct": 7.92,
-      "alpha_pct": -90.28,
-      "max_dd_pct": 22.66,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.25,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0,
-        "eps_growth_w": 0.1
-      }
-    },
-    {
-      "at": "2026-03-05T09:21:06.098399",
-      "id": "factor_rev_growth",
-      "desc": "新ファクター: rev_growth",
-      "win": false,
-      "delta_sharpe": -1.5019999999999998,
-      "sharpe": 0.689,
-      "total_return_pct": 7.92,
-      "alpha_pct": -90.28,
-      "max_dd_pct": 22.66,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.25,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0,
-        "rev_growth_w": 0.1
-      }
-    },
-    {
-      "at": "2026-03-05T09:21:07.328339",
-      "id": "factor_credit_ratio",
-      "desc": "新ファクター: credit_ratio",
-      "win": false,
-      "delta_sharpe": -1.5019999999999998,
-      "sharpe": 0.689,
-      "total_return_pct": 7.92,
-      "alpha_pct": -90.28,
-      "max_dd_pct": 22.66,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.25,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0,
-        "credit_ratio_w": 0.1
-      }
-    },
-    {
-      "at": "2026-03-05T09:21:08.557825",
-      "id": "factor_rsi14",
-      "desc": "新ファクター: rsi14",
-      "win": false,
-      "delta_sharpe": -1.5019999999999998,
-      "sharpe": 0.689,
-      "total_return_pct": 7.92,
-      "alpha_pct": -90.28,
-      "max_dd_pct": 22.66,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.25,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0,
-        "rsi14_w": 0.1
-      }
-    },
-    {
-      "at": "2026-03-05T09:21:09.779229",
-      "id": "factor_ma_deviation",
-      "desc": "新ファクター: ma_deviation",
-      "win": false,
-      "delta_sharpe": -1.5019999999999998,
-      "sharpe": 0.689,
-      "total_return_pct": 7.92,
-      "alpha_pct": -90.28,
-      "max_dd_pct": 22.66,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.25,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0,
-        "ma_deviation_w": 0.1
-      }
-    },
-    {
-      "at": "2026-03-05T09:21:11.010319",
-      "id": "factor_momentum_12_1",
-      "desc": "新ファクター: momentum_12_1",
-      "win": false,
-      "delta_sharpe": -1.5019999999999998,
-      "sharpe": 0.689,
-      "total_return_pct": 7.92,
-      "alpha_pct": -90.28,
-      "max_dd_pct": 22.66,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.25,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0,
-        "momentum_12_1_w": 0.1
-      }
-    },
-    {
-      "at": "2026-03-05T09:55:26.112128",
-      "id": "regime_adaptive_weights",
-      "desc": "レジーム連動型重み（強気/弱気/高ボラで自動切替）",
-      "win": false,
-      "delta_sharpe": -1.524,
-      "sharpe": 0.667,
-      "total_return_pct": 21.52,
-      "alpha_pct": -76.68,
-      "max_dd_pct": 20.8,
       "params": {}
-    }
-  ],
-  "all": [
-    {
-      "at": "2026-03-05T08:28:00",
-      "id": "universe_midcap",
-      "desc": "ユニバース→時価総額100〜3000億の中型株",
-      "win": true,
-      "delta_sharpe": 0.421,
-      "sharpe": 2.191,
-      "total_return_pct": 36.78,
-      "alpha_pct": -61.42,
-      "max_dd_pct": 18.36,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.3,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0
-      }
     },
     {
-      "at": "2026-03-05T09:21:04.799240",
-      "id": "local_search",
-      "desc": "局所探索ベスト lb=60 tn=15",
-      "win": false,
-      "delta_sharpe": -0.1719999999999997,
-      "sharpe": 2.019,
-      "total_return_pct": 25.32,
-      "alpha_pct": -72.88,
-      "max_dd_pct": 15.06,
-      "params": {
-        "lookback": 60,
-        "top_n": 15,
-        "rebalance": "weekly",
-        "ret_w": 0.19999999999999998,
-        "rs_w": 0.3,
-        "green_w": 0.25,
-        "smooth_w": 0.25,
-        "resilience_w": 0.1
-      }
-    },
-    {
-      "at": "2026-03-05T08:28:00",
+      "at": "2026-03-05T10:01:38.727362",
       "id": "vol_candle_exit",
       "desc": "大出来高陰線でエグジットシグナル追加",
       "win": false,
@@ -261,151 +22,10 @@
       "total_return_pct": 31.72,
       "alpha_pct": -66.48,
       "max_dd_pct": 21.53,
-      "params": {
-        "lookback": 60,
-        "top_n": 5,
-        "rebalance": "weekly",
-        "ret_w": 0.3,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0
-      }
+      "params": {}
     },
     {
-      "at": "2026-03-05T09:21:04.866510",
-      "id": "factor_eps_growth",
-      "desc": "新ファクター: eps_growth",
-      "win": false,
-      "delta_sharpe": -1.5019999999999998,
-      "sharpe": 0.689,
-      "total_return_pct": 7.92,
-      "alpha_pct": -90.28,
-      "max_dd_pct": 22.66,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.25,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0,
-        "eps_growth_w": 0.1
-      }
-    },
-    {
-      "at": "2026-03-05T09:21:06.098399",
-      "id": "factor_rev_growth",
-      "desc": "新ファクター: rev_growth",
-      "win": false,
-      "delta_sharpe": -1.5019999999999998,
-      "sharpe": 0.689,
-      "total_return_pct": 7.92,
-      "alpha_pct": -90.28,
-      "max_dd_pct": 22.66,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.25,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0,
-        "rev_growth_w": 0.1
-      }
-    },
-    {
-      "at": "2026-03-05T09:21:07.328339",
-      "id": "factor_credit_ratio",
-      "desc": "新ファクター: credit_ratio",
-      "win": false,
-      "delta_sharpe": -1.5019999999999998,
-      "sharpe": 0.689,
-      "total_return_pct": 7.92,
-      "alpha_pct": -90.28,
-      "max_dd_pct": 22.66,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.25,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0,
-        "credit_ratio_w": 0.1
-      }
-    },
-    {
-      "at": "2026-03-05T09:21:08.557825",
-      "id": "factor_rsi14",
-      "desc": "新ファクター: rsi14",
-      "win": false,
-      "delta_sharpe": -1.5019999999999998,
-      "sharpe": 0.689,
-      "total_return_pct": 7.92,
-      "alpha_pct": -90.28,
-      "max_dd_pct": 22.66,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.25,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0,
-        "rsi14_w": 0.1
-      }
-    },
-    {
-      "at": "2026-03-05T09:21:09.779229",
-      "id": "factor_ma_deviation",
-      "desc": "新ファクター: ma_deviation",
-      "win": false,
-      "delta_sharpe": -1.5019999999999998,
-      "sharpe": 0.689,
-      "total_return_pct": 7.92,
-      "alpha_pct": -90.28,
-      "max_dd_pct": 22.66,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.25,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0,
-        "ma_deviation_w": 0.1
-      }
-    },
-    {
-      "at": "2026-03-05T09:21:11.010319",
-      "id": "factor_momentum_12_1",
-      "desc": "新ファクター: momentum_12_1",
-      "win": false,
-      "delta_sharpe": -1.5019999999999998,
-      "sharpe": 0.689,
-      "total_return_pct": 7.92,
-      "alpha_pct": -90.28,
-      "max_dd_pct": 22.66,
-      "params": {
-        "lookback": 80,
-        "top_n": 10,
-        "rebalance": "weekly",
-        "ret_w": 0.25,
-        "rs_w": 0.3,
-        "green_w": 0.2,
-        "smooth_w": 0.2,
-        "resilience_w": 0.0,
-        "momentum_12_1_w": 0.1
-      }
-    },
-    {
-      "at": "2026-03-05T09:55:26.112128",
+      "at": "2026-03-05T10:01:38.727378",
       "id": "regime_adaptive_weights",
       "desc": "レジーム連動型重み（強気/弱気/高ボラで自動切替）",
       "win": false,
@@ -417,7 +37,7 @@
       "params": {}
     },
     {
-      "at": "2026-03-05T09:58:38.849926",
+      "at": "2026-03-05T10:01:38.727384",
       "id": "regime_cash_buffer",
       "desc": "レジーム連動型: non-bull時にキャッシュバッファ30%（top_n=7に削減）",
       "win": false,
@@ -429,7 +49,7 @@
       "params": {}
     },
     {
-      "at": "2026-03-05T08:28:00",
+      "at": "2026-03-05T10:01:38.727364",
       "id": "resilience_upgrade",
       "desc": "下落日相対強度を主要ファクターに昇格(w=0.3)",
       "win": false,
@@ -438,17 +58,70 @@
       "total_return_pct": 4.09,
       "alpha_pct": -94.11,
       "max_dd_pct": 27.05,
-      "params": {
-        "lookback": 60,
-        "top_n": 5,
-        "rebalance": "weekly",
-        "ret_w": 0.2,
-        "rs_w": 0.2,
-        "green_w": 0.1,
-        "smooth_w": 0.2,
-        "resilience_w": 0.3
-      }
+      "params": {}
     }
   ],
-  "total": 13
+  "all": [
+    {
+      "at": "2026-03-05T10:01:38.727353",
+      "id": "universe_midcap",
+      "desc": "ユニバース→時価総額100〜3000億の中型株",
+      "win": true,
+      "delta_sharpe": 0.421,
+      "sharpe": 2.191,
+      "total_return_pct": 36.78,
+      "alpha_pct": -61.42,
+      "max_dd_pct": 18.36,
+      "params": {}
+    },
+    {
+      "at": "2026-03-05T10:01:38.727362",
+      "id": "vol_candle_exit",
+      "desc": "大出来高陰線でエグジットシグナル追加",
+      "win": false,
+      "delta_sharpe": -0.418,
+      "sharpe": 1.773,
+      "total_return_pct": 31.72,
+      "alpha_pct": -66.48,
+      "max_dd_pct": 21.53,
+      "params": {}
+    },
+    {
+      "at": "2026-03-05T10:01:38.727378",
+      "id": "regime_adaptive_weights",
+      "desc": "レジーム連動型重み（強気/弱気/高ボラで自動切替）",
+      "win": false,
+      "delta_sharpe": -1.524,
+      "sharpe": 0.667,
+      "total_return_pct": 21.52,
+      "alpha_pct": -76.68,
+      "max_dd_pct": 20.8,
+      "params": {}
+    },
+    {
+      "at": "2026-03-05T10:01:38.727384",
+      "id": "regime_cash_buffer",
+      "desc": "レジーム連動型: non-bull時にキャッシュバッファ30%（top_n=7に削減）",
+      "win": false,
+      "delta_sharpe": -1.524,
+      "sharpe": 0.667,
+      "total_return_pct": 21.52,
+      "alpha_pct": -76.68,
+      "max_dd_pct": 20.8,
+      "params": {}
+    },
+    {
+      "at": "2026-03-05T10:01:38.727364",
+      "id": "resilience_upgrade",
+      "desc": "下落日相対強度を主要ファクターに昇格(w=0.3)",
+      "win": false,
+      "delta_sharpe": -1.764,
+      "sharpe": 0.427,
+      "total_return_pct": 4.09,
+      "alpha_pct": -94.11,
+      "max_dd_pct": 27.05,
+      "params": {}
+    }
+  ],
+  "total": 20
 }
