@@ -36,6 +36,28 @@ def backtest():
         return JSONResponse({"error": "no backtest data"}, status_code=404)
     return json.loads(p.read_text())
 
+@app.get("/api/signals")
+def signals():
+    p = BASE / "data/signal_history.json"
+    if not p.exists():
+        return JSONResponse({"error": "no signal data"}, status_code=404)
+    history = json.loads(p.read_text())
+    return history[-1] if history else JSONResponse({"error": "empty"}, status_code=404)
+
+@app.get("/api/signals/history")
+def signals_history():
+    p = BASE / "data/signal_history.json"
+    if not p.exists():
+        return []
+    return json.loads(p.read_text())
+
+@app.get("/api/portfolio")
+def portfolio():
+    p = BASE / "portfolio.json"
+    if not p.exists():
+        return {"holdings": [], "updated": ""}
+    return json.loads(p.read_text())
+
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
 
 @app.get("/")
@@ -44,4 +66,4 @@ def index():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="0.0.0.0", port=8080, reload=True)
