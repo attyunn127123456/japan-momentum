@@ -55,9 +55,14 @@ def get_top_liquid_tickers(n: int = 500) -> list[str]:
         except Exception as e:
             print(f"    [WARN] {dt}: {e}")
 
+    # 投資信託・ETF除外（MktNm == 'その他'）
+    master = get_master()
+    exclude_codes = set(master[master['MktNm'] == 'その他']['Code'].astype(str).tolist())
+    print(f"    除外: 投資信託/ETF {len(exclude_codes)}銘柄")
+
     # ランキング
     ranked = sorted(turnover_sum.items(), key=lambda x: x[1], reverse=True)
-    top_codes = [code for code, _ in ranked[:n]]
+    top_codes = [code for code, _ in ranked if code not in exclude_codes][:n]
 
     # キャッシュ保存
     CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)

@@ -28,19 +28,6 @@
       "price": 4880.0
     },
     {
-      "ticker": "16230.T",
-      "code": "16230",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　鉄鋼・非鉄（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 91.67,
-      "rs_score": 61.14,
-      "return_5_25d": 41.93,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.67,
-      "rs_acceleration": 1.0,
-      "price": 62860.0
-    },
-    {
       "ticker": "18270.T",
       "code": "18270",
       "name": "ナカノフドー建設",
@@ -52,6 +39,19 @@
       "green_day_ratio": 0.67,
       "rs_acceleration": 1.0,
       "price": 1578.0
+    },
+    {
+      "ticker": "268A0.T",
+      "code": "268A0",
+      "name": "リガク・ホールディングス",
+      "sector": "電機・精密",
+      "score": 91.25,
+      "rs_score": 62.27,
+      "return_5_25d": 54.12,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.62,
+      "rs_acceleration": 1.0,
+      "price": 1668.0
     },
     {
       "ticker": "50160.T",
@@ -78,19 +78,6 @@
       "green_day_ratio": 0.54,
       "rs_acceleration": 1.0,
       "price": 4085.0
-    },
-    {
-      "ticker": "20330.T",
-      "code": "20330",
-      "name": "ノムラ・ヨーロッパ・ファイナンス・エヌ・ブイ　ＮＥＸＴ　ＮＯＴＥＳ　韓国ＫＯＳＰＩ・ダブル・ブル　ＥＴＮ",
-      "sector": "その他",
-      "score": 90.42,
-      "rs_score": 172.9,
-      "return_5_25d": 64.29,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 1.0,
-      "price": 51350.0
     },
     {
       "ticker": "16620.T",
@@ -171,6 +158,32 @@
       "price": 1896.5
     },
     {
+      "ticker": "24690.T",
+      "code": "24690",
+      "name": "ヒビノ",
+      "sector": "情報通信・サービスその他",
+      "score": 85.04,
+      "rs_score": 31.53,
+      "return_5_25d": 28.41,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.58,
+      "rs_acceleration": 1.0,
+      "price": 3915.0
+    },
+    {
+      "ticker": "23440.T",
+      "code": "23440",
+      "name": "平安レイサービス",
+      "sector": "情報通信・サービスその他",
+      "score": 85.0,
+      "rs_score": 46.6,
+      "return_5_25d": 57.23,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.5,
+      "rs_acceleration": 1.0,
+      "price": 1475.0
+    },
+    {
       "ticker": "19590.T",
       "code": "19590",
       "name": "クラフティア",
@@ -208,6 +221,19 @@
       "green_day_ratio": 0.71,
       "rs_acceleration": 1.0,
       "price": 3872.0
+    },
+    {
+      "ticker": "27800.T",
+      "code": "27800",
+      "name": "コメ兵ホールディングス",
+      "sector": "小売",
+      "score": 84.56,
+      "rs_score": 44.48,
+      "return_5_25d": 39.12,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.5,
+      "rs_acceleration": 1.0,
+      "price": 4575.0
     },
     {
       "ticker": "146A0.T",
@@ -340,6 +366,32 @@
       "price": 3175.0
     },
     {
+      "ticker": "22640.T",
+      "code": "22640",
+      "name": "森永乳業",
+      "sector": "食品",
+      "score": 82.46,
+      "rs_score": 27.33,
+      "return_5_25d": 22.41,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.62,
+      "rs_acceleration": 1.0,
+      "price": 4818.0
+    },
+    {
+      "ticker": "255A0.T",
+      "code": "255A0",
+      "name": "ジーエルテクノホールディングス",
+      "sector": "電機・精密",
+      "score": 82.36,
+      "rs_score": 7.62,
+      "return_5_25d": 22.26,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.62,
+      "rs_acceleration": 1.0,
+      "price": 3660.0
+    },
+    {
       "ticker": "15150.T",
       "code": "15150",
       "name": "日鉄鉱業",
@@ -405,6 +457,19 @@
       "price": 500.0
     },
     {
+      "ticker": "25880.T",
+      "code": "25880",
+      "name": "プレミアムウォーターホールディングス",
+      "sector": "食品",
+      "score": 81.8,
+      "rs_score": 8.63,
+      "return_5_25d": 21.1,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.62,
+      "rs_acceleration": 1.0,
+      "price": 3955.0
+    },
+    {
       "ticker": "19420.T",
       "code": "19420",
       "name": "関電工",
@@ -431,19 +496,6 @@
       "price": 3330.0
     },
     {
-      "ticker": "15590.T",
-      "code": "15590",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　タイ株式ＳＥＴ５０指数連動型上場投信",
-      "sector": "その他",
-      "score": 81.21,
-      "rs_score": 6.46,
-      "return_5_25d": 16.22,
-      "volume_acceleration": 1.0,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": 0.62,
-      "price": 4215.0
-    },
-    {
       "ticker": "22080.T",
       "code": "22080",
       "name": "ブルボン",
@@ -457,30 +509,17 @@
       "price": 3175.0
     },
     {
-      "ticker": "16180.T",
-      "code": "16180",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　エネルギー資源（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 81.06,
-      "rs_score": 28.84,
-      "return_5_25d": 24.13,
+      "ticker": "22860.T",
+      "code": "22860",
+      "name": "林兼産業",
+      "sector": "食品",
+      "score": 80.74,
+      "rs_score": 23.36,
+      "return_5_25d": 21.48,
       "volume_acceleration": 0.67,
-      "green_day_ratio": 0.67,
-      "rs_acceleration": 0.47,
-      "price": 35920.0
-    },
-    {
-      "ticker": "163A0.T",
-      "code": "163A0",
-      "name": "三菱ＵＦＪ証券ホールディングス株式会社　半導体フォーカス　日本株（ネットリターン）ＥＴＮ",
-      "sector": "その他",
-      "score": 80.75,
-      "rs_score": 31.08,
-      "return_5_25d": 11.5,
-      "volume_acceleration": 1.0,
       "green_day_ratio": 0.5,
       "rs_acceleration": 1.0,
-      "price": 14655.0
+      "price": 866.0
     },
     {
       "ticker": "20600.T",
@@ -496,6 +535,19 @@
       "price": 1230.0
     },
     {
+      "ticker": "26120.T",
+      "code": "26120",
+      "name": "かどや製油",
+      "sector": "食品",
+      "score": 80.67,
+      "rs_score": 17.8,
+      "return_5_25d": 29.68,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.58,
+      "rs_acceleration": 1.0,
+      "price": 4930.0
+    },
+    {
       "ticker": "19630.T",
       "code": "19630",
       "name": "日揮ホールディングス",
@@ -509,17 +561,17 @@
       "price": 2193.5
     },
     {
-      "ticker": "16290.T",
-      "code": "16290",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　商社・卸売（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 80.37,
-      "rs_score": 27.43,
-      "return_5_25d": 18.24,
+      "ticker": "27640.T",
+      "code": "27640",
+      "name": "ひらまつ",
+      "sector": "小売",
+      "score": 80.38,
+      "rs_score": 9.8,
+      "return_5_25d": 20.77,
       "volume_acceleration": 0.67,
-      "green_day_ratio": 0.62,
+      "green_day_ratio": 0.5,
       "rs_acceleration": 1.0,
-      "price": 134150.0
+      "price": 160.0
     },
     {
       "ticker": "18130.T",
@@ -533,19 +585,6 @@
       "green_day_ratio": 0.58,
       "rs_acceleration": 1.0,
       "price": 3570.0
-    },
-    {
-      "ticker": "16240.T",
-      "code": "16240",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　機械（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 79.91,
-      "rs_score": 17.82,
-      "return_5_25d": 17.32,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.62,
-      "rs_acceleration": 1.0,
-      "price": 88910.0
     },
     {
       "ticker": "18600.T",
@@ -574,6 +613,32 @@
       "price": 4850.0
     },
     {
+      "ticker": "21220.T",
+      "code": "21220",
+      "name": "インタースペース",
+      "sector": "情報通信・サービスその他",
+      "score": 79.47,
+      "rs_score": 11.79,
+      "return_5_25d": 5.6,
+      "volume_acceleration": 1.0,
+      "green_day_ratio": 0.67,
+      "rs_acceleration": 1.0,
+      "price": 1293.0
+    },
+    {
+      "ticker": "22240.T",
+      "code": "22240",
+      "name": "コモ",
+      "sector": "食品",
+      "score": 79.41,
+      "rs_score": 4.12,
+      "return_5_25d": 12.34,
+      "volume_acceleration": 1.0,
+      "green_day_ratio": 0.67,
+      "rs_acceleration": 0.31,
+      "price": 3875.0
+    },
+    {
       "ticker": "18780.T",
       "code": "18780",
       "name": "大東建託",
@@ -585,6 +650,32 @@
       "green_day_ratio": 0.58,
       "rs_acceleration": 1.0,
       "price": 3570.0
+    },
+    {
+      "ticker": "27680.T",
+      "code": "27680",
+      "name": "双日",
+      "sector": "商社・卸売",
+      "score": 78.56,
+      "rs_score": 41.92,
+      "return_5_25d": 27.12,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.5,
+      "rs_acceleration": 1.0,
+      "price": 6267.0
+    },
+    {
+      "ticker": "27020.T",
+      "code": "27020",
+      "name": "日本マクドナルドホールディングス",
+      "sector": "小売",
+      "score": 78.4,
+      "rs_score": 9.71,
+      "return_5_25d": 11.46,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.79,
+      "rs_acceleration": 0.95,
+      "price": 7720.0
     },
     {
       "ticker": "52010.T",
@@ -613,19 +704,6 @@
       "price": 6325.0
     },
     {
-      "ticker": "16950.T",
-      "code": "16950",
-      "name": "ウィズダムツリー・コモディティ・セキュリティーズ・リミテッド　ＷｉｓｄｏｍＴｒｅｅ　小麦上場投資信託",
-      "sector": "その他",
-      "score": 77.61,
-      "rs_score": -6.43,
-      "return_5_25d": 11.61,
-      "volume_acceleration": 1.0,
-      "green_day_ratio": 0.62,
-      "rs_acceleration": 0.11,
-      "price": 3010.0
-    },
-    {
       "ticker": "19690.T",
       "code": "19690",
       "name": "高砂熱学工業",
@@ -637,6 +715,19 @@
       "green_day_ratio": 0.5,
       "rs_acceleration": 1.0,
       "price": 4934.0
+    },
+    {
+      "ticker": "253A0.T",
+      "code": "253A0",
+      "name": "ＥＴＳグループ",
+      "sector": "建設・資材",
+      "score": 77.47,
+      "rs_score": 22.4,
+      "return_5_25d": 24.12,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.54,
+      "rs_acceleration": 1.0,
+      "price": 1263.0
     },
     {
       "ticker": "13320.T",
@@ -652,43 +743,56 @@
       "price": 1430.5
     },
     {
-      "ticker": "221A0.T",
-      "code": "221A0",
-      "name": "三菱ＵＦＪアセットマネジメント株式会社　ＭＡＸＩＳ日経半導体株上場投信",
-      "sector": "その他",
-      "score": 76.87,
-      "rs_score": 43.95,
-      "return_5_25d": 12.91,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 1.0,
-      "price": 801.0
-    },
-    {
-      "ticker": "16200.T",
-      "code": "16200",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　素材・化学（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 76.75,
-      "rs_score": 4.19,
-      "return_5_25d": 14.25,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.71,
-      "rs_acceleration": 0.51,
-      "price": 34820.0
-    },
-    {
-      "ticker": "200A0.T",
-      "code": "200A0",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　日経半導体株指数連動型上場投信",
-      "sector": "その他",
-      "score": 76.74,
-      "rs_score": 43.01,
-      "return_5_25d": 14.32,
+      "ticker": "27050.T",
+      "code": "27050",
+      "name": "大戸屋ホールディングス",
+      "sector": "小売",
+      "score": 77.28,
+      "rs_score": 18.79,
+      "return_5_25d": 15.38,
       "volume_acceleration": 0.67,
       "green_day_ratio": 0.46,
       "rs_acceleration": 1.0,
-      "price": 3052.0
+      "price": 7310.0
+    },
+    {
+      "ticker": "27340.T",
+      "code": "27340",
+      "name": "サーラコーポレーション",
+      "sector": "小売",
+      "score": 77.23,
+      "rs_score": -0.13,
+      "return_5_25d": 11.5,
+      "volume_acceleration": 1.0,
+      "green_day_ratio": 0.54,
+      "rs_acceleration": 0.21,
+      "price": 1122.0
+    },
+    {
+      "ticker": "25790.T",
+      "code": "25790",
+      "name": "コカ・コーラ　ボトラーズジャパンホールディングス",
+      "sector": "食品",
+      "score": 76.86,
+      "rs_score": 40.19,
+      "return_5_25d": 22.06,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.58,
+      "rs_acceleration": 1.0,
+      "price": 4126.0
+    },
+    {
+      "ticker": "26920.T",
+      "code": "26920",
+      "name": "伊藤忠食品",
+      "sector": "商社・卸売",
+      "score": 76.43,
+      "rs_score": 23.54,
+      "return_5_25d": 11.19,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.58,
+      "rs_acceleration": 1.0,
+      "price": 13110.0
     },
     {
       "ticker": "20550.T",
@@ -702,19 +806,6 @@
       "green_day_ratio": 0.58,
       "rs_acceleration": 0.26,
       "price": 378.0
-    },
-    {
-      "ticker": "20840.T",
-      "code": "20840",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　日本高配当株アクティブ上場投信",
-      "sector": "その他",
-      "score": 76.34,
-      "rs_score": 14.09,
-      "return_5_25d": 14.63,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.62,
-      "rs_acceleration": 0.55,
-      "price": 3427.0
     },
     {
       "ticker": "17870.T",
@@ -756,32 +847,6 @@
       "price": 11150.0
     },
     {
-      "ticker": "16330.T",
-      "code": "16330",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　不動産（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 76.22,
-      "rs_score": 17.87,
-      "return_5_25d": 20.78,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 1.0,
-      "price": 60730.0
-    },
-    {
-      "ticker": "16190.T",
-      "code": "16190",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　建設・資材（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 76.06,
-      "rs_score": 16.79,
-      "return_5_25d": 13.17,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.73,
-      "price": 48760.0
-    },
-    {
       "ticker": "18020.T",
       "code": "18020",
       "name": "大林組",
@@ -808,82 +873,17 @@
       "price": 837.0
     },
     {
-      "ticker": "13580.T",
-      "code": "13580",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンド日経レバレッジ指数",
-      "sector": "その他",
-      "score": 75.28,
-      "rs_score": 30.99,
-      "return_5_25d": 19.73,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 1.0,
-      "price": 93670.0
-    },
-    {
-      "ticker": "13650.T",
-      "code": "13650",
-      "name": "大和アセットマネジメント株式会社　ｉＦｒｅｅＥＴＦ　日経平均レバレッジ・インデックス",
-      "sector": "その他",
-      "score": 75.16,
-      "rs_score": 29.74,
-      "return_5_25d": 19.48,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 1.0,
-      "price": 75610.0
-    },
-    {
-      "ticker": "15790.T",
-      "code": "15790",
-      "name": "シンプレクス・アセット・マネジメント株式会社　日経平均ブル２倍上場投信",
-      "sector": "その他",
-      "score": 75.16,
-      "rs_score": 30.19,
-      "return_5_25d": 19.49,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 1.0,
-      "price": 530.8
-    },
-    {
-      "ticker": "15700.T",
-      "code": "15700",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ日経平均レバレッジ・インデックス連動型上場投信",
-      "sector": "その他",
-      "score": 75.14,
-      "rs_score": 30.0,
-      "return_5_25d": 19.44,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 1.0,
-      "price": 49290.0
-    },
-    {
-      "ticker": "14580.T",
-      "code": "14580",
-      "name": "楽天投信投資顧問株式会社　楽天ＥＴＦ‐日経レバレッジ指数連動型",
-      "sector": "その他",
-      "score": 74.94,
-      "rs_score": 30.58,
-      "return_5_25d": 19.89,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": 1.0,
-      "price": 58650.0
-    },
-    {
-      "ticker": "15680.T",
-      "code": "15680",
-      "name": "シンプレクス・アセット・マネジメント株式会社　ＴＯＰＩＸブル２倍上場投信",
-      "sector": "その他",
-      "score": 74.82,
-      "rs_score": 21.54,
-      "return_5_25d": 19.61,
-      "volume_acceleration": 0.33,
+      "ticker": "250A0.T",
+      "code": "250A0",
+      "name": "シマダヤ",
+      "sector": "食品",
+      "score": 74.81,
+      "rs_score": -3.47,
+      "return_5_25d": 10.46,
+      "volume_acceleration": 0.67,
       "green_day_ratio": 0.58,
-      "rs_acceleration": 0.84,
-      "price": 807.6
+      "rs_acceleration": 0.75,
+      "price": 1856.0
     },
     {
       "ticker": "18110.T",
@@ -899,6 +899,19 @@
       "price": 8470.0
     },
     {
+      "ticker": "23490.T",
+      "code": "23490",
+      "name": "エヌアイデイ",
+      "sector": "情報通信・サービスその他",
+      "score": 74.65,
+      "rs_score": 0.55,
+      "return_5_25d": 9.31,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.5,
+      "rs_acceleration": 1.0,
+      "price": 2498.0
+    },
+    {
       "ticker": "19040.T",
       "code": "19040",
       "name": "大成温調",
@@ -910,19 +923,6 @@
       "green_day_ratio": 0.62,
       "rs_acceleration": 0.62,
       "price": 5060.0
-    },
-    {
-      "ticker": "13670.T",
-      "code": "13670",
-      "name": "大和アセットマネジメント株式会社　ｉＦｒｅｅＥＴＦ　ＴＯＰＩＸレバレッジ（２倍）指数",
-      "sector": "その他",
-      "score": 74.49,
-      "rs_score": 21.23,
-      "return_5_25d": 19.41,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.79,
-      "price": 62200.0
     },
     {
       "ticker": "19390.T",
@@ -951,32 +951,6 @@
       "price": 853.0
     },
     {
-      "ticker": "13260.T",
-      "code": "13260",
-      "name": "ワールド・ゴールド・トラスト・サービシズ・エルエルシー　ＳＰＤＲゴールド・シェア",
-      "sector": "その他",
-      "score": 74.26,
-      "rs_score": 34.32,
-      "return_5_25d": 7.76,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.99,
-      "price": 74360.0
-    },
-    {
-      "ticker": "13280.T",
-      "code": "13280",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　金価格連動型上場投信",
-      "sector": "その他",
-      "score": 73.8,
-      "rs_score": 32.93,
-      "return_5_25d": 7.57,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.92,
-      "price": 19185.0
-    },
-    {
       "ticker": "17210.T",
       "code": "17210",
       "name": "コムシスホールディングス",
@@ -988,6 +962,32 @@
       "green_day_ratio": 0.58,
       "rs_acceleration": 1.0,
       "price": 5410.0
+    },
+    {
+      "ticker": "24620.T",
+      "code": "24620",
+      "name": "ライク",
+      "sector": "情報通信・サービスその他",
+      "score": 73.56,
+      "rs_score": -8.95,
+      "return_5_25d": 6.84,
+      "volume_acceleration": 1.0,
+      "green_day_ratio": 0.71,
+      "rs_acceleration": -0.39,
+      "price": 1525.0
+    },
+    {
+      "ticker": "22690.T",
+      "code": "22690",
+      "name": "明治ホールディングス",
+      "sector": "食品",
+      "score": 73.47,
+      "rs_score": 9.77,
+      "return_5_25d": 9.01,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.67,
+      "rs_acceleration": 0.46,
+      "price": 3906.0
     },
     {
       "ticker": "18610.T",
@@ -1016,17 +1016,30 @@
       "price": 1485.0
     },
     {
-      "ticker": "16510.T",
-      "code": "16510",
-      "name": "大和アセットマネジメント株式会社　ｉＦｒｅｅＥＴＦ　ＴＯＰＩＸ高配当４０指数",
-      "sector": "その他",
-      "score": 73.38,
-      "rs_score": 8.99,
-      "return_5_25d": 11.51,
+      "ticker": "25030.T",
+      "code": "25030",
+      "name": "キリンホールディングス",
+      "sector": "食品",
+      "score": 73.41,
+      "rs_score": 4.34,
+      "return_5_25d": 11.03,
       "volume_acceleration": 0.67,
       "green_day_ratio": 0.62,
-      "rs_acceleration": 0.27,
-      "price": 2886.0
+      "rs_acceleration": 0.33,
+      "price": 2610.0
+    },
+    {
+      "ticker": "27300.T",
+      "code": "27300",
+      "name": "エディオン",
+      "sector": "小売",
+      "score": 73.37,
+      "rs_score": -2.89,
+      "return_5_25d": 4.18,
+      "volume_acceleration": 1.0,
+      "green_day_ratio": 0.5,
+      "rs_acceleration": 0.26,
+      "price": 2148.0
     },
     {
       "ticker": "19090.T",
@@ -1081,19 +1094,6 @@
       "price": 6462.0
     },
     {
-      "ticker": "16810.T",
-      "code": "16810",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンド海外新興国株式（ＭＳＣＩ　エマージング）",
-      "sector": "その他",
-      "score": 73.14,
-      "rs_score": 2.7,
-      "return_5_25d": 7.5,
-      "volume_acceleration": 1.0,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": -0.12,
-      "price": 2830.0
-    },
-    {
       "ticker": "19760.T",
       "code": "19760",
       "name": "明星工業",
@@ -1105,19 +1105,6 @@
       "green_day_ratio": 0.58,
       "rs_acceleration": 1.0,
       "price": 1846.0
-    },
-    {
-      "ticker": "14980.T",
-      "code": "14980",
-      "name": "アセットマネジメントＯｎｅ株式会社　Ｏｎｅ　ＥＴＦ　ＥＳＧ",
-      "sector": "その他",
-      "score": 73.03,
-      "rs_score": 5.93,
-      "return_5_25d": 11.33,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.31,
-      "price": 29570.0
     },
     {
       "ticker": "19790.T",
@@ -1133,32 +1120,6 @@
       "price": 3575.0
     },
     {
-      "ticker": "16220.T",
-      "code": "16220",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　自動車・輸送機（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 72.83,
-      "rs_score": -0.66,
-      "return_5_25d": 13.52,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.67,
-      "rs_acceleration": -0.12,
-      "price": 36850.0
-    },
-    {
-      "ticker": "13200.T",
-      "code": "13200",
-      "name": "大和アセットマネジメント株式会社　ｉＦｒｅｅＥＴＦ　日経２２５（年１回決算型）",
-      "sector": "その他",
-      "score": 72.82,
-      "rs_score": 8.65,
-      "return_5_25d": 9.85,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.5,
-      "price": 56220.0
-    },
-    {
       "ticker": "19140.T",
       "code": "19140",
       "name": "日本基礎技術",
@@ -1170,19 +1131,6 @@
       "green_day_ratio": 0.58,
       "rs_acceleration": 0.1,
       "price": 700.0
-    },
-    {
-      "ticker": "15860.T",
-      "code": "15860",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンドＴＯＰＩＸ　Ｅｘ−Ｆｉｎａｎｃｉａｌｓ",
-      "sector": "その他",
-      "score": 72.79,
-      "rs_score": 5.14,
-      "return_5_25d": 9.23,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.55,
-      "price": 2887.0
     },
     {
       "ticker": "19480.T",
@@ -1224,17 +1172,17 @@
       "price": 3995.0
     },
     {
-      "ticker": "20360.T",
-      "code": "20360",
-      "name": "ノムラ・ヨーロッパ・ファイナンス・エヌ・ブイ　ＮＥＸＴ　ＮＯＴＥＳ　金先物　ダブル・ブル　ＥＴＮ",
-      "sector": "その他",
-      "score": 72.3,
-      "rs_score": 94.6,
-      "return_5_25d": 4.6,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": 1.0,
-      "price": 248700.0
+      "ticker": "25310.T",
+      "code": "25310",
+      "name": "宝ホールディングス",
+      "sector": "食品",
+      "score": 72.41,
+      "rs_score": -3.06,
+      "return_5_25d": 2.03,
+      "volume_acceleration": 1.0,
+      "green_day_ratio": 0.67,
+      "rs_acceleration": -0.05,
+      "price": 1612.5
     },
     {
       "ticker": "22070.T",
@@ -1250,43 +1198,17 @@
       "price": 2765.0
     },
     {
-      "ticker": "15910.T",
-      "code": "15910",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　ＪＰＸ日経インデックス４００連動型上場投信",
-      "sector": "その他",
-      "score": 72.19,
-      "rs_score": 4.68,
-      "return_5_25d": 10.06,
+      "ticker": "23840.T",
+      "code": "23840",
+      "name": "ＳＢＳホールディングス",
+      "sector": "運輸・物流",
+      "score": 72.21,
+      "rs_score": 5.15,
+      "return_5_25d": 11.64,
       "volume_acceleration": 0.67,
       "green_day_ratio": 0.58,
-      "rs_acceleration": 0.27,
-      "price": 33130.0
-    },
-    {
-      "ticker": "213A0.T",
-      "code": "213A0",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンド日経半導体株",
-      "sector": "その他",
-      "score": 71.97,
-      "rs_score": 43.21,
-      "return_5_25d": 13.94,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": 1.0,
-      "price": 281.1
-    },
-    {
-      "ticker": "16210.T",
-      "code": "16210",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　医薬品（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 71.96,
-      "rs_score": 3.51,
-      "return_5_25d": 8.83,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.62,
-      "rs_acceleration": 0.26,
-      "price": 31820.0
+      "rs_acceleration": 0.11,
+      "price": 4015.0
     },
     {
       "ticker": "15180.T",
@@ -1300,19 +1222,6 @@
       "green_day_ratio": 0.54,
       "rs_acceleration": 0.7,
       "price": 1380.0
-    },
-    {
-      "ticker": "13060.T",
-      "code": "13060",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　ＴＯＰＩＸ連動型上場投信",
-      "sector": "その他",
-      "score": 71.67,
-      "rs_score": 4.12,
-      "return_5_25d": 9.79,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.19,
-      "price": 3818.0
     },
     {
       "ticker": "17990.T",
@@ -1341,32 +1250,6 @@
       "price": 1850.0
     },
     {
-      "ticker": "16280.T",
-      "code": "16280",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　運輸・物流（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 71.6,
-      "rs_score": -4.08,
-      "return_5_25d": 7.16,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.75,
-      "rs_acceleration": 0.1,
-      "price": 21715.0
-    },
-    {
-      "ticker": "14740.T",
-      "code": "14740",
-      "name": "アセットマネジメントＯｎｅ株式会社　Ｏｎｅ　ＥＴＦ　ＪＰＸ日経４００",
-      "sector": "その他",
-      "score": 71.59,
-      "rs_score": 3.85,
-      "return_5_25d": 10.0,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.23,
-      "price": 33220.0
-    },
-    {
       "ticker": "19300.T",
       "code": "19300",
       "name": "北陸電気工事",
@@ -1393,56 +1276,43 @@
       "price": 1531.0
     },
     {
-      "ticker": "16920.T",
-      "code": "16920",
-      "name": "ウィズダムツリー・コモディティ・セキュリティーズ・リミテッド　ＷｉｓｄｏｍＴｒｅｅ　アルミニウム上場投資信託",
-      "sector": "その他",
-      "score": 71.55,
-      "rs_score": 13.26,
-      "return_5_25d": 3.22,
+      "ticker": "22210.T",
+      "code": "22210",
+      "name": "岩塚製菓",
+      "sector": "食品",
+      "score": 71.51,
+      "rs_score": -3.32,
+      "return_5_25d": 9.03,
       "volume_acceleration": 0.67,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.82,
-      "price": 684.0
-    },
-    {
-      "ticker": "15930.T",
-      "code": "15930",
-      "name": "三菱ＵＦＪアセットマネジメント株式会社　ＭＡＸＩＳ　ＪＰＸ日経インデックス４００上場投信",
-      "sector": "その他",
-      "score": 71.52,
-      "rs_score": 4.61,
-      "return_5_25d": 8.19,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.58,
+      "green_day_ratio": 0.54,
       "rs_acceleration": 0.32,
-      "price": 33990.0
+      "price": 3220.0
     },
     {
-      "ticker": "14730.T",
-      "code": "14730",
-      "name": "アセットマネジメントＯｎｅ株式会社　Ｏｎｅ　ＥＴＦ　トピックス",
-      "sector": "その他",
-      "score": 71.49,
-      "rs_score": 3.37,
-      "return_5_25d": 9.6,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.17,
-      "price": 3699.0
+      "ticker": "26640.T",
+      "code": "26640",
+      "name": "カワチ薬品",
+      "sector": "小売",
+      "score": 71.38,
+      "rs_score": -4.49,
+      "return_5_25d": 5.84,
+      "volume_acceleration": 1.0,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -0.22,
+      "price": 3090.0
     },
     {
-      "ticker": "16880.T",
-      "code": "16880",
-      "name": "ウィズダムツリー・コモディティ・セキュリティーズ・リミテッド　ＷｉｓｄｏｍＴｒｅｅ　穀物上場投資信託",
-      "sector": "その他",
-      "score": 71.34,
-      "rs_score": -6.25,
-      "return_5_25d": 7.86,
+      "ticker": "27490.T",
+      "code": "27490",
+      "name": "ＪＰホールディングス",
+      "sector": "情報通信・サービスその他",
+      "score": 71.3,
+      "rs_score": 8.6,
+      "return_5_25d": 9.73,
       "volume_acceleration": 0.67,
-      "green_day_ratio": 0.71,
-      "rs_acceleration": 0.06,
-      "price": 550.5
+      "green_day_ratio": 0.54,
+      "rs_acceleration": 0.2,
+      "price": 746.0
     },
     {
       "ticker": "17160.T",
@@ -1484,69 +1354,30 @@
       "price": 3180.0
     },
     {
-      "ticker": "15730.T",
-      "code": "15730",
-      "name": "シンプレクス・アセット・マネジメント株式会社　中国Ｈ株ベア上場投信",
-      "sector": "その他",
-      "score": 71.15,
-      "rs_score": -2.98,
-      "return_5_25d": 7.22,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": 0.51,
-      "price": 8467.0
-    },
-    {
-      "ticker": "15510.T",
-      "code": "15510",
-      "name": "シンプレクス・アセット・マネジメント株式会社　東証スタンダードＴＯＰ２０ＥＴＦ",
-      "sector": "その他",
-      "score": 71.14,
-      "rs_score": 0.34,
-      "return_5_25d": 7.21,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.46,
-      "rs_acceleration": 0.59,
-      "price": 6667.0
-    },
-    {
-      "ticker": "14750.T",
-      "code": "14750",
-      "name": "ブラックロック・ジャパン株式会社　ｉシェアーズ・コア　ＴＯＰＩＸ　ＥＴＦ",
-      "sector": "その他",
-      "score": 71.07,
-      "rs_score": 3.31,
-      "return_5_25d": 8.84,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.16,
-      "price": 372.6
-    },
-    {
-      "ticker": "20800.T",
-      "code": "20800",
-      "name": "シンプレクス・アセット・マネジメント株式会社　ＰＢＲ１倍割れ解消推進ＥＴＦ",
-      "sector": "その他",
-      "score": 70.8,
-      "rs_score": 9.11,
-      "return_5_25d": 11.62,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": -0.09,
-      "price": 1737.0
-    },
-    {
-      "ticker": "16320.T",
-      "code": "16320",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　金融（除く銀行）（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
+      "ticker": "27820.T",
+      "code": "27820",
+      "name": "セリア",
+      "sector": "小売",
       "score": 70.56,
-      "rs_score": 1.31,
-      "return_5_25d": 9.94,
-      "volume_acceleration": 0.67,
+      "rs_score": 23.42,
+      "return_5_25d": 9.45,
+      "volume_acceleration": 0.33,
       "green_day_ratio": 0.58,
-      "rs_acceleration": -0.05,
-      "price": 35390.0
+      "rs_acceleration": 1.0,
+      "price": 4155.0
+    },
+    {
+      "ticker": "19940.T",
+      "code": "19940",
+      "name": "高橋カーテンウォール工業",
+      "sector": "建設・資材",
+      "score": 70.44,
+      "rs_score": -1.11,
+      "return_5_25d": 11.69,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.42,
+      "rs_acceleration": 0.09,
+      "price": 561.0
     },
     {
       "ticker": "19640.T",
@@ -1560,6 +1391,19 @@
       "green_day_ratio": 0.54,
       "rs_acceleration": -0.24,
       "price": 4565.0
+    },
+    {
+      "ticker": "24790.T",
+      "code": "24790",
+      "name": "ジェイテック",
+      "sector": "情報通信・サービスその他",
+      "score": 70.33,
+      "rs_score": -8.84,
+      "return_5_25d": 1.58,
+      "volume_acceleration": 1.0,
+      "green_day_ratio": 0.54,
+      "rs_acceleration": -0.18,
+      "price": 246.0
     },
     {
       "ticker": "21850.T",
@@ -1601,30 +1445,30 @@
       "price": 4190.0
     },
     {
-      "ticker": "13250.T",
-      "code": "13250",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　ブラジル株式指数・ボベスパ連動型上場投信",
-      "sector": "その他",
-      "score": 70.11,
-      "rs_score": 19.68,
-      "return_5_25d": 8.97,
+      "ticker": "23370.T",
+      "code": "23370",
+      "name": "いちご",
+      "sector": "不動産",
+      "score": 69.92,
+      "rs_score": -3.56,
+      "return_5_25d": 8.85,
       "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.04,
-      "price": 302.0
+      "green_day_ratio": 0.5,
+      "rs_acceleration": 0.1,
+      "price": 434.0
     },
     {
-      "ticker": "15600.T",
-      "code": "15600",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　ＦＴＳＥブルサ・マレーシアＫＬＣＩ連動型上場投信",
-      "sector": "その他",
-      "score": 69.82,
-      "rs_score": 8.62,
-      "return_5_25d": 5.26,
+      "ticker": "24290.T",
+      "code": "24290",
+      "name": "ワールドホールディングス",
+      "sector": "情報通信・サービスその他",
+      "score": 69.7,
+      "rs_score": -6.09,
+      "return_5_25d": 9.74,
       "volume_acceleration": 0.67,
-      "green_day_ratio": 0.67,
-      "rs_acceleration": 0.1,
-      "price": 6734.0
+      "green_day_ratio": 0.5,
+      "rs_acceleration": -0.04,
+      "price": 2612.0
     },
     {
       "ticker": "14170.T",
@@ -1718,19 +1562,6 @@
       "price": 6730.0
     },
     {
-      "ticker": "22360.T",
-      "code": "22360",
-      "name": "Ｇｌｏｂａｌ　Ｘ　Ｊａｐａｎ株式会社　グローバルＸ　Ｓ＆Ｐ５００配当貴族ＥＴＦ",
-      "sector": "その他",
-      "score": 69.46,
-      "rs_score": -0.03,
-      "return_5_25d": 5.97,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": 0.29,
-      "price": 1448.0
-    },
-    {
       "ticker": "17760.T",
       "code": "17760",
       "name": "三井住建道路",
@@ -1768,71 +1599,6 @@
       "green_day_ratio": 0.54,
       "rs_acceleration": 0.04,
       "price": 3240.0
-    },
-    {
-      "ticker": "13990.T",
-      "code": "13990",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンドＭＳＣＩ日本株高配当低ボラティリティ",
-      "sector": "その他",
-      "score": 69.34,
-      "rs_score": 3.45,
-      "return_5_25d": 15.07,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.62,
-      "rs_acceleration": 0.11,
-      "price": 2939.0
-    },
-    {
-      "ticker": "16560.T",
-      "code": "16560",
-      "name": "ブラックロック・ジャパン株式会社　ｉシェアーズ・コア　米国債７−１０年　ＥＴＦ",
-      "sector": "その他",
-      "score": 69.2,
-      "rs_score": -6.74,
-      "return_5_25d": 3.94,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.71,
-      "rs_acceleration": 0.03,
-      "price": 321.0
-    },
-    {
-      "ticker": "16720.T",
-      "code": "16720",
-      "name": "ウィズダムツリー・メタル・セキュリティーズ・リミテッド　ＷｉｓｄｏｍＴｒｅｅ　金上場投資信託",
-      "sector": "その他",
-      "score": 69.13,
-      "rs_score": 34.35,
-      "return_5_25d": 7.62,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.98,
-      "price": 75130.0
-    },
-    {
-      "ticker": "20130.T",
-      "code": "20130",
-      "name": "ブラックロック・ジャパン株式会社　ｉシェアーズ　米国高配当株　ＥＴＦ",
-      "sector": "その他",
-      "score": 69.09,
-      "rs_score": 4.48,
-      "return_5_25d": 10.84,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.62,
-      "rs_acceleration": 0.48,
-      "price": 292.3
-    },
-    {
-      "ticker": "14860.T",
-      "code": "14860",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンド米国債券（為替ヘッジなし）",
-      "sector": "その他",
-      "score": 69.01,
-      "rs_score": -8.04,
-      "return_5_25d": 3.92,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.71,
-      "rs_acceleration": -0.01,
-      "price": 24685.0
     },
     {
       "ticker": "19290.T",
@@ -1874,43 +1640,17 @@
       "price": 2953.0
     },
     {
-      "ticker": "14840.T",
-      "code": "14840",
-      "name": "アセットマネジメントＯｎｅ株式会社　Ｏｎｅ　ＥＴＦ　ＪＰＸ／Ｓ＆Ｐ　設備・人材投資指数",
-      "sector": "その他",
-      "score": 68.66,
-      "rs_score": -3.64,
-      "return_5_25d": 5.73,
+      "ticker": "23590.T",
+      "code": "23590",
+      "name": "コア",
+      "sector": "情報通信・サービスその他",
+      "score": 68.74,
+      "rs_score": -1.43,
+      "return_5_25d": 8.98,
       "volume_acceleration": 0.67,
-      "green_day_ratio": 0.62,
-      "rs_acceleration": -0.09,
-      "price": 3327.0
-    },
-    {
-      "ticker": "162A0.T",
-      "code": "162A0",
-      "name": "三菱ＵＦＪ証券ホールディングス株式会社　ＡＩセレクトメガトレンド　日本株（ネットリターン）ＥＴＮ",
-      "sector": "その他",
-      "score": 68.65,
-      "rs_score": 7.6,
-      "return_5_25d": 12.66,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.3,
-      "price": 14070.0
-    },
-    {
-      "ticker": "159A0.T",
-      "code": "159A0",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　ＪＰＸプライム１５０指数連動型上場投信",
-      "sector": "その他",
-      "score": 68.6,
-      "rs_score": -0.71,
-      "return_5_25d": 8.19,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.42,
-      "rs_acceleration": 0.07,
-      "price": 649.7
+      "green_day_ratio": 0.54,
+      "rs_acceleration": -0.23,
+      "price": 2203.0
     },
     {
       "ticker": "19460.T",
@@ -2004,32 +1744,6 @@
       "price": 633.0
     },
     {
-      "ticker": "170A0.T",
-      "code": "170A0",
-      "name": "三井住友トラスト・アセットマネジメント株式会社　ＳＭＴ　ＥＴＦ日本好配当株アクティブ",
-      "sector": "その他",
-      "score": 68.25,
-      "rs_score": 9.05,
-      "return_5_25d": 11.43,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.34,
-      "price": 2798.0
-    },
-    {
-      "ticker": "20180.T",
-      "code": "20180",
-      "name": "Ｇｌｏｂａｌ　Ｘ　Ｊａｐａｎ株式会社　グローバルＸ　ＵＳ　ＲＥＩＴ・トップ２０　ＥＴＦ",
-      "sector": "その他",
-      "score": 68.2,
-      "rs_score": -1.59,
-      "return_5_25d": 9.06,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.65,
-      "price": 1242.0
-    },
-    {
       "ticker": "22040.T",
       "code": "22040",
       "name": "中村屋",
@@ -2041,19 +1755,6 @@
       "green_day_ratio": 0.54,
       "rs_acceleration": 0.13,
       "price": 3220.0
-    },
-    {
-      "ticker": "20440.T",
-      "code": "20440",
-      "name": "ノムラ・ヨーロッパ・ファイナンス・エヌ・ブイ　ＮＥＸＴ　ＮＯＴＥＳ　Ｓ＆Ｐ５００　配当貴族（ネットリターン）　ＥＴＮ",
-      "sector": "その他",
-      "score": 68.18,
-      "rs_score": -0.77,
-      "return_5_25d": 5.01,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.46,
-      "rs_acceleration": 0.22,
-      "price": 33890.0
     },
     {
       "ticker": "14190.T",
@@ -2069,69 +1770,17 @@
       "price": 3960.0
     },
     {
-      "ticker": "14890.T",
-      "code": "14890",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　日経平均高配当株５０指数連動型上場投信",
-      "sector": "その他",
-      "score": 67.93,
-      "rs_score": 7.88,
-      "return_5_25d": 12.7,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.62,
-      "rs_acceleration": 0.07,
-      "price": 3115.0
-    },
-    {
-      "ticker": "14770.T",
-      "code": "14770",
-      "name": "ブラックロック・ジャパン株式会社　ｉシェアーズ　ＭＳＣＩ　日本株最小分散　ＥＴＦ",
-      "sector": "その他",
-      "score": 67.92,
-      "rs_score": -2.29,
-      "return_5_25d": 6.31,
+      "ticker": "21140.T",
+      "code": "21140",
+      "name": "フジ日本",
+      "sector": "食品",
+      "score": 67.83,
+      "rs_score": 4.32,
+      "return_5_25d": 4.66,
       "volume_acceleration": 0.67,
       "green_day_ratio": 0.54,
-      "rs_acceleration": -0.13,
-      "price": 3107.0
-    },
-    {
-      "ticker": "16590.T",
-      "code": "16590",
-      "name": "ブラックロック・ジャパン株式会社　ｉシェアーズ　米国リート　ＥＴＦ",
-      "sector": "その他",
-      "score": 67.79,
-      "rs_score": -0.89,
-      "return_5_25d": 8.11,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.58,
-      "price": 3658.0
-    },
-    {
-      "ticker": "16970.T",
-      "code": "16970",
-      "name": "ウィズダムツリー・コモディティ・セキュリティーズ・リミテッド　ＷｉｓｄｏｍＴｒｅｅ　大豆上場投資信託",
-      "sector": "その他",
-      "score": 67.77,
-      "rs_score": -1.66,
-      "return_5_25d": 9.47,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.52,
-      "price": 4465.0
-    },
-    {
-      "ticker": "16270.T",
-      "code": "16270",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　電力・ガス（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 67.73,
-      "rs_score": 8.54,
-      "return_5_25d": 11.08,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.27,
-      "price": 12435.0
+      "rs_acceleration": 0.02,
+      "price": 654.0
     },
     {
       "ticker": "20020.T",
@@ -2147,173 +1796,30 @@
       "price": 2111.0
     },
     {
-      "ticker": "20430.T",
-      "code": "20430",
-      "name": "ノムラ・ヨーロッパ　ＮＥＸＴ　ＮＯＴＥＳ　ＳＴＯＸＸ　アセアン好配当５０（円、ネットリターン）ＥＴＮ",
-      "sector": "その他",
-      "score": 67.7,
-      "rs_score": 6.34,
-      "return_5_25d": 4.51,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.01,
-      "price": 27305.0
+      "ticker": "23780.T",
+      "code": "23780",
+      "name": "ルネサンス",
+      "sector": "情報通信・サービスその他",
+      "score": 67.42,
+      "rs_score": -13.23,
+      "return_5_25d": 1.19,
+      "volume_acceleration": 1.0,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -0.55,
+      "price": 1077.0
     },
     {
-      "ticker": "13460.T",
-      "code": "13460",
-      "name": "三菱ＵＦＪアセットマネジメント株式会社　ＭＡＸＩＳ　日経２２５上場投信",
-      "sector": "その他",
-      "score": 67.69,
-      "rs_score": 8.11,
-      "return_5_25d": 9.57,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.5,
-      "price": 56070.0
-    },
-    {
-      "ticker": "15780.T",
-      "code": "15780",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンド日経２２５（ミニ）",
-      "sector": "その他",
-      "score": 67.69,
-      "rs_score": 8.03,
-      "return_5_25d": 9.28,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.53,
-      "price": 4335.0
-    },
-    {
-      "ticker": "15770.T",
-      "code": "15770",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　野村日本株高配当７０連動型上場投信",
-      "sector": "その他",
-      "score": 67.68,
-      "rs_score": 8.19,
-      "return_5_25d": 11.93,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.18,
-      "price": 53230.0
-    },
-    {
-      "ticker": "13210.T",
-      "code": "13210",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　日経２２５連動型上場投信",
-      "sector": "その他",
-      "score": 67.64,
-      "rs_score": 8.55,
-      "return_5_25d": 9.66,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.48,
-      "price": 56380.0
-    },
-    {
-      "ticker": "14780.T",
-      "code": "14780",
-      "name": "ブラックロック・ジャパン株式会社　ｉシェアーズ　ＭＳＣＩ　ジャパン高配当利回り　ＥＴＦ",
-      "sector": "その他",
-      "score": 67.52,
-      "rs_score": 4.66,
-      "return_5_25d": 10.22,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.31,
-      "price": 4926.0
-    },
-    {
-      "ticker": "15400.T",
-      "code": "15400",
-      "name": "三菱ＵＦＪ信託銀行株式会社　純金上場信託（現物国内保管型）",
-      "sector": "その他",
-      "score": 67.51,
-      "rs_score": 34.68,
-      "return_5_25d": 7.41,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": 0.76,
-      "price": 24650.0
-    },
-    {
-      "ticker": "16250.T",
-      "code": "16250",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　電機・精密（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 67.4,
-      "rs_score": 1.68,
-      "return_5_25d": 7.01,
+      "ticker": "22940.T",
+      "code": "22940",
+      "name": "柿安本店",
+      "sector": "食品",
+      "score": 67.35,
+      "rs_score": -6.98,
+      "return_5_25d": 5.78,
       "volume_acceleration": 0.67,
       "green_day_ratio": 0.5,
-      "rs_acceleration": -0.22,
-      "price": 50130.0
-    },
-    {
-      "ticker": "13690.T",
-      "code": "13690",
-      "name": "アセットマネジメントＯｎｅ株式会社　Ｏｎｅ　ＥＴＦ　日経２２５",
-      "sector": "その他",
-      "score": 67.39,
-      "rs_score": 8.17,
-      "return_5_25d": 9.59,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": 0.52,
-      "price": 54560.0
-    },
-    {
-      "ticker": "13300.T",
-      "code": "13300",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンド２２５",
-      "sector": "その他",
-      "score": 67.29,
-      "rs_score": 8.61,
-      "return_5_25d": 9.7,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": 0.49,
-      "price": 56460.0
-    },
-    {
-      "ticker": "16170.T",
-      "code": "16170",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　食品（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 67.28,
-      "rs_score": -0.43,
-      "return_5_25d": 10.13,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.28,
-      "price": 44450.0
-    },
-    {
-      "ticker": "13050.T",
-      "code": "13050",
-      "name": "大和アセットマネジメント株式会社　ｉＦｒｅｅＥＴＦ　ＴＯＰＩＸ（年１回決算型）",
-      "sector": "その他",
-      "score": 67.22,
-      "rs_score": 4.21,
-      "return_5_25d": 10.06,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.62,
-      "rs_acceleration": 0.19,
-      "price": 3865.0
-    },
-    {
-      "ticker": "13970.T",
-      "code": "13970",
-      "name": "三井住友ＤＳアセットマネジメント株式会社　ＳＭＤＡＭ　日経２２５上場投信",
-      "sector": "その他",
-      "score": 67.2,
-      "rs_score": 8.49,
-      "return_5_25d": 9.42,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": 0.5,
-      "price": 54910.0
+      "rs_acceleration": -0.11,
+      "price": 2845.0
     },
     {
       "ticker": "20530.T",
@@ -2342,19 +1848,6 @@
       "price": 537.0
     },
     {
-      "ticker": "16770.T",
-      "code": "16770",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンド海外債券（ＦＴＳＥ　ＷＧＢＩ）毎月分配型",
-      "sector": "その他",
-      "score": 67.14,
-      "rs_score": -6.35,
-      "return_5_25d": 2.73,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": -0.01,
-      "price": 60610.0
-    },
-    {
       "ticker": "21520.T",
       "code": "21520",
       "name": "幼児活動研究会",
@@ -2368,17 +1861,17 @@
       "price": 1457.0
     },
     {
-      "ticker": "16530.T",
-      "code": "16530",
-      "name": "大和アセットマネジメント株式会社　ｉＦｒｅｅＥＴＦ　ＭＳＣＩジャパンＥＳＧセレクト・リーダーズ指数",
-      "sector": "その他",
-      "score": 67.1,
-      "rs_score": 1.6,
-      "return_5_25d": 4.31,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.46,
-      "rs_acceleration": 0.07,
-      "price": 4642.0
+      "ticker": "26020.T",
+      "code": "26020",
+      "name": "日清オイリオグループ",
+      "sector": "食品",
+      "score": 67.13,
+      "rs_score": 2.94,
+      "return_5_25d": 9.12,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.58,
+      "rs_acceleration": 0.35,
+      "price": 5940.0
     },
     {
       "ticker": "19410.T",
@@ -2394,45 +1887,6 @@
       "price": 4670.0
     },
     {
-      "ticker": "15920.T",
-      "code": "15920",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンドＪＰＸ日経インデックス４００",
-      "sector": "その他",
-      "score": 67.07,
-      "rs_score": 4.44,
-      "return_5_25d": 10.17,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.31,
-      "price": 3034.0
-    },
-    {
-      "ticker": "13080.T",
-      "code": "13080",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンドＴＯＰＩＸ",
-      "sector": "その他",
-      "score": 66.99,
-      "rs_score": 4.11,
-      "return_5_25d": 9.8,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.62,
-      "rs_acceleration": 0.17,
-      "price": 3774.0
-    },
-    {
-      "ticker": "14810.T",
-      "code": "14810",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンド日本経済貢献株",
-      "sector": "その他",
-      "score": 66.97,
-      "rs_score": -3.0,
-      "return_5_25d": 2.81,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.03,
-      "price": 3366.0
-    },
-    {
       "ticker": "18280.T",
       "code": "18280",
       "name": "田辺工業",
@@ -2444,32 +1898,6 @@
       "green_day_ratio": 0.71,
       "rs_acceleration": 0.18,
       "price": 2730.0
-    },
-    {
-      "ticker": "14930.T",
-      "code": "14930",
-      "name": "アセットマネジメントＯｎｅ株式会社　Ｏｎｅ　ＥＴＦ　ＪＰＸ日経中小型",
-      "sector": "その他",
-      "score": 66.77,
-      "rs_score": 0.3,
-      "return_5_25d": 10.66,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.12,
-      "price": 23805.0
-    },
-    {
-      "ticker": "13220.T",
-      "code": "13220",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンド中国Ａ株（パンダ）Ｅ　Ｆｕｎｄ　ＣＳＩ３００",
-      "sector": "その他",
-      "score": 66.73,
-      "rs_score": -0.72,
-      "return_5_25d": 2.6,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.0,
-      "price": 11040.0
     },
     {
       "ticker": "14910.T",
@@ -2485,19 +1913,6 @@
       "price": 1037.0
     },
     {
-      "ticker": "13480.T",
-      "code": "13480",
-      "name": "三菱ＵＦＪアセットマネジメント株式会社　ＭＡＸＩＳ　トピックス上場投信",
-      "sector": "その他",
-      "score": 66.53,
-      "rs_score": 3.41,
-      "return_5_25d": 9.66,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.17,
-      "price": 3770.0
-    },
-    {
       "ticker": "18710.T",
       "code": "18710",
       "name": "ピーエス・コンストラクション",
@@ -2509,6 +1924,19 @@
       "green_day_ratio": 0.62,
       "rs_acceleration": -0.1,
       "price": 3085.0
+    },
+    {
+      "ticker": "23290.T",
+      "code": "23290",
+      "name": "東北新社",
+      "sector": "情報通信・サービスその他",
+      "score": 66.49,
+      "rs_score": -14.96,
+      "return_5_25d": 0.16,
+      "volume_acceleration": 1.0,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -0.63,
+      "price": 642.0
     },
     {
       "ticker": "19440.T",
@@ -2524,17 +1952,30 @@
       "price": 8160.0
     },
     {
-      "ticker": "14940.T",
-      "code": "14940",
-      "name": "アセットマネジメントＯｎｅ株式会社　Ｏｎｅ　ＥＴＦ　高配当日本株",
-      "sector": "その他",
-      "score": 66.42,
-      "rs_score": 5.48,
-      "return_5_25d": 9.25,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.62,
-      "rs_acceleration": 0.11,
-      "price": 42240.0
+      "ticker": "25730.T",
+      "code": "25730",
+      "name": "北海道コカ・コーラボトリング",
+      "sector": "食品",
+      "score": 66.44,
+      "rs_score": -1.92,
+      "return_5_25d": 2.89,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.42,
+      "rs_acceleration": 0.17,
+      "price": 3980.0
+    },
+    {
+      "ticker": "22930.T",
+      "code": "22930",
+      "name": "滝沢ハム",
+      "sector": "食品",
+      "score": 66.38,
+      "rs_score": -1.62,
+      "return_5_25d": 3.23,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.58,
+      "rs_acceleration": -0.21,
+      "price": 2995.0
     },
     {
       "ticker": "17190.T",
@@ -2550,69 +1991,17 @@
       "price": 1970.0
     },
     {
-      "ticker": "13490.T",
-      "code": "13490",
-      "name": "ステート・ストリート・グローバル・アドバイザーズ・シンガポール・リミテッド　ＡＢＦ汎アジア債券インデックス・ファンド",
-      "sector": "その他",
+      "ticker": "22920.T",
+      "code": "22920",
+      "name": "Ｓ　Ｆｏｏｄｓ",
+      "sector": "食品",
       "score": 66.34,
-      "rs_score": -5.11,
-      "return_5_25d": 0.31,
+      "rs_score": 1.07,
+      "return_5_25d": 4.55,
       "volume_acceleration": 0.67,
-      "green_day_ratio": 0.42,
-      "rs_acceleration": 0.4,
-      "price": 17895.0
-    },
-    {
-      "ticker": "13290.T",
-      "code": "13290",
-      "name": "ブラックロック・ジャパン株式会社　　ｉシェアーズ・コア　日経２２５　ＥＴＦ",
-      "sector": "その他",
-      "score": 66.27,
-      "rs_score": 7.88,
-      "return_5_25d": 8.84,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.46,
-      "rs_acceleration": 0.45,
-      "price": 5609.0
-    },
-    {
-      "ticker": "16930.T",
-      "code": "16930",
-      "name": "ウィズダムツリー・コモディティ・セキュリティーズ・リミテッド　ＷｉｓｄｏｍＴｒｅｅ　銅上場投資信託",
-      "sector": "その他",
-      "score": 66.26,
-      "rs_score": 11.53,
-      "return_5_25d": 3.39,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": 0.91,
-      "price": 8047.0
-    },
-    {
-      "ticker": "13640.T",
-      "code": "13640",
-      "name": "ブラックロック・ジャパン株式会社　ｉシェアーズ　ＪＰＸ日経４００　ＥＴＦ",
-      "sector": "その他",
-      "score": 66.17,
-      "rs_score": 4.16,
-      "return_5_25d": 9.24,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.23,
-      "price": 3371.0
-    },
-    {
-      "ticker": "14830.T",
-      "code": "14830",
-      "name": "ブラックロック・ジャパン株式会社　ｉシェアーズ　ＪＰＸ／Ｓ＆Ｐ設備・人材投資　ＥＴＦ",
-      "sector": "その他",
-      "score": 66.17,
-      "rs_score": -2.9,
-      "return_5_25d": 2.47,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.46,
-      "rs_acceleration": 0.07,
-      "price": 3324.0
+      "green_day_ratio": 0.62,
+      "rs_acceleration": -0.44,
+      "price": 2986.0
     },
     {
       "ticker": "18790.T",
@@ -2680,6 +2069,32 @@
       "price": 3310.0
     },
     {
+      "ticker": "21980.T",
+      "code": "21980",
+      "name": "アイ・ケイ・ケイホールディングス",
+      "sector": "情報通信・サービスその他",
+      "score": 65.82,
+      "rs_score": -9.87,
+      "return_5_25d": 2.86,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.54,
+      "rs_acceleration": -0.2,
+      "price": 809.0
+    },
+    {
+      "ticker": "27840.T",
+      "code": "27840",
+      "name": "アルフレッサ　ホールディングス",
+      "sector": "商社・卸売",
+      "score": 65.78,
+      "rs_score": 0.03,
+      "return_5_25d": 4.23,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.5,
+      "rs_acceleration": -0.27,
+      "price": 2516.0
+    },
+    {
       "ticker": "17830.T",
       "code": "17830",
       "name": "ｆａｎｔａｓｉｓｔａ",
@@ -2693,17 +2108,17 @@
       "price": 65.0
     },
     {
-      "ticker": "16980.T",
-      "code": "16980",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンド日本高配当（東証配当フォーカス１００）",
-      "sector": "その他",
-      "score": 65.7,
-      "rs_score": 4.86,
-      "return_5_25d": 9.59,
+      "ticker": "22960.T",
+      "code": "22960",
+      "name": "伊藤ハム米久ホールディングス",
+      "sector": "食品",
+      "score": 65.74,
+      "rs_score": 6.74,
+      "return_5_25d": 6.49,
       "volume_acceleration": 0.33,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.01,
-      "price": 4000.0
+      "green_day_ratio": 0.5,
+      "rs_acceleration": 0.5,
+      "price": 6140.0
     },
     {
       "ticker": "18520.T",
@@ -2717,6 +2132,19 @@
       "green_day_ratio": 0.58,
       "rs_acceleration": -0.42,
       "price": 1039.0
+    },
+    {
+      "ticker": "27080.T",
+      "code": "27080",
+      "name": "久世",
+      "sector": "商社・卸売",
+      "score": 65.62,
+      "rs_score": 2.41,
+      "return_5_25d": 3.14,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.5,
+      "rs_acceleration": -0.19,
+      "price": 2147.0
     },
     {
       "ticker": "19280.T",
@@ -2745,6 +2173,19 @@
       "price": 4445.0
     },
     {
+      "ticker": "22700.T",
+      "code": "22700",
+      "name": "雪印メグミルク",
+      "sector": "食品",
+      "score": 65.5,
+      "rs_score": 3.25,
+      "return_5_25d": 0.87,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.54,
+      "rs_acceleration": -0.07,
+      "price": 3365.0
+    },
+    {
       "ticker": "21170.T",
       "code": "21170",
       "name": "ウェルネオシュガー",
@@ -2756,19 +2197,6 @@
       "green_day_ratio": 0.5,
       "rs_acceleration": -0.28,
       "price": 2896.0
-    },
-    {
-      "ticker": "13980.T",
-      "code": "13980",
-      "name": "三井住友ＤＳアセットマネジメント株式会社　ＳＭＤＡＭ　東証ＲＥＩＴ指数上場投信",
-      "sector": "その他",
-      "score": 65.41,
-      "rs_score": -8.65,
-      "return_5_25d": 2.35,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": -0.32,
-      "price": 2033.5
     },
     {
       "ticker": "13830.T",
@@ -2797,6 +2225,19 @@
       "price": 1749.0
     },
     {
+      "ticker": "24110.T",
+      "code": "24110",
+      "name": "ゲンダイエージェンシー",
+      "sector": "情報通信・サービスその他",
+      "score": 65.09,
+      "rs_score": -4.74,
+      "return_5_25d": 1.87,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.5,
+      "rs_acceleration": -0.17,
+      "price": 470.0
+    },
+    {
       "ticker": "202A0.T",
       "code": "202A0",
       "name": "豆蔵",
@@ -2810,17 +2251,17 @@
       "price": 3550.0
     },
     {
-      "ticker": "13450.T",
-      "code": "13450",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンドＪリート（東証ＲＥＩＴ指数）隔月分配型",
-      "sector": "その他",
-      "score": 65.03,
-      "rs_score": -8.66,
-      "return_5_25d": 2.33,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": -0.31,
-      "price": 2002.0
+      "ticker": "24320.T",
+      "code": "24320",
+      "name": "ディー・エヌ・エー",
+      "sector": "情報通信・サービスその他",
+      "score": 64.97,
+      "rs_score": -7.98,
+      "return_5_25d": 8.84,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": 0.19,
+      "price": 2620.0
     },
     {
       "ticker": "13790.T",
@@ -2836,19 +2277,6 @@
       "price": 1929.0
     },
     {
-      "ticker": "15460.T",
-      "code": "15460",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　ダウ・ジョーンズ工業株３０種平均株価（為替ヘッジなし）連動型上場投信",
-      "sector": "その他",
-      "score": 64.94,
-      "rs_score": -3.69,
-      "return_5_25d": 0.73,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": -0.08,
-      "price": 74150.0
-    },
-    {
       "ticker": "17660.T",
       "code": "17660",
       "name": "東建コーポレーション",
@@ -2862,43 +2290,30 @@
       "price": 14640.0
     },
     {
-      "ticker": "16150.T",
-      "code": "16150",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　東証銀行業株価指数連動型上場投信",
-      "sector": "その他",
-      "score": 64.78,
-      "rs_score": 7.6,
-      "return_5_25d": 8.76,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": -0.92,
-      "price": 564.0
-    },
-    {
-      "ticker": "15660.T",
-      "code": "15660",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンド新興国債券",
-      "sector": "その他",
-      "score": 64.73,
-      "rs_score": -7.18,
-      "return_5_25d": 2.26,
+      "ticker": "25010.T",
+      "code": "25010",
+      "name": "サッポロホールディングス",
+      "sector": "食品",
+      "score": 64.84,
+      "rs_score": -2.0,
+      "return_5_25d": 2.52,
       "volume_acceleration": 0.67,
       "green_day_ratio": 0.46,
       "rs_acceleration": -0.2,
-      "price": 54220.0
+      "price": 1716.5
     },
     {
-      "ticker": "20170.T",
-      "code": "20170",
-      "name": "大和アセットマネジメント株式会社　ｉＦｒｅｅＥＴＦ　ＪＰＸプライム１５０",
-      "sector": "その他",
-      "score": 64.7,
-      "rs_score": 1.62,
-      "return_5_25d": 6.03,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.25,
-      "price": 1365.0
+      "ticker": "26890.T",
+      "code": "26890",
+      "name": "オルバヘルスケアホールディングス",
+      "sector": "商社・卸売",
+      "score": 64.83,
+      "rs_score": -9.07,
+      "return_5_25d": 2.33,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.5,
+      "rs_acceleration": -0.27,
+      "price": 2112.0
     },
     {
       "ticker": "21750.T",
@@ -2914,32 +2329,6 @@
       "price": 1666.0
     },
     {
-      "ticker": "15970.T",
-      "code": "15970",
-      "name": "三菱ＵＦＪアセットマネジメント株式会社　ＭＡＸＩＳ　Ｊリート上場投信",
-      "sector": "その他",
-      "score": 64.6,
-      "rs_score": -8.36,
-      "return_5_25d": 1.6,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": -0.32,
-      "price": 2043.0
-    },
-    {
-      "ticker": "16310.T",
-      "code": "16310",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　銀行（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 64.49,
-      "rs_score": 8.75,
-      "return_5_25d": 6.4,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": -0.83,
-      "price": 30490.0
-    },
-    {
       "ticker": "22290.T",
       "code": "22290",
       "name": "カルビー",
@@ -2951,19 +2340,6 @@
       "green_day_ratio": 0.38,
       "rs_acceleration": 0.07,
       "price": 3118.0
-    },
-    {
-      "ticker": "15540.T",
-      "code": "15540",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンド世界株式（ＭＳＣＩ　ＡＣＷＩ）除く日本",
-      "sector": "その他",
-      "score": 64.46,
-      "rs_score": -2.86,
-      "return_5_25d": 2.14,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.38,
-      "rs_acceleration": -0.07,
-      "price": 6000.0
     },
     {
       "ticker": "18880.T",
@@ -2992,17 +2368,17 @@
       "price": 2257.0
     },
     {
-      "ticker": "16600.T",
-      "code": "16600",
-      "name": "三菱ＵＦＪアセットマネジメント株式会社　ＭＡＸＩＳ高利回りＪリート上場投信",
-      "sector": "その他",
-      "score": 64.25,
-      "rs_score": -7.91,
-      "return_5_25d": 1.28,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": -0.28,
-      "price": 11550.0
+      "ticker": "26560.T",
+      "code": "26560",
+      "name": "ベクターホールディングス",
+      "sector": "小売",
+      "score": 64.31,
+      "rs_score": -1.03,
+      "return_5_25d": 15.87,
+      "volume_acceleration": 0.0,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": 0.36,
+      "price": 140.0
     },
     {
       "ticker": "13760.T",
@@ -3018,56 +2394,43 @@
       "price": 1434.0
     },
     {
-      "ticker": "16300.T",
-      "code": "16300",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　小売（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 64.22,
-      "rs_score": -5.94,
-      "return_5_25d": 5.47,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.67,
-      "rs_acceleration": -0.04,
-      "price": 37370.0
+      "ticker": "25970.T",
+      "code": "25970",
+      "name": "ユニカフェ",
+      "sector": "食品",
+      "score": 64.01,
+      "rs_score": -8.69,
+      "return_5_25d": 3.22,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -0.44,
+      "price": 1037.0
     },
     {
-      "ticker": "210A0.T",
-      "code": "210A0",
-      "name": "大和アセットマネジメント株式会社　ｉＦｒｅｅＥＴＦ　日経高利回りＲＥＩＴ指数",
-      "sector": "その他",
-      "score": 64.17,
-      "rs_score": -9.8,
-      "return_5_25d": 2.38,
+      "ticker": "23000.T",
+      "code": "23000",
+      "name": "きょくとう",
+      "sector": "情報通信・サービスその他",
+      "score": 63.81,
+      "rs_score": -15.09,
+      "return_5_25d": -5.87,
+      "volume_acceleration": 1.0,
+      "green_day_ratio": 0.54,
+      "rs_acceleration": -0.73,
+      "price": 495.0
+    },
+    {
+      "ticker": "26590.T",
+      "code": "26590",
+      "name": "サンエー",
+      "sector": "小売",
+      "score": 63.77,
+      "rs_score": -10.2,
+      "return_5_25d": 1.7,
       "volume_acceleration": 0.67,
       "green_day_ratio": 0.54,
-      "rs_acceleration": -0.49,
-      "price": 1725.0
-    },
-    {
-      "ticker": "20850.T",
-      "code": "20850",
-      "name": "三菱ＵＦＪアセットマネジメント株式会社　ＭＡＸＩＳ高配当日本株アクティブ上場投信",
-      "sector": "その他",
-      "score": 64.02,
-      "rs_score": 4.66,
-      "return_5_25d": 7.49,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": -0.03,
-      "price": 733.2
-    },
-    {
-      "ticker": "14950.T",
-      "code": "14950",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンドアジアリート",
-      "sector": "その他",
-      "score": 63.75,
-      "rs_score": -6.26,
-      "return_5_25d": 1.82,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.38,
-      "rs_acceleration": -0.18,
-      "price": 11605.0
+      "rs_acceleration": -0.5,
+      "price": 2956.0
     },
     {
       "ticker": "205A0.T",
@@ -3096,30 +2459,17 @@
       "price": 1426.0
     },
     {
-      "ticker": "20190.T",
-      "code": "20190",
-      "name": "Ｇｌｏｂａｌ　Ｘ　Ｊａｐａｎ株式会社　グローバルＸ　米国優先証券　ＥＴＦ（隔月分配型）",
-      "sector": "その他",
-      "score": 63.68,
-      "rs_score": -8.61,
-      "return_5_25d": -1.13,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": -0.24,
-      "price": 1042.0
-    },
-    {
-      "ticker": "20140.T",
-      "code": "20140",
-      "name": "ブラックロック・ジャパン株式会社　ｉシェアーズ　米国連続増配株　ＥＴＦ",
-      "sector": "その他",
-      "score": 63.66,
-      "rs_score": -0.4,
-      "return_5_25d": 4.62,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.19,
-      "price": 293.3
+      "ticker": "26690.T",
+      "code": "26690",
+      "name": "カネ美食品",
+      "sector": "小売",
+      "score": 63.64,
+      "rs_score": -11.86,
+      "return_5_25d": -2.81,
+      "volume_acceleration": 1.0,
+      "green_day_ratio": 0.42,
+      "rs_acceleration": -0.83,
+      "price": 3390.0
     },
     {
       "ticker": "166A0.T",
@@ -3161,45 +2511,6 @@
       "price": 1060.0
     },
     {
-      "ticker": "15500.T",
-      "code": "15500",
-      "name": "三菱ＵＦＪアセットマネジメント株式会社　ＭＡＸＩＳ　海外株式（ＭＳＣＩコクサイ）上場投信",
-      "sector": "その他",
-      "score": 63.27,
-      "rs_score": -4.12,
-      "return_5_25d": 1.07,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.33,
-      "rs_acceleration": -0.12,
-      "price": 7215.0
-    },
-    {
-      "ticker": "16570.T",
-      "code": "16570",
-      "name": "ブラックロック・ジャパン株式会社　ｉシェアーズ・コア　ＭＳＣＩ　先進国株（除く日本）ＥＴＦ",
-      "sector": "その他",
-      "score": 63.22,
-      "rs_score": -3.35,
-      "return_5_25d": 0.71,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.33,
-      "rs_acceleration": -0.09,
-      "price": 6474.0
-    },
-    {
-      "ticker": "13090.T",
-      "code": "13090",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　ＣｈｉｎａＡＭＣ・中国株式・上証５０連動型上場投信",
-      "sector": "その他",
-      "score": 63.21,
-      "rs_score": -4.1,
-      "return_5_25d": 1.96,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.42,
-      "rs_acceleration": -0.39,
-      "price": 53730.0
-    },
-    {
       "ticker": "22090.T",
       "code": "22090",
       "name": "井村屋グループ",
@@ -3211,6 +2522,32 @@
       "green_day_ratio": 0.46,
       "rs_acceleration": -0.52,
       "price": 2459.0
+    },
+    {
+      "ticker": "24930.T",
+      "code": "24930",
+      "name": "イーサポートリンク",
+      "sector": "情報通信・サービスその他",
+      "score": 63.19,
+      "rs_score": -6.88,
+      "return_5_25d": 1.81,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -0.46,
+      "price": 995.0
+    },
+    {
+      "ticker": "25940.T",
+      "code": "25940",
+      "name": "キーコーヒー",
+      "sector": "食品",
+      "score": 62.92,
+      "rs_score": -13.15,
+      "return_5_25d": -0.15,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.54,
+      "rs_acceleration": -0.48,
+      "price": 1985.0
     },
     {
       "ticker": "19720.T",
@@ -3239,32 +2576,6 @@
       "price": 2978.0
     },
     {
-      "ticker": "16550.T",
-      "code": "16550",
-      "name": "ブラックロック・ジャパン株式会社　ｉシェアーズ　Ｓ＆Ｐ　５００　米国株　ＥＴＦ",
-      "sector": "その他",
-      "score": 62.84,
-      "rs_score": -5.1,
-      "return_5_25d": -0.16,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.38,
-      "rs_acceleration": -0.17,
-      "price": 768.6
-    },
-    {
-      "ticker": "20890.T",
-      "code": "20890",
-      "name": "農林中金全共連アセットマネジメント株式会社　ＮＺＡＭ　上場投信　ＤＡＸ（為替ヘッジあり）",
-      "sector": "その他",
-      "score": 62.81,
-      "rs_score": -11.98,
-      "return_5_25d": -0.29,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.38,
-      "rs_acceleration": -0.16,
-      "price": 2663.0
-    },
-    {
       "ticker": "21690.T",
       "code": "21690",
       "name": "ＣＤＳ",
@@ -3276,19 +2587,6 @@
       "green_day_ratio": 0.38,
       "rs_acceleration": -0.3,
       "price": 1830.0
-    },
-    {
-      "ticker": "180A0.T",
-      "code": "180A0",
-      "name": "Ｇｌｏｂａｌ　Ｘ　Ｊａｐａｎ株式会社　グローバルＸ　超長期米国債　ＥＴＦ",
-      "sector": "その他",
-      "score": 62.78,
-      "rs_score": -7.37,
-      "return_5_25d": 3.46,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.13,
-      "price": 302.3
     },
     {
       "ticker": "21530.T",
@@ -3304,17 +2602,17 @@
       "price": 1801.0
     },
     {
-      "ticker": "15990.T",
-      "code": "15990",
-      "name": "大和アセットマネジメント株式会社　ｉＦｒｅｅＥＴＦ　ＪＰＸ日経４００",
-      "sector": "その他",
-      "score": 62.74,
-      "rs_score": 8.78,
-      "return_5_25d": 7.37,
-      "volume_acceleration": 0.0,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": 0.81,
-      "price": 34900.0
+      "ticker": "26660.T",
+      "code": "26660",
+      "name": "オートウェーブ",
+      "sector": "小売",
+      "score": 62.69,
+      "rs_score": -6.38,
+      "return_5_25d": 2.91,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -0.67,
+      "price": 162.0
     },
     {
       "ticker": "14300.T",
@@ -3343,6 +2641,19 @@
       "price": 4565.0
     },
     {
+      "ticker": "22880.T",
+      "code": "22880",
+      "name": "丸大食品",
+      "sector": "食品",
+      "score": 62.59,
+      "rs_score": -2.18,
+      "return_5_25d": 4.71,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -0.87,
+      "price": 2193.0
+    },
+    {
       "ticker": "18080.T",
       "code": "18080",
       "name": "長谷工コーポレーション",
@@ -3354,6 +2665,32 @@
       "green_day_ratio": 0.62,
       "rs_acceleration": -0.21,
       "price": 3193.0
+    },
+    {
+      "ticker": "23010.T",
+      "code": "23010",
+      "name": "学情",
+      "sector": "情報通信・サービスその他",
+      "score": 62.53,
+      "rs_score": -11.08,
+      "return_5_25d": 6.89,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.54,
+      "rs_acceleration": -0.27,
+      "price": 1798.0
+    },
+    {
+      "ticker": "26540.T",
+      "code": "26540",
+      "name": "アスモ",
+      "sector": "小売",
+      "score": 62.51,
+      "rs_score": -7.2,
+      "return_5_25d": 1.5,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.42,
+      "rs_acceleration": -0.48,
+      "price": 401.0
     },
     {
       "ticker": "18990.T",
@@ -3395,43 +2732,17 @@
       "price": 3725.0
     },
     {
-      "ticker": "13110.T",
-      "code": "13110",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　ＴＯＰＩＸ　Ｃｏｒｅ　３０連動型上場投信",
-      "sector": "その他",
-      "score": 62.32,
-      "rs_score": 0.15,
-      "return_5_25d": 5.49,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.46,
-      "rs_acceleration": -0.0,
-      "price": 1852.0
-    },
-    {
-      "ticker": "16750.T",
-      "code": "16750",
-      "name": "ウィズダムツリー・メタル・セキュリティーズ・リミテッド　ＷｉｓｄｏｍＴｒｅｅ　パラジウム上場投資信託",
-      "sector": "その他",
-      "score": 62.28,
-      "rs_score": 30.37,
-      "return_5_25d": -9.41,
+      "ticker": "27600.T",
+      "code": "27600",
+      "name": "東京エレクトロン　デバイス",
+      "sector": "商社・卸売",
+      "score": 62.25,
+      "rs_score": -10.52,
+      "return_5_25d": 4.51,
       "volume_acceleration": 0.67,
       "green_day_ratio": 0.5,
-      "rs_acceleration": 0.4,
-      "price": 24095.0
-    },
-    {
-      "ticker": "20150.T",
-      "code": "20150",
-      "name": "大和アセットマネジメント株式会社　ｉＦｒｅｅＥＴＦ　米国国債７−１０年（為替ヘッジなし）",
-      "sector": "その他",
-      "score": 62.24,
-      "rs_score": -7.06,
-      "return_5_25d": 1.38,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.67,
-      "rs_acceleration": -0.02,
-      "price": 2202.0
+      "rs_acceleration": -1.0,
+      "price": 3175.0
     },
     {
       "ticker": "14330.T",
@@ -3447,30 +2758,17 @@
       "price": 1252.0
     },
     {
-      "ticker": "16960.T",
-      "code": "16960",
-      "name": "ウィズダムツリー・コモディティ・セキュリティーズ・リミテッド　ＷｉｓｄｏｍＴｒｅｅ　とうもろこし上場投資信託",
-      "sector": "その他",
-      "score": 62.14,
-      "rs_score": -11.2,
-      "return_5_25d": 4.04,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.67,
-      "rs_acceleration": -0.31,
-      "price": 2965.0
-    },
-    {
-      "ticker": "20930.T",
-      "code": "20930",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場Ｔｒａｃｅｒｓ　米国債０−２年ラダー（為替ヘッジなし）",
-      "sector": "その他",
-      "score": 62.09,
-      "rs_score": -8.53,
-      "return_5_25d": 1.48,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.71,
-      "rs_acceleration": -0.15,
-      "price": 5230.0
+      "ticker": "24540.T",
+      "code": "24540",
+      "name": "オールアバウト",
+      "sector": "情報通信・サービスその他",
+      "score": 62.06,
+      "rs_score": -10.41,
+      "return_5_25d": 1.26,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.33,
+      "rs_acceleration": -0.38,
+      "price": 390.0
     },
     {
       "ticker": "13840.T",
@@ -3486,30 +2784,17 @@
       "price": 2971.0
     },
     {
-      "ticker": "16580.T",
-      "code": "16580",
-      "name": "ブラックロック・ジャパン株式会社　ｉシェアーズ・コア　ＭＳＣＩ　新興国株　ＥＴＦ",
-      "sector": "その他",
-      "score": 61.74,
-      "rs_score": 2.42,
-      "return_5_25d": 5.05,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": -0.24,
-      "price": 3723.0
-    },
-    {
-      "ticker": "20120.T",
-      "code": "20120",
-      "name": "ブラックロック・ジャパン株式会社　ｉシェアーズ　米国債０−３ヶ月　ＥＴＦ",
-      "sector": "その他",
-      "score": 61.63,
-      "rs_score": -6.51,
-      "return_5_25d": 1.73,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.62,
-      "rs_acceleration": -0.1,
-      "price": 235.5
+      "ticker": "26860.T",
+      "code": "26860",
+      "name": "ジーフット",
+      "sector": "小売",
+      "score": 61.7,
+      "rs_score": -15.11,
+      "return_5_25d": -4.08,
+      "volume_acceleration": 1.0,
+      "green_day_ratio": 0.29,
+      "rs_acceleration": -0.84,
+      "price": 280.0
     },
     {
       "ticker": "14340.T",
@@ -3564,19 +2849,6 @@
       "price": 2260.0
     },
     {
-      "ticker": "14990.T",
-      "code": "14990",
-      "name": "三菱ＵＦＪアセットマネジメント株式会社　ＭＡＸＩＳ日本株高配当７０マーケットニュートラル上場投信",
-      "sector": "その他",
-      "score": 61.44,
-      "rs_score": -8.49,
-      "return_5_25d": 3.22,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": -0.2,
-      "price": 9326.0
-    },
-    {
       "ticker": "14470.T",
       "code": "14470",
       "name": "ＳＡＡＦホールディングス",
@@ -3603,17 +2875,56 @@
       "price": 2007.0
     },
     {
-      "ticker": "133A0.T",
-      "code": "133A0",
-      "name": "Ｇｌｏｂａｌ　Ｘ　Ｊａｐａｎ株式会社　グローバルＸ　超短期米国債　ＥＴＦ",
-      "sector": "その他",
-      "score": 60.98,
-      "rs_score": -7.98,
-      "return_5_25d": 1.92,
-      "volume_acceleration": 0.33,
+      "ticker": "25935.T",
+      "code": "25935",
+      "name": "伊藤園（優先株式）",
+      "sector": "食品",
+      "score": 61.37,
+      "rs_score": -11.54,
+      "return_5_25d": -0.38,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.33,
+      "rs_acceleration": -0.35,
+      "price": 1808.0
+    },
+    {
+      "ticker": "23040.T",
+      "code": "23040",
+      "name": "ＣＳＳホールディングス",
+      "sector": "情報通信・サービスその他",
+      "score": 61.36,
+      "rs_score": -12.62,
+      "return_5_25d": -2.29,
+      "volume_acceleration": 0.67,
       "green_day_ratio": 0.58,
-      "rs_acceleration": -0.16,
-      "price": 1068.0
+      "rs_acceleration": -0.66,
+      "price": 960.0
+    },
+    {
+      "ticker": "26940.T",
+      "code": "26940",
+      "name": "焼肉坂井ホールディングス",
+      "sector": "小売",
+      "score": 61.35,
+      "rs_score": -10.36,
+      "return_5_25d": 2.78,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.25,
+      "rs_acceleration": -0.51,
+      "price": 73.0
+    },
+    {
+      "ticker": "26740.T",
+      "code": "26740",
+      "name": "ハードオフコーポレーション",
+      "sector": "小売",
+      "score": 61.1,
+      "rs_score": -6.58,
+      "return_5_25d": 1.47,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -0.84,
+      "price": 1978.0
     },
     {
       "ticker": "21460.T",
@@ -3629,6 +2940,19 @@
       "price": 199.0
     },
     {
+      "ticker": "256A0.T",
+      "code": "256A0",
+      "name": "飛島ホールディングス",
+      "sector": "建設・資材",
+      "score": 60.86,
+      "rs_score": -2.24,
+      "return_5_25d": 1.17,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -0.86,
+      "price": 2330.0
+    },
+    {
       "ticker": "18530.T",
       "code": "18530",
       "name": "森組",
@@ -3642,17 +2966,43 @@
       "price": 335.0
     },
     {
-      "ticker": "16870.T",
-      "code": "16870",
-      "name": "ウィズダムツリー・コモディティ・セキュリティーズ・リミテッド　ＷｉｓｄｏｍＴｒｅｅ　農産物上場投資信託",
-      "sector": "その他",
-      "score": 60.66,
-      "rs_score": -11.81,
-      "return_5_25d": 2.9,
+      "ticker": "27370.T",
+      "code": "27370",
+      "name": "トーメンデバイス",
+      "sector": "商社・卸売",
+      "score": 60.69,
+      "rs_score": 37.93,
+      "return_5_25d": -1.15,
       "volume_acceleration": 0.33,
-      "green_day_ratio": 0.62,
-      "rs_acceleration": -0.41,
-      "price": 944.0
+      "green_day_ratio": 0.54,
+      "rs_acceleration": 0.17,
+      "price": 12050.0
+    },
+    {
+      "ticker": "22810.T",
+      "code": "22810",
+      "name": "プリマハム",
+      "sector": "食品",
+      "score": 60.48,
+      "rs_score": 1.37,
+      "return_5_25d": 1.7,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": 0.01,
+      "price": 2768.0
+    },
+    {
+      "ticker": "26530.T",
+      "code": "26530",
+      "name": "イオン九州",
+      "sector": "小売",
+      "score": 60.46,
+      "rs_score": -14.47,
+      "return_5_25d": -2.24,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.42,
+      "rs_acceleration": -0.52,
+      "price": 2785.0
     },
     {
       "ticker": "14140.T",
@@ -3668,6 +3018,45 @@
       "price": 1385.5
     },
     {
+      "ticker": "19970.T",
+      "code": "19970",
+      "name": "暁飯島工業",
+      "sector": "建設・資材",
+      "score": 60.41,
+      "rs_score": 12.54,
+      "return_5_25d": -7.28,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.54,
+      "rs_acceleration": -0.27,
+      "price": 3915.0
+    },
+    {
+      "ticker": "26760.T",
+      "code": "26760",
+      "name": "高千穂交易",
+      "sector": "商社・卸売",
+      "score": 60.36,
+      "rs_score": -11.26,
+      "return_5_25d": 3.95,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.54,
+      "rs_acceleration": -0.41,
+      "price": 2031.0
+    },
+    {
+      "ticker": "23850.T",
+      "code": "23850",
+      "name": "総医研ホールディングス",
+      "sector": "情報通信・サービスその他",
+      "score": 60.34,
+      "rs_score": 5.77,
+      "return_5_25d": 3.19,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.38,
+      "rs_acceleration": -1.0,
+      "price": 235.0
+    },
+    {
       "ticker": "17860.T",
       "code": "17860",
       "name": "オリエンタル白石",
@@ -3679,6 +3068,19 @@
       "green_day_ratio": 0.42,
       "rs_acceleration": -0.78,
       "price": 394.0
+    },
+    {
+      "ticker": "23310.T",
+      "code": "23310",
+      "name": "ＡＬＳＯＫ",
+      "sector": "情報通信・サービスその他",
+      "score": 60.2,
+      "rs_score": -4.4,
+      "return_5_25d": 3.8,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.58,
+      "rs_acceleration": -0.51,
+      "price": 1243.0
     },
     {
       "ticker": "17880.T",
@@ -3694,6 +3096,19 @@
       "price": 5450.0
     },
     {
+      "ticker": "25870.T",
+      "code": "25870",
+      "name": "サントリー食品インターナショナル",
+      "sector": "食品",
+      "score": 60.13,
+      "rs_score": -12.9,
+      "return_5_25d": -2.96,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.54,
+      "rs_acceleration": -0.76,
+      "price": 4727.0
+    },
+    {
       "ticker": "18260.T",
       "code": "18260",
       "name": "佐田建設",
@@ -3707,17 +3122,17 @@
       "price": 1200.0
     },
     {
-      "ticker": "15950.T",
-      "code": "15950",
-      "name": "農林中金全共連アセットマネジメント株式会社　ＮＺＡＭ　上場投信　東証ＲＥＩＴ指数",
-      "sector": "その他",
-      "score": 59.89,
-      "rs_score": -8.53,
-      "return_5_25d": 2.05,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": -0.31,
-      "price": 2016.0
+      "ticker": "25400.T",
+      "code": "25400",
+      "name": "養命酒製造",
+      "sector": "食品",
+      "score": 59.97,
+      "rs_score": -2.91,
+      "return_5_25d": -6.15,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.38,
+      "rs_acceleration": -0.14,
+      "price": 4045.0
     },
     {
       "ticker": "17170.T",
@@ -3733,17 +3148,17 @@
       "price": 1042.0
     },
     {
-      "ticker": "20400.T",
-      "code": "20400",
-      "name": "ノムラ・ヨーロッパ・ファイナンス・エヌ・ブイ　ＮＥＸＴ　ＮＯＴＥＳ　ＮＹダウ・ダブル・ブル・ドルヘッジ　ＥＴＮ",
-      "sector": "その他",
-      "score": 59.86,
-      "rs_score": -8.24,
-      "return_5_25d": -2.83,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.38,
-      "rs_acceleration": -0.5,
-      "price": 34180.0
+      "ticker": "24980.T",
+      "code": "24980",
+      "name": "オリエンタルコンサルタンツホールディングス",
+      "sector": "情報通信・サービスその他",
+      "score": 59.87,
+      "rs_score": -10.51,
+      "return_5_25d": -5.26,
+      "volume_acceleration": 1.0,
+      "green_day_ratio": 0.25,
+      "rs_acceleration": -1.0,
+      "price": 3070.0
     },
     {
       "ticker": "14440.T",
@@ -3772,17 +3187,30 @@
       "price": 320.0
     },
     {
-      "ticker": "16790.T",
-      "code": "16790",
-      "name": "シンプレクス・アセット・マネジメント株式会社　Ｓｉｍｐｌｅ−Ｘ　ＮＹ　ダウ・ジョーンズ・インデックス上場投信",
-      "sector": "その他",
+      "ticker": "26130.T",
+      "code": "26130",
+      "name": "Ｊ−オイルミルズ",
+      "sector": "食品",
       "score": 59.83,
-      "rs_score": -2.18,
-      "return_5_25d": -1.08,
+      "rs_score": -12.57,
+      "return_5_25d": 3.6,
       "volume_acceleration": 0.33,
-      "green_day_ratio": 0.46,
-      "rs_acceleration": 0.16,
-      "price": 61290.0
+      "green_day_ratio": 0.5,
+      "rs_acceleration": -0.39,
+      "price": 2018.0
+    },
+    {
+      "ticker": "26680.T",
+      "code": "26680",
+      "name": "タビオ",
+      "sector": "商社・卸売",
+      "score": 59.77,
+      "rs_score": -11.22,
+      "return_5_25d": -2.6,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.5,
+      "rs_acceleration": -0.79,
+      "price": 1251.0
     },
     {
       "ticker": "17680.T",
@@ -3811,6 +3239,19 @@
       "price": 2430.0
     },
     {
+      "ticker": "27330.T",
+      "code": "27330",
+      "name": "あらた",
+      "sector": "商社・卸売",
+      "score": 59.19,
+      "rs_score": -16.97,
+      "return_5_25d": -1.78,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.42,
+      "rs_acceleration": -0.82,
+      "price": 2950.0
+    },
+    {
       "ticker": "18480.T",
       "code": "18480",
       "name": "富士ピー・エス",
@@ -3824,17 +3265,17 @@
       "price": 589.0
     },
     {
-      "ticker": "16860.T",
-      "code": "16860",
-      "name": "ウィズダムツリー・コモディティ・セキュリティーズ・リミテッド　ＷｉｓｄｏｍＴｒｅｅ　産業用金属上場投資信託",
-      "sector": "その他",
-      "score": 59.07,
-      "rs_score": 4.49,
-      "return_5_25d": -3.67,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 0.1,
-      "price": 2792.5
+      "ticker": "23890.T",
+      "code": "23890",
+      "name": "デジタルホールディングス",
+      "sector": "情報通信・サービスその他",
+      "score": 59.08,
+      "rs_score": -4.2,
+      "return_5_25d": -0.84,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.38,
+      "rs_acceleration": -0.85,
+      "price": 1998.0
     },
     {
       "ticker": "20030.T",
@@ -3863,30 +3304,17 @@
       "price": 4625.0
     },
     {
-      "ticker": "182A0.T",
-      "code": "182A0",
-      "name": "三菱ＵＦＪアセットマネジメント株式会社　ＭＡＸＩＳ米国国債２０年超上場投信（為替ヘッジなし）",
-      "sector": "その他",
-      "score": 59.0,
-      "rs_score": -6.55,
-      "return_5_25d": 4.39,
-      "volume_acceleration": 0.0,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.2,
-      "price": 523.9
-    },
-    {
-      "ticker": "13430.T",
-      "code": "13430",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　東証ＲＥＩＴ　指数連動型上場投信",
-      "sector": "その他",
-      "score": 58.79,
-      "rs_score": -8.91,
-      "return_5_25d": 1.07,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": -0.35,
-      "price": 2114.5
+      "ticker": "23110.T",
+      "code": "23110",
+      "name": "エプコ",
+      "sector": "情報通信・サービスその他",
+      "score": 58.88,
+      "rs_score": -13.49,
+      "return_5_25d": -1.45,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -1.0,
+      "price": 787.0
     },
     {
       "ticker": "135A0.T",
@@ -3902,30 +3330,17 @@
       "price": 2170.0
     },
     {
-      "ticker": "14760.T",
-      "code": "14760",
-      "name": "ブラックロック・ジャパン株式会社　ｉシェアーズ・コア　Ｊリート　ＥＴＦ",
-      "sector": "その他",
+      "ticker": "24800.T",
+      "code": "24800",
+      "name": "システム・ロケーション",
+      "sector": "情報通信・サービスその他",
       "score": 58.62,
-      "rs_score": -9.07,
-      "return_5_25d": 0.73,
+      "rs_score": -2.06,
+      "return_5_25d": -1.54,
       "volume_acceleration": 0.33,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": -0.35,
-      "price": 2026.0
-    },
-    {
-      "ticker": "16800.T",
-      "code": "16800",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンド海外先進国株式（ＭＳＣＩ−ＫＯＫＵＳＡＩ）",
-      "sector": "その他",
-      "score": 58.56,
-      "rs_score": -4.28,
-      "return_5_25d": 1.28,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.33,
-      "rs_acceleration": -0.08,
-      "price": 7375.0
+      "green_day_ratio": 0.42,
+      "rs_acceleration": 0.04,
+      "price": 1708.0
     },
     {
       "ticker": "18660.T",
@@ -3954,19 +3369,6 @@
       "price": 311.0
     },
     {
-      "ticker": "14880.T",
-      "code": "14880",
-      "name": "大和アセットマネジメント株式会社　ｉＦｒｅｅＥＴＦ　東証ＲＥＩＴ指数",
-      "sector": "その他",
-      "score": 58.45,
-      "rs_score": -10.47,
-      "return_5_25d": 2.53,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": -0.56,
-      "price": 2011.0
-    },
-    {
       "ticker": "18410.T",
       "code": "18410",
       "name": "サンユー建設",
@@ -3978,6 +3380,19 @@
       "green_day_ratio": 0.33,
       "rs_acceleration": -1.0,
       "price": 1586.0
+    },
+    {
+      "ticker": "23030.T",
+      "code": "23030",
+      "name": "ドーン",
+      "sector": "情報通信・サービスその他",
+      "score": 58.31,
+      "rs_score": -7.96,
+      "return_5_25d": -2.42,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.42,
+      "rs_acceleration": -0.93,
+      "price": 2525.0
     },
     {
       "ticker": "19660.T",
@@ -3993,30 +3408,30 @@
       "price": 1769.0
     },
     {
-      "ticker": "15470.T",
-      "code": "15470",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンド米国株式（Ｓ＆Ｐ５００）",
-      "sector": "その他",
-      "score": 58.27,
-      "rs_score": -5.23,
-      "return_5_25d": 0.09,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.38,
-      "rs_acceleration": -0.1,
-      "price": 11565.0
+      "ticker": "26070.T",
+      "code": "26070",
+      "name": "不二製油",
+      "sector": "食品",
+      "score": 58.2,
+      "rs_score": -4.75,
+      "return_5_25d": -5.27,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.58,
+      "rs_acceleration": -1.0,
+      "price": 3547.0
     },
     {
-      "ticker": "15570.T",
-      "code": "15570",
-      "name": "ステート・ストリート・グローバル・アドバイザーズ・トラスト・カンパニー　Ｓｔａｔｅ　Ｓｔｒｅｅｔ　ＳＰＤＲ　Ｓ＆Ｐ　５００　ＥＴＦ",
-      "sector": "その他",
-      "score": 58.16,
-      "rs_score": -5.01,
-      "return_5_25d": 0.38,
+      "ticker": "22820.T",
+      "code": "22820",
+      "name": "日本ハム",
+      "sector": "食品",
+      "score": 58.19,
+      "rs_score": 6.28,
+      "return_5_25d": 2.55,
       "volume_acceleration": 0.33,
-      "green_day_ratio": 0.38,
-      "rs_acceleration": -0.16,
-      "price": 106450.0
+      "green_day_ratio": 0.54,
+      "rs_acceleration": -0.7,
+      "price": 6951.0
     },
     {
       "ticker": "138A0.T",
@@ -4032,17 +3447,43 @@
       "price": 2804.0
     },
     {
-      "ticker": "20310.T",
-      "code": "20310",
-      "name": "ノムラ・ヨーロッパ・ファイナンス・エヌ・ブイ　ＮＥＸＴ　ＮＯＴＥＳ　香港ハンセン・ダブル・ブル　ＥＴＮ",
-      "sector": "その他",
-      "score": 57.67,
-      "rs_score": -13.1,
-      "return_5_25d": -3.83,
-      "volume_acceleration": 0.67,
+      "ticker": "23340.T",
+      "code": "23340",
+      "name": "イオレ",
+      "sector": "情報通信・サービスその他",
+      "score": 58.12,
+      "rs_score": 92.42,
+      "return_5_25d": -11.26,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.38,
+      "rs_acceleration": 1.0,
+      "price": 365.0
+    },
+    {
+      "ticker": "24100.T",
+      "code": "24100",
+      "name": "キャリアデザインセンター",
+      "sector": "情報通信・サービスその他",
+      "score": 57.86,
+      "rs_score": -1.33,
+      "return_5_25d": 2.12,
+      "volume_acceleration": 0.33,
       "green_day_ratio": 0.46,
-      "rs_acceleration": -1.0,
-      "price": 7919.0
+      "rs_acceleration": -0.56,
+      "price": 2439.0
+    },
+    {
+      "ticker": "23910.T",
+      "code": "23910",
+      "name": "プラネット",
+      "sector": "情報通信・サービスその他",
+      "score": 57.65,
+      "rs_score": -13.09,
+      "return_5_25d": -2.48,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.54,
+      "rs_acceleration": -0.31,
+      "price": 1235.0
     },
     {
       "ticker": "21630.T",
@@ -4058,6 +3499,32 @@
       "price": 1947.0
     },
     {
+      "ticker": "245A0.T",
+      "code": "245A0",
+      "name": "ＩＮＧＳ",
+      "sector": "小売",
+      "score": 57.44,
+      "rs_score": -16.64,
+      "return_5_25d": -1.8,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.33,
+      "rs_acceleration": -1.0,
+      "price": 2704.0
+    },
+    {
+      "ticker": "24610.T",
+      "code": "24610",
+      "name": "ファンコミュニケーションズ",
+      "sector": "情報通信・サービスその他",
+      "score": 57.24,
+      "rs_score": -20.65,
+      "return_5_25d": -4.68,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -1.0,
+      "price": 454.0
+    },
+    {
       "ticker": "17240.T",
       "code": "17240",
       "name": "シンクレイヤ",
@@ -4069,6 +3536,19 @@
       "green_day_ratio": 0.5,
       "rs_acceleration": -0.54,
       "price": 713.0
+    },
+    {
+      "ticker": "26520.T",
+      "code": "26520",
+      "name": "まんだらけ",
+      "sector": "小売",
+      "score": 57.12,
+      "rs_score": -14.48,
+      "return_5_25d": 2.62,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.42,
+      "rs_acceleration": -0.67,
+      "price": 329.0
     },
     {
       "ticker": "14430.T",
@@ -4097,43 +3577,69 @@
       "price": 2328.0
     },
     {
-      "ticker": "15450.T",
-      "code": "15450",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　ＮＡＳＤＡＱ−１００（為替ヘッジなし）連動型上場投信",
-      "sector": "その他",
-      "score": 56.99,
-      "rs_score": -6.12,
-      "return_5_25d": -1.74,
+      "ticker": "26730.T",
+      "code": "26730",
+      "name": "夢みつけ隊",
+      "sector": "小売",
+      "score": 57.05,
+      "rs_score": -7.58,
+      "return_5_25d": 4.93,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -1.0,
+      "price": 187.0
+    },
+    {
+      "ticker": "24360.T",
+      "code": "24360",
+      "name": "共同ピーアール",
+      "sector": "情報通信・サービスその他",
+      "score": 57.03,
+      "rs_score": -2.03,
+      "return_5_25d": -0.49,
       "volume_acceleration": 0.33,
       "green_day_ratio": 0.42,
-      "rs_acceleration": -0.26,
-      "price": 39000.0
+      "rs_acceleration": -0.38,
+      "price": 975.0
     },
     {
-      "ticker": "15550.T",
-      "code": "15550",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンド豪州リート（Ｓ＆Ｐ／ＡＳＸ２００　Ａ−ＲＥＩＴ）",
-      "sector": "その他",
-      "score": 56.83,
-      "rs_score": -11.81,
-      "return_5_25d": -0.91,
+      "ticker": "21790.T",
+      "code": "21790",
+      "name": "成学社",
+      "sector": "情報通信・サービスその他",
+      "score": 57.02,
+      "rs_score": -8.69,
+      "return_5_25d": -0.61,
       "volume_acceleration": 0.33,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": -0.54,
-      "price": 2397.0
+      "green_day_ratio": 0.42,
+      "rs_acceleration": -0.37,
+      "price": 815.0
     },
     {
-      "ticker": "16780.T",
-      "code": "16780",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　インド株式指数・Ｎｉｆｔｙ　５０　連動型上場投信",
-      "sector": "その他",
-      "score": 56.23,
-      "rs_score": -16.55,
-      "return_5_25d": -0.59,
+      "ticker": "24450.T",
+      "code": "24450",
+      "name": "タカミヤ",
+      "sector": "情報通信・サービスその他",
+      "score": 56.44,
+      "rs_score": -14.85,
+      "return_5_25d": -6.28,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -1.0,
+      "price": 398.0
+    },
+    {
+      "ticker": "23540.T",
+      "code": "23540",
+      "name": "ＹＥ　ＤＩＧＩＴＡＬ",
+      "sector": "情報通信・サービスその他",
+      "score": 56.27,
+      "rs_score": 1.75,
+      "return_5_25d": -2.44,
       "volume_acceleration": 0.33,
-      "green_day_ratio": 0.38,
-      "rs_acceleration": -0.44,
-      "price": 327.2
+      "green_day_ratio": 0.42,
+      "rs_acceleration": -0.33,
+      "price": 755.0
     },
     {
       "ticker": "14200.T",
@@ -4173,6 +3679,19 @@
       "green_day_ratio": 0.46,
       "rs_acceleration": -1.0,
       "price": 2318.5
+    },
+    {
+      "ticker": "24330.T",
+      "code": "24330",
+      "name": "博報堂ＤＹホールディングス",
+      "sector": "情報通信・サービスその他",
+      "score": 55.99,
+      "rs_score": -16.04,
+      "return_5_25d": -1.14,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.5,
+      "rs_acceleration": -0.69,
+      "price": 1105.0
     },
     {
       "ticker": "21730.T",
@@ -4227,6 +3746,32 @@
       "price": 523.0
     },
     {
+      "ticker": "22150.T",
+      "code": "22150",
+      "name": "第一屋製パン",
+      "sector": "食品",
+      "score": 55.4,
+      "rs_score": -11.43,
+      "return_5_25d": 0.49,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.42,
+      "rs_acceleration": -0.8,
+      "price": 606.0
+    },
+    {
+      "ticker": "23530.T",
+      "code": "23530",
+      "name": "日本駐車場開発",
+      "sector": "不動産",
+      "score": 55.29,
+      "rs_score": -9.32,
+      "return_5_25d": -2.09,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.42,
+      "rs_acceleration": -0.57,
+      "price": 271.0
+    },
+    {
       "ticker": "19110.T",
       "code": "19110",
       "name": "住友林業",
@@ -4240,43 +3785,43 @@
       "price": 1542.0
     },
     {
-      "ticker": "223A0.T",
-      "code": "223A0",
-      "name": "Ｇｌｏｂａｌ　Ｘ　Ｊａｐａｎ株式会社　グローバルＸ　ＡＩ＆ビッグデータ　ＥＴＦ",
-      "sector": "その他",
-      "score": 55.24,
-      "rs_score": -4.54,
-      "return_5_25d": -3.87,
+      "ticker": "23930.T",
+      "code": "23930",
+      "name": "日本ケアサプライ",
+      "sector": "情報通信・サービスその他",
+      "score": 55.15,
+      "rs_score": -4.13,
+      "return_5_25d": 1.96,
       "volume_acceleration": 0.33,
       "green_day_ratio": 0.42,
-      "rs_acceleration": -0.4,
-      "price": 1361.0
+      "rs_acceleration": -1.0,
+      "price": 2401.0
     },
     {
-      "ticker": "22390.T",
-      "code": "22390",
-      "name": "アモーヴァ・アセットマネジメント株式会社　上場インデックスファンドＳ＆Ｐ５００先物レバレッジ２倍",
-      "sector": "その他",
+      "ticker": "23270.T",
+      "code": "23270",
+      "name": "日鉄ソリューションズ",
+      "sector": "情報通信・サービスその他",
       "score": 55.03,
-      "rs_score": -10.23,
-      "return_5_25d": -3.83,
+      "rs_score": -10.13,
+      "return_5_25d": -11.74,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -0.74,
+      "price": 3895.0
+    },
+    {
+      "ticker": "24150.T",
+      "code": "24150",
+      "name": "ヒューマンホールディングス",
+      "sector": "情報通信・サービスその他",
+      "score": 54.98,
+      "rs_score": -13.91,
+      "return_5_25d": -3.93,
       "volume_acceleration": 0.33,
       "green_day_ratio": 0.46,
       "rs_acceleration": -0.53,
-      "price": 21695.0
-    },
-    {
-      "ticker": "16740.T",
-      "code": "16740",
-      "name": "ウィズダムツリー・メタル・セキュリティーズ・リミテッド　ＷｉｓｄｏｍＴｒｅｅ　白金上場投資信託",
-      "sector": "その他",
-      "score": 55.01,
-      "rs_score": 45.93,
-      "return_5_25d": -14.62,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 0.3,
-      "price": 30410.0
+      "price": 1800.0
     },
     {
       "ticker": "194A0.T",
@@ -4292,30 +3837,30 @@
       "price": 1731.0
     },
     {
-      "ticker": "201A0.T",
-      "code": "201A0",
-      "name": "ブラックロック・ジャパン株式会社　ｉシェアーズ　Ｎｉｆｔｙ　５０　インド株　ＥＴＦ",
-      "sector": "その他",
-      "score": 54.46,
-      "rs_score": -15.71,
-      "return_5_25d": -1.9,
+      "ticker": "24990.T",
+      "code": "24990",
+      "name": "日本和装ホールディングス",
+      "sector": "情報通信・サービスその他",
+      "score": 54.39,
+      "rs_score": -11.39,
+      "return_5_25d": -1.91,
       "volume_acceleration": 0.33,
-      "green_day_ratio": 0.25,
-      "rs_acceleration": -0.42,
-      "price": 185.3
+      "green_day_ratio": 0.33,
+      "rs_acceleration": -0.6,
+      "price": 351.0
     },
     {
-      "ticker": "22370.T",
-      "code": "22370",
-      "name": "大和アセットマネジメント株式会社　ｉＦｒｅｅＥＴＦ　Ｓ＆Ｐ５００レバレッジ",
-      "sector": "その他",
-      "score": 54.42,
-      "rs_score": -10.14,
-      "return_5_25d": -3.62,
+      "ticker": "23420.T",
+      "code": "23420",
+      "name": "トランスジェニックグループ",
+      "sector": "情報通信・サービスその他",
+      "score": 54.25,
+      "rs_score": -10.82,
+      "return_5_25d": -0.67,
       "volume_acceleration": 0.33,
-      "green_day_ratio": 0.42,
-      "rs_acceleration": -0.59,
-      "price": 100050.0
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -1.0,
+      "price": 271.0
     },
     {
       "ticker": "13810.T",
@@ -4331,32 +3876,6 @@
       "price": 3500.0
     },
     {
-      "ticker": "178A0.T",
-      "code": "178A0",
-      "name": "Ｇｌｏｂａｌ　Ｘ　Ｊａｐａｎ株式会社　グローバルＸ　革新的優良企業　ＥＴＦ",
-      "sector": "その他",
-      "score": 54.02,
-      "rs_score": -7.58,
-      "return_5_25d": -4.81,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.38,
-      "rs_acceleration": -0.47,
-      "price": 1414.0
-    },
-    {
-      "ticker": "188A0.T",
-      "code": "188A0",
-      "name": "Ｇｌｏｂａｌ　Ｘ　Ｊａｐａｎ株式会社　グローバルＸ　インド・トップ１０＋　ＥＴＦ",
-      "sector": "その他",
-      "score": 54.02,
-      "rs_score": -18.13,
-      "return_5_25d": -2.29,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.38,
-      "rs_acceleration": -0.72,
-      "price": 905.0
-    },
-    {
       "ticker": "21540.T",
       "code": "21540",
       "name": "オープンアップグループ",
@@ -4368,19 +3887,6 @@
       "green_day_ratio": 0.46,
       "rs_acceleration": -1.0,
       "price": 1797.0
-    },
-    {
-      "ticker": "20460.T",
-      "code": "20460",
-      "name": "ノムラ・ヨーロッパ・ファイナンス・エヌ・ブイ　ＮＥＸＴ　ＮＯＴＥＳ　インドＮｉｆｔｙ・ダブル・ブル　ＥＴＮ",
-      "sector": "その他",
-      "score": 53.8,
-      "rs_score": -20.56,
-      "return_5_25d": -2.24,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.38,
-      "rs_acceleration": -0.77,
-      "price": 27135.0
     },
     {
       "ticker": "21360.T",
@@ -4396,19 +3902,6 @@
       "price": 1517.0
     },
     {
-      "ticker": "16760.T",
-      "code": "16760",
-      "name": "ウィズダムツリー・メタル・セキュリティーズ・リミテッド　ＷｉｓｄｏｍＴｒｅｅ　貴金属バスケット上場投資信託",
-      "sector": "その他",
-      "score": 53.32,
-      "rs_score": 40.14,
-      "return_5_25d": -11.02,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.5,
-      "rs_acceleration": -0.23,
-      "price": 50850.0
-    },
-    {
       "ticker": "157A0.T",
       "code": "157A0",
       "name": "グリーンモンスター",
@@ -4422,17 +3915,30 @@
       "price": 996.0
     },
     {
-      "ticker": "16940.T",
-      "code": "16940",
-      "name": "ウィズダムツリー・コモディティ・セキュリティーズ・リミテッド　ＷｉｓｄｏｍＴｒｅｅ　ニッケル上場投資信託",
-      "sector": "その他",
-      "score": 52.99,
-      "rs_score": 5.51,
-      "return_5_25d": -2.94,
-      "volume_acceleration": 0.0,
-      "green_day_ratio": 0.46,
-      "rs_acceleration": -0.02,
-      "price": 2406.5
+      "ticker": "23740.T",
+      "code": "23740",
+      "name": "セントケア・ホールディング",
+      "sector": "情報通信・サービスその他",
+      "score": 53.15,
+      "rs_score": 15.88,
+      "return_5_25d": 0.17,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.29,
+      "rs_acceleration": -0.97,
+      "price": 1213.0
+    },
+    {
+      "ticker": "23410.T",
+      "code": "23410",
+      "name": "アルバイトタイムス",
+      "sector": "情報通信・サービスその他",
+      "score": 52.96,
+      "rs_score": -6.36,
+      "return_5_25d": -1.59,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.38,
+      "rs_acceleration": -1.0,
+      "price": 179.0
     },
     {
       "ticker": "156A0.T",
@@ -4448,17 +3954,82 @@
       "price": 885.0
     },
     {
-      "ticker": "15430.T",
-      "code": "15430",
-      "name": "三菱ＵＦＪ信託銀行株式会社　純パラジウム上場信託（現物国内保管型）",
-      "sector": "その他",
-      "score": 52.65,
-      "rs_score": 28.79,
-      "return_5_25d": -12.95,
+      "ticker": "26810.T",
+      "code": "26810",
+      "name": "ゲオホールディングス",
+      "sector": "小売",
+      "score": 52.84,
+      "rs_score": -12.98,
+      "return_5_25d": -4.31,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.5,
+      "rs_acceleration": -1.0,
+      "price": 1687.0
+    },
+    {
+      "ticker": "24490.T",
+      "code": "24490",
+      "name": "プラップジャパン",
+      "sector": "情報通信・サービスその他",
+      "score": 52.71,
+      "rs_score": -13.36,
+      "return_5_25d": -3.9,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.38,
+      "rs_acceleration": -0.82,
+      "price": 1061.0
+    },
+    {
+      "ticker": "23230.T",
+      "code": "23230",
+      "name": "ｆｏｎｆｕｎ",
+      "sector": "情報通信・サービスその他",
+      "score": 52.52,
+      "rs_score": 27.0,
+      "return_5_25d": -22.46,
+      "volume_acceleration": 1.0,
+      "green_day_ratio": 0.38,
+      "rs_acceleration": -1.0,
+      "price": 324.0
+    },
+    {
+      "ticker": "24080.T",
+      "code": "24080",
+      "name": "ＫＧ情報",
+      "sector": "情報通信・サービスその他",
+      "score": 52.26,
+      "rs_score": -6.58,
+      "return_5_25d": -5.32,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.33,
+      "rs_acceleration": -0.68,
+      "price": 705.0
+    },
+    {
+      "ticker": "247A0.T",
+      "code": "247A0",
+      "name": "Ａｉロボティクス",
+      "sector": "素材・化学",
+      "score": 51.82,
+      "rs_score": -21.42,
+      "return_5_25d": -11.57,
       "volume_acceleration": 0.33,
       "green_day_ratio": 0.46,
-      "rs_acceleration": -0.09,
-      "price": 75330.0
+      "rs_acceleration": -0.4,
+      "price": 1086.0
+    },
+    {
+      "ticker": "23950.T",
+      "code": "23950",
+      "name": "新日本科学",
+      "sector": "情報通信・サービスその他",
+      "score": 51.21,
+      "rs_score": -23.41,
+      "return_5_25d": 2.42,
+      "volume_acceleration": 0.0,
+      "green_day_ratio": 0.5,
+      "rs_acceleration": -1.0,
+      "price": 1497.0
     },
     {
       "ticker": "18500.T",
@@ -4513,17 +4084,30 @@
       "price": 6730.0
     },
     {
-      "ticker": "15720.T",
-      "code": "15720",
-      "name": "シンプレクス・アセット・マネジメント株式会社　中国Ｈ株ブル２倍上場投信",
-      "sector": "その他",
-      "score": 50.32,
-      "rs_score": -22.8,
-      "return_5_25d": -8.52,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.46,
+      "ticker": "23150.T",
+      "code": "23150",
+      "name": "ＣＡＩＣＡ　ＤＩＧＩＴＡＬ",
+      "sector": "情報通信・サービスその他",
+      "score": 49.18,
+      "rs_score": -34.17,
+      "return_5_25d": -17.48,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.29,
       "rs_acceleration": -1.0,
-      "price": 6986.0
+      "price": 80.0
+    },
+    {
+      "ticker": "24920.T",
+      "code": "24920",
+      "name": "インフォマート",
+      "sector": "情報通信・サービスその他",
+      "score": 47.72,
+      "rs_score": -9.44,
+      "return_5_25d": -12.06,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.38,
+      "rs_acceleration": -1.0,
+      "price": 391.0
     },
     {
       "ticker": "147A0.T",
@@ -4539,30 +4123,30 @@
       "price": 947.0
     },
     {
-      "ticker": "16730.T",
-      "code": "16730",
-      "name": "ウィズダムツリー・メタル・セキュリティーズ・リミテッド　ＷｉｓｄｏｍＴｒｅｅ　銀上場投資信託",
-      "sector": "その他",
-      "score": 47.28,
-      "rs_score": 82.3,
-      "return_5_25d": -15.44,
+      "ticker": "23320.T",
+      "code": "23320",
+      "name": "クエスト",
+      "sector": "情報通信・サービスその他",
+      "score": 46.16,
+      "rs_score": -6.3,
+      "return_5_25d": -14.36,
       "volume_acceleration": 0.33,
-      "green_day_ratio": 0.5,
+      "green_day_ratio": 0.33,
       "rs_acceleration": -1.0,
-      "price": 12000.0
+      "price": 1595.0
     },
     {
-      "ticker": "15420.T",
-      "code": "15420",
-      "name": "三菱ＵＦＪ信託銀行株式会社　純銀上場信託（現物国内保管型）",
-      "sector": "その他",
-      "score": 43.54,
-      "rs_score": 77.93,
-      "return_5_25d": -22.92,
+      "ticker": "23170.T",
+      "code": "23170",
+      "name": "システナ",
+      "sector": "情報通信・サービスその他",
+      "score": 45.92,
+      "rs_score": -23.39,
+      "return_5_25d": -16.5,
       "volume_acceleration": 0.33,
-      "green_day_ratio": 0.5,
+      "green_day_ratio": 0.42,
       "rs_acceleration": -1.0,
-      "price": 38220.0
+      "price": 410.0
     },
     {
       "ticker": "21300.T",
@@ -4578,19 +4162,6 @@
       "price": 1101.0
     },
     {
-      "ticker": "15410.T",
-      "code": "15410",
-      "name": "三菱ＵＦＪ信託銀行株式会社　純プラチナ上場信託（現物国内保管型）",
-      "sector": "その他",
-      "score": 42.39,
-      "rs_score": 45.42,
-      "return_5_25d": -24.4,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.46,
-      "rs_acceleration": -1.0,
-      "price": 9845.0
-    },
-    {
       "ticker": "155A0.T",
       "code": "155A0",
       "name": "情報戦略テクノロジー",
@@ -4602,6 +4173,32 @@
       "green_day_ratio": 0.42,
       "rs_acceleration": -1.0,
       "price": 893.0
+    },
+    {
+      "ticker": "26670.T",
+      "code": "26670",
+      "name": "イメージ　ワン",
+      "sector": "商社・卸売",
+      "score": 41.7,
+      "rs_score": -13.5,
+      "return_5_25d": -15.77,
+      "volume_acceleration": 0.0,
+      "green_day_ratio": 0.46,
+      "rs_acceleration": -1.0,
+      "price": 222.0
+    },
+    {
+      "ticker": "228A0.T",
+      "code": "228A0",
+      "name": "オプロ",
+      "sector": "情報通信・サービスその他",
+      "score": 37.89,
+      "rs_score": -32.35,
+      "return_5_25d": -30.05,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.29,
+      "rs_acceleration": -1.0,
+      "price": 1380.0
     }
   ],
   "top": [
@@ -4632,19 +4229,6 @@
       "price": 4880.0
     },
     {
-      "ticker": "16230.T",
-      "code": "16230",
-      "name": "野村アセットマネジメント株式会社　ＮＥＸＴ　ＦＵＮＤＳ　鉄鋼・非鉄（ＴＯＰＩＸ−１７）上場投信",
-      "sector": "その他",
-      "score": 91.67,
-      "rs_score": 61.14,
-      "return_5_25d": 41.93,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.67,
-      "rs_acceleration": 1.0,
-      "price": 62860.0
-    },
-    {
       "ticker": "18270.T",
       "code": "18270",
       "name": "ナカノフドー建設",
@@ -4656,6 +4240,19 @@
       "green_day_ratio": 0.67,
       "rs_acceleration": 1.0,
       "price": 1578.0
+    },
+    {
+      "ticker": "268A0.T",
+      "code": "268A0",
+      "name": "リガク・ホールディングス",
+      "sector": "電機・精密",
+      "score": 91.25,
+      "rs_score": 62.27,
+      "return_5_25d": 54.12,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.62,
+      "rs_acceleration": 1.0,
+      "price": 1668.0
     },
     {
       "ticker": "50160.T",
@@ -4682,19 +4279,6 @@
       "green_day_ratio": 0.54,
       "rs_acceleration": 1.0,
       "price": 4085.0
-    },
-    {
-      "ticker": "20330.T",
-      "code": "20330",
-      "name": "ノムラ・ヨーロッパ・ファイナンス・エヌ・ブイ　ＮＥＸＴ　ＮＯＴＥＳ　韓国ＫＯＳＰＩ・ダブル・ブル　ＥＴＮ",
-      "sector": "その他",
-      "score": 90.42,
-      "rs_score": 172.9,
-      "return_5_25d": 64.29,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.54,
-      "rs_acceleration": 1.0,
-      "price": 51350.0
     },
     {
       "ticker": "16620.T",
@@ -4775,6 +4359,32 @@
       "price": 1896.5
     },
     {
+      "ticker": "24690.T",
+      "code": "24690",
+      "name": "ヒビノ",
+      "sector": "情報通信・サービスその他",
+      "score": 85.04,
+      "rs_score": 31.53,
+      "return_5_25d": 28.41,
+      "volume_acceleration": 0.67,
+      "green_day_ratio": 0.58,
+      "rs_acceleration": 1.0,
+      "price": 3915.0
+    },
+    {
+      "ticker": "23440.T",
+      "code": "23440",
+      "name": "平安レイサービス",
+      "sector": "情報通信・サービスその他",
+      "score": 85.0,
+      "rs_score": 46.6,
+      "return_5_25d": 57.23,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.5,
+      "rs_acceleration": 1.0,
+      "price": 1475.0
+    },
+    {
       "ticker": "19590.T",
       "code": "19590",
       "name": "クラフティア",
@@ -4814,6 +4424,19 @@
       "price": 3872.0
     },
     {
+      "ticker": "27800.T",
+      "code": "27800",
+      "name": "コメ兵ホールディングス",
+      "sector": "小売",
+      "score": 84.56,
+      "rs_score": 44.48,
+      "return_5_25d": 39.12,
+      "volume_acceleration": 0.33,
+      "green_day_ratio": 0.5,
+      "rs_acceleration": 1.0,
+      "price": 4575.0
+    },
+    {
       "ticker": "146A0.T",
       "code": "146A0",
       "name": "コロンビア・ワークス",
@@ -4838,32 +4461,6 @@
       "green_day_ratio": 0.5,
       "rs_acceleration": 1.0,
       "price": 2834.0
-    },
-    {
-      "ticker": "17260.T",
-      "code": "17260",
-      "name": "ビーアールホールディングス",
-      "sector": "建設・資材",
-      "score": 83.75,
-      "rs_score": 44.12,
-      "return_5_25d": 49.72,
-      "volume_acceleration": 0.33,
-      "green_day_ratio": 0.38,
-      "rs_acceleration": 1.0,
-      "price": 529.0
-    },
-    {
-      "ticker": "19750.T",
-      "code": "19750",
-      "name": "朝日工業社",
-      "sector": "建設・資材",
-      "score": 83.73,
-      "rs_score": 34.5,
-      "return_5_25d": 25.79,
-      "volume_acceleration": 0.67,
-      "green_day_ratio": 0.58,
-      "rs_acceleration": 1.0,
-      "price": 4190.0
     }
   ]
 }
