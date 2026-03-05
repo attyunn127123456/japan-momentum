@@ -82,3 +82,10 @@ def backtest_page():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8080, reload=True)
+
+@app.get("/api/backtest/evolution")
+def backtest_evolution():
+    p = BASE / "backtest/evolution_log.json"
+    if not p.exists():
+        return JSONResponse({"best10": [], "all": [], "total": 0})
+    return json.loads(p.read_text())

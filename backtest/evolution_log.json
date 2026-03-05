@@ -1,0 +1,133 @@
+{
+  "best10": [
+    {
+      "at": "2026-03-05T08:28:00",
+      "id": "universe_midcap",
+      "desc": "ユニバース→時価総額100〜3000億の中型株",
+      "win": true,
+      "delta_sharpe": 0.421,
+      "sharpe": 2.191,
+      "total_return_pct": 36.78,
+      "alpha_pct": -61.42,
+      "max_dd_pct": 18.36,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T08:28:00",
+      "id": "vol_candle_exit",
+      "desc": "大出来高陰線でエグジットシグナル追加",
+      "win": false,
+      "delta_sharpe": -0.418,
+      "sharpe": 1.773,
+      "total_return_pct": 31.72,
+      "alpha_pct": -66.48,
+      "max_dd_pct": 21.53,
+      "params": {
+        "lookback": 60,
+        "top_n": 5,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T08:28:00",
+      "id": "resilience_upgrade",
+      "desc": "下落日相対強度を主要ファクターに昇格(w=0.3)",
+      "win": false,
+      "delta_sharpe": -1.764,
+      "sharpe": 0.427,
+      "total_return_pct": 4.09,
+      "alpha_pct": -94.11,
+      "max_dd_pct": 27.05,
+      "params": {
+        "lookback": 60,
+        "top_n": 5,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.2,
+        "green_w": 0.1,
+        "smooth_w": 0.2,
+        "resilience_w": 0.3
+      }
+    }
+  ],
+  "all": [
+    {
+      "at": "2026-03-05T08:28:00",
+      "id": "universe_midcap",
+      "desc": "ユニバース→時価総額100〜3000億の中型株",
+      "win": true,
+      "delta_sharpe": 0.421,
+      "sharpe": 2.191,
+      "total_return_pct": 36.78,
+      "alpha_pct": -61.42,
+      "max_dd_pct": 18.36,
+      "params": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T08:28:00",
+      "id": "vol_candle_exit",
+      "desc": "大出来高陰線でエグジットシグナル追加",
+      "win": false,
+      "delta_sharpe": -0.418,
+      "sharpe": 1.773,
+      "total_return_pct": 31.72,
+      "alpha_pct": -66.48,
+      "max_dd_pct": 21.53,
+      "params": {
+        "lookback": 60,
+        "top_n": 5,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T08:28:00",
+      "id": "resilience_upgrade",
+      "desc": "下落日相対強度を主要ファクターに昇格(w=0.3)",
+      "win": false,
+      "delta_sharpe": -1.764,
+      "sharpe": 0.427,
+      "total_return_pct": 4.09,
+      "alpha_pct": -94.11,
+      "max_dd_pct": 27.05,
+      "params": {
+        "lookback": 60,
+        "top_n": 5,
+        "rebalance": "weekly",
+        "ret_w": 0.2,
+        "rs_w": 0.2,
+        "green_w": 0.1,
+        "smooth_w": 0.2,
+        "resilience_w": 0.3
+      }
+    }
+  ],
+  "total": 3
+}

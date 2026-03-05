@@ -256,6 +256,7 @@ def main():
             "at": datetime.now().isoformat()
         }, ensure_ascii=False, indent=2))
         print(f"完了: {hid} | delta_sharpe={delta} | {'✅ WIN' if win else '❌ LOSE'} | {elapsed:.0f}秒")
+        append_evolution_log(hid, next_h["desc"], result, win, delta)
 
     except Exception as e:
         next_h["status"] = "pending"  # リトライ可能に
@@ -285,3 +286,24 @@ if __name__ == "__main__":
     main()
     auto_next()
 
+
+def append_evolution_log(hid, desc, result, win, delta):
+    """全テスト結果をevolution_log.jsonに累積追記"""
+    log_file = Path("backtest/evolution_log.json")
+    log = json.loads(log_file.read_text()) if log_file.exists() else []
+    log.append({
+        "at": datetime.now().isoformat(),
+        "id": hid,
+        "desc": desc,
+        "win": win,
+        "delta_sharpe": delta,
+        "sharpe": result.get("sharpe") if result else None,
+        "total_return_pct": result.get("total_return_pct") if result else None,
+        "alpha_pct": result.get("alpha_pct") if result else None,
+        "max_dd_pct": result.get("max_dd_pct") if result else None,
+        "params": {k: result[k] for k in result if k in ["lookback","top_n","rebalance","ret_w","rs_w","green_w","smooth_w","resilience_w"]} if result else {},
+    })
+    # シャープ順でソートしてtop50を保持
+    valid = [x for x in log if x["sharpe"] is not None]
+    valid.sort(key=lambda x: x["sharpe"], reverse=True)
+    log_file.write_text(json.dumps({"best10": valid[:10], "all": valid[:200], "total": len(log)}, ensure_ascii=False, indent=2))

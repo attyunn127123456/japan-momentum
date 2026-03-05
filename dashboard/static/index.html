@@ -146,6 +146,17 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
     <div class="section-title">🧪 改善仮説キュー</div>
     <div id="bt-hypothesis"></div>
 
+    <!-- 全テスト累積ベスト -->
+    <div class="section-title">🧬 累積ベスト10 <span id="bt-evo-meta" style="font-weight:400;font-size:11px;text-transform:none"></span></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>#</th><th>日時</th><th>仮説</th><th>シャープ</th><th>リターン</th><th>α</th><th>最大DD</th><th>lb</th><th>top_n</th><th>頻度</th>
+        </tr></thead>
+        <tbody id="bt-evo-tbody"></tbody>
+      </table>
+    </div>
+
     <!-- グリッドサーチTOP10 -->
     <div class="section-title">🏆 グリッドサーチ TOP10 <span id="bt-grid-meta" style="font-weight:400;font-size:11px;text-transform:none"></span></div>
     <div class="table-wrap">
@@ -324,6 +335,7 @@ async function loadBacktest(){
       renderHypothesis(h);
     }
     // グリッドサーチ
+    await loadEvolution();
     const oRes = await fetch('/api/backtest/optimize');
     if(oRes.ok){
       const opt = await oRes.json();
@@ -377,6 +389,27 @@ function renderHypothesis(h){
         +'</div>' : '')
       +'</div>';
   }).join('') || '<div class="empty-state">仮説なし</div>';
+}
+
+async function loadEvolution(){
+  try {
+    const res = await fetch('/api/backtest/evolution');
+    if(!res.ok) return;
+    const data = await res.json();
+    document.getElementById('bt-evo-meta').textContent = '| 累計'+data.total+'テスト';
+    document.getElementById('bt-evo-tbody').innerHTML = (data.best10||[]).map((r,i)=>'<tr>'
+      +'<td class="dim">'+(i+1)+'</td>'
+      +'<td class="dim" style="font-size:11px">'+(r.at||'').slice(5,16).replace('T',' ')+'</td>'
+      +'<td style="max-width:180px;white-space:normal;font-size:12px">'+(r.desc||r.id)+'</td>'
+      +'<td class="'+(r.sharpe>=0?'pos':'neg')+'">'+(r.sharpe>=0?'+':'')+r.sharpe+'</td>'
+      +'<td class="'+(r.total_return_pct>=0?'pos':'neg')+'">'+pct(r.total_return_pct||0)+'</td>'
+      +'<td class="'+(r.alpha_pct>=0?'pos':'neg')+'">'+pct(r.alpha_pct||0)+'</td>'
+      +'<td class="neg">'+(r.max_dd_pct||0)+'%</td>'
+      +'<td>'+(r.params?.lookback||'-')+'</td>'
+      +'<td>'+(r.params?.top_n||'-')+'</td>'
+      +'<td>'+(r.params?.rebalance==='weekly'?'週次':r.params?.rebalance==='daily'?'日次':'-')+'</td>'
+      +'</tr>').join('') || '<tr><td colspan="10" class="dim" style="text-align:center;padding:20px">まだデータなし</td></tr>';
+  } catch(e){ console.error(e); }
 }
 
 function renderOptimize(opt){
