@@ -1,9 +1,16 @@
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: universe_midcap - ユニバース→時価総額100〜3000億の中型株
-  ユニバース: キャッシュから500銘柄読み込み
-中型株ユニバース: 410銘柄
-事前計算完了: 410銘柄×3lb / 3.4秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:158: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:177: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
   return_df = all_prices.pct_change()
-完了: universe_midcap | delta_sharpe=0.421 | ✅ WIN | 4秒
+仮説実行: new_high_breakout - 過去60日高値更新をエントリー条件に追加
+  ユニバース: キャッシュから500銘柄読み込み
+事前計算完了: 200銘柄×1lb / 0.5秒
+Traceback (most recent call last):
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 178, in main
+    result = run_new_high_breakout(prices_dict, nikkei, rebal_dates, return_df)
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 64, in run_new_high_breakout
+    if (60, ) in [k[1:] for k in factor_dfs if k[0]==code]:
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 64, in <listcomp>
+    if (60, ) in [k[1:] for k in factor_dfs if k[0]==code]:
+TypeError: 'int' object is not subscriptable
+エラー: 'int' object is not subscriptable

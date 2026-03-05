@@ -268,3 +268,20 @@ def main():
 
 if __name__ == "__main__":
     main()
+    auto_next()
+
+def auto_next():
+    """完了後に次の未実施仮説があれば自分自身を再起動"""
+    import subprocess, sys
+    queue = load_queue()
+    next_h = next((h for h in queue["queue"] if h["status"] == "pending"), None)
+    if next_h:
+        print(f"次の仮説を自動起動: {next_h['id']}", flush=True)
+        subprocess.Popen(
+            [sys.executable, Path(__file__).name],
+            cwd=str(Path(__file__).parent),
+            stdout=open(str(Path(__file__).parent / "logs/hypothesis.log"), "a"),
+            stderr=subprocess.STDOUT,
+        )
+    else:
+        print("全仮説完了！heartbeatで分析・新仮説生成を行います。", flush=True)
