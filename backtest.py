@@ -48,15 +48,17 @@ def get_nikkei_history(start: str, end: str) -> pd.Series:
 
 def get_rebalance_dates(start: str, end: str, freq: str) -> list:
     s, e = pd.Timestamp(start), pd.Timestamp(end)
-    freq_map = {"weekly": "W-MON", "biweekly": "2W-MON", "monthly": "MS"}
+    freq_map = {"daily": "B", "weekly": "W-MON", "biweekly": "2W-MON", "monthly": "MS"}
     return [d for d in pd.date_range(s, e, freq=freq_map.get(freq, "W-MON")) if d <= e]
 
 
 def score_on_date(prices_dict: dict, nikkei: pd.Series, ticker: str, date: pd.Timestamp) -> float:
     code = ticker.replace(".T", "")
-    if code not in prices_dict:
+    df = prices_dict.get(code)
+    if df is None:
+        df = prices_dict.get(ticker)
+    if df is None or df.empty:
         return None
-    df = prices_dict[code]
     p = df["AdjC"].loc[:date].dropna() if "AdjC" in df.columns else df["C"].loc[:date].dropna()
     n = nikkei.loc[:date].dropna()
     if len(p) < 60:
@@ -70,10 +72,20 @@ def score_on_date(prices_dict: dict, nikkei: pd.Series, ticker: str, date: pd.Ti
 
 
 def run_backtest(start: str, end: str, top_n: int, rebalance: str) -> dict:
-    from stocks import TICKERS
+    from universe import get_top_liquid_tickers
+    from fetch_cache import read_ohlcv
+    raw_codes = get_top_liquid_tickers(500)
+    TICKERS = [f"{c}.T" for c in raw_codes]
 
-    print(f"J-Quants から全銘柄データ取得中 ({start} → {end})...")
-    prices_dict = fetch_all_history(TICKERS, start, end)
+    from datetime import datetime as _dt, timedelta as _td
+    warmup_start = (_dt.strptime(start, "%Y-%m-%d") - _td(days=180)).strftime("%Y-%m-%d")
+    print(f"キャッシュからデータ読み込み中 ({warmup_start} → {end}, {len(TICKERS)}銘柄)...")
+    prices_dict = {}
+    for c in raw_codes:
+        df = read_ohlcv(c, warmup_start, end)
+        if df is not None and not df.empty:
+            prices_dict[c] = df
+    print(f"  {len(prices_dict)}銘柄のデータ読み込み完了")
     nikkei = get_nikkei_history(start, end)
 
     rebalance_dates = get_rebalance_dates(start, end, rebalance)
@@ -88,13 +100,15 @@ def run_backtest(start: str, end: str, top_n: int, rebalance: str) -> dict:
         # スコア計算
         scores = {}
         for t in TICKERS:
+            code = t.replace(".T","")
             s = score_on_date(prices_dict, nikkei, t, reb_date)
             if s is not None:
-                scores[t] = s
+                scores[code] = s
         if not scores:
             continue
 
-        top_tickers = sorted(scores, key=lambda x: scores[x], reverse=True)[:top_n]
+        top_codes = sorted(scores, key=lambda x: scores[x], reverse=True)[:top_n]
+        top_tickers = [f'{c}.T' for c in top_codes]
 
         # 現在ポートフォリオ評価
         current_value = 0.0
@@ -129,7 +143,7 @@ def run_backtest(start: str, end: str, top_n: int, rebalance: str) -> dict:
         weekly_holdings.append({
             "date": str(reb_date.date()),
             "tickers": top_tickers,
-            "scores": {t: round(scores[t], 1) for t in top_tickers},
+            "scores": {t: round(scores[t.replace(".T","")], 1) for t in top_tickers},
         })
         trades_log.append({
             "date": str(reb_date.date()),
@@ -199,6 +213,6 @@ if __name__ == "__main__":
     parser.add_argument("--start", default=(datetime.now() - timedelta(days=365*3)).strftime("%Y-%m-%d"))
     parser.add_argument("--end", default=datetime.now().strftime("%Y-%m-%d"))
     parser.add_argument("--top-n", type=int, default=5)
-    parser.add_argument("--rebalance", default="weekly", choices=["weekly", "biweekly", "monthly"])
+    parser.add_argument("--rebalance", default="daily", choices=["daily", "weekly", "biweekly", "monthly"])
     args = parser.parse_args()
     run_backtest(args.start, args.end, args.top_n, args.rebalance)

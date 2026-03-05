@@ -9,6 +9,11 @@ import requests
 import os
 
 from jquants import get_daily_quotes_code
+try:
+    from fetch_cache import read_ohlcv as _read_ohlcv
+    USE_CACHE = True
+except ImportError:
+    USE_CACHE = False
 from momentum import calculate_momentum_score, apply_filters
 from universe import get_top_liquid_tickers
 
@@ -45,7 +50,12 @@ def get_nikkei(start: str, end: str) -> pd.Series:
 
 def score_ticker(code: str, start: str, end: str, nikkei: pd.Series, sector: str = "", name: str = "") -> dict:
     try:
-        df = get_daily_quotes_code(code, start, end)
+        if USE_CACHE:
+            df = _read_ohlcv(code, start, end)
+            if df is None or df.empty:
+                df = get_daily_quotes_code(code, start, end)
+        else:
+            df = get_daily_quotes_code(code, start, end)
     except Exception:
         return None
 

@@ -572,3 +572,38 @@ INFO:     111.102.197.97:0 - "GET /api/backtest HTTP/1.1" 404 Not Found
 INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
 INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
 INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     2a00:f2a0:0:f783::100:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2a00:f2a0:0:f783::100:0 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     2a00:f2a0:0:f783::100:0 - "GET /.well-known/security.txt HTTP/1.1" 404 Not Found
+INFO:     2a00:f2a0:0:f783::100:0 - "GET /security.txt HTTP/1.1" 404 Not Found
+INFO:     2a00:f2a0:0:f783:ca1f:66ff:fef3:e641:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2a00:f2a0:0:f783:ca1f:66ff:fef3:e641:0 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     2a00:f2a0:0:f783:ca1f:66ff:fef3:e641:0 - "GET /.well-known/security.txt HTTP/1.1" 404 Not Found
+INFO:     2a00:f2a0:0:f783:ca1f:66ff:fef3:e641:0 - "GET /security.txt HTTP/1.1" 404 Not Found
+INFO:     54.224.104.75:0 - "GET / HTTP/1.1" 200 OK
+INFO:     54.224.104.75:0 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     54.224.104.75:0 - "GET /favicon.png HTTP/1.1" 404 Not Found
+INFO:     54.224.104.75:0 - "GET / HTTP/1.1" 200 OK
+INFO:     54.224.104.75:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     54.224.104.75:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     54.224.104.75:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     54.224.104.75:0 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     52.45.245.6:0 - "GET / HTTP/1.1" 200 OK
+INFO:     152.53.195.17:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     141.51.110.126:0 - "GET / HTTP/1.1" 200 OK
+INFO:     141.51.110.126:0 - "GET / HTTP/1.1" 200 OK
