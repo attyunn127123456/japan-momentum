@@ -154,7 +154,7 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
     
     # 各パラメータを±1ステップずつ変える
     param_grid = {
-        'lookback':     [max(20, bp['lookback']-20), bp['lookback'], bp['lookback']+20],
+        'lookback':     sorted(set([max(40, bp['lookback']-20), bp['lookback'], min(100, bp['lookback']+20)])),
         'top_n':        [max(3, bp['top_n']-5), bp['top_n'], bp['top_n']+5],
         'rebalance':    [bp['rebalance']],
         'ret_w':        [max(0.1, bp['ret_w']-0.1), bp['ret_w'], min(0.8, bp['ret_w']+0.1)],
@@ -245,7 +245,7 @@ def run_evolution():
     fund_factors = load_fundamental_factors()
     
     print('ファクター事前計算...', flush=True)
-    factor_dfs = precompute(prices_dict, nikkei, [40, 60, 80])
+    factor_dfs = precompute(prices_dict, nikkei, [40, 60, 80, 100])
     
     return_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
     daily_d  = get_rebalance_dates(warmup, END, 'daily')
@@ -362,6 +362,16 @@ def run_evolution():
     }, ensure_ascii=False, indent=2))
     
     print('\n=== Evolution cycle 完了 ===', flush=True)
+    
+    # 即opusをキック
+    import subprocess
+    subprocess.run(
+        ['openclaw', 'system', 'event',
+         '--mode', 'now',
+         '--text', 'evolution_done: local search and factor tests completed. Please run opus analysis and generate 3 new hypotheses now.'],
+        capture_output=True
+    )
+    print('openclaw system event 送信完了', flush=True)
 
 
 def append_log(hid, desc, result, win, delta):

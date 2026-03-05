@@ -268,7 +268,7 @@ def main():
 
 
 def auto_next():
-    """完了後に次の未実施仮説があれば自分自身を再起動"""
+    """完了後に次の未実施仮説があれば即起動、なければopusをキックして新仮説を生成させる"""
     import subprocess, sys
     queue = load_queue()
     next_h = next((h for h in queue["queue"] if h["status"] == "pending"), None)
@@ -281,7 +281,15 @@ def auto_next():
             stderr=subprocess.STDOUT,
         )
     else:
-        print("全仮説完了！heartbeatで分析・新仮説生成を行います。", flush=True)
+        # pending仮説なし → 即opusをキックして新仮説生成させる
+        print("全仮説消化。即opusに新仮説生成を依頼します。", flush=True)
+        subprocess.run(
+            ["openclaw", "system", "event",
+             "--mode", "now",
+             "--text", "hypothesis_done: all pending hypotheses completed. Please run opus analysis and generate 3 new hypotheses now."],
+            capture_output=True
+        )
+        print("openclaw system event 送信完了", flush=True)
 if __name__ == "__main__":
     main()
     auto_next()
