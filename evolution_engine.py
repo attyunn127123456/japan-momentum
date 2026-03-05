@@ -28,57 +28,37 @@ N_CODES     = 2000
 # ========== 複合評価ルール ==========
 def evaluate(result_train, result_val, baseline):
     """
-    複合スコアで採用/棄却を判定。
+    total_return最大化スコアで採用/棄却を判定。
+    目標: 日経+98%の期間で+300%（年率約60%）を取ること。
     Returns: (adopted: bool, score: float, reasons: list)
     """
     reasons = []
-    score = 0.0
 
     if not result_train:
         return False, -99, ['訓練期間: 結果なし']
 
-    bl = baseline
-    r  = result_train
-    v  = result_val
+    r = result_train
 
-    # ① シャープレシオ改善
-    sharpe_delta = r['sharpe'] - bl['sharpe']
-    score += sharpe_delta * 0.4
-    reasons.append(f'sharpe_delta={sharpe_delta:+.3f}')
+    # スコア: total_return最大化（max_dd >= 40%なら大幅ペナルティ）
+    score = r['total_return_pct'] - max(0, r['max_dd_pct'] - 40) * 5
+    reasons.append(f'total_return={r["total_return_pct"]:+.1f}%')
+    reasons.append(f'max_dd={r["max_dd_pct"]:.1f}%')
 
-    # ② 最大DD悪化チェック（+3%以内なら許容）
-    dd_delta = r['max_dd_pct'] - bl.get('max_dd_pct', 30)
-    if dd_delta > 3:
-        reasons.append(f'❌ DD悪化 +{dd_delta:.1f}%')
-        score -= 0.3
-    else:
-        score += max(0, -dd_delta) * 0.01
-        reasons.append(f'DD delta={dd_delta:+.1f}%')
+    if r['max_dd_pct'] >= 40:
+        reasons.append(f'❌ max_dd >= 40% ペナルティ適用')
 
-    # ③ 取引数（統計的有意性）
+    # 取引数チェック
     if r['n_trades'] < 20:
         reasons.append(f'❌ 取引数不足 n={r["n_trades"]}')
-        score -= 0.5
+        score -= 50
     else:
         reasons.append(f'n_trades={r["n_trades"]}')
 
-    # ④ 絶対リターンがプラス
-    if r['total_return_pct'] < 0:
-        reasons.append(f'❌ リターンマイナス {r["total_return_pct"]}%')
-        score -= 0.2
+    # 採用条件: total_returnがベースラインより+5%以上改善、かつmax_dd < 40%
+    delta_return = r['total_return_pct'] - baseline.get('total_pct', 0)
+    adopted = delta_return > 5 and r['max_dd_pct'] < 40
+    reasons.append(f'delta_return={delta_return:+.1f}%')
 
-    # ⑤ 汎化性（検証期間でも機能するか）
-    if v:
-        val_sharpe = v['sharpe']
-        if val_sharpe > 0:
-            score += val_sharpe * 0.2
-            reasons.append(f'✅ 検証期間 sharpe={val_sharpe:+.3f}')
-        else:
-            score -= 0.3
-            reasons.append(f'❌ 検証期間 sharpe={val_sharpe:+.3f}（汎化性なし）')
-    
-    # ⑥ 改善閾値（シャープ+0.05以上 かつ 総合スコアプラス）
-    adopted = sharpe_delta >= 0.05 and score > 0 and r['n_trades'] >= 20
     return adopted, round(score, 3), reasons
 
 
@@ -162,7 +142,7 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
     # パラメータ範囲定義（factor_dfsで利用可能なlookbackのみ）
     RANGES = {
         'lookback':     [lb for lb in [40, 60, 80, 100, 120] if lb in factor_dfs],
-        'top_n':        [5, 7, 10, 12, 15, 20],
+        'top_n':        [3, 5, 7, 10],  # 集中投資方向に
         'ret_w':        [0.0, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4],
         'rs_w':         [0.0, 0.1, 0.15, 0.2, 0.25, 0.3],
         'green_w':      [0.0, 0.05, 0.1, 0.15, 0.2],
@@ -171,6 +151,7 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
         'high52_w':         [0.0, 0.1, 0.2, 0.25, 0.3, 0.35, 0.4],
         'omega_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'short_momentum_w': [0.0, 0.05, 0.1, 0.15, 0.2],
+        'cluster_boost_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
     }
 
     def mutate(params):

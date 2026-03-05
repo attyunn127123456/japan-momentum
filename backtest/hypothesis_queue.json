@@ -1,50 +1,52 @@
 {
   "baseline": {
-    "sharpe": 3.972,
-    "total_pct": 30.35,
-    "alpha_pct": -67.85,
-    "max_dd_pct": 5.48,
+    "sharpe": 2.53,
+    "total_pct": 50.26,
+    "max_dd_pct": 15.5,
     "params": {
-      "lookback": 40,
-      "top_n": 7,
+      "lookback": 80,
+      "top_n": 5,
       "rebalance": "weekly",
-      "ret_w": 0.0,
-      "rs_w": 0.1313,
-      "green_w": 0.0656,
-      "smooth_w": 0.3209,
-      "resilience_w": 0.0725,
-      "high52_w": 0.4097,
+      "ret_w": 0.2,
+      "rs_w": 0.2,
+      "green_w": 0.125,
+      "smooth_w": 0.125,
+      "resilience_w": 0.0,
+      "high52_w": 0.35,
       "omega_w": 0.0,
       "short_momentum_w": 0.0
     },
     "date": "2026-03-05",
-    "hypothesis": "local_search"
+    "hypothesis": "return_maximization_start"
   },
   "running": false,
   "current_hypothesis": null,
   "last_result": {
-    "id": "omega_factor",
+    "id": "vol_surge_breakout_universe",
     "result": {
       "lookback": 80,
       "top_n": 10,
       "rebalance": "weekly",
-      "ret_w": 0.15,
-      "rs_w": 0.15,
-      "green_w": 0.1,
-      "smooth_w": 0.1,
+      "ret_w": 0.3,
+      "rs_w": 0.3,
+      "green_w": 0.2,
+      "smooth_w": 0.2,
       "resilience_w": 0.0,
-      "high52_w": 0.3,
-      "omega_w": 0.2,
-      "total_return_pct": 21.38,
-      "alpha_pct": -76.82,
-      "sharpe": 1.366,
-      "max_dd_pct": 23.14,
+      "universe_mode": "vol_surge_breakout",
+      "vol_surge_ratio": 1.5,
+      "vol_surge_days_short": 10,
+      "vol_surge_days_long": 60,
+      "price_breakout_days": 60,
+      "total_return_pct": 48.27,
+      "alpha_pct": -49.93,
+      "sharpe": 2.441,
+      "max_dd_pct": 15.18,
       "nikkei_pct": 98.2,
       "n_trades": 116
     },
-    "delta_sharpe": -1.164,
+    "delta_sharpe": -1.531,
     "win": false,
-    "at": "2026-03-05T11:57:24.450753"
+    "at": "2026-03-05T12:10:06.484562"
   },
   "queue": [
     {
@@ -1445,7 +1447,30 @@
         "vol_surge_days_long": 60,
         "price_breakout_days": 60
       },
-      "status": "pending"
+      "status": "done_lose",
+      "result": {
+        "lookback": 80,
+        "top_n": 10,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0,
+        "universe_mode": "vol_surge_breakout",
+        "vol_surge_ratio": 1.5,
+        "vol_surge_days_short": 10,
+        "vol_surge_days_long": 60,
+        "price_breakout_days": 60,
+        "total_return_pct": 48.27,
+        "alpha_pct": -49.93,
+        "sharpe": 2.441,
+        "max_dd_pct": 15.18,
+        "nikkei_pct": 98.2,
+        "n_trades": 116
+      },
+      "delta_sharpe": -1.531,
+      "elapsed_sec": 11.8
     },
     {
       "id": "cluster_boost",
@@ -1463,7 +1488,7 @@
         "high52_w": 0.32,
         "cluster_boost_w": 0.1
       },
-      "status": "pending"
+      "status": "done_win"
     },
     {
       "id": "short_term_accel",

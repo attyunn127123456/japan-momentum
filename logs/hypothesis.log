@@ -922,3 +922,21 @@ openclaw system event 送信完了
 完了: omega_factor | delta_sharpe=-1.164 | ❌ LOSE | 13秒
 全仮説消化。即opusに新仮説生成を依頼します。
 openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: vol_surge_breakout_universe - 動的ユニバース: 出来高急増×価格ブレイクアウト銘柄を動的選択（時価総額フィルター廃止）
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 500銘柄×3lb / 10.9秒
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:514: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+完了: vol_surge_breakout_universe | delta_sharpe=-1.531 | ❌ LOSE | 12秒
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+仮説実行: cluster_boost - クラスタリングによる自動テーマブースト
+  factor_to_add 検出: cluster_boost_w を GA の RANGES に追加します
+  ✅ cluster_boost_w を evolution_engine.py の RANGES に追加しました
+完了: cluster_boost | status=added_to_ga | factor=cluster_boost_w
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了

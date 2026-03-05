@@ -19,6 +19,7 @@ DONE_FILE  = Path("backtest/hypothesis_done.json")
 START = "2023-01-01"
 END   = datetime.now().strftime("%Y-%m-%d")
 N_CODES = 2000
+DELTA_THRESHOLD = 5.0  # total_return_pct の改善幅（5%以上で採用）
 
 
 def load_queue():
@@ -527,8 +528,9 @@ def main():
 
         elapsed = time.time() - t0
         baseline = queue["baseline"]
-        delta = round((result["sharpe"] - baseline["sharpe"]), 3) if result else None
-        win = delta is not None and delta > 0.01
+        # 採用判定: total_return_pctの改善幅で評価（sharpeではなく）
+        delta = round(result['total_return_pct'] - baseline.get('total_pct', 0), 3) if result else None
+        win = delta is not None and delta > DELTA_THRESHOLD and result['max_dd_pct'] < 40
 
         next_h["status"] = "done_win" if win else "done_lose"
         next_h["result"] = result
