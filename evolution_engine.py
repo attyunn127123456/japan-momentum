@@ -167,8 +167,10 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
         'rs_w':         [0.0, 0.1, 0.15, 0.2, 0.25, 0.3],
         'green_w':      [0.0, 0.05, 0.1, 0.15, 0.2],
         'smooth_w':     [0.0, 0.05, 0.1, 0.15, 0.2],
-        'resilience_w': [0.0, 0.05, 0.1],
-        'high52_w':     [0.0, 0.1, 0.2, 0.25, 0.3, 0.35, 0.4],
+        'resilience_w':     [0.0, 0.05, 0.1],
+        'high52_w':         [0.0, 0.1, 0.2, 0.25, 0.3, 0.35, 0.4],
+        'omega_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'short_momentum_w': [0.0, 0.05, 0.1, 0.15, 0.2],
     }
 
     def mutate(params):
@@ -178,7 +180,7 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
         for k in keys:
             p[k] = random.choice(RANGES[k])
         # 重みを正規化
-        weight_keys = ['ret_w', 'rs_w', 'green_w', 'smooth_w', 'resilience_w', 'high52_w']
+        weight_keys = ['ret_w', 'rs_w', 'green_w', 'smooth_w', 'resilience_w', 'high52_w', 'omega_w', 'short_momentum_w']
         total = sum(p.get(k, 0) for k in weight_keys)
         if total > 0:
             for k in weight_keys:
