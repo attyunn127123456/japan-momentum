@@ -285,6 +285,20 @@ def main():
                  "ret_w":0.2,"rs_w":0.2,"green_w":0.1,"smooth_w":0.2,"resilience_w":0.3}
             result = eval_params(p, factor_dfs, prices_dict, rebal_dates["weekly"], nikkei, START, return_df)
 
+        elif next_h.get("type") == "regime" or hid == "regime_adaptive_weights":
+            import regime_weights as _rw
+            codes = get_top_liquid_tickers(N_CODES)
+            prices_dict = {}
+            for c in codes:
+                df = read_ohlcv(c, warmup, END)
+                if df is not None and not df.empty and "AdjC" in df.columns:
+                    prices_dict[c] = df
+            all_prices = pd.DataFrame({c: prices_dict[c]["AdjC"] for c in prices_dict}).astype(float)
+            return_df = all_prices.pct_change()
+            result = _rw.backtest_with_regime(
+                prices_dict, nikkei, rebal_dates["weekly"], START, return_df
+            )
+
         else:
             result = None
 

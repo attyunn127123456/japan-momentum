@@ -71,7 +71,7 @@ def score_on_date(prices_dict: dict, nikkei: pd.Series, ticker: str, date: pd.Ti
     return scores["total"] if scores["valid"] else None
 
 
-def run_backtest(start: str, end: str, top_n: int, rebalance: str) -> dict:
+def run_backtest(start: str, end: str, top_n: int, rebalance: str, use_regime: bool = False) -> dict:
     from universe import get_top_liquid_tickers
     from fetch_cache import read_ohlcv
     raw_codes = get_top_liquid_tickers(500)
@@ -89,6 +89,8 @@ def run_backtest(start: str, end: str, top_n: int, rebalance: str) -> dict:
     nikkei = get_nikkei_history(start, end)
 
     rebalance_dates = get_rebalance_dates(start, end, rebalance)
+    if use_regime:
+        import regime_weights as _rw
     portfolio_value = 1_000_000.0
     holdings: dict = {}
     trades_log = []
@@ -97,6 +99,10 @@ def run_backtest(start: str, end: str, top_n: int, rebalance: str) -> dict:
     print(f"\nバックテスト開始: {start}〜{end}, Top-{top_n}, {rebalance}")
 
     for i, reb_date in enumerate(rebalance_dates):
+        # レジーム対応: use_regime=True のとき重みとtop_nを動的切り替え
+        if use_regime:
+            _w = _rw.get_weights_for_date(nikkei, reb_date)
+            top_n = _w["top_n"]
         # スコア計算
         scores = {}
         for t in TICKERS:

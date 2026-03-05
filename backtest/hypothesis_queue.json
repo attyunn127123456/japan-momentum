@@ -257,6 +257,14 @@
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.0
+    },
+    {
+      "id": "regime_adaptive_weights",
+      "desc": "レジーム連動型重み（強気/弱気/高ボラで自動切替）",
+      "theory": "相場局面によって最適シグナルは異なる。日経225の200MAとボラティリティでレジームを判定し、事前最適化した重みセットに切り替える",
+      "params": {},
+      "status": "pending",
+      "type": "regime"
     }
   ],
   "tested_factors": [

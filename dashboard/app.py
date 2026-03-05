@@ -52,10 +52,15 @@ def backtest_hypothesis():
 
 @app.get("/api/signals")
 def signals():
-    p = BASE / "data/signal_history.json"
-    if not p.exists():
+    # signal_library.json (new design)
+    p = BASE / "backtest/signal_library.json"
+    if p.exists():
+        return json.loads(p.read_text())
+    # Fallback: legacy signal_history.json
+    p2 = BASE / "data/signal_history.json"
+    if not p2.exists():
         return JSONResponse({"error": "no signal data"}, status_code=404)
-    history = json.loads(p.read_text())
+    history = json.loads(p2.read_text())
     return history[-1] if history else JSONResponse({"error": "empty"}, status_code=404)
 
 @app.get("/api/signals/history")
@@ -63,6 +68,20 @@ def signals_history():
     p = BASE / "data/signal_history.json"
     if not p.exists():
         return []
+    return json.loads(p.read_text())
+
+@app.get("/api/regime")
+def regime():
+    p = BASE / "backtest/regime_weights.json"
+    if not p.exists():
+        return JSONResponse({"error": "no regime data"}, status_code=404)
+    return json.loads(p.read_text())
+
+@app.get("/api/backtest/evolution")
+def backtest_evolution():
+    p = BASE / "backtest/evolution_log.json"
+    if not p.exists():
+        return JSONResponse({"best10": [], "all": [], "total": 0})
     return json.loads(p.read_text())
 
 
@@ -83,10 +102,3 @@ def backtest_page():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8080, reload=True)
-
-@app.get("/api/backtest/evolution")
-def backtest_evolution():
-    p = BASE / "backtest/evolution_log.json"
-    if not p.exists():
-        return JSONResponse({"best10": [], "all": [], "total": 0})
-    return json.loads(p.read_text())

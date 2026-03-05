@@ -279,6 +279,12 @@ def run_signal_search():
     # Step4: ベースライン更新
     update_baseline(best_sharpe, best_weights)
 
+    # Step5: レジーム別最適化
+    try:
+        run_regime_optimization(prices_dict, nikkei, rebal_dates, return_df)
+    except Exception as e:
+        print(f"  [Regime Opt] スキップ: {e}", flush=True)
+
     elapsed = time.time() - t0
     print(f"\n=== Signal Search 完了 ({elapsed:.0f}秒) ===", flush=True)
     print(f"  最終 baseline_sharpe={best_sharpe:.3f}", flush=True)
@@ -286,3 +292,110 @@ def run_signal_search():
 
 if __name__ == "__main__":
     run_signal_search()
+
+
+# ========== レジーム別最適化 ==========
+def run_regime_optimization(prices_dict, nikkei, rebal_dates, return_df):
+    """レジームごとに別々のグリッドサーチを実行し、最適重みをJSONに保存"""
+    import regime_weights as _rw
+    from datetime import datetime as _dt
+    print("\n[Regime Opt] レジーム別グリッドサーチ開始", flush=True)
+
+    # レジームごとに対象日を分類
+    regime_dates = {"bull": [], "bear": [], "high_vol": [], "neutral": []}
+    for d in rebal_dates:
+        r = _rw.detect_regime(nikkei, d)
+        regime_dates[r].append(d)
+    for r, ds in regime_dates.items():
+        print(f"  {r}: {len(ds)}日", flush=True)
+
+    # 重みグリッド
+    w_opts = [0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50]
+    lb_opts = [30, 40, 60, 80]
+    tn_opts = [5, 8, 10, 12, 15]
+
+    best_by_regime = {}
+
+    for regime, dates in regime_dates.items():
+        if len(dates) < 5:
+            best_by_regime[regime] = _rw.REGIME_WEIGHTS[regime].copy()
+            continue
+
+        best_sharpe = -999
+        best_w = _rw.REGIME_WEIGHTS[regime].copy()
+
+        import itertools
+        combos = list(itertools.product(w_opts, w_opts, w_opts, w_opts, lb_opts, tn_opts))
+        tested = 0
+        for ret_w, rs_w, green_w, smooth_w, lb, tn in combos:
+            total = ret_w + rs_w + green_w + smooth_w
+            if abs(total - 1.0) > 0.01:
+                continue
+            # 該当レジーム日のリターンのみで評価
+            rets = []
+            for i, date in enumerate(dates[:-1]):
+                next_date = dates[i + 1] if i + 1 < len(dates) else None
+                if next_date is None:
+                    continue
+                scores = {}
+                for code, df in prices_dict.items():
+                    if "AdjC" not in df.columns:
+                        continue
+                    p = df["AdjC"].loc[:date].dropna()
+                    if len(p) < lb + 5:
+                        continue
+                    try:
+                        r = float(p.iloc[-1] / p.iloc[-lb] - 1)
+                        nk_h = nikkei.loc[:date].dropna()
+                        nk_r = float(nk_h.iloc[-1] / nk_h.iloc[-lb] - 1) if len(nk_h) > lb else 0.0
+                        rs = r - nk_r
+                        daily = p.pct_change().dropna().tail(20)
+                        green = float((daily > 0).mean()) if len(daily) >= 10 else 0.5
+                        score = ret_w * r + rs_w * rs + green_w * green + smooth_w * 0.5
+                        scores[code] = score
+                    except Exception:
+                        continue
+                if not scores:
+                    continue
+                top = sorted(scores, key=lambda x: scores[x], reverse=True)[:tn]
+                if date in return_df.index and next_date in return_df.index:
+                    tot, cnt = 0.0, 0
+                    for code in top:
+                        if code in return_df.columns:
+                            rv = return_df.at[next_date, code]
+                            if not import_nan(rv):
+                                tot += rv; cnt += 1
+                    if cnt > 0:
+                        rets.append(tot / cnt)
+
+            if len(rets) < 3:
+                continue
+            import numpy as _np
+            arr = _np.array(rets)
+            sharpe = float(arr.mean() / arr.std() * _np.sqrt(52)) if arr.std() > 0 else 0.0
+            if sharpe > best_sharpe:
+                best_sharpe = sharpe
+                best_w = {"ret_w": ret_w, "rs_w": rs_w, "green_w": green_w,
+                          "smooth_w": smooth_w, "lookback": lb, "top_n": tn}
+            tested += 1
+            if tested % 1000 == 0:
+                print(f"  [{regime}] {tested} tested, best={best_sharpe:.3f}", flush=True)
+
+        best_by_regime[regime] = best_w
+        print(f"  [{regime}] 完了: sharpe={best_sharpe:.3f} weights={best_w}", flush=True)
+
+    # JSON保存
+    out = {**best_by_regime,
+           "updated_at": _dt.now().strftime("%Y-%m-%d")}
+    out_path = Path("backtest/regime_weights.json")
+    out_path.write_text(__import__("json").dumps(out, ensure_ascii=False, indent=2))
+    print(f"  regime_weights.json 保存完了: {out_path}", flush=True)
+    return best_by_regime
+
+
+def import_nan(v):
+    import math
+    try:
+        return math.isnan(v)
+    except Exception:
+        return True
