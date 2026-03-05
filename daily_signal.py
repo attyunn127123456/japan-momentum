@@ -23,7 +23,7 @@ def load_results(date: str) -> dict[str, dict]:
     return {(r.get("code") or r.get("ticker","").replace(".T","")): r for r in rows}
 
 
-def get_available_dates() -> list[str]:
+def get_available_dates() -> list:
     return sorted([f.stem for f in RESULTS_DIR.glob("????-??-??.json")], reverse=True)
 
 

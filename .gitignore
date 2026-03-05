@@ -1,0 +1,6 @@
+data/cache/
+data/cache_v2/
+data/universe_cache.json
+__pycache__/
+*.pyc
+.env

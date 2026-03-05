@@ -52,7 +52,7 @@ def get_rebalance_dates(start: str, end: str, freq: str) -> list:
     return [d for d in pd.date_range(s, e, freq=freq_map.get(freq, "W-MON")) if d <= e]
 
 
-def score_on_date(prices_dict: dict, nikkei: pd.Series, ticker: str, date: pd.Timestamp) -> float | None:
+def score_on_date(prices_dict: dict, nikkei: pd.Series, ticker: str, date: pd.Timestamp) -> float:
     code = ticker.replace(".T", "")
     if code not in prices_dict:
         return None
@@ -78,7 +78,7 @@ def run_backtest(start: str, end: str, top_n: int, rebalance: str) -> dict:
 
     rebalance_dates = get_rebalance_dates(start, end, rebalance)
     portfolio_value = 1_000_000.0
-    holdings: dict[str, float] = {}
+    holdings: dict = {}
     trades_log = []
     weekly_holdings = []
 

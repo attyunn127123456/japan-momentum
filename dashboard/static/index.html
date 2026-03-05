@@ -15,53 +15,36 @@ body { background: #0d1117; color: #e6edf3; font-family: -apple-system, BlinkMac
 .tab { padding: 11px 16px; cursor: pointer; color: #8b949e; border-bottom: 2px solid transparent; font-size: 13px; white-space: nowrap; }
 .tab.active { color: #58a6ff; border-bottom-color: #58a6ff; }
 .content { padding: 20px 24px; }
-.panel { display: none; }
-.panel.active { display: block; }
-
+.panel { display: none; } .panel.active { display: block; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
 th { text-align: left; padding: 8px 10px; background: #161b22; color: #8b949e; font-weight: 500; border-bottom: 1px solid #21262d; cursor: pointer; user-select: none; white-space: nowrap; }
 th:hover { color: #e6edf3; }
 td { padding: 7px 10px; border-bottom: 1px solid #161b22; white-space: nowrap; }
 tr:hover td { background: #161b22; }
-
-.pos { color: #3fb950; }
-.neg { color: #f85149; }
-.dim { color: #8b949e; }
-.score-hi { color: #3fb950; font-weight: 700; }
-.score-md { color: #d29922; font-weight: 700; }
-.score-lo { color: #8b949e; }
-
+.pos { color: #3fb950; } .neg { color: #f85149; } .dim { color: #8b949e; }
+.score-hi { color: #3fb950; font-weight: 700; } .score-md { color: #d29922; font-weight: 700; } .score-lo { color: #8b949e; }
 .badge { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 11px; font-weight: 600; margin: 1px; }
-.b-buy  { background: #1c3a4a; color: #58a6ff; }
-.b-sell { background: #2d1619; color: #f85149; }
-.b-watch{ background: #2d2111; color: #d29922; }
-.b-hold { background: #1c3227; color: #3fb950; }
-.b-new  { background: #2d1e4a; color: #bc8cff; }
-
+.b-buy { background: #1c3a4a; color: #58a6ff; } .b-sell { background: #2d1619; color: #f85149; }
+.b-watch { background: #2d2111; color: #d29922; } .b-hold { background: #1c3227; color: #3fb950; }
+.b-new { background: #2d1e4a; color: #bc8cff; }
 .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 18px; }
 .stat-card { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 12px 14px; }
 .stat-card .lbl { font-size: 11px; color: #8b949e; margin-bottom: 3px; }
 .stat-card .val { font-size: 20px; font-weight: 700; }
-
 .chart-wrap { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 14px; margin-top: 14px; }
 .chart-wrap h3 { font-size: 12px; color: #8b949e; margin-bottom: 10px; }
-
 .filter-bar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
 .filter-btn { padding: 5px 12px; border-radius: 6px; border: 1px solid #30363d; background: #21262d; color: #8b949e; cursor: pointer; font-size: 12px; }
 .filter-btn.active { background: #1c3a4a; color: #58a6ff; border-color: #58a6ff; }
 .search-box { padding: 5px 10px; border-radius: 6px; border: 1px solid #30363d; background: #21262d; color: #e6edf3; font-size: 12px; width: 120px; }
-.count-badge { font-size: 11px; color: #8b949e; margin-left: 4px; }
-
+.cnt { font-size: 11px; color: #8b949e; margin-left: 3px; }
 .vol-bar-wrap { display: inline-flex; gap: 2px; align-items: center; }
-.vb { width: 7px; height: 12px; border-radius: 2px; background: #21262d; }
-.vb.on { background: #3fb950; }
-
+.vb { width: 7px; height: 12px; border-radius: 2px; background: #21262d; } .vb.on { background: #3fb950; }
 .empty-state { color: #8b949e; text-align: center; padding: 48px 0; }
 select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding: 5px 10px; border-radius: 6px; font-size: 12px; }
 </style>
 </head>
 <body>
-
 <div class="header">
   <h1>🐼 Japan Momentum</h1>
   <span class="meta" id="last-updated">読み込み中...</span>
@@ -72,258 +55,243 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
   <div class="tab" onclick="showTab('backtest')">📈 バックテスト</div>
   <div class="tab" onclick="showTab('history')">📅 履歴</div>
 </div>
-
 <div class="content">
 
-<!-- ── SIGNALS ── -->
 <div id="panel-signals" class="panel active">
-  <div id="signals-loading" class="empty-state">シグナルデータ取得中...</div>
+  <div id="signals-loading" class="empty-state">データ取得中...</div>
   <div id="signals-wrap" style="display:none">
-
     <div class="stats-grid" id="sig-stats"></div>
-
     <div class="filter-bar">
-      <button class="filter-btn active" onclick="filterSignals('ALL', this)">全て<span class="count-badge" id="cnt-all"></span></button>
-      <button class="filter-btn" onclick="filterSignals('BUY', this)">🚀 急伸<span class="count-badge" id="cnt-buy"></span></button>
-      <button class="filter-btn" onclick="filterSignals('NEW', this)">⭐ 新規Top20<span class="count-badge" id="cnt-new"></span></button>
-      <button class="filter-btn" onclick="filterSignals('SELL', this)">🔴 急落<span class="count-badge" id="cnt-sell"></span></button>
-      <button class="filter-btn" onclick="filterSignals('WATCH', this)">🟡 要注意<span class="count-badge" id="cnt-watch"></span></button>
-      <button class="filter-btn" onclick="filterSignals('TOP20', this)">📊 Top20<span class="count-badge" id="cnt-top20"></span></button>
-      <input class="search-box" id="sig-search" placeholder="銘柄コード検索" oninput="filterSignals(currentFilter)">
+      <button class="filter-btn active" onclick="filterSig('ALL',this)">全て<span class="cnt" id="cnt-all"></span></button>
+      <button class="filter-btn" onclick="filterSig('BUY',this)">🚀 急伸<span class="cnt" id="cnt-buy"></span></button>
+      <button class="filter-btn" onclick="filterSig('NEW',this)">⭐ 新規Top20<span class="cnt" id="cnt-new"></span></button>
+      <button class="filter-btn" onclick="filterSig('SELL',this)">🔴 急落<span class="cnt" id="cnt-sell"></span></button>
+      <button class="filter-btn" onclick="filterSig('WATCH',this)">🟡 要注意<span class="cnt" id="cnt-watch"></span></button>
+      <button class="filter-btn" onclick="filterSig('TOP20',this)">📊 Top20<span class="cnt" id="cnt-top20"></span></button>
+      <input class="search-box" id="sig-search" placeholder="銘柄/セクター検索" oninput="filterSig(curFilter)">
     </div>
-
-    <table id="signals-table">
-      <thead><tr>
-        <th onclick="sortSig(0)">順位</th>
-        <th onclick="sortSig(1)">銘柄</th>
-        <th onclick="sortSig(2)">セクター</th>
-        <th onclick="sortSig(3)">スコア ↓</th>
-        <th onclick="sortSig(4)">前日比</th>
-        <th onclick="sortSig(5)">中期リターン</th>
-        <th onclick="sortSig(6)">出来高</th>
-        <th onclick="sortSig(7)">陽線率</th>
-        <th onclick="sortSig(8)">RS</th>
-        <th>シグナル</th>
-        <th>現在値</th>
-      </tr></thead>
-      <tbody id="signals-body"></tbody>
-    </table>
+    <table><thead><tr>
+      <th onclick="sortSig(0)">順位</th><th onclick="sortSig(1)">銘柄</th><th onclick="sortSig(2)">セクター</th>
+      <th onclick="sortSig(3)">スコア↓</th><th onclick="sortSig(4)">前日比</th><th onclick="sortSig(5)">中期リターン</th>
+      <th onclick="sortSig(6)">出来高</th><th onclick="sortSig(7)">陽線率</th><th onclick="sortSig(8)">RS</th>
+      <th>シグナル</th><th>現在値</th>
+    </tr></thead><tbody id="signals-body"></tbody></table>
   </div>
 </div>
 
-<!-- ── RANKING ── -->
 <div id="panel-ranking" class="panel">
   <div id="ranking-loading" class="empty-state">データ取得中...</div>
   <div id="ranking-wrap" style="display:none">
-    <table id="ranking-table">
-      <thead><tr>
-        <th onclick="sortRank(0)">#</th>
-        <th onclick="sortRank(1)">銘柄</th>
-        <th onclick="sortRank(2)">セクター</th>
-        <th onclick="sortRank(3)">スコア ↓</th>
-        <th onclick="sortRank(4)">RS</th>
-        <th onclick="sortRank(5)">中期リターン</th>
-        <th onclick="sortRank(6)">出来高</th>
-        <th onclick="sortRank(7)">陽線率</th>
-        <th onclick="sortRank(8)">RS加速</th>
-        <th>現在値</th>
-      </tr></thead>
-      <tbody id="ranking-body"></tbody>
-    </table>
+    <table><thead><tr>
+      <th onclick="sortRank(0)">#</th><th onclick="sortRank(1)">銘柄</th><th onclick="sortRank(2)">セクター</th>
+      <th onclick="sortRank(3)">スコア↓</th><th onclick="sortRank(4)">RS</th><th onclick="sortRank(5)">中期リターン</th>
+      <th onclick="sortRank(6)">出来高</th><th onclick="sortRank(7)">陽線率</th><th onclick="sortRank(8)">RS加速</th><th>現在値</th>
+    </tr></thead><tbody id="ranking-body"></tbody></table>
   </div>
 </div>
 
-<!-- ── BACKTEST ── -->
 <div id="panel-backtest" class="panel">
-  <div id="bt-loading" class="empty-state">バックテストデータ取得中...</div>
+  <div id="bt-loading" class="empty-state">データ取得中...</div>
   <div id="bt-wrap" style="display:none">
     <div class="stats-grid" id="bt-stats"></div>
-    <div class="chart-wrap">
-      <h3>日経225 累積リターン</h3>
-      <canvas id="equity-chart" height="80"></canvas>
-    </div>
-    <div class="chart-wrap" style="margin-top:12px">
-      <h3>直近の保有銘柄（週次）</h3>
-      <div id="holdings-table"></div>
-    </div>
+    <div class="chart-wrap"><h3>日経225 累積リターン</h3><canvas id="equity-chart" height="80"></canvas></div>
+    <div class="chart-wrap" style="margin-top:12px"><h3>直近の保有銘柄（週次）</h3><div id="holdings-table"></div></div>
   </div>
 </div>
 
-<!-- ── HISTORY ── -->
 <div id="panel-history" class="panel">
   <div style="margin-bottom:12px">
-    <select id="date-picker" onchange="loadHistoryDate(this.value)">
-      <option>日付を選択...</option>
-    </select>
+    <select id="date-picker" onchange="loadHistoryDate(this.value)"><option>日付を選択...</option></select>
   </div>
   <div id="history-content"><div class="empty-state">日付を選択してください</div></div>
 </div>
 
 </div>
-
 <script>
-// ── utils ──
-function sc(s){ return s>=65?'score-hi':s>=50?'score-md':'score-lo'; }
-function rc(v){ return v>=0?'pos':'neg'; }
-function fR(v){ return `<span class="${rc(v)}">${v>0?'+':''}${v.toFixed(1)}%</span>`; }
-function fD(v){ return `<span class="${rc(v)}" style="font-size:12px">${v>0?'+':''}${v.toFixed(0)}</span>`; }
-function vb(v){ const n=Math.round(v*3); return `<div class="vol-bar-wrap">${[0,1,2].map(i=>`<div class="vb${i<n?' on':''}"></div>`).join('')}</div>`; }
+// データソース: GitHub raw (Vercel) またはローカルAPI
+const GITHUB_RAW = 'https://raw.githubusercontent.com/attyunn127123456/japan-momentum/main';
+const USE_LOCAL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const API = USE_LOCAL ? '' : GITHUB_RAW;
+
+async function getData(path) {
+  const url = USE_LOCAL ? '/api' + path : GITHUB_RAW + '/data' + path;
+  // シグナル・バックテストはdata/に、resultsはresults/に
+  const r = await fetch(url).catch(() => null);
+  if (!r || !r.ok) return null;
+  return r.json();
+}
+async function getResult(path) {
+  const url = USE_LOCAL ? '/api' + path : GITHUB_RAW + path;
+  const r = await fetch(url).catch(() => null);
+  if (!r || !r.ok) return null;
+  return r.json();
+}
+
+// utils
+function sc(s){return s>=65?'score-hi':s>=50?'score-md':'score-lo';}
+function rc(v){return v>=0?'pos':'neg';}
+function fR(v){return '<span class="'+rc(v)+'">'+(v>0?'+':'')+v.toFixed(1)+'%</span>';}
+function fD(v){return '<span class="'+rc(v)+'" style="font-size:12px">'+(v>0?'+':'')+v.toFixed(0)+'</span>';}
+function vb(v){const n=Math.round(v*3);return '<div class="vol-bar-wrap">'+[0,1,2].map(i=>'<div class="vb'+(i<n?' on':'')+'"></div>').join('')+'</div>';}
 function verdictBadge(r){
   const tags=[];
-  if(r.rank_today<=20 && r.rank_yesterday>20) tags.push(`<span class="badge b-new">⭐New</span>`);
-  if(r.verdict==='BUY') tags.push(`<span class="badge b-buy">🚀急伸</span>`);
-  if(r.verdict==='SELL') tags.push(`<span class="badge b-sell">🔴急落</span>`);
-  if(r.verdict==='WATCH') tags.push(`<span class="badge b-watch">🟡注意</span>`);
-  (r.signals||[]).forEach(([e,t])=>{ if(!['🚀','📈','🔴','🟡','⭐'].includes(e)) tags.push(`<span class="badge b-hold">${e}</span>`); });
-  return tags.join('') || '<span class="dim">-</span>';
+  if(r.rank_today<=20&&r.rank_yesterday>20)tags.push('<span class="badge b-new">⭐New</span>');
+  if(r.verdict==='BUY')tags.push('<span class="badge b-buy">🚀急伸</span>');
+  if(r.verdict==='SELL')tags.push('<span class="badge b-sell">🔴急落</span>');
+  if(r.verdict==='WATCH')tags.push('<span class="badge b-watch">🟡注意</span>');
+  return tags.join('')||'<span class="dim">-</span>';
 }
-
-function showTab(name){
+function showTab(n){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  ['signals','ranking','backtest','history'].forEach((n,i)=>{ if(n===name){ document.querySelectorAll('.tab')[i].classList.add('active'); document.getElementById('panel-'+n).classList.add('active'); }});
+  ['signals','ranking','backtest','history'].forEach((x,i)=>{if(x===n){document.querySelectorAll('.tab')[i].classList.add('active');document.getElementById('panel-'+x).classList.add('active');}});
 }
 
-// ── SIGNALS ──
-let sigData=[], currentFilter='ALL', sigSortCol=3, sigSortAsc=false;
-
+// SIGNALS
+let sigData=[],curFilter='ALL',sigSortCol=3,sigSortAsc=false;
 async function loadSignals(){
-  const res = await fetch('/api/signals').catch(()=>null);
-  if(!res||!res.ok){ document.getElementById('signals-loading').textContent='❌ daily_signal.py を先に実行してください'; return; }
-  const data = await res.json();
-  sigData = data.results || [];
+  // ローカルはAPI、Vercelはdata/signal_history.jsonから最新取得
+  let data;
+  if(USE_LOCAL){
+    const r=await fetch('/api/signals').catch(()=>null);
+    if(r&&r.ok) data=await r.json();
+  } else {
+    const r=await fetch(GITHUB_RAW+'/data/signal_history.json').catch(()=>null);
+    if(r&&r.ok){const h=await r.json();data=h[h.length-1];}
+  }
+  if(!data){document.getElementById('signals-loading').textContent='❌ daily_signal.py を実行してください';return;}
 
-  document.getElementById('last-updated').textContent=`${data.date} ← ${data.prev_date}`;
-
-  // stats cards
+  sigData=data.results||[];
+  document.getElementById('last-updated').textContent=(data.date||'')+' ← '+(data.prev_date||'');
   const buy=sigData.filter(r=>r.verdict==='BUY').length;
   const sell=sigData.filter(r=>r.verdict==='SELL').length;
-  const newTop=sigData.filter(r=>r.rank_today<=20&&r.rank_yesterday>20).length;
+  const newT=sigData.filter(r=>r.rank_today<=20&&r.rank_yesterday>20).length;
   const drop=sigData.filter(r=>r.rank_today>20&&r.rank_yesterday<=20).length;
   document.getElementById('sig-stats').innerHTML=[
-    {l:'対象銘柄',v:sigData.length,c:''},
-    {l:'🚀 急伸',v:buy,c:'pos'},
-    {l:'🔴 急落',v:sell,c:'neg'},
-    {l:'⭐ Top20新規',v:newTop,c:'pos'},
-    {l:'⬇️ Top20脱落',v:drop,c:'neg'},
-  ].map(({l,v,c})=>`<div class="stat-card"><div class="lbl">${l}</div><div class="val ${c}">${v}</div></div>`).join('');
-
-  // count badges
-  document.getElementById('cnt-all').textContent=` ${sigData.length}`;
-  document.getElementById('cnt-buy').textContent=` ${buy}`;
-  document.getElementById('cnt-new').textContent=` ${newTop}`;
-  document.getElementById('cnt-sell').textContent=` ${sell}`;
-  document.getElementById('cnt-watch').textContent=` ${sigData.filter(r=>r.verdict==='WATCH').length}`;
-  document.getElementById('cnt-top20').textContent=` ${sigData.filter(r=>r.rank_today<=20).length}`;
-
+    {l:'対象銘柄',v:sigData.length,c:''},{l:'🚀 急伸',v:buy,c:'pos'},
+    {l:'🔴 急落',v:sell,c:'neg'},{l:'⭐ Top20新規',v:newT,c:'pos'},{l:'⬇️ Top20脱落',v:drop,c:'neg'},
+  ].map(({l,v,c})=>'<div class="stat-card"><div class="lbl">'+l+'</div><div class="val '+c+'">'+v+'</div></div>').join('');
+  document.getElementById('cnt-all').textContent=' '+sigData.length;
+  document.getElementById('cnt-buy').textContent=' '+buy;
+  document.getElementById('cnt-new').textContent=' '+newT;
+  document.getElementById('cnt-sell').textContent=' '+sell;
+  document.getElementById('cnt-watch').textContent=' '+sigData.filter(r=>r.verdict==='WATCH').length;
+  document.getElementById('cnt-top20').textContent=' '+sigData.filter(r=>r.rank_today<=20).length;
   document.getElementById('signals-loading').style.display='none';
   document.getElementById('signals-wrap').style.display='block';
-  renderSignals(sigData);
+  renderSig(sigData);
 }
-
-function filterSignals(filter, btn){
-  currentFilter = filter || currentFilter;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  const q = document.getElementById('sig-search').value.trim().toLowerCase();
-  let rows = sigData;
-  if(currentFilter==='BUY') rows=rows.filter(r=>r.verdict==='BUY');
-  else if(currentFilter==='SELL') rows=rows.filter(r=>r.verdict==='SELL');
-  else if(currentFilter==='WATCH') rows=rows.filter(r=>r.verdict==='WATCH');
-  else if(currentFilter==='NEW') rows=rows.filter(r=>r.rank_today<=20&&r.rank_yesterday>20);
-  else if(currentFilter==='TOP20') rows=rows.filter(r=>r.rank_today<=20);
-  if(q) rows=rows.filter(r=>r.code.includes(q)||r.sector?.includes(q));
-  renderSignals(rows);
+function filterSig(f,btn){
+  curFilter=f||curFilter;
+  if(btn){document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+  const q=document.getElementById('sig-search').value.trim().toLowerCase();
+  let rows=sigData;
+  if(curFilter==='BUY')rows=rows.filter(r=>r.verdict==='BUY');
+  else if(curFilter==='SELL')rows=rows.filter(r=>r.verdict==='SELL');
+  else if(curFilter==='WATCH')rows=rows.filter(r=>r.verdict==='WATCH');
+  else if(curFilter==='NEW')rows=rows.filter(r=>r.rank_today<=20&&r.rank_yesterday>20);
+  else if(curFilter==='TOP20')rows=rows.filter(r=>r.rank_today<=20);
+  if(q)rows=rows.filter(r=>r.code.includes(q)||(r.sector||'').includes(q));
+  renderSig(rows);
 }
-
-function renderSignals(rows){
-  document.getElementById('signals-body').innerHTML=rows.map(r=>`<tr>
-    <td class="dim">${r.rank_today}${r.rank_yesterday!==r.rank_today?`<span style="font-size:10px;color:#8b949e"> ←${r.rank_yesterday}</span>`:''}</td>
-    <td><strong>${r.code}</strong></td>
-    <td class="dim">${(r.sector||'').slice(0,10)}</td>
-    <td><span class="${sc(r.score_today)}">${r.score_today.toFixed(1)}</span></td>
-    <td>${fD(r.score_delta)}</td>
-    <td>${fR(r.return_5_25d)}</td>
-    <td>${vb(r.volume_acceleration)}</td>
-    <td class="${rc(r.green_day_ratio-0.5)}">${(r.green_day_ratio*100).toFixed(0)}%</td>
-    <td class="${rc(r.rs_score)}">${r.rs_score>0?'+':''}${r.rs_score.toFixed(1)}</td>
-    <td>${verdictBadge(r)}</td>
-    <td class="dim">¥${(r.price||0).toLocaleString()}</td>
-  </tr>`).join('');
+function renderSig(rows){
+  document.getElementById('signals-body').innerHTML=rows.map(r=>'<tr>'
+    +'<td class="dim">'+r.rank_today+(r.rank_yesterday!==r.rank_today?'<span style="font-size:10px;color:#8b949e"> ←'+r.rank_yesterday+'</span>':'')+'</td>'
+    +'<td><strong>'+r.code+'</strong></td>'
+    +'<td class="dim">'+(r.sector||'').slice(0,10)+'</td>'
+    +'<td><span class="'+sc(r.score_today)+'">'+r.score_today.toFixed(1)+'</span></td>'
+    +'<td>'+fD(r.score_delta)+'</td>'
+    +'<td>'+fR(r.return_5_25d)+'</td>'
+    +'<td>'+vb(r.volume_acceleration)+'</td>'
+    +'<td class="'+rc(r.green_day_ratio-0.5)+'">'+(r.green_day_ratio*100).toFixed(0)+'%</td>'
+    +'<td class="'+rc(r.rs_score)+'">'+(r.rs_score>0?'+':'')+r.rs_score.toFixed(1)+'</td>'
+    +'<td>'+verdictBadge(r)+'</td>'
+    +'<td class="dim">¥'+(r.price||0).toLocaleString()+'</td>'
+    +'</tr>').join('');
 }
-
 function sortSig(col){
-  if(sigSortCol===col) sigSortAsc=!sigSortAsc; else{sigSortCol=col;sigSortAsc=false;}
+  if(sigSortCol===col)sigSortAsc=!sigSortAsc;else{sigSortCol=col;sigSortAsc=false;}
   const keys=[null,'code','sector','score_today','score_delta','return_5_25d','volume_acceleration','green_day_ratio','rs_score','','price'];
-  const key=keys[col]; if(!key) return;
-  const sorted=[...sigData].sort((a,b)=>{ const av=a[key],bv=b[key]; return typeof av==='string'?(sigSortAsc?av.localeCompare(bv):bv.localeCompare(av)):(sigSortAsc?av-bv:bv-av); });
-  sigData=sorted; renderSignals(sorted);
+  const key=keys[col];if(!key)return;
+  sigData=[...sigData].sort((a,b)=>{const av=a[key],bv=b[key];return typeof av==='string'?(sigSortAsc?av.localeCompare(bv):bv.localeCompare(av)):(sigSortAsc?av-bv:bv-av);});
+  renderSig(sigData);
 }
 
-// ── RANKING ──
-let rankData=[], rankSortCol=3, rankSortAsc=false;
+// RANKING
+let rankData=[],rankSortCol=3,rankSortAsc=false;
 async function loadRanking(){
-  const res=await fetch('/api/today').catch(()=>null);
-  if(!res||!res.ok){document.getElementById('ranking-loading').textContent='❌ screener.py を先に実行してください';return;}
-  const data=await res.json();
+  let data;
+  if(USE_LOCAL){const r=await fetch('/api/today').catch(()=>null);if(r&&r.ok)data=await r.json();}
+  else{const r=await fetch(GITHUB_RAW+'/results/latest.json').catch(()=>null);if(r&&r.ok)data=await r.json();}
+  if(!data){document.getElementById('ranking-loading').textContent='❌ screener.py を実行してください';return;}
   rankData=data.results||[];
-  renderRanking(rankData);
+  renderRank(rankData);
   document.getElementById('ranking-loading').style.display='none';
   document.getElementById('ranking-wrap').style.display='block';
 }
-function renderRanking(rows){
-  document.getElementById('ranking-body').innerHTML=rows.slice(0,50).map((r,i)=>`<tr>
-    <td class="dim">${i+1}</td>
-    <td><strong>${(r.ticker||r.code||'').replace('.T','')}</strong></td>
-    <td class="dim">${(r.sector||'').slice(0,10)}</td>
-    <td><span class="${sc(r.score)}">${r.score.toFixed(1)}</span></td>
-    <td class="${rc(r.rs_score)}">${r.rs_score>0?'+':''}${r.rs_score.toFixed(1)}</td>
-    <td>${fR(r.return_5_25d)}</td>
-    <td>${vb(r.volume_acceleration)}</td>
-    <td class="${rc(r.green_day_ratio-0.5)}">${(r.green_day_ratio*100).toFixed(0)}%</td>
-    <td class="${rc(r.rs_acceleration)}">${r.rs_acceleration>0?'+':''}${r.rs_acceleration.toFixed(2)}</td>
-    <td class="dim">¥${(r.price||0).toLocaleString()}</td>
-  </tr>`).join('');
+function renderRank(rows){
+  document.getElementById('ranking-body').innerHTML=rows.slice(0,50).map((r,i)=>'<tr>'
+    +'<td class="dim">'+(i+1)+'</td>'
+    +'<td><strong>'+(r.ticker||r.code||'').replace('.T','')+'</strong></td>'
+    +'<td class="dim">'+(r.sector||'').slice(0,10)+'</td>'
+    +'<td><span class="'+sc(r.score)+'">'+r.score.toFixed(1)+'</span></td>'
+    +'<td class="'+rc(r.rs_score)+'">'+(r.rs_score>0?'+':'')+r.rs_score.toFixed(1)+'</td>'
+    +'<td>'+fR(r.return_5_25d)+'</td>'
+    +'<td>'+vb(r.volume_acceleration)+'</td>'
+    +'<td class="'+rc(r.green_day_ratio-0.5)+'">'+(r.green_day_ratio*100).toFixed(0)+'%</td>'
+    +'<td class="'+rc(r.rs_acceleration)+'">'+(r.rs_acceleration>0?'+':'')+r.rs_acceleration.toFixed(2)+'</td>'
+    +'<td class="dim">¥'+(r.price||0).toLocaleString()+'</td>'
+    +'</tr>').join('');
 }
 function sortRank(col){
-  if(rankSortCol===col) rankSortAsc=!rankSortAsc; else{rankSortCol=col;rankSortAsc=false;}
+  if(rankSortCol===col)rankSortAsc=!rankSortAsc;else{rankSortCol=col;rankSortAsc=false;}
   const keys=[null,'code','sector','score','rs_score','return_5_25d','volume_acceleration','green_day_ratio','rs_acceleration','price'];
-  const key=keys[col]; if(!key||!rankData) return;
-  const sorted=[...rankData].sort((a,b)=>{const av=a[key],bv=b[key];return typeof av==='string'?(rankSortAsc?av.localeCompare(bv):bv.localeCompare(av)):(rankSortAsc?av-bv:bv-av);});
-  renderRanking(sorted);
+  const key=keys[col];if(!key||!rankData)return;
+  const s=[...rankData].sort((a,b)=>{const av=a[key],bv=b[key];return typeof av==='string'?(rankSortAsc?av.localeCompare(bv):bv.localeCompare(av)):(rankSortAsc?av-bv:bv-av);});
+  renderRank(s);
 }
 
-// ── BACKTEST ──
+// BACKTEST
 async function loadBacktest(){
-  const res=await fetch('/api/backtest').catch(()=>null);
-  if(!res||!res.ok){document.getElementById('bt-loading').textContent='❌ backtest.py を先に実行してください';return;}
-  const data=await res.json(); const s=data.summary;
+  let data;
+  if(USE_LOCAL){const r=await fetch('/api/backtest').catch(()=>null);if(r&&r.ok)data=await r.json();}
+  else{const r=await fetch(GITHUB_RAW+'/backtest/latest.json').catch(()=>null);if(r&&r.ok)data=await r.json();}
+  if(!data){document.getElementById('bt-loading').textContent='❌ backtest.py を実行してください';return;}
+  const s=data.summary;
   document.getElementById('bt-stats').innerHTML=[
     {l:'総リターン',v:s.total_return_pct,p:true},{l:'年率',v:s.annual_return_pct,p:true},
     {l:'日経225',v:s.nikkei_return_pct,p:true},{l:'アルファ',v:s.alpha_pct,p:true},
     {l:'保有数',v:s.top_n,p:false},{l:'リバランス',v:s.num_rebalances+'回',p:false},
-  ].map(({l,v,p})=>`<div class="stat-card"><div class="lbl">${l}</div><div class="val ${p?(v>=0?'pos':'neg'):''}">${p?`${v>0?'+':''}${v}%`:v}</div></div>`).join('');
+  ].map(({l,v,p})=>'<div class="stat-card"><div class="lbl">'+l+'</div><div class="val '+(p?(v>=0?'pos':'neg'):'')+'">'+(p?(v>0?'+':'')+v+'%':v)+'</div></div>').join('');
   const eq=data.equity_curve||[];
   document.getElementById('bt-loading').style.display='none';
   document.getElementById('bt-wrap').style.display='block';
-  new Chart(document.getElementById('equity-chart'),{type:'line',data:{labels:eq.map(e=>e.date),datasets:[{label:'日経225',data:eq.map(e=>e.nikkei),borderColor:'#8b949e',fill:false,pointRadius:0,tension:0.3}]},options:{responsive:true,plugins:{legend:{labels:{color:'#8b949e'}}},scales:{x:{ticks:{color:'#8b949e',maxTicksLimit:12},grid:{color:'#21262d'}},y:{ticks:{color:'#8b949e',callback:v=>'¥'+v.toLocaleString()},grid:{color:'#21262d'}}}}});
+  new Chart(document.getElementById('equity-chart'),{type:'line',data:{labels:eq.map(e=>e.date),datasets:[{label:'日経225',data:eq.map(e=>e.nikkei),borderColor:'#8b949e',fill:false,pointRadius:0,tension:0.3}]},options:{responsive:true,plugins:{legend:{labels:{color:'#8b949e'}}},scales:{x:{ticks:{color:'#8b949e',maxTicksLimit:12},grid:{color:'#21262d'}},y:{ticks:{color:'#8b949e',callback:function(v){return '¥'+v.toLocaleString();}},grid:{color:'#21262d'}}}}});
   const h=(data.weekly_holdings||[]).slice(-8).reverse();
-  document.getElementById('holdings-table').innerHTML=`<table><thead><tr><th>週</th><th>保有銘柄</th></tr></thead><tbody>${h.map(r=>`<tr><td class="dim">${r.date}</td><td>${r.tickers.map(t=>`<span class="badge b-hold">${t.replace('.T','')} ${r.scores?.[t]?.toFixed(0)||''}</span>`).join(' ')}</td></tr>`).join('')}</tbody></table>`;
+  document.getElementById('holdings-table').innerHTML='<table><thead><tr><th>週</th><th>保有銘柄</th></tr></thead><tbody>'+h.map(r=>'<tr><td class="dim">'+r.date+'</td><td>'+r.tickers.map(t=>'<span class="badge b-hold">'+t.replace('.T','')+(r.scores&&r.scores[t]?' '+r.scores[t].toFixed(0):'')+'</span>').join(' ')+'</td></tr>').join('')+'</tbody></table>';
 }
 
-// ── HISTORY ──
+// HISTORY
 async function loadHistory(){
-  const res=await fetch('/api/history').catch(()=>null); if(!res) return;
-  const dates=await res.json();
+  let dates=[];
+  if(USE_LOCAL){const r=await fetch('/api/history').catch(()=>null);if(r&&r.ok)dates=await r.json();}
+  else{
+    // results/index.json があれば使う、なければlatest.jsonの日付だけ
+    const r=await fetch(GITHUB_RAW+'/results/index.json').catch(()=>null);
+    if(r&&r.ok)dates=await r.json();
+    else{const r2=await fetch(GITHUB_RAW+'/results/latest.json').catch(()=>null);if(r2&&r2.ok){const d=await r2.json();if(d.date)dates=[d.date];}}
+  }
   const pk=document.getElementById('date-picker');
   dates.forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;pk.appendChild(o);});
 }
 async function loadHistoryDate(date){
-  if(!date||date.includes('選択')) return;
-  const res=await fetch(`/api/results/${date}`).catch(()=>null); if(!res?.ok) return;
-  const data=await res.json();
+  if(!date||date.includes('選択'))return;
+  let data;
+  if(USE_LOCAL){const r=await fetch('/api/results/'+date).catch(()=>null);if(r&&r.ok)data=await r.json();}
+  else{const r=await fetch(GITHUB_RAW+'/results/'+date+'.json').catch(()=>null);if(r&&r.ok)data=await r.json();}
+  if(!data)return;
   const rows=(data.results||data.top||[]).slice(0,20);
-  document.getElementById('history-content').innerHTML=`<table><thead><tr><th>#</th><th>銘柄</th><th>セクター</th><th>スコア</th><th>中期リターン</th><th>陽線率</th></tr></thead><tbody>${rows.map((r,i)=>`<tr><td class="dim">${i+1}</td><td><strong>${(r.ticker||r.code||'').replace('.T','')}</strong></td><td class="dim">${(r.sector||'').slice(0,10)}</td><td><span class="${sc(r.score)}">${r.score.toFixed(1)}</span></td><td>${fR(r.return_5_25d)}</td><td class="${rc(r.green_day_ratio-0.5)}">${(r.green_day_ratio*100).toFixed(0)}%</td></tr>`).join('')}</tbody></table>`;
+  document.getElementById('history-content').innerHTML='<table><thead><tr><th>#</th><th>銘柄</th><th>セクター</th><th>スコア</th><th>中期リターン</th><th>陽線率</th></tr></thead><tbody>'+rows.map((r,i)=>'<tr><td class="dim">'+(i+1)+'</td><td><strong>'+(r.ticker||r.code||'').replace('.T','')+'</strong></td><td class="dim">'+(r.sector||'').slice(0,10)+'</td><td><span class="'+sc(r.score)+'">'+r.score.toFixed(1)+'</span></td><td>'+fR(r.return_5_25d)+'</td><td class="'+rc(r.green_day_ratio-0.5)+'">'+(r.green_day_ratio*100).toFixed(0)+'%</td></tr>').join('')+'</tbody></table>';
 }
 
 loadSignals(); loadRanking(); loadBacktest(); loadHistory();

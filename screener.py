@@ -43,7 +43,7 @@ def get_nikkei(start: str, end: str) -> pd.Series:
     return df.set_index("Date").sort_index()["C"].dropna()
 
 
-def score_ticker(code: str, start: str, end: str, nikkei: pd.Series, sector: str = "") -> dict | None:
+def score_ticker(code: str, start: str, end: str, nikkei: pd.Series, sector: str = "") -> dict:
     try:
         df = get_daily_quotes_code(code, start, end)
     except Exception:

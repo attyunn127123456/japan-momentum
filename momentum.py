@@ -108,7 +108,7 @@ def calculate_momentum_score(
     return result
 
 
-def apply_filters(ticker: str, prices: pd.Series, volumes: pd.Series, market_cap: float) -> tuple[bool, str]:
+def apply_filters(ticker: str, prices: pd.Series, volumes: pd.Series, market_cap: float) -> tuple:
     """
     Returns (passes, reason_if_fails)
     """
