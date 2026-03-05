@@ -94,6 +94,7 @@ def run_signal_check() -> dict:
         results.append({
             "code": code,
             "ticker": row.get("ticker", f"{code}.T"),
+            "name": row.get("name", ""),
             "sector": row.get("sector", ""),
             "score_today": round(score_today, 1),
             "score_yesterday": round(score_yesterday, 1),
