@@ -7,6 +7,21 @@
 5. ノンストップで回り続ける
 """
 import itertools, json, time, traceback
+
+def sanitize(obj):
+    """bool/NaN/Inf をJSONシリアライズ可能にする"""
+    import math
+    if isinstance(obj, bool):
+        return int(obj)
+    if isinstance(obj, float):
+        if math.isnan(obj) or math.isinf(obj):
+            return None
+        return obj
+    if isinstance(obj, dict):
+        return {k: sanitize(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [sanitize(i) for i in obj]
+    return obj
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
