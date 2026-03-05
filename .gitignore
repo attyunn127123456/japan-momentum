@@ -4,3 +4,4 @@ data/universe_cache.json
 __pycache__/
 *.pyc
 .env
+data/ohlcv_cache/
