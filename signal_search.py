@@ -141,15 +141,16 @@ def test_new_signals(lib, base_sharpe, factor_dfs, prices_dict, rebal_dates, nik
         # factor_dfsにそのシグナルがあるか確認
         # （rsi14, ma_deviation, momentum_12_1, resilience_wはprecomputeで計算済み）
         # なければスキップ
-        sample_key = next(iter(factor_dfs.keys()), None)
-        if sample_key:
-            cols = factor_dfs[sample_key].columns.tolist()
-            factor_col = cand["id"].replace("_w", "")
-            # resilience_wはresilienceとして保存されている場合もある
-            has_factor = factor_col in cols or cand["id"].rstrip("_w") in cols
-            if key not in ["resilience_w"] and not has_factor:
-                print(f"  ⚠️  {cand['id']}: ファクターデータなし → スキップ", flush=True)
-                continue
+        # factor_dfsは {lb: {factor_name: {code: Series}}} の構造
+        # 既存ファクター名を確認（lb=80の場合）
+        available_factors = set()
+        if 80 in factor_dfs:
+            available_factors = set(factor_dfs[80].keys())
+        factor_col = cand["id"].replace("_w", "")
+        has_factor = factor_col in available_factors or cand["id"].rstrip("_w") in available_factors
+        if key not in ["resilience_w"] and not has_factor:
+            print(f"  ⚠️  {cand['id']}: ファクターデータなし → スキップ", flush=True)
+            continue
 
         r = eval_with_weights(new_weights, factor_dfs, prices_dict, rebal_dates, nikkei, return_df)
         if not r:
