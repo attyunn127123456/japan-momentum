@@ -175,6 +175,9 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
         'high52_w':         [0.0, 0.1, 0.2, 0.25, 0.3, 0.35, 0.4],
         'omega_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'short_momentum_w': [0.0, 0.05, 0.1, 0.15, 0.2],
+        'liquidity_resilience_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'cross_sectional_vol_rank_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'max_dd_ratio_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'clean_momentum_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'volume_slope_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'return_autocorr_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
@@ -501,9 +504,17 @@ def run_evolution():
     }), ensure_ascii=False, indent=2))
     
     print('\n=== Evolution cycle 完了 ===', flush=True)
-    
+
+    # ダッシュボードキャッシュ更新
+    import subprocess, sys as _sys
+    subprocess.Popen(
+        [_sys.executable, 'generate_dashboard_cache.py'],
+        stdout=open('logs/dashboard_cache.log', 'a'),
+        stderr=subprocess.STDOUT,
+    )
+    print('ダッシュボードキャッシュ生成バックグラウンド起動', flush=True)
+
     # 即opusをキック
-    import subprocess
     subprocess.run(
         ['openclaw', 'system', 'event',
          '--mode', 'now',

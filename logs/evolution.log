@@ -666,3 +666,164 @@ Optuna TPE: 300trials 開始...
   新ベスト: total=82.0%, sharpe=2.255, lb=40, tn=3
   新ベスト: total=106.7%, sharpe=2.893, lb=100, tn=5
   新ベスト: total=174.1%, sharpe=3.037, lb=60, tn=3
+  新ベスト: total=223.1%, sharpe=3.991, lb=100, tn=4
+  新ベスト: total=311.1%, sharpe=4.177, lb=100, tn=3
+  新ベスト: total=334.2%, sharpe=4.272, lb=100, tn=3
+  新ベスト: total=344.6%, sharpe=4.394, lb=100, tn=3
+  新ベスト: total=352.4%, sharpe=4.483, lb=100, tn=3
+  新ベスト: total=356.4%, sharpe=4.467, lb=100, tn=3
+  新ベスト: total=395.9%, sharpe=4.766, lb=100, tn=3
+  新ベスト: total=401.9%, sharpe=4.762, lb=100, tn=3
+  新ベスト: total=404.2%, sharpe=4.774, lb=100, tn=3
+  新ベスト: total=416.4%, sharpe=4.962, lb=100, tn=3
+  新ベスト: total=427.5%, sharpe=4.993, lb=100, tn=3
+  新ベスト: total=433.2%, sharpe=5.034, lb=100, tn=3
+  新ベスト: total=438.4%, sharpe=5.065, lb=100, tn=3
+  新ベスト: total=454.1%, sharpe=5.151, lb=100, tn=3
+Optuna完了: 300trials, best_total=454.1%
+  sharpe=5.151 score=+454.120 ❌ lb=100 tn=3
+  sharpe=5.101 score=+445.970 ❌ lb=100 tn=3
+  sharpe=5.106 score=+444.870 ❌ lb=100 tn=3
+  sharpe=5.065 score=+438.370 ❌ lb=100 tn=3
+  sharpe=5.074 score=+434.240 ❌ lb=100 tn=3
+  sharpe=5.034 score=+433.160 ❌ lb=100 tn=3
+  sharpe=5.024 score=+431.020 ❌ lb=100 tn=3
+  sharpe=4.993 score=+427.500 ❌ lb=100 tn=3
+  sharpe=4.986 score=+426.240 ❌ lb=100 tn=3
+  sharpe=4.994 score=+425.760 ❌ lb=100 tn=3
+  sharpe=4.995 score=+425.230 ❌ lb=100 tn=3
+  sharpe=5.013 score=+423.390 ❌ lb=100 tn=3
+  sharpe=4.962 score=+422.120 ❌ lb=100 tn=3
+  sharpe=4.950 score=+421.440 ❌ lb=100 tn=3
+  sharpe=4.963 score=+421.130 ❌ lb=100 tn=3
+  sharpe=4.963 score=+421.130 ❌ lb=100 tn=3
+  sharpe=4.938 score=+417.590 ❌ lb=100 tn=3
+  sharpe=4.954 score=+417.560 ❌ lb=100 tn=3
+  sharpe=4.944 score=+416.520 ❌ lb=100 tn=3
+  sharpe=4.962 score=+416.390 ❌ lb=100 tn=3
+
+--- ファクター整理 (cleanup_weak_signals) ---
+  cleanup_weak_signals: 変更なし
+
+--- OOS検証 (Walk-Forward Out-of-Sample) ---
+
+=== OOS検証: 2020-01-01〜2026-03-06 ===
+バックフィル対象: 56件（レート制限回避のためスキップ）
+OOS検証: 2000銘柄ロード完了
+事前計算完了: 2000銘柄×1lb / 204.9秒
+/Users/panda/Projects/japan-momentum/optimize.py:808: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+OOS結果: total=542.45%, sharpe=2.394, max_dd=40.58%, alpha=424.32%, nikkei=118.13%
+
+OOS vs 訓練: OOS=+542.5% / 訓練=+783.5% / OOS sharpe=2.394 max_dd=40.6%
+
+--- 新ファクター試験 ---
+
+--- 組み合わせテスト 開始 ---
+候補仮説: 6件
+データロード (200銘柄)...
+  ユニバース: キャッシュから200銘柄読み込み
+  200銘柄ロード完了
+事前計算完了: 200銘柄×4lb / 42.3秒
+/Users/panda/Projects/japan-momentum/combination_search.py:134: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df  = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
+組み合わせ数: 15
+  combo_local_search+topn1_extreme_concentration: エラー 50
+  combo_local_search+high52_all_universe: sharpe=1.354 delta=-4.320 score=+21.770 不採用
+  combo_local_search+oos_validation: sharpe=1.721 delta=-3.953 score=+31.740 不採用
+  combo_local_search+high52_midcap: sharpe=1.194 delta=-4.480 score=+18.780 不採用
+  combo_local_search+high52_w_boost: sharpe=1.254 delta=-4.420 score=+19.620 不採用
+  combo_topn1_extreme_concentration+high52_all_universe: エラー 70
+  combo_topn1_extreme_concentration+oos_validation: エラー 50
+  combo_topn1_extreme_concentration+high52_midcap: エラー 70
+  combo_topn1_extreme_concentration+high52_w_boost: エラー 70
+  combo_high52_all_universe+oos_validation: sharpe=1.354 delta=-4.320 score=+21.770 不採用
+  combo_high52_all_universe+high52_midcap: sharpe=0.442 delta=-5.232 score=+4.190 不採用
+  combo_high52_all_universe+high52_w_boost: sharpe=0.319 delta=-5.355 score=+2.250 不採用
+  combo_oos_validation+high52_midcap: sharpe=1.194 delta=-4.480 score=+18.780 不採用
+  combo_oos_validation+high52_w_boost: sharpe=1.254 delta=-4.420 score=+19.620 不採用
+  combo_high52_midcap+high52_w_boost: sharpe=0.263 delta=-5.411 score=+1.390 不採用
+組み合わせテスト完了: 10件 / combo_log保存
+
+=== Signal Search 開始 ===
+  ユニバース: キャッシュから200銘柄読み込み
+  200銘柄ロード完了
+事前計算完了: 200銘柄×1lb / 10.8秒
+/Users/panda/Projects/japan-momentum/signal_search.py:69: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = pd.DataFrame({c: prices_dict[c]["AdjC"] for c in prices_dict}).pct_change()
+
+[Step1] Ablation Test
+  ベースライン sharpe=0.730
+  ⚠️  green: sharpe低下 -0.0090 → candidate（他との相性あり）
+  ⚠️  topn1_extreme_concentration: sharpe低下 +0.0000 → candidate（他との相性あり）
+
+[Step2] 新シグナル追加テスト
+  ⚠️  rsi14: ファクターデータなし → スキップ
+  ⚠️  ma_deviation: ファクターデータなし → スキップ
+  ⚠️  momentum_12_1: ファクターデータなし → スキップ
+  ⚠️  eps_growth: ファクターデータなし → スキップ
+  ⚠️  rev_growth: ファクターデータなし → スキップ
+  ⚠️  credit_ratio: ファクターデータなし → スキップ
+
+[Step3] 全シグナル同時重み最適化
+  最適化対象: ['green_w', 'topn1_extreme_concentration_w']
+  グリッド組み合わせ: 64件（正規化後に重複除去）
+  最適化完了: best_sharpe=0.730
+  最適重み: {'rs_w': 0.3, 'green_w': 0.2, 'high52_w': 0.4706, 'ret_w': 0.3, 'smooth_w': 0.2, 'resilience_w': 0.0}
+
+[Step4] ベースライン更新
+  ベースライン変化なし: 5.674 >= 0.730
+
+=== Signal Search 完了 (16秒) ===
+  最終 baseline_sharpe=0.730
+
+=== Evolution cycle 完了 ===
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+
+=== Evolution Engine 起動 ===
+ベースライン: sharpe=5.674, total=783.52%
+データロード (2000銘柄)...
+  ユニバース: キャッシュから2000銘柄読み込み
+  2000銘柄ロード完了
+ファンダメンタルファクター: 0銘柄
+ファクター事前計算...
+事前計算完了: 2000銘柄×5lb / 579.9秒
+/Users/panda/Projects/japan-momentum/evolution_engine.py:340: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
+
+--- 局所探索 開始 (Optuna TPE) ---
+Factor Selection: 14→13個 (除外: {'rs_w'})
+Optuna探索対象ファクター: ['ret_w', 'green_w', 'smooth_w', 'resilience_w', 'high52_w', 'omega_w', 'cluster_boost_w', 'ret_skip_w', 'win_streak_w', 'momentum_consistency_w', 'upside_capture_w', 'return_autocorr_w', 'clean_momentum_w', 'short_momentum_w', 'volume_confirm_w', 'gap_momentum_w', 'accumulation_w', 'volume_slope_w']
+Optuna TPE: 300trials 開始...
+  新ベスト: total=-18.6%, sharpe=-4.970, lb=40, tn=2
+  新ベスト: total=-11.7%, sharpe=-3.435, lb=100, tn=5
+  新ベスト: total=75.4%, sharpe=2.527, lb=80, tn=6
+  新ベスト: total=82.0%, sharpe=2.255, lb=40, tn=3
+  新ベスト: total=106.7%, sharpe=2.893, lb=100, tn=5
+  新ベスト: total=174.1%, sharpe=3.037, lb=60, tn=3
+  新ベスト: total=223.1%, sharpe=3.991, lb=100, tn=4
+  新ベスト: total=311.1%, sharpe=4.177, lb=100, tn=3
+  新ベスト: total=334.2%, sharpe=4.272, lb=100, tn=3
+  新ベスト: total=344.6%, sharpe=4.394, lb=100, tn=3
+  新ベスト: total=352.4%, sharpe=4.483, lb=100, tn=3
+  新ベスト: total=356.4%, sharpe=4.467, lb=100, tn=3
+  新ベスト: total=395.9%, sharpe=4.766, lb=100, tn=3
+  新ベスト: total=401.9%, sharpe=4.762, lb=100, tn=3
+  新ベスト: total=404.2%, sharpe=4.774, lb=100, tn=3
+  新ベスト: total=416.4%, sharpe=4.962, lb=100, tn=3
+  新ベスト: total=427.5%, sharpe=4.993, lb=100, tn=3
+  新ベスト: total=433.2%, sharpe=5.034, lb=100, tn=3
+  新ベスト: total=438.4%, sharpe=5.065, lb=100, tn=3
+  新ベスト: total=454.1%, sharpe=5.151, lb=100, tn=3
+Optuna完了: 300trials, best_total=454.1%
+  sharpe=5.151 score=+454.120 ❌ lb=100 tn=3
+  sharpe=5.101 score=+445.970 ❌ lb=100 tn=3
+  sharpe=5.106 score=+444.870 ❌ lb=100 tn=3
+  sharpe=5.065 score=+438.370 ❌ lb=100 tn=3
+  sharpe=5.074 score=+434.240 ❌ lb=100 tn=3
+  sharpe=5.034 score=+433.160 ❌ lb=100 tn=3
+  sharpe=5.024 score=+431.020 ❌ lb=100 tn=3
+  sharpe=4.993 score=+427.500 ❌ lb=100 tn=3
+  sharpe=4.986 score=+426.240 ❌ lb=100 tn=3

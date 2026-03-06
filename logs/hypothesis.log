@@ -1204,3 +1204,21 @@ openclaw system event 送信完了
 完了: clean_momentum_w | status=added_to_ga | factor=clean_momentum_w
 全仮説消化。即opusに新仮説生成を依頼します。
 openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: max_dd_ratio_w - 最大ドローダウン比率ファクター: lookback期間中のmax_ddが小さい銘柄を優遇し、OOS期のポートフォリオmax_ddを直接抑制
+  factor_to_add 検出: max_dd_ratio_w を GA の RANGES に追加します
+  ✅ max_dd_ratio_w を evolution_engine.py の RANGES に追加しました
+完了: max_dd_ratio_w | status=added_to_ga | factor=max_dd_ratio_w
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+仮説実行: cross_sectional_vol_rank_w - クロスセクショナル・ボラティリティランクファクター: 銘柄のボラティリティが全銘柄中で低い位置にあるかを測定し、低ボラモメンタム銘柄を優遇
+  factor_to_add 検出: cross_sectional_vol_rank_w を GA の RANGES に追加します
+  ✅ cross_sectional_vol_rank_w を evolution_engine.py の RANGES に追加しました
+完了: cross_sectional_vol_rank_w | status=added_to_ga | factor=cross_sectional_vol_rank_w
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了

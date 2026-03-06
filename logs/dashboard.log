@@ -2119,3 +2119,279 @@ INFO:     127.0.0.1:63761 - "GET /api/status HTTP/1.1" 404 Not Found
 INFO:     Waiting for application shutdown.
 INFO:     Application shutdown complete.
 INFO:     Finished server process [92720]
+INFO:     Started server process [93157]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:64427 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×1lb / 15.2秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:658: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret5d = round(float(df['AdjC'].pct_change(5).iloc[-1] * 100), 1)
+/Users/panda/Projects/japan-momentum/dashboard/app.py:663: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret20d = round(float(df['AdjC'].pct_change(20).iloc[-1] * 100), 1)
+INFO:     182.170.23.52:0 - "GET /api/ranking HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×1lb / 15.2秒
+INFO:     182.170.23.52:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×1lb / 15.2秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:658: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret5d = round(float(df['AdjC'].pct_change(5).iloc[-1] * 100), 1)
+/Users/panda/Projects/japan-momentum/dashboard/app.py:663: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret20d = round(float(df['AdjC'].pct_change(20).iloc[-1] * 100), 1)
+INFO:     182.170.23.52:0 - "GET /api/ranking HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×1lb / 15.2秒
+INFO:     182.170.23.52:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×1lb / 15.2秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:658: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret5d = round(float(df['AdjC'].pct_change(5).iloc[-1] * 100), 1)
+/Users/panda/Projects/japan-momentum/dashboard/app.py:663: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret20d = round(float(df['AdjC'].pct_change(20).iloc[-1] * 100), 1)
+INFO:     182.170.23.52:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×1lb / 15.2秒
+INFO:     182.170.23.52:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×1lb / 15.2秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:658: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret5d = round(float(df['AdjC'].pct_change(5).iloc[-1] * 100), 1)
+/Users/panda/Projects/japan-momentum/dashboard/app.py:663: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret20d = round(float(df['AdjC'].pct_change(20).iloc[-1] * 100), 1)
+INFO:     182.170.23.52:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×1lb / 15.1秒
+INFO:     182.170.23.52:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×1lb / 14.9秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:658: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret5d = round(float(df['AdjC'].pct_change(5).iloc[-1] * 100), 1)
+/Users/panda/Projects/japan-momentum/dashboard/app.py:663: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret20d = round(float(df['AdjC'].pct_change(20).iloc[-1] * 100), 1)
+INFO:     182.170.23.52:0 - "GET /api/ranking HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×1lb / 15.0秒
+INFO:     182.170.23.52:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×1lb / 14.4秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:658: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret5d = round(float(df['AdjC'].pct_change(5).iloc[-1] * 100), 1)
+/Users/panda/Projects/japan-momentum/dashboard/app.py:663: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret20d = round(float(df['AdjC'].pct_change(20).iloc[-1] * 100), 1)
+INFO:     182.170.23.52:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×1lb / 14.7秒
+INFO:     182.170.23.52:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×1lb / 16.4秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:658: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret5d = round(float(df['AdjC'].pct_change(5).iloc[-1] * 100), 1)
+/Users/panda/Projects/japan-momentum/dashboard/app.py:663: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret20d = round(float(df['AdjC'].pct_change(20).iloc[-1] * 100), 1)
+INFO:     182.170.23.52:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×1lb / 280.3秒
+事前計算完了: 2000銘柄×1lb / 280.5秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:220: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+/Users/panda/Projects/japan-momentum/dashboard/app.py:220: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+事前計算完了: 2000銘柄×1lb / 14.6秒
+INFO:     182.170.23.52:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50537 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [93157]
+INFO:     Started server process [96484]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×5lb / 53.0秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:658: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret5d = round(float(df['AdjC'].pct_change(5).iloc[-1] * 100), 1)
+/Users/panda/Projects/japan-momentum/dashboard/app.py:663: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret20d = round(float(df['AdjC'].pct_change(20).iloc[-1] * 100), 1)
+INFO:     182.170.23.52:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×5lb / 53.2秒
+INFO:     182.170.23.52:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+  ユニバース: キャッシュから2000銘柄読み込み
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×5lb / 143.4秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:658: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret5d = round(float(df['AdjC'].pct_change(5).iloc[-1] * 100), 1)
+/Users/panda/Projects/japan-momentum/dashboard/app.py:663: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret20d = round(float(df['AdjC'].pct_change(20).iloc[-1] * 100), 1)
+INFO:     182.170.23.52:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     Started server process [97780]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Started server process [97912]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54125 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×5lb / 53.8秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:658: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret5d = round(float(df['AdjC'].pct_change(5).iloc[-1] * 100), 1)
+/Users/panda/Projects/japan-momentum/dashboard/app.py:663: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret20d = round(float(df['AdjC'].pct_change(20).iloc[-1] * 100), 1)
+INFO:     182.170.23.52:0 - "GET /api/ranking HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×5lb / 53.7秒
+INFO:     182.170.23.52:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×5lb / 53.9秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:658: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret5d = round(float(df['AdjC'].pct_change(5).iloc[-1] * 100), 1)
+/Users/panda/Projects/japan-momentum/dashboard/app.py:663: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret20d = round(float(df['AdjC'].pct_change(20).iloc[-1] * 100), 1)
+INFO:     182.170.23.52:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×5lb / 54.0秒
+INFO:     182.170.23.52:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×5lb / 53.8秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:658: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret5d = round(float(df['AdjC'].pct_change(5).iloc[-1] * 100), 1)
+/Users/panda/Projects/japan-momentum/dashboard/app.py:663: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret20d = round(float(df['AdjC'].pct_change(20).iloc[-1] * 100), 1)
+INFO:     182.170.23.52:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     Started server process [99350]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×5lb / 53.7秒
+INFO:     182.170.23.52:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×5lb / 54.0秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:658: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret5d = round(float(df['AdjC'].pct_change(5).iloc[-1] * 100), 1)
+/Users/panda/Projects/japan-momentum/dashboard/app.py:663: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret20d = round(float(df['AdjC'].pct_change(20).iloc[-1] * 100), 1)
+INFO:     111.102.197.97:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×5lb / 53.7秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:658: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret5d = round(float(df['AdjC'].pct_change(5).iloc[-1] * 100), 1)
+/Users/panda/Projects/japan-momentum/dashboard/app.py:663: FutureWarning: The default fill_method='pad' in Series.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret20d = round(float(df['AdjC'].pct_change(20).iloc[-1] * 100), 1)
+INFO:     182.170.23.52:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×5lb / 54.7秒
+INFO:     182.170.23.52:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+  ユニバース: キャッシュから2000銘柄読み込み
+INFO:     34.203.209.210:0 - "GET / HTTP/1.1" 200 OK
+INFO:     34.203.209.210:0 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     34.203.209.210:0 - "GET /favicon.png HTTP/1.1" 404 Not Found
+INFO:     35.210.79.196:0 - "GET /admin/serverConfig.json HTTP/1.1" 404 Not Found
+INFO:     35.210.79.196:0 - "GET /admin/serverConfig.json HTTP/1.1" 404 Not Found
+INFO:     34.203.209.210:0 - "GET / HTTP/1.1" 200 OK
+INFO:     Started server process [913]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 48] error while attempting to bind on address ('0.0.0.0', 8080): address already in use
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Started server process [1476]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:58022 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58034 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58036 - "GET /api/weekly_picks HTTP/1.1" 200 OK

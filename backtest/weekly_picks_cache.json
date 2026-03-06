@@ -1,17 +1,252 @@
 {
-  "cached_at": "2026-03-06 11:37 JST",
-  "as_of": "2026-03-05",
+  "cached_at": "2026-03-06 12:14 JST",
+  "as_of": "2026-02-16",
   "params": {
     "lookback": 40,
     "top_n": 2,
     "rebalance": "weekly",
-    "total_return_pct": 783.52
+    "total_return_pct": 542.45
   },
-  "recommended": [],
+  "recommended": [
+    {
+      "code": "31030",
+      "name": "ユニチカ",
+      "price": null,
+      "score": 0.1
+    },
+    {
+      "code": "45960",
+      "name": "窪田製薬ホールディングス",
+      "price": null,
+      "score": 0.05
+    }
+  ],
   "changes": {
-    "buy": [],
-    "sell": [],
-    "hold": []
+    "buy": [
+      {
+        "code": "45960",
+        "name": "窪田製薬ホールディングス",
+        "price": null,
+        "score": 0.05
+      }
+    ],
+    "sell": [
+      {
+        "code": "49600",
+        "name": "ケミプロ化成",
+        "price": null,
+        "score": 0.15
+      }
+    ],
+    "hold": [
+      {
+        "code": "31030",
+        "name": "ユニチカ",
+        "price": null,
+        "score": 0.1
+      }
+    ]
   },
-  "ranking": []
+  "ranking": [
+    {
+      "rank": 1,
+      "code": "285A0",
+      "name": "キオクシアホールディングス",
+      "score": 0.2,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 2,
+      "code": "45700",
+      "name": "免疫生物研究所",
+      "score": 0.2,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 3,
+      "code": "39020",
+      "name": "メディカル・データ・ビジョン",
+      "score": 0.2,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 4,
+      "code": "19480",
+      "name": "弘電社",
+      "score": 0.15,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 5,
+      "code": "49600",
+      "name": "ケミプロ化成",
+      "score": 0.15,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 6,
+      "code": "39970",
+      "name": "トレードワークス",
+      "score": 0.1,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 7,
+      "code": "50160",
+      "name": "ＪＸ金属",
+      "score": 0.1,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 8,
+      "code": "194A0",
+      "name": "ＷＯＬＶＥＳ　ＨＡＮＤ",
+      "score": 0.1,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 9,
+      "code": "31030",
+      "name": "ユニチカ",
+      "score": 0.1,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": true
+    },
+    {
+      "rank": 10,
+      "code": "43160",
+      "name": "ビーマップ",
+      "score": 0.05,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 11,
+      "code": "23340",
+      "name": "イオレ",
+      "score": 0.05,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 12,
+      "code": "18440",
+      "name": "大盛工業",
+      "score": 0.05,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 13,
+      "code": "44640",
+      "name": "ソフト９９コーポレーション",
+      "score": 0.05,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 14,
+      "code": "35560",
+      "name": "リネットジャパングループ",
+      "score": 0.05,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 15,
+      "code": "44460",
+      "name": "Ｌｉｎｋ−Ｕグループ",
+      "score": 0.05,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 16,
+      "code": "36550",
+      "name": "ブレインパッド",
+      "score": 0.05,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 17,
+      "code": "31100",
+      "name": "日東紡績",
+      "score": 0.05,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 18,
+      "code": "57240",
+      "name": "アサカ理研",
+      "score": 0.05,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 19,
+      "code": "45790",
+      "name": "ラクオリア創薬",
+      "score": 0.05,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    },
+    {
+      "rank": 20,
+      "code": "18710",
+      "name": "ピーエス・コンストラクション",
+      "score": 0.05,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
+    }
+  ]
 }

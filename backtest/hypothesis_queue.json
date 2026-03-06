@@ -4729,7 +4729,7 @@
         "gap_momentum_w": 0.05,
         "max_dd_ratio_w": 0.12
       },
-      "status": "pending"
+      "status": "done_win"
     },
     {
       "id": "cross_sectional_vol_rank_w",
@@ -4755,7 +4755,7 @@
         "gap_momentum_w": 0.05,
         "cross_sectional_vol_rank_w": 0.12
       },
-      "status": "pending"
+      "status": "done_win"
     },
     {
       "id": "liquidity_resilience_w",
@@ -4781,7 +4781,7 @@
         "gap_momentum_w": 0.05,
         "liquidity_resilience_w": 0.12
       },
-      "status": "pending"
+      "status": "done_win"
     }
   ],
   "tested_factors": [
