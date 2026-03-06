@@ -12,7 +12,7 @@
     {
       "id": "rs",
       "desc": "日経対比相対強度",
-      "status": "active",
+      "status": "rejected",
       "best_weight": 0.1176,
       "sharpe_contribution": 0.162
     },
@@ -33,7 +33,7 @@
     {
       "id": "high52",
       "desc": "52週高値への近さ",
-      "status": "active",
+      "status": "rejected",
       "best_weight": 0.4706,
       "sharpe_contribution": 1.544
     },

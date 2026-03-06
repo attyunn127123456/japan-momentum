@@ -2102,68 +2102,6 @@
         "upside_capture_w": 0.16
       },
       "status": "done_win"
-    },
-    {
-      "id": "sector_momentum_w",
-      "desc": "業種モメンタムファクター: 同一33業種の平均60日リターンで「テーマ波」を捕捉",
-      "theory": "個別銘柄のモメンタムだけでなく、その銘柄が属するセクター全体のモメンタムが追い風になっているかが重要。AI・防衛・半導体など、テーマ相場では業種全体が一斉に動く。J-Quantsの33業種コードから同業種銘柄の平均60日リターンを計算しランクスコア化。hot sectorの銘柄はファンダメンタル以上に資金フローが集中し、個別モメンタムが持続・加速する。既存ファクター（ret/rs/high52等）は全て個別銘柄レベルの指標で、セクターレベルの情報は完全に未使用の直交的情報源。top_n=3の極集中ではセクター風向きを味方につけた銘柄を選ぶことが決定的。",
-      "factor_to_add": "sector_momentum_w",
-      "params": {
-        "lookback": 60,
-        "top_n": 3,
-        "rebalance": "weekly",
-        "ret_w": 0.28,
-        "rs_w": 0.2,
-        "green_w": 0.08,
-        "smooth_w": 0.0,
-        "high52_w": 0.1,
-        "short_momentum_w": 0.12,
-        "cluster_boost_w": 0.08,
-        "sector_momentum_w": 0.14,
-        "sector_lookback": 60
-      },
-      "status": "pending"
-    },
-    {
-      "id": "overnight_return_w",
-      "desc": "夜間リターンファクター: close→翌open の累積リターンで海外機関投資家の買い圧力を検出",
-      "theory": "日本株の価格発見は東京時間だけでなく夜間（海外市場時間）にも起こる。海外機関投資家はNY時間に注文を出し、翌朝の東京寄り付きに反映される。overnight_return = Σ(open[t]/close[t-1] - 1) over lookback は海外勢の継続的な需要を直接測る。gap_momentum_wは閾値(0.5%)以上のギャップ頻度を測るが、小さいが持続的な夜間プレミアム（毎日+0.1〜0.3%のギャップ）を見逃す。日本株リターンの40%以上は夜間リターンが占めるという実証研究があり、この情報は日中価格ベースの既存ファクターとほぼ直交。top_n=3では海外勢が本格的に買い増している銘柄を選ぶことが+300%への鍵。",
-      "factor_to_add": "overnight_return_w",
-      "params": {
-        "lookback": 60,
-        "top_n": 3,
-        "rebalance": "weekly",
-        "ret_w": 0.28,
-        "rs_w": 0.2,
-        "green_w": 0.08,
-        "smooth_w": 0.0,
-        "high52_w": 0.1,
-        "short_momentum_w": 0.12,
-        "cluster_boost_w": 0.08,
-        "overnight_return_w": 0.14
-      },
-      "status": "pending"
-    },
-    {
-      "id": "volume_acceleration_w",
-      "desc": "出来高加速ファクター: 週次出来高の4週トレンド（傾き）で機関投資家の参入加速を検出",
-      "theory": "volume_confirm_w（現在値vs過去平均）はGA最適化で重み0に収束した。これは「今の出来高が多いか」というスナップショット情報が不十分だったため。volume_accelerationは過去4-6週の週次出来高を線形回帰し、その傾きをスコア化する。出来高が毎週増加している銘柄は機関投資家が段階的にポジションを構築中であり、まだ完全にはポジションが完成していない＝まだ上がる。volume_confirmとの違いは「水準」vs「変化の方向と速度」。価格は既にret/rsで測っているが出来高のトレンドは未測定の独立情報源。特にtop_n=3では「来週も買いが続く」銘柄を選ぶことが必要で、出来高の加速度はその最良の先行指標。",
-      "factor_to_add": "volume_acceleration_w",
-      "params": {
-        "lookback": 60,
-        "top_n": 3,
-        "rebalance": "weekly",
-        "ret_w": 0.28,
-        "rs_w": 0.2,
-        "green_w": 0.08,
-        "smooth_w": 0.0,
-        "high52_w": 0.1,
-        "short_momentum_w": 0.12,
-        "cluster_boost_w": 0.08,
-        "volume_acceleration_w": 0.14,
-        "vol_accel_weeks": 4
-      },
-      "status": "pending"
     }
   ],
   "tested_factors": [

@@ -40,7 +40,14 @@ def precompute(prices_dict, nikkei, lookbacks):
     down_mask = (nk_rets < -0.01).astype(float)
     
     # lb -> factor -> {code: Series}
-    data = {lb: {"ret":{},"rs":{},"green":{},"smooth":{},"resilience":{},"ret5":{},"ret10":{},"omega":{},"high52":{},"close_location":{},"range_expand":{},"win_streak":{}} for lb in lookbacks}
+    data = {lb: {"ret":{},"rs":{},"green":{},"smooth":{},"resilience":{},"ret5":{},"ret10":{},"omega":{},"high52":{},"close_location":{},"range_expand":{},"win_streak":{},"sector_momentum":{},"overnight_return":{},"volume_acceleration":{}} for lb in lookbacks}
+
+    # 業種コードマップを読み込む
+    try:
+        master = pd.read_parquet('data/fundamentals/equities_master.parquet')
+        sector_map = master.set_index('Code')['Sector33Code'].to_dict()
+    except Exception:
+        sector_map = {}
 
     def max_streak(x):
         streak = max_s = 0
@@ -100,7 +107,41 @@ def precompute(prices_dict, nikkei, lookbacks):
             # ATRブレイクアウト・連続陽線（lb非依存だが全lbに保存）
             data[lb]["range_expand"][code] = range_expand
             data[lb]["win_streak"][code]   = win_streak
+            # 業種モメンタム（後でまとめて計算）
+            data[lb]["sector_momentum"][code] = pd.Series(np.nan, index=p.index)
+            # 夜間リターン（close→翌open）
+            if "Open" in df.columns:
+                op = df["Open"].reindex(p.index).ffill()
+                overnight = (op / p.shift(1) - 1)
+                overnight_cum = overnight.rolling(lb).sum().astype(float)
+                data[lb]["overnight_return"][code] = overnight_cum
+            else:
+                data[lb]["overnight_return"][code] = pd.Series(np.nan, index=p.index)
+            # 出来高加速度（4週間トレンドの傾き）
+            if "Volume" in df.columns:
+                vol = df["Volume"].reindex(p.index).replace(0, np.nan)
+                vol_norm = vol / vol.rolling(60, min_periods=20).mean()
+                vol_accel = vol_norm.rolling(20).apply(
+                    lambda x: np.polyfit(range(len(x)), x, 1)[0] if len(x) == 20 else np.nan, raw=True
+                ).astype(float)
+                data[lb]["volume_acceleration"][code] = vol_accel
+            else:
+                data[lb]["volume_acceleration"][code] = pd.Series(np.nan, index=p.index)
     
+    # 業種モメンタムを一括計算（全銘柄のretが揃ってから）
+    for lb in lookbacks:
+        ret_df = pd.DataFrame(data[lb]["ret"])  # date x code
+        sector_ret = {}
+        for code in ret_df.columns:
+            sc = sector_map.get(str(code), sector_map.get(int(code) if str(code).isdigit() else code, None))
+            if sc is not None:
+                sector_ret.setdefault(sc, []).append(ret_df[code])
+        sector_avg = {sc: pd.concat(sers, axis=1).mean(axis=1) for sc, sers in sector_ret.items()}
+        for code in ret_df.columns:
+            sc = sector_map.get(str(code), sector_map.get(int(code) if str(code).isdigit() else code, None))
+            if sc in sector_avg:
+                data[lb]["sector_momentum"][code] = sector_avg[sc].astype(float)
+
     # DataFrameに変換
     factor_dfs = {}
     for lb in lookbacks:
@@ -186,6 +227,33 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
             score_df = ws_ranked * win_streak_w
         else:
             score_df = score_df + ws_ranked * win_streak_w
+
+    # 業種モメンタムファクター
+    sector_momentum_w = params.get('sector_momentum_w', 0.0)
+    if sector_momentum_w > 0 and lb in factor_dfs and 'sector_momentum' in factor_dfs[lb]:
+        sm_ranked = factor_dfs[lb]['sector_momentum'].rank(axis=1, pct=True)
+        if score_df is None:
+            score_df = sm_ranked * sector_momentum_w
+        else:
+            score_df = score_df + sm_ranked * sector_momentum_w
+
+    # 夜間リターンファクター
+    overnight_return_w = params.get('overnight_return_w', 0.0)
+    if overnight_return_w > 0 and lb in factor_dfs and 'overnight_return' in factor_dfs[lb]:
+        or_ranked = factor_dfs[lb]['overnight_return'].rank(axis=1, pct=True)
+        if score_df is None:
+            score_df = or_ranked * overnight_return_w
+        else:
+            score_df = score_df + or_ranked * overnight_return_w
+
+    # 出来高加速度ファクター
+    volume_acceleration_w = params.get('volume_acceleration_w', 0.0)
+    if volume_acceleration_w > 0 and lb in factor_dfs and 'volume_acceleration' in factor_dfs[lb]:
+        va_ranked = factor_dfs[lb]['volume_acceleration'].rank(axis=1, pct=True)
+        if score_df is None:
+            score_df = va_ranked * volume_acceleration_w
+        else:
+            score_df = score_df + va_ranked * volume_acceleration_w
 
     if score_df is None:
         return None
@@ -309,6 +377,9 @@ def select_independent_factors(factor_dfs, lb, all_factors, corr_threshold=0.7):
         'close_location_w': 'close_location',
         'range_expand_w': 'range_expand',
         'win_streak_w': 'win_streak',
+        'sector_momentum_w': 'sector_momentum',
+        'overnight_return_w': 'overnight_return',
+        'volume_acceleration_w': 'volume_acceleration',
     }
 
     fac_lb = factor_dfs.get(lb, {})

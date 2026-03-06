@@ -1,0 +1,36 @@
+{
+  "status": "done",
+  "id": "evolution_cycle",
+  "win": 1,
+  "delta_sharpe": 0.0,
+  "result": {
+    "sharpe": 5.17,
+    "total_pct": 241.06,
+    "alpha_pct": 142.86,
+    "max_dd_pct": 12.98,
+    "params": {
+      "lookback": 60,
+      "top_n": 2,
+      "rebalance": "weekly",
+      "ret_w": 0.07261724781700629,
+      "green_w": 0.12498564152496135,
+      "smooth_w": 0.12467957440176995,
+      "resilience_w": 0.012115895863647681,
+      "high52_w": 0.007755800195211393,
+      "omega_w": 0.10691059874530565,
+      "win_streak_w": 0.009645126163026482,
+      "short_momentum_w": 0.12134357564844932,
+      "cluster_boost_w": 0.00299108458349647,
+      "ret_skip_w": 0.020893997325717336,
+      "volume_confirm_w": 0.04080298182975368,
+      "gap_momentum_w": 0.09866226445304282,
+      "accumulation_w": 0.1264958846616452,
+      "momentum_consistency_w": 0.011706564672688246,
+      "upside_capture_w": 0.11839376211427799,
+      "rs_w": 0.0
+    },
+    "date": "2026-03-05",
+    "hypothesis": "local_search"
+  },
+  "at": "2026-03-05T16:52:12.699661"
+}
