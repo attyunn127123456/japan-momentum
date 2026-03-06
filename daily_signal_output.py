@@ -146,14 +146,17 @@ def run():
     sell = [{'code': c, 'name': name_map.get(c, c)} for c in prev_codes if c not in current_codes]
     hold = [s for s in recommended if s['code'] in prev_codes]
 
-    # top20も出力
-    top20 = []
-    for code in latest.index[:20]:
-        top20.append({
+    # 全銘柄スコアを保存（検索用）
+    all_scores = []
+    for code in latest.index:  # スコアがあるもの全て
+        all_scores.append({
             'code': str(code),
             'name': name_map.get(str(code), str(code)),
             'score': round(float(latest[code]), 4),
         })
+
+    # top20は引き続き先頭20件
+    top20 = all_scores[:20]
 
     output = {
         'as_of': end,
@@ -162,6 +165,7 @@ def run():
         'recommended': recommended,
         'changes': {'buy': buy, 'sell': sell, 'hold': hold},
         'top20': top20,
+        'all_scores': all_scores,  # 全銘柄スコア追加
         'total_return_pct': baseline.get('total_pct', 0),
     }
 

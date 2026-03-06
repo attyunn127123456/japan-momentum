@@ -240,54 +240,81 @@ async def get_ranking():
 @app.get("/api/stock/{code}")
 async def get_stock_info(code: str):
     """特定銘柄のモメンタム情報を返す（コード or 銘柄名で検索）"""
-    cache_path = BASE / "backtest/ranking_cache.json"
-    if not cache_path.exists():
-        raise HTTPException(status_code=404, detail="キャッシュ未生成。generate_dashboard_cache.py を実行してください。")
+    signal_path = BASE / "backtest/daily_signal_output.json"
 
-    ranking = json.loads(cache_path.read_text())
-    rankings = ranking.get('rankings', [])
-
-    # コード or 銘柄名で検索
-    found = None
-    code_normalized = code.zfill(5)
-    for r in rankings:
-        if r.get('code') == code or r.get('code') == code_normalized:
-            found = r
-            break
-    if not found:
-        # 銘柄名部分一致で検索
-        for r in rankings:
-            if code in r.get('name', ''):
-                found = r
-                break
-
-    # top1のスコアを最大値として参照
-    top_score = rankings[0].get('score') if rankings else None
-
-    if not found:
-        # ランキング外の銘柄でも基本情報を返す
-        master_path = BASE / "data/fundamentals/equities_master.parquet"
-        name_map = {}
+    # 銘柄名マッピング
+    master_path = BASE / "data/fundamentals/equities_master.parquet"
+    name_map = {}
+    try:
         if master_path.exists():
             master = pd.read_parquet(master_path)
             name_col = next((c for c in ["CoName", "CompanyName", "Name"] if c in master.columns), None)
             if name_col:
                 name_map = dict(zip(master["Code"].astype(str), master[name_col].astype(str)))
-        name = name_map.get(code, name_map.get(code_normalized, "不明"))
-        found = {
-            "code": code,
-            "name": name,
-            "score": None,
-            "rank": None,
-            "is_top": False,
-            "in_ranking": False,
-        }
-    else:
-        found = dict(found)
-        found["in_ranking"] = True
+    except Exception:
+        pass
 
-    found["top_score"] = top_score
-    return JSONResponse(sanitize(found))
+    query = code.strip()
+
+    # 名前検索：全角→半角変換して部分一致
+    def normalize(s):
+        """全角英数字→半角、大文字→小文字に変換"""
+        result = []
+        for c in s:
+            cp = ord(c)
+            if 0xFF01 <= cp <= 0xFF5E:  # 全角英数記号
+                result.append(chr(cp - 0xFEE0))
+            else:
+                result.append(c)
+        return ''.join(result).lower()
+
+    target_code = None
+
+    # 1. コード直接指定（数字のみ）
+    if query.isdigit():
+        target_code = query.zfill(5)
+    else:
+        # 2. 名前で検索（正規化して部分一致）
+        q_norm = normalize(query)
+        for c, name in name_map.items():
+            if q_norm in normalize(name):
+                target_code = c
+                break
+
+    if not target_code:
+        raise HTTPException(status_code=404, detail=f"銘柄が見つかりません: {query}")
+
+    name = name_map.get(target_code, "不明")
+
+    # all_scoresからスコアを取得
+    score = None
+    rank = None
+    is_top = False
+    top_score = None
+
+    if signal_path.exists():
+        sig = json.loads(signal_path.read_text())
+        top_codes = [s['code'] for s in sig.get('recommended', [])]
+        all_scores = sig.get('all_scores', sig.get('top20', []))  # フォールバック
+
+        top_score = all_scores[0]['score'] if all_scores else None
+
+        for i, s in enumerate(all_scores):
+            if s['code'] == target_code:
+                score = s['score']
+                rank = i + 1
+                is_top = target_code in top_codes
+                break
+
+    return JSONResponse(sanitize({
+        "code": target_code,
+        "name": name,
+        "score": score,
+        "rank": rank,
+        "is_top": is_top,
+        "in_ranking": score is not None,
+        "top_score": top_score,
+    }))
 
 
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")

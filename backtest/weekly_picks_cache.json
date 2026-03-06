@@ -1,5 +1,5 @@
 {
-  "cached_at": "2026-03-06 14:11 JST",
+  "cached_at": "2026-03-06 14:19 JST",
   "as_of": "2026-03-06",
   "params": {
     "lookback": 60,
@@ -11,46 +11,46 @@
     {
       "code": "31030",
       "name": "ユニチカ",
-      "score": 0.791
+      "score": 0.72
     },
     {
       "code": "24370",
       "name": "Ｓｈｉｎｗａ　Ｗｉｓｅ　Ｈｏｌｄｉｎｇｓ",
-      "score": 0.6949
+      "score": 0.635
     },
     {
       "code": "31680",
       "name": "ＭＥＲＦ",
-      "score": 0.6908
+      "score": 0.6319
     }
   ],
   "changes": {
-    "buy": [
+    "buy": [],
+    "sell": [],
+    "hold": [
       {
         "code": "31030",
         "name": "ユニチカ",
-        "score": 0.791
+        "score": 0.72
       },
       {
         "code": "24370",
         "name": "Ｓｈｉｎｗａ　Ｗｉｓｅ　Ｈｏｌｄｉｎｇｓ",
-        "score": 0.6949
+        "score": 0.635
       },
       {
         "code": "31680",
         "name": "ＭＥＲＦ",
-        "score": 0.6908
+        "score": 0.6319
       }
-    ],
-    "sell": [],
-    "hold": []
+    ]
   },
   "ranking": [
     {
       "rank": 1,
       "code": "31030",
       "name": "ユニチカ",
-      "score": 0.791,
+      "score": 0.72,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -60,7 +60,7 @@
       "rank": 2,
       "code": "24370",
       "name": "Ｓｈｉｎｗａ　Ｗｉｓｅ　Ｈｏｌｄｉｎｇｓ",
-      "score": 0.6949,
+      "score": 0.635,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -70,7 +70,7 @@
       "rank": 3,
       "code": "31680",
       "name": "ＭＥＲＦ",
-      "score": 0.6908,
+      "score": 0.6319,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -78,9 +78,9 @@
     },
     {
       "rank": 4,
-      "code": "58010",
-      "name": "古河電気工業",
-      "score": 0.6535,
+      "code": "45880",
+      "name": "オンコリスバイオファーマ",
+      "score": 0.5984,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -88,9 +88,9 @@
     },
     {
       "rank": 5,
-      "code": "45880",
-      "name": "オンコリスバイオファーマ",
-      "score": 0.6535,
+      "code": "58010",
+      "name": "古河電気工業",
+      "score": 0.5977,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -100,7 +100,7 @@
       "rank": 6,
       "code": "39020",
       "name": "メディカル・データ・ビジョン",
-      "score": 0.6464,
+      "score": 0.5897,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -108,9 +108,9 @@
     },
     {
       "rank": 7,
-      "code": "58170",
-      "name": "ＪＭＡＣＳ",
-      "score": 0.6197,
+      "code": "40040",
+      "name": "レゾナック・ホールディングス",
+      "score": 0.5666,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -118,9 +118,9 @@
     },
     {
       "rank": 8,
-      "code": "40040",
-      "name": "レゾナック・ホールディングス",
-      "score": 0.6185,
+      "code": "58170",
+      "name": "ＪＭＡＣＳ",
+      "score": 0.5645,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -130,7 +130,7 @@
       "rank": 9,
       "code": "50160",
       "name": "ＪＸ金属",
-      "score": 0.6046,
+      "score": 0.5533,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -138,9 +138,9 @@
     },
     {
       "rank": 10,
-      "code": "19480",
-      "name": "弘電社",
-      "score": 0.5993,
+      "code": "52520",
+      "name": "日本ナレッジ",
+      "score": 0.5486,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -148,9 +148,9 @@
     },
     {
       "rank": 11,
-      "code": "52520",
-      "name": "日本ナレッジ",
-      "score": 0.5986,
+      "code": "19480",
+      "name": "弘電社",
+      "score": 0.5482,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -158,9 +158,9 @@
     },
     {
       "rank": 12,
-      "code": "19500",
-      "name": "日本電設工業",
-      "score": 0.5945,
+      "code": "24690",
+      "name": "ヒビノ",
+      "score": 0.5451,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -168,9 +168,9 @@
     },
     {
       "rank": 13,
-      "code": "24690",
-      "name": "ヒビノ",
-      "score": 0.5937,
+      "code": "19500",
+      "name": "日本電設工業",
+      "score": 0.5449,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -180,7 +180,7 @@
       "rank": 14,
       "code": "25790",
       "name": "コカ・コーラ　ボトラーズジャパンホールディングス",
-      "score": 0.5906,
+      "score": 0.541,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -190,7 +190,7 @@
       "rank": 15,
       "code": "46200",
       "name": "藤倉化成",
-      "score": 0.5905,
+      "score": 0.541,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -200,7 +200,7 @@
       "rank": 16,
       "code": "19090",
       "name": "日本ドライケミカル",
-      "score": 0.585,
+      "score": 0.5369,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -210,7 +210,7 @@
       "rank": 17,
       "code": "30210",
       "name": "パシフィックネット",
-      "score": 0.5805,
+      "score": 0.5337,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -220,7 +220,7 @@
       "rank": 18,
       "code": "27800",
       "name": "コメ兵ホールディングス",
-      "score": 0.5803,
+      "score": 0.5323,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -230,7 +230,7 @@
       "rank": 19,
       "code": "57270",
       "name": "東邦チタニウム",
-      "score": 0.5791,
+      "score": 0.5292,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -240,7 +240,7 @@
       "rank": 20,
       "code": "41190",
       "name": "日本ピグメントホールディングス",
-      "score": 0.5755,
+      "score": 0.528,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,

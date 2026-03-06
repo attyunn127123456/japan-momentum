@@ -1345,3 +1345,10 @@ TypeError: Object of type bool is not JSON serializable
 事前計算完了: 2000銘柄×3lb / 348.9秒
 /Users/panda/Projects/japan-momentum/run_hypothesis.py:523: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
   return_df = all_prices.pct_change()
+完了: vol_divergence_distribution_detect | delta_sharpe=41.53 | ✅ WIN | 353秒
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
