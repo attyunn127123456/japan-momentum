@@ -364,9 +364,24 @@ def run_optuna_optimization(baseline_params, factor_dfs, prices_dict, nikkei,
     if not available_lbs:
         available_lbs = [base_lb]
 
-    # Factor Selection（ベースlbで相関を計算）
+    # Factor Selection: factor_dfsに実際に存在するもの + eval_paramsが知ってるもの
     factor_lb = base_lb if base_lb in factor_dfs else available_lbs[0]
-    active_factors = select_independent_factors(factor_dfs, factor_lb, all_weight_factors)
+    # factor_dfsに存在するキー + alias経由で使えるキー
+    existing_factors = list(factor_dfs.get(factor_lb, {}).keys())
+    # eval_paramsがaliasで対応する重みキーも含める
+    alias_supported = ['short_momentum_w','cluster_boost_w','ret_skip_w',
+                       'volume_confirm_w','gap_momentum_w','omega_w',
+                       'accumulation_w','momentum_consistency_w','upside_capture_w']
+    # factor_dfsにあるものはcorr計算でフィルタ、aliasはそのまま通す
+    fdf_factors = [f[:-2] if f.endswith("_w") else f for f in all_weight_factors
+                   if f[:-2] in existing_factors]
+    fdf_active = select_independent_factors(factor_dfs, factor_lb,
+                                            [f for f in all_weight_factors if f[:-2] in existing_factors])
+    # aliasは常に含める
+    alias_active = [f for f in alias_supported if f in all_weight_factors]
+    active_factors = list(dict.fromkeys(fdf_active + alias_active))  # 重複除去
+    if not active_factors:
+        active_factors = all_weight_factors  # フォールバック
     print(f"Optuna探索対象ファクター: {active_factors}", flush=True)
     print(f"Optuna TPE: {n_trials}trials 開始...", flush=True)
 
