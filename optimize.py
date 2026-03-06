@@ -292,13 +292,34 @@ def run_grid(start="2023-01-01", end="2026-03-05", n_codes=2000):
 
 
 def select_independent_factors(factor_dfs, lb, all_factors, corr_threshold=0.7):
-    """相関0.7以上のファクターペアから弱い方を除外"""
+    """相関0.7以上のファクターペアから弱い方を除外。
+    all_factors は '_w' サフィックス付きのパラメータ名でも素の名前でも可。
+    factor_dfs のキーは '_w' なし（例: 'ret', 'rs', 'high52'）なので自動マッピングする。
+    """
+    # パラメータ名 → factor_dfs キー のマッピング
+    PARAM_TO_KEY = {
+        'ret_w': 'ret',
+        'rs_w': 'rs',
+        'green_w': 'green',
+        'smooth_w': 'smooth',
+        'resilience_w': 'resilience',
+        'high52_w': 'high52',
+        'omega_w': 'omega',
+        'short_momentum_w': 'ret5',   # ret5 + ret10 の代表として ret5
+        'close_location_w': 'close_location',
+        'range_expand_w': 'range_expand',
+        'win_streak_w': 'win_streak',
+    }
+
+    fac_lb = factor_dfs.get(lb, {})
     factor_series = {}
     for fname in all_factors:
-        if fname in factor_dfs.get(lb, {}):
-            s = factor_dfs[lb][fname].stack().dropna()
+        # '_w' 付きパラメータ名からキーを解決
+        fkey = PARAM_TO_KEY.get(fname, fname.rstrip('_w') if fname.endswith('_w') else fname)
+        if fkey in fac_lb:
+            s = fac_lb[fkey].stack().dropna()
             if len(s) > 100:
-                factor_series[fname] = s
+                factor_series[fname] = s   # キーはパラメータ名のまま保持
 
     if len(factor_series) < 2:
         return list(factor_series.keys())
