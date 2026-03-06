@@ -169,10 +169,13 @@ def precompute(prices_dict, nikkei, lookbacks):
             data[lb]["momentum_consistency"][code] = weekly_win.rolling(max(lb // 5, 1)).mean().astype(float)
 
             # upside_capture: 上方キャプチャ（lb依存）
+            # min_periods=max(5, lb//10) で上昇日が少なくても計算できるようにする
             up_days = nk_rets > 0
             stock_ret_on_up = dr.where(up_days)
             nk_ret_on_up = nk_rets.reindex(dr.index).where(up_days.reindex(dr.index))
-            capture = (stock_ret_on_up.rolling(lb).mean() / nk_ret_on_up.rolling(lb).mean().replace(0, np.nan)).astype(float)
+            _uc_min = max(5, lb // 10)
+            capture = (stock_ret_on_up.rolling(lb, min_periods=_uc_min).mean() /
+                       nk_ret_on_up.rolling(lb, min_periods=_uc_min).mean().replace(0, np.nan)).astype(float)
             data[lb]["upside_capture"][code] = capture
 
             # gap_momentum: 寄り付きギャップ累積（lb依存）
@@ -214,8 +217,14 @@ def precompute(prices_dict, nikkei, lookbacks):
             if "Volume" in df.columns:
                 vol_vs = df["Volume"].reindex(p.index).replace(0, np.nan)
                 log_vol = np.log(vol_vs.clip(lower=1))
-                vol_slope = log_vol.rolling(lb).apply(
-                    lambda x: np.polyfit(range(len(x)), x, 1)[0] if len(x) >= 10 else np.nan,
+                def _vol_slope_fn(x):
+                    mask = ~np.isnan(x)
+                    if mask.sum() < 10:
+                        return np.nan
+                    idx = np.where(mask)[0]
+                    return float(np.polyfit(idx, x[mask], 1)[0])
+                vol_slope = log_vol.rolling(lb, min_periods=10).apply(
+                    _vol_slope_fn,
                     raw=True
                 ).astype(float)
                 data[lb]["volume_slope"][code] = vol_slope
@@ -282,7 +291,7 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
         if score_df is None:
             score_df = short_mom_ranked * short_momentum_w
         else:
-            score_df = score_df + short_mom_ranked * short_momentum_w
+            score_df = score_df.add(short_mom_ranked * short_momentum_w, fill_value=0)
 
     # 52週高値proximityファクター
     high52_w = params.get('high52_w', 0.0)
@@ -291,7 +300,7 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
         if score_df is None:
             score_df = high52_ranked * high52_w
         else:
-            score_df = score_df + high52_ranked * high52_w
+            score_df = score_df.add(high52_ranked * high52_w, fill_value=0)
 
     # Omega比ファクター（上昇/下落の非対称性）
     omega_w = params.get('omega_w', 0.0)
@@ -300,7 +309,7 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
         if score_df is None:
             score_df = omega_ranked * omega_w
         else:
-            score_df = score_df + omega_ranked * omega_w
+            score_df = score_df.add(omega_ranked * omega_w, fill_value=0)
 
     # 終値位置ファクター（引け買い圧力）
     close_location_w = params.get('close_location_w', 0.0)
@@ -309,7 +318,7 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
         if score_df is None:
             score_df = cl_ranked * close_location_w
         else:
-            score_df = score_df + cl_ranked * close_location_w
+            score_df = score_df.add(cl_ranked * close_location_w, fill_value=0)
 
     # ATRブレイクアウト検出ファクター
     range_expand_w = params.get('range_expand_w', 0.0)
@@ -318,7 +327,7 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
         if score_df is None:
             score_df = re_ranked * range_expand_w
         else:
-            score_df = score_df + re_ranked * range_expand_w
+            score_df = score_df.add(re_ranked * range_expand_w, fill_value=0)
 
     # 最大連続陽線日数ファクター
     win_streak_w = params.get('win_streak_w', 0.0)
@@ -327,7 +336,7 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
         if score_df is None:
             score_df = ws_ranked * win_streak_w
         else:
-            score_df = score_df + ws_ranked * win_streak_w
+            score_df = score_df.add(ws_ranked * win_streak_w, fill_value=0)
 
     # 業種モメンタムファクター
     sector_momentum_w = params.get('sector_momentum_w', 0.0)
@@ -336,7 +345,7 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
         if score_df is None:
             score_df = sm_ranked * sector_momentum_w
         else:
-            score_df = score_df + sm_ranked * sector_momentum_w
+            score_df = score_df.add(sm_ranked * sector_momentum_w, fill_value=0)
 
     # 夜間リターンファクター
     overnight_return_w = params.get('overnight_return_w', 0.0)
@@ -345,7 +354,7 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
         if score_df is None:
             score_df = or_ranked * overnight_return_w
         else:
-            score_df = score_df + or_ranked * overnight_return_w
+            score_df = score_df.add(or_ranked * overnight_return_w, fill_value=0)
 
     # 出来高加速度ファクター
     volume_acceleration_w = params.get('volume_acceleration_w', 0.0)
@@ -354,85 +363,85 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
         if score_df is None:
             score_df = va_ranked * volume_acceleration_w
         else:
-            score_df = score_df + va_ranked * volume_acceleration_w
+            score_df = score_df.add(va_ranked * volume_acceleration_w, fill_value=0)
 
     # 下値切り上げファクター
     higher_lows_w = params.get('higher_lows_w', 0.0)
     if higher_lows_w > 0 and lb in factor_dfs and 'higher_lows' in factor_dfs[lb]:
         hl_ranked = factor_dfs[lb]['higher_lows'].rank(axis=1, pct=True)
-        score_df = hl_ranked * higher_lows_w if score_df is None else score_df + hl_ranked * higher_lows_w
+        score_df = hl_ranked * higher_lows_w if score_df is None else score_df.add(hl_ranked * higher_lows_w, fill_value=0)
 
     # 実体強度ファクター
     body_strength_w = params.get('body_strength_w', 0.0)
     if body_strength_w > 0 and lb in factor_dfs and 'body_strength' in factor_dfs[lb]:
         bs_ranked = factor_dfs[lb]['body_strength'].rank(axis=1, pct=True)
-        score_df = bs_ranked * body_strength_w if score_df is None else score_df + bs_ranked * body_strength_w
+        score_df = bs_ranked * body_strength_w if score_df is None else score_df.add(bs_ranked * body_strength_w, fill_value=0)
 
     # 出来高リターン相関ファクター
     vol_return_corr_w = params.get('vol_return_corr_w', 0.0)
     if vol_return_corr_w > 0 and lb in factor_dfs and 'vol_return_corr' in factor_dfs[lb]:
         vrc_ranked = factor_dfs[lb]['vol_return_corr'].rank(axis=1, pct=True)
-        score_df = vrc_ranked * vol_return_corr_w if score_df is None else score_df + vrc_ranked * vol_return_corr_w
+        score_df = vrc_ranked * vol_return_corr_w if score_df is None else score_df.add(vrc_ranked * vol_return_corr_w, fill_value=0)
 
     # 方向性出来高ファクター
     accumulation_w = params.get('accumulation_w', 0.0)
     if accumulation_w > 0 and lb in factor_dfs and 'accumulation' in factor_dfs[lb]:
         acc_ranked = factor_dfs[lb]['accumulation'].rank(axis=1, pct=True)
-        score_df = acc_ranked * accumulation_w if score_df is None else score_df + acc_ranked * accumulation_w
+        score_df = acc_ranked * accumulation_w if score_df is None else score_df.add(acc_ranked * accumulation_w, fill_value=0)
 
     # 週次勝率ファクター
     momentum_consistency_w = params.get('momentum_consistency_w', 0.0)
     if momentum_consistency_w > 0 and lb in factor_dfs and 'momentum_consistency' in factor_dfs[lb]:
         mc_ranked = factor_dfs[lb]['momentum_consistency'].rank(axis=1, pct=True)
-        score_df = mc_ranked * momentum_consistency_w if score_df is None else score_df + mc_ranked * momentum_consistency_w
+        score_df = mc_ranked * momentum_consistency_w if score_df is None else score_df.add(mc_ranked * momentum_consistency_w, fill_value=0)
 
     # 上方キャプチャファクター
     upside_capture_w = params.get('upside_capture_w', 0.0)
     if upside_capture_w > 0 and lb in factor_dfs and 'upside_capture' in factor_dfs[lb]:
         uc_ranked = factor_dfs[lb]['upside_capture'].rank(axis=1, pct=True)
-        score_df = uc_ranked * upside_capture_w if score_df is None else score_df + uc_ranked * upside_capture_w
+        score_df = uc_ranked * upside_capture_w if score_df is None else score_df.add(uc_ranked * upside_capture_w, fill_value=0)
 
     # 寄り付きギャップモメンタムファクター
     gap_momentum_w = params.get('gap_momentum_w', 0.0)
     if gap_momentum_w > 0 and lb in factor_dfs and 'gap_momentum' in factor_dfs[lb]:
         gm_ranked = factor_dfs[lb]['gap_momentum'].rank(axis=1, pct=True)
-        score_df = gm_ranked * gap_momentum_w if score_df is None else score_df + gm_ranked * gap_momentum_w
+        score_df = gm_ranked * gap_momentum_w if score_df is None else score_df.add(gm_ranked * gap_momentum_w, fill_value=0)
 
     # 出来高確認モメンタムファクター
     volume_confirm_w = params.get('volume_confirm_w', 0.0)
     if volume_confirm_w > 0 and lb in factor_dfs and 'volume_confirm' in factor_dfs[lb]:
         vc_ranked = factor_dfs[lb]['volume_confirm'].rank(axis=1, pct=True)
-        score_df = vc_ranked * volume_confirm_w if score_df is None else score_df + vc_ranked * volume_confirm_w
+        score_df = vc_ranked * volume_confirm_w if score_df is None else score_df.add(vc_ranked * volume_confirm_w, fill_value=0)
 
     # スキップ期間モメンタムファクター
     ret_skip_w = params.get('ret_skip_w', 0.0)
     if ret_skip_w > 0 and lb in factor_dfs and 'ret_skip' in factor_dfs[lb]:
         rs_ranked = factor_dfs[lb]['ret_skip'].rank(axis=1, pct=True)
-        score_df = rs_ranked * ret_skip_w if score_df is None else score_df + rs_ranked * ret_skip_w
+        score_df = rs_ranked * ret_skip_w if score_df is None else score_df.add(rs_ranked * ret_skip_w, fill_value=0)
 
     # マルチTFモメンタム一致度ファクター
     cluster_boost_w = params.get('cluster_boost_w', 0.0)
     if cluster_boost_w > 0 and lb in factor_dfs and 'cluster_boost' in factor_dfs[lb]:
         cb_ranked = factor_dfs[lb]['cluster_boost'].rank(axis=1, pct=True)
-        score_df = cb_ranked * cluster_boost_w if score_df is None else score_df + cb_ranked * cluster_boost_w
+        score_df = cb_ranked * cluster_boost_w if score_df is None else score_df.add(cb_ranked * cluster_boost_w, fill_value=0)
 
     # リターン自己相関ファクター
     return_autocorr_w = params.get('return_autocorr_w', 0.0)
     if return_autocorr_w > 0 and lb in factor_dfs and 'return_autocorr' in factor_dfs[lb]:
         ra_ranked = factor_dfs[lb]['return_autocorr'].rank(axis=1, pct=True)
-        score_df = ra_ranked * return_autocorr_w if score_df is None else score_df + ra_ranked * return_autocorr_w
+        score_df = ra_ranked * return_autocorr_w if score_df is None else score_df.add(ra_ranked * return_autocorr_w, fill_value=0)
 
     # 出来高トレンドファクター
     volume_slope_w = params.get('volume_slope_w', 0.0)
     if volume_slope_w > 0 and lb in factor_dfs and 'volume_slope' in factor_dfs[lb]:
         vs_ranked = factor_dfs[lb]['volume_slope'].rank(axis=1, pct=True)
-        score_df = vs_ranked * volume_slope_w if score_df is None else score_df + vs_ranked * volume_slope_w
+        score_df = vs_ranked * volume_slope_w if score_df is None else score_df.add(vs_ranked * volume_slope_w, fill_value=0)
 
     # クリーンモメンタムファクター
     clean_momentum_w = params.get('clean_momentum_w', 0.0)
     if clean_momentum_w > 0 and lb in factor_dfs and 'clean_momentum' in factor_dfs[lb]:
         cm_ranked = factor_dfs[lb]['clean_momentum'].rank(axis=1, pct=True)
-        score_df = cm_ranked * clean_momentum_w if score_df is None else score_df + cm_ranked * clean_momentum_w
+        score_df = cm_ranked * clean_momentum_w if score_df is None else score_df.add(cm_ranked * clean_momentum_w, fill_value=0)
 
     if score_df is None:
         return None

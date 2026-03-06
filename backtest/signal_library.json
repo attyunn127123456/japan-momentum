@@ -19,9 +19,9 @@
     {
       "id": "green",
       "desc": "陽線率",
-      "status": "active",
+      "status": "candidate",
       "best_weight": 0.2,
-      "sharpe_contribution": 0.075
+      "sharpe_contribution": -0.009
     },
     {
       "id": "smooth",
@@ -77,6 +77,6 @@
     "smooth_w": 0.2,
     "resilience_w": 0.0
   },
-  "baseline_sharpe": 1.141,
+  "baseline_sharpe": 0.73,
   "last_updated": "2026-03-05"
 }

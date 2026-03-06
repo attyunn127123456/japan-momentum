@@ -1080,6 +1080,64 @@
       }
     },
     {
+      "at": "2026-03-05T18:04:07.039431",
+      "id": "oos_validation",
+      "desc": "OOS検証 (231取引, 2020〜)",
+      "win": 1,
+      "delta_sharpe": -110.61000000000001,
+      "sharpe": 2.036,
+      "total_return_pct": 261.86,
+      "alpha_pct": 143.73,
+      "max_dd_pct": 42.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "oos_result": {
+        "total_return_pct": 261.86,
+        "sharpe": 2.036,
+        "max_dd_pct": 42.76,
+        "alpha_pct": 143.73,
+        "nikkei_pct": 118.13,
+        "n_trades": 231
+      }
+    },
+    {
+      "at": "2026-03-05T18:06:06.464102",
+      "id": "oos_validation",
+      "desc": "OOS検証 (231取引, 2020〜)",
+      "win": 1,
+      "delta_sharpe": -110.61000000000001,
+      "sharpe": 2.036,
+      "total_return_pct": 261.86,
+      "alpha_pct": 143.73,
+      "max_dd_pct": 42.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "oos_result": {
+        "total_return_pct": 261.86,
+        "sharpe": 2.036,
+        "max_dd_pct": 42.76,
+        "alpha_pct": 143.73,
+        "nikkei_pct": 118.13,
+        "n_trades": 231
+      }
+    },
+    {
       "at": "2026-03-05T10:01:38.727362",
       "id": "vol_candle_exit",
       "desc": "大出来高陰線でエグジットシグナル追加",
@@ -1339,6 +1397,35 @@
         "green_w": 0.25,
         "smooth_w": 0.25,
         "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T18:15:20.932378",
+      "id": "oos_validation",
+      "desc": "OOS検証 (231取引, 2020〜)",
+      "win": 1,
+      "delta_sharpe": -337.20000000000005,
+      "sharpe": 0.808,
+      "total_return_pct": 35.27,
+      "alpha_pct": -82.85,
+      "max_dd_pct": 65.89,
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "oos_result": {
+        "total_return_pct": 35.27,
+        "sharpe": 0.808,
+        "max_dd_pct": 65.89,
+        "alpha_pct": -82.85,
+        "nikkei_pct": 118.13,
+        "n_trades": 231
       }
     },
     {
@@ -2239,5 +2326,5 @@
       }
     }
   ],
-  "total": 88
+  "total": 91
 }

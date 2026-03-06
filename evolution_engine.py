@@ -335,9 +335,10 @@ def run_evolution():
     factor_dfs = precompute(prices_dict, nikkei, [20, 40, 60, 80, 100])
     
     return_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
-    daily_d  = get_rebalance_dates(warmup, END, 'daily')
-    weekly_d = get_rebalance_dates(warmup, END, 'weekly')
-    date_map = {'daily': daily_d, 'weekly': weekly_d}
+    daily_d   = get_rebalance_dates(warmup, END, 'daily')
+    weekly_d  = get_rebalance_dates(warmup, END, 'weekly')
+    monthly_d = get_rebalance_dates(warmup, END, 'monthly')
+    date_map = {'daily': daily_d, 'weekly': weekly_d, 'monthly': monthly_d}
     
     # ---- Step1: queueの手動仮説を先に処理 ----
     for hypo in queue['queue']:

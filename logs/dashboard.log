@@ -1932,3 +1932,4 @@ INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
 INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
 INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
 INFO:     182.170.23.52:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     13.57.48.239:0 - "GET / HTTP/1.1" 200 OK
