@@ -1,38 +1,50 @@
 #!/usr/bin/env python3
 """
 ダッシュボード用キャッシュを一括生成。
-evolution_engine/run_hypothesis完了後に呼ぶ。
+- ranking_cache.json / weekly_picks_cache.json: daily_signal_output.json から生成
+- timeseries_cache.json: baseline.equity_curve から生成
+- データフロー: daily_signal_output.py → generate_dashboard_cache.py → 全キャッシュ
 """
 import sys, json
 sys.path.insert(0, '.')
 from pathlib import Path
 from datetime import datetime
-from collections import Counter
 import pandas as pd
 
 
 def main():
     print("ダッシュボードキャッシュ生成開始...", flush=True)
 
-    # 1. ベストパラメータ取得
+    # 1. ベストパラメータ取得（単一真実のソース）
     q = json.loads(Path("backtest/hypothesis_queue.json").read_text())
     baseline = q["baseline"]
     params = baseline.get("params", {})
 
-    # 2. equity_curve 取得（baseline.equity_curve を単一ソースとして使用）
+    # 2. equity_curve（timeseries用）は baseline から
     equity_curve = baseline.get("equity_curve", [])
+    total_return_pct = baseline.get("total_pct", 0)
+    sharpe = baseline.get("sharpe", 0)
+    max_dd_pct = baseline.get("max_dd_pct", 0)
 
-    if not equity_curve:
-        print("equity_curve未保存。evolution完了後に再実行してください。", flush=True)
-        return
+    print(f"ベスト: total={total_return_pct}%, sharpe={sharpe}, max_dd={max_dd_pct}%", flush=True)
+    print(f"params lb={params.get('lookback')}, top_n={params.get('top_n')}", flush=True)
 
-    total_return_pct = baseline.get("total_pct")
-    sharpe = baseline.get("sharpe")
-    max_dd_pct = baseline.get("max_dd_pct")
+    # 3. daily_signal_output.json の読み込み
+    signal_path = Path("backtest/daily_signal_output.json")
+    today = datetime.now().strftime('%Y-%m-%d')
 
-    print(f"ベスト: total={total_return_pct}%, sharpe={sharpe}", flush=True)
+    if not signal_path.exists():
+        print("daily_signal未生成、ranking/picksキャッシュをスキップ", flush=True)
+        sig = None
+    else:
+        sig = json.loads(signal_path.read_text())
+        as_of = sig.get('as_of', today)
+        if as_of == today:
+            print(f"daily_signalを使用: as_of={today}", flush=True)
+        else:
+            print(f"古いsignalを使用: as_of={as_of}", flush=True)
 
-    # 3. 銘柄名マッピング
+    # 4. 銘柄名マッピング
     name_map = {}
     try:
         master = pd.read_parquet("data/fundamentals/equities_master.parquet")
@@ -42,7 +54,74 @@ def main():
     except Exception as e:
         print(f"銘柄名マッピング取得失敗 (無視): {e}", flush=True)
 
-    # 4. timeseries_cache.json 生成
+    # 5. ranking_cache.json / weekly_picks_cache.json — daily_signalから生成
+    if sig is not None:
+        top_codes = [s['code'] for s in sig.get('recommended', [])]
+        top20 = sig.get('top20', [])
+        as_of = sig.get('as_of', today)
+
+        rankings = []
+        for rank, s in enumerate(top20, 1):
+            rankings.append({
+                "rank": rank,
+                "code": s['code'],
+                "name": s['name'],
+                "score": s['score'],
+                "price": None,
+                "ret5d_pct": None,
+                "ret20d_pct": None,
+                "is_top": s['code'] in top_codes,
+            })
+
+        ranking_cache = {
+            "cached_at": datetime.now().strftime("%Y-%m-%d %H:%M JST"),
+            "as_of": as_of,
+            "params": {
+                "lookback": params.get("lookback"),
+                "top_n": params.get("top_n", 2),
+                "rebalance": params.get("rebalance", "weekly"),
+                "total_return_pct": total_return_pct,
+            },
+            "top_codes": top_codes,
+            "rankings": rankings,
+        }
+        Path("backtest/ranking_cache.json").write_text(
+            json.dumps(ranking_cache, ensure_ascii=False, indent=2, default=str)
+        )
+        print(f"ranking_cache.json 更新: {as_of}, top={top_codes}, rankings={len(rankings)}件", flush=True)
+
+        # changes は daily_signal の changes をそのまま使う（前日比較済み）
+        buy = sig.get('changes', {}).get('buy', [])
+        sell = sig.get('changes', {}).get('sell', [])
+        hold = sig.get('changes', {}).get('hold', [])
+        recommended = sig.get('recommended', [])
+
+        picks_cache = {
+            "cached_at": datetime.now().strftime("%Y-%m-%d %H:%M JST"),
+            "as_of": as_of,
+            "params": {
+                "lookback": params.get("lookback"),
+                "top_n": params.get("top_n", 2),
+                "rebalance": params.get("rebalance", "weekly"),
+                "total_return_pct": total_return_pct,
+            },
+            "recommended": recommended,
+            "changes": {"buy": buy, "sell": sell, "hold": hold},
+            "ranking": rankings[:20],
+        }
+        Path("backtest/weekly_picks_cache.json").write_text(
+            json.dumps(picks_cache, ensure_ascii=False, indent=2, default=str)
+        )
+        print("weekly_picks_cache.json 更新完了", flush=True)
+    else:
+        print("daily_signal未生成のためranking/picksキャッシュはスキップ", flush=True)
+
+    # 6. timeseries_cache.json — equity_curveから生成（データがある時のみ更新）
+    if not equity_curve:
+        print("equity_curve未保存。timeseries_cacheはスキップ。evolution完了後に再実行してください。", flush=True)
+        print("全キャッシュ更新完了！", flush=True)
+        return
+
     # weekly: 100スタートの累積指数
     weekly = [{"date": e["date"], "value": round(e["value"] + 100, 2)} for e in equity_curve]
 
@@ -74,107 +153,8 @@ def main():
     Path("backtest/timeseries_cache.json").write_text(
         json.dumps(timeseries, ensure_ascii=False, indent=2, default=str)
     )
-    print(f"timeseries_cache.json 生成完了 (weekly:{len(weekly)}件, monthly:{len(monthly)}件, holdings:{len(holdings)}件)", flush=True)
-
-    # 5. ranking_cache.json 生成
-    last_entry = equity_curve[-1]
-
-    signal_path = Path("backtest/daily_signal_output.json")
-    if signal_path.exists():
-        sig = json.loads(signal_path.read_text())
-        top_codes = [s['code'] for s in sig.get('recommended', [])]
-        top20 = sig.get('top20', [])
-        as_of = sig.get('as_of', last_entry['date'])
-
-        rankings = []
-        for rank, s in enumerate(top20, 1):
-            rankings.append({
-                "rank": rank,
-                "code": s['code'],
-                "name": s['name'],
-                "score": s['score'],  # 実際のfloatスコア
-                "price": None,
-                "ret5d_pct": None,
-                "ret20d_pct": None,
-                "is_top": s['code'] in top_codes,
-            })
-        print(f"daily_signal_output.json からランキング生成 (as_of:{as_of}, top20:{len(rankings)}件)", flush=True)
-    else:
-        # フォールバック: equity_curveのholdings出現頻度
-        top_codes = [str(c) for c in last_entry.get("holdings", [])]
-        as_of = last_entry["date"]
-
-        code_counts = Counter()
-        for e in equity_curve[-20:]:
-            for c in e.get("holdings", []):
-                code_counts[str(c)] += 1
-
-        rankings = []
-        for rank, (code, count) in enumerate(code_counts.most_common(50), 1):
-            rankings.append({
-                "rank": rank,
-                "code": code,
-                "name": name_map.get(code, code),
-                "score": round(count / 20, 3),
-                "price": None,
-                "ret5d_pct": None,
-                "ret20d_pct": None,
-                "is_top": code in top_codes,
-            })
-        print(f"フォールバック: equity_curveのholdings出現頻度からランキング生成", flush=True)
-
-    ranking_cache = {
-        "cached_at": datetime.now().strftime("%Y-%m-%d %H:%M JST"),
-        "as_of": as_of,
-        "params": {
-            "lookback": params.get("lookback"),
-            "top_n": params.get("top_n", 2),
-            "total_return_pct": total_return_pct,
-        },
-        "top_codes": top_codes,
-        "rankings": rankings,
-    }
-    Path("backtest/ranking_cache.json").write_text(
-        json.dumps(ranking_cache, ensure_ascii=False, indent=2, default=str)
-    )
-    print(f"ranking_cache.json 生成完了 (top:{top_codes}, rankings:{len(rankings)}件)", flush=True)
-
-    # 6. weekly_picks_cache.json 生成
-    prev_holdings = [str(c) for c in equity_curve[-2].get("holdings", [])] if len(equity_curve) >= 2 else []
-    buy = [c for c in top_codes if c not in prev_holdings]
-    sell = [c for c in prev_holdings if c not in top_codes]
-    hold = [c for c in top_codes if c in prev_holdings]
-
-    def stock_info(code):
-        return {
-            "code": code,
-            "name": name_map.get(code, code),
-            "price": None,
-            "score": next((r["score"] for r in rankings if r["code"] == code), 0),
-        }
-
-    picks_cache = {
-        "cached_at": datetime.now().strftime("%Y-%m-%d %H:%M JST"),
-        "as_of": last_entry["date"],
-        "params": {
-            "lookback": params.get("lookback"),
-            "top_n": params.get("top_n", 2),
-            "rebalance": params.get("rebalance", "weekly"),
-            "total_return_pct": total_return_pct,
-        },
-        "recommended": [stock_info(c) for c in top_codes],
-        "changes": {
-            "buy": [stock_info(c) for c in buy],
-            "sell": [stock_info(c) for c in sell],
-            "hold": [stock_info(c) for c in hold],
-        },
-        "ranking": rankings[:20],
-    }
-    Path("backtest/weekly_picks_cache.json").write_text(
-        json.dumps(picks_cache, ensure_ascii=False, indent=2, default=str)
-    )
-    print("weekly_picks_cache.json 生成完了", flush=True)
-    print("全キャッシュ生成完了！", flush=True)
+    print(f"timeseries_cache.json 更新完了 (weekly:{len(weekly)}件, monthly:{len(monthly)}件, holdings:{len(holdings)}件)", flush=True)
+    print("全キャッシュ更新完了！", flush=True)
 
 
 if __name__ == "__main__":

@@ -2855,3 +2855,13 @@ Traceback (most recent call last):
 TypeError: '<' not supported between instances of 'float' and 'NoneType'
 INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
 INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [26174]
+INFO:     Started server process [27090]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:57098 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK

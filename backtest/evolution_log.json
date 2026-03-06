@@ -841,6 +841,27 @@
       }
     },
     {
+      "at": "2026-03-06T14:09:48.425117",
+      "id": "vol_divergence_distribution_detect",
+      "desc": "出来高乖離+加速度ファクターでディストリビューション（天井圏の売り抜け）検知：vol_return_corr_w, volume_acceleration_w, close_location_w追加",
+      "win": 1,
+      "delta_sharpe": 41.53,
+      "sharpe": 3.95,
+      "total_return_pct": 1287.86,
+      "alpha_pct": 1189.66,
+      "max_dd_pct": 38.45,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.06,
+        "rs_w": 0.0,
+        "green_w": 0.04,
+        "smooth_w": 0.04,
+        "resilience_w": 0.08
+      }
+    },
+    {
       "at": "2026-03-06T12:49:52.291770",
       "id": "local_search",
       "desc": "局所探索ベスト lb=60 tn=3",
@@ -2675,5 +2696,5 @@
       }
     }
   ],
-  "total": 99
+  "total": 100
 }

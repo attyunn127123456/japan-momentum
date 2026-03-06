@@ -172,6 +172,19 @@ def run():
     print(f"出力完了: {output_path}")
     print(f"推奨: {[s['name'] for s in recommended]}")
     print(f"BUY: {[s['name'] for s in buy]}, SELL: {[s['name'] for s in sell]}, HOLD: {[s['name'] for s in hold]}")
+
+    # generate_dashboard_cache.py を呼んで全キャッシュを最新化
+    import subprocess
+    print("ダッシュボードキャッシュ更新中...", flush=True)
+    result = subprocess.run(
+        ['python3', 'generate_dashboard_cache.py'],
+        capture_output=True, text=True, cwd=str(Path('.').resolve())
+    )
+    if result.returncode == 0:
+        print("ダッシュボードキャッシュ更新完了", flush=True)
+    else:
+        print(f"キャッシュ更新エラー: {result.stderr[-200:]}", flush=True)
+
     return output
 
 

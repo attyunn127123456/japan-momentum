@@ -1,69 +1,49 @@
 {
-  "cached_at": "2026-03-06 14:08 JST",
-  "as_of": "2026-02-16",
+  "cached_at": "2026-03-06 14:11 JST",
+  "as_of": "2026-03-06",
   "params": {
     "lookback": 60,
     "top_n": 3,
     "rebalance": "weekly",
-    "total_return_pct": 1246.33
+    "total_return_pct": 1287.86
   },
   "recommended": [
     {
       "code": "31030",
       "name": "ユニチカ",
-      "price": null,
       "score": 0.791
     },
     {
       "code": "24370",
       "name": "Ｓｈｉｎｗａ　Ｗｉｓｅ　Ｈｏｌｄｉｎｇｓ",
-      "price": null,
       "score": 0.6949
     },
     {
       "code": "31680",
       "name": "ＭＥＲＦ",
-      "price": null,
       "score": 0.6908
     }
   ],
   "changes": {
     "buy": [
       {
+        "code": "31030",
+        "name": "ユニチカ",
+        "score": 0.791
+      },
+      {
         "code": "24370",
         "name": "Ｓｈｉｎｗａ　Ｗｉｓｅ　Ｈｏｌｄｉｎｇｓ",
-        "price": null,
         "score": 0.6949
       },
       {
         "code": "31680",
         "name": "ＭＥＲＦ",
-        "price": null,
         "score": 0.6908
       }
     ],
-    "sell": [
-      {
-        "code": "39020",
-        "name": "メディカル・データ・ビジョン",
-        "price": null,
-        "score": 0.6464
-      },
-      {
-        "code": "15150",
-        "name": "日鉄鉱業",
-        "price": null,
-        "score": 0
-      }
-    ],
-    "hold": [
-      {
-        "code": "31030",
-        "name": "ユニチカ",
-        "price": null,
-        "score": 0.791
-      }
-    ]
+    "sell": [],
+    "hold": []
   },
   "ranking": [
     {

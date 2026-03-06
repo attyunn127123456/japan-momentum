@@ -67,16 +67,46 @@
       "best_weight": null,
       "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
+    },
+    {
+      "id": "vol_divergence_distribution_detect",
+      "desc": "出来高乖離+加速度ファクターでディストリビューション（天井圏の売り抜け）検知：vol_return_corr_w, volume_acceleration_w, close_location_w追加",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "active",
+      "best_weight": null,
+      "sharpe_contribution": 41.53,
+      "added_at": "2026-03-06"
     }
   ],
   "current_weights": {
-    "rs_w": 0.3,
-    "green_w": 0.2,
-    "high52_w": 0.4706,
-    "ret_w": 0.3,
-    "smooth_w": 0.2,
-    "resilience_w": 0.0
+    "rs_w": 0.0,
+    "green_w": 0.04,
+    "high52_w": 0.11,
+    "ret_w": 0.06,
+    "smooth_w": 0.04,
+    "resilience_w": 0.08,
+    "exit_rsi_w": 0.13,
+    "exit_vol_w": 0.23,
+    "exit_dd_w": 0.42,
+    "exit_mom_w": 0.25,
+    "omega_w": 0.05,
+    "cluster_boost_w": 0.04,
+    "ret_skip_w": 0.05,
+    "win_streak_w": 0.02,
+    "momentum_consistency_w": 0.1,
+    "upside_capture_w": 0.02,
+    "return_autocorr_w": 0.004,
+    "clean_momentum_w": 0.08,
+    "short_momentum_w": 0.03,
+    "volume_confirm_w": 0.06,
+    "gap_momentum_w": 0.008,
+    "accumulation_w": 0.04,
+    "volume_slope_w": 0.09,
+    "vol_return_corr_w": 0.05,
+    "volume_acceleration_w": 0.05,
+    "close_location_w": 0.05
   },
-  "baseline_sharpe": 0.73,
+  "baseline_sharpe": 3.95,
   "last_updated": "2026-03-06"
 }
