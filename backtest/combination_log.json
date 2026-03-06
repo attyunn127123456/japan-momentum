@@ -3019,5 +3019,98 @@
       "n_trades=116",
       "delta_return=-236.8%"
     ]
+  },
+  {
+    "at": "2026-03-05T16:58:50.522912",
+    "id": "combo_high52_all_universe+high52_midcap",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_midcap"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.682,
+    "total_return_pct": 7.8,
+    "alpha_pct": -90.4,
+    "max_dd_pct": 22.39,
+    "delta_sharpe": -4.4879999999999995,
+    "score": 7.8,
+    "adopted": 0,
+    "reasons": [
+      "total_return=+7.8%",
+      "max_dd=22.4%",
+      "n_trades=116",
+      "delta_return=-233.3%"
+    ]
+  },
+  {
+    "at": "2026-03-05T16:58:50.566364",
+    "id": "combo_high52_all_universe+high52_w_boost",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.2,
+      "rs_w": 0.2,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.483,
+    "total_return_pct": 4.73,
+    "alpha_pct": -93.47,
+    "max_dd_pct": 22.84,
+    "delta_sharpe": -4.687,
+    "score": 4.73,
+    "adopted": 0,
+    "reasons": [
+      "total_return=+4.7%",
+      "max_dd=22.8%",
+      "n_trades=116",
+      "delta_return=-236.3%"
+    ]
+  },
+  {
+    "at": "2026-03-05T16:58:50.609728",
+    "id": "combo_high52_midcap+high52_w_boost",
+    "hypotheses": [
+      "high52_midcap",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.15,
+      "smooth_w": 0.15,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.453,
+    "total_return_pct": 4.27,
+    "alpha_pct": -93.93,
+    "max_dd_pct": 23.3,
+    "delta_sharpe": -4.717,
+    "score": 4.27,
+    "adopted": 0,
+    "reasons": [
+      "total_return=+4.3%",
+      "max_dd=23.3%",
+      "n_trades=116",
+      "delta_return=-236.8%"
+    ]
   }
 ]

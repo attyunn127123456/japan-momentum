@@ -1,0 +1,25 @@
+{
+  "status": "done",
+  "id": "topn1_extreme_concentration",
+  "win": 1,
+  "delta_sharpe": 131.41,
+  "result": {
+    "lookback": 60,
+    "top_n": 2,
+    "rebalance": "weekly",
+    "ret_w": 0.3,
+    "rs_w": 0.3,
+    "green_w": 0.2,
+    "smooth_w": 0.2,
+    "resilience_w": 0.0,
+    "top_n_min": 1,
+    "top_n_max": 7,
+    "total_return_pct": 372.47,
+    "alpha_pct": 274.27,
+    "sharpe": 4.126,
+    "max_dd_pct": 38.76,
+    "nikkei_pct": 98.2,
+    "n_trades": 116
+  },
+  "at": "2026-03-05T17:01:51.722729"
+}

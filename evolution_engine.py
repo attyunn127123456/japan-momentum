@@ -167,7 +167,7 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
 
     # パラメータ範囲定義（factor_dfsで利用可能なlookbackのみ）
     RANGES = {
-        'lookback':     [lb for lb in [40, 60, 80, 100, 120] if lb in factor_dfs],
+        'lookback':     [lb for lb in [20, 40, 60, 80, 100] if lb in factor_dfs],
         'top_n':        [3, 5, 7, 10],  # 集中投資方向に
         'ret_w':        [0.0, 0.1, 0.15, 0.2, 0.25, 0.3, 0.4],
         'rs_w':         [0.0, 0.1, 0.15, 0.2, 0.25, 0.3],
@@ -327,7 +327,7 @@ def run_evolution():
     fund_factors = load_fundamental_factors()
     
     print('ファクター事前計算...', flush=True)
-    factor_dfs = precompute(prices_dict, nikkei, [40, 60, 80, 100])
+    factor_dfs = precompute(prices_dict, nikkei, [20, 40, 60, 80, 100])
     
     return_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
     daily_d  = get_rebalance_dates(warmup, END, 'daily')

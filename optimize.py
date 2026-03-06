@@ -618,7 +618,7 @@ def run_optuna_optimization(baseline_params, factor_dfs, prices_dict, nikkei,
             if core_k not in weights:
                 weights[core_k] = 0.0
 
-        trial_rb = trial.suggest_categorical('rebalance', ['weekly', 'daily'])
+        trial_rb = trial.suggest_categorical('rebalance', ['weekly', 'monthly', 'daily'])
         params = {
             'lookback': trial_lb,
             'top_n': top_n,

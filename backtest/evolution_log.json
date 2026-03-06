@@ -614,6 +614,27 @@
       }
     },
     {
+      "at": "2026-03-05T17:01:51.723155",
+      "id": "topn1_extreme_concentration",
+      "desc": "top_n=1の極限集中投資: Optunaのtop_n下限を1に拡張して1銘柄集中の破壊力を検証",
+      "win": 1,
+      "delta_sharpe": 131.41,
+      "sharpe": 4.126,
+      "total_return_pct": 372.47,
+      "alpha_pct": 274.27,
+      "max_dd_pct": 38.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
       "at": "2026-03-05T12:17:10.200492",
       "id": "local_search",
       "desc": "局所探索ベスト lb=40 tn=7",
@@ -2015,5 +2036,5 @@
       }
     }
   ],
-  "total": 80
+  "total": 81
 }
