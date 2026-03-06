@@ -430,11 +430,37 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
     cum = np.cumprod(1+arr); peak = np.maximum.accumulate(cum)
     dd = float(abs(((cum-peak)/peak).min()))
     nk = nikkei.loc[start:]; nk_ret = float(nk.iloc[-1]/nk.iloc[0]-1) if len(nk)>1 else 0
-    
+
+    # 週次時系列データを収集（dashboard用）
+    equity_curve = []
+    portfolio2 = 1_000_000.0
+    for i, date in enumerate(dates[:-1]):
+        next_date = dates[i+1]
+        if date not in score_df.index:
+            continue
+        row = score_df.loc[date].dropna()
+        if row.empty:
+            continue
+        top = row.nlargest(tn).index.tolist()
+        tot, cnt = 0.0, 0
+        if date in return_df.index and next_date in return_df.index:
+            for code in top:
+                if code in return_df.columns:
+                    r = return_df.at[next_date, code]
+                    if not np.isnan(r):
+                        tot += r; cnt += 1
+        if cnt > 0:
+            portfolio2 *= (1 + tot/cnt)
+        equity_curve.append({
+            "date": str(date.date()),
+            "value": round((portfolio2/1_000_000 - 1) * 100, 2),
+            "holdings": [str(c) for c in top]
+        })
+
     return {**params, "total_return_pct": round(tr*100,2),
             "alpha_pct": round((tr-nk_ret)*100,2), "sharpe": round(sharpe,3),
             "max_dd_pct": round(dd*100,2), "nikkei_pct": round(nk_ret*100,2),
-            "n_trades": len(returns)}
+            "n_trades": len(returns), "equity_curve": equity_curve}
 
 
 def run_grid(start="2023-01-01", end="2026-03-05", n_codes=2000):

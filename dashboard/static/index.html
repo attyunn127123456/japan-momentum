@@ -164,6 +164,13 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
     <!-- ベースライン -->
     <div class="section-title">📊 現在のベースライン</div>
     <div class="stats-grid" id="bt-baseline-stats"></div>
+
+    <!-- 累積リターン比較グラフ -->
+    <div id="bt-cumulative-wrap" style="background:#161b22;border:1px solid #21262d;border-radius:8px;padding:14px;margin-top:12px;margin-bottom:12px;display:none">
+      <div style="font-size:12px;color:#8b949e;margin-bottom:8px;font-weight:600">📈 累積リターン比較（ポートフォリオ vs 日経225）</div>
+      <canvas id="bt-cumulative-chart" height="250"></canvas>
+    </div>
+
     <div id="bt-running-banner" style="display:none; background:#1c3a4a; border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:13px; color:#58a6ff;">
       <span class="pulse"></span> 仮説検証中...
     </div>
@@ -443,6 +450,7 @@ async function loadTimeseriesCharts(){
       document.getElementById('bt-monthly-loading').textContent = '⚠️ データなし';
       return;
     }
+    renderCumulativeChart(data);
     renderHoldingsTable(data);
     renderMonthlyTable(data);
   } catch(e){

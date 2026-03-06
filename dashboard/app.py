@@ -214,13 +214,27 @@ def backtest_timeseries():
 
         # holdingsをall_tradesから構築
         name_map = {}
+        # equities_master.parquet（全銘柄）から銘柄名取得
+        try:
+            import pandas as _pd
+            master_path = BASE / "data/fundamentals/equities_master.parquet"
+            if master_path.exists():
+                master_df = _pd.read_parquet(master_path)
+                for _, row in master_df.iterrows():
+                    code = str(row["Code"]).strip()
+                    name = str(row["CoName"]).strip()
+                    if code and name:
+                        name_map[code] = name
+        except Exception:
+            pass
+        # フォールバック: results/latest.json
         try:
             latest_path = BASE / "results/latest.json"
             if latest_path.exists():
                 latest = json.loads(latest_path.read_text())
                 for r in latest.get("results", []):
                     code = (r.get("ticker", "") or r.get("code", "")).replace(".T", "")
-                    if code and r.get("name"):
+                    if code and r.get("name") and code not in name_map:
                         name_map[code] = r["name"]
         except Exception:
             pass

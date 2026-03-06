@@ -207,8 +207,21 @@ def run_backtest(start: str, end: str, top_n: int, rebalance: str, use_regime: b
         with open(out_dir / fname, "w") as f:
             json.dump(result, f, ensure_ascii=False, indent=2)
 
-    # 名前マッピング: results/latest.json から取得
+    # 名前マッピング: equities_master.parquet（全銘柄）から取得
     name_map = {}
+    try:
+        master_path = out_dir.parent / "data/fundamentals/equities_master.parquet"
+        if master_path.exists():
+            import pandas as _pd
+            master_df = _pd.read_parquet(master_path)
+            for _, row in master_df.iterrows():
+                code = str(row["Code"]).strip()
+                name = str(row["CoName"]).strip()
+                if code and name:
+                    name_map[code] = name
+    except Exception:
+        pass
+    # フォールバック: results/latest.json
     try:
         latest_path = out_dir.parent / "results/latest.json"
         if latest_path.exists():
@@ -216,7 +229,7 @@ def run_backtest(start: str, end: str, top_n: int, rebalance: str, use_regime: b
             results_list = latest_data.get("results", [])
             for r in results_list:
                 code = (r.get("ticker", "") or r.get("code", "")).replace(".T", "")
-                if code and r.get("name"):
+                if code and r.get("name") and code not in name_map:
                     name_map[code] = r["name"]
     except Exception:
         pass

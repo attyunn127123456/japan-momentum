@@ -13,19 +13,39 @@ os.chdir(str(BASE))
 
 print(f"[{datetime.now().isoformat()}] ベースラインバックテスト開始...")
 
-# ベースラインパラメータ
-PARAMS = {
-    "lookback": 60,
-    "top_n": 2,
-    "rebalance": "weekly",
-    "ret_w": 0.3,
-    "rs_w": 0.3,
-    "green_w": 0.2,
-    "smooth_w": 0.2,
-}
+# hypothesis_queue.json のベースラインパラメータを使用
+_q_path = BASE / "backtest/hypothesis_queue.json"
+if _q_path.exists():
+    _q = json.loads(_q_path.read_text())
+    _baseline = _q.get("baseline", {})
+    PARAMS = _baseline.get("params", {})
+    if PARAMS:
+        print(f"  ベストパラメータ使用 (total={_baseline.get('total_pct', '?')}%): {PARAMS}")
+    else:
+        PARAMS = {
+            "lookback": 60,
+            "top_n": 2,
+            "rebalance": "weekly",
+            "ret_w": 0.3,
+            "rs_w": 0.3,
+            "green_w": 0.2,
+            "smooth_w": 0.2,
+        }
+        print("  フォールバックパラメータ使用")
+else:
+    PARAMS = {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+    }
+    print("  hypothesis_queue.jsonなし、デフォルトパラメータ使用")
 
 end = datetime.now().strftime("%Y-%m-%d")
-start = (datetime.now() - timedelta(days=365 * 3)).strftime("%Y-%m-%d")
+start = "2023-01-01"
 
 print(f"期間: {start} → {end}, top_n={PARAMS['top_n']}, rebalance={PARAMS['rebalance']}")
 
@@ -48,18 +68,40 @@ raw = json.loads(cache_path.read_text())
 # all_trades は全週（スコアなし）
 weekly_holdings_from_result = {w["date"]: w for w in result.get("weekly_holdings", [])}
 
-# 名前マッピング: results/latest.json から取得
+# 名前マッピング: equities_master.parquet（全銘柄）から取得
 name_map = {}
+try:
+    import pandas as pd
+    master_path = BASE / "data/fundamentals/equities_master.parquet"
+    if master_path.exists():
+        master_df = pd.read_parquet(master_path)
+        for _, row in master_df.iterrows():
+            code = str(row["Code"]).strip()
+            name = str(row["CoName"]).strip()
+            if code and name:
+                name_map[code] = name
+        print(f"  equities_masterから銘柄名マップ: {len(name_map)}件")
+    else:
+        print("  equities_master.parquetなし、latest.jsonにフォールバック")
+except Exception as e:
+    print(f"  equities_master読み込み失敗: {e}")
+
+# フォールバック: results/latest.json からも補完
 try:
     latest = json.loads((BASE / "results/latest.json").read_text())
     results_list = latest.get("results", [])
+    added = 0
     for r in results_list:
         code = (r.get("ticker", "") or r.get("code", "")).replace(".T", "")
-        if code and r.get("name"):
+        if code and r.get("name") and code not in name_map:
             name_map[code] = r["name"]
-    print(f"  銘柄名マップ: {len(name_map)}件")
+            added += 1
+    if added:
+        print(f"  latest.jsonから追加: {added}件")
 except Exception as e:
-    print(f"  名前マップ取得失敗: {e}")
+    print(f"  latest.json読み込み失敗: {e}")
+
+print(f"  銘柄名マップ合計: {len(name_map)}件")
 
 # all_trades から holdings を構築
 all_trades = raw.get("all_trades", [])
