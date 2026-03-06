@@ -1819,3 +1819,48 @@ INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
 INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
 INFO:     182.170.23.52:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
 INFO:     127.0.0.1:61759 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [75810]
+INFO:     Started server process [76403]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found

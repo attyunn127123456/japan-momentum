@@ -6,28 +6,28 @@
       "id": "ret",
       "desc": "80日リターン",
       "status": "rejected",
-      "best_weight": 0.0,
+      "best_weight": 0.3,
       "sharpe_contribution": null
     },
     {
       "id": "rs",
       "desc": "日経対比相対強度",
       "status": "rejected",
-      "best_weight": 0.1176,
+      "best_weight": 0.3,
       "sharpe_contribution": 0.162
     },
     {
       "id": "green",
       "desc": "陽線率",
       "status": "active",
-      "best_weight": 0.4118,
-      "sharpe_contribution": 0.391
+      "best_weight": 0.2,
+      "sharpe_contribution": 0.075
     },
     {
       "id": "smooth",
       "desc": "上昇の滑らかさ",
       "status": "rejected",
-      "best_weight": 0.0,
+      "best_weight": 0.2,
       "sharpe_contribution": 0.22
     },
     {
@@ -63,9 +63,9 @@
       "desc": "top_n=1の極限集中投資: Optunaのtop_n下限を1に拡張して1銘柄集中の破壊力を検証",
       "type": "hypothesis",
       "param_key": null,
-      "status": "active",
+      "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 131.41,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-05"
     }
   ],
@@ -77,6 +77,6 @@
     "smooth_w": 0.2,
     "resilience_w": 0.0
   },
-  "baseline_sharpe": 4.126,
+  "baseline_sharpe": 1.141,
   "last_updated": "2026-03-05"
 }

@@ -699,6 +699,74 @@ def run_optuna_optimization(baseline_params, factor_dfs, prices_dict, nikkei,
     return all_results[:20]
 
 
+def run_oos_validation(best_params, oos_start="2020-01-01", oos_end=None, n_codes=2000, codes=None):
+    """
+    Optunaで見つけたベストパラメータを全期間データで検証（過学習チェック用）。
+    OOS期間のデータが不足していれば自動バックフィルを試みる。
+
+    Args:
+        codes: 既にロード済みの銘柄リスト（省略時はAPIで取得）
+    Returns: dict (eval_params 結果) or None
+    """
+    if oos_end is None:
+        oos_end = datetime.now().strftime("%Y-%m-%d")
+
+    print(f"\n=== OOS検証: {oos_start}〜{oos_end} ===", flush=True)
+
+    if codes is None:
+        codes = get_top_liquid_tickers(n_codes)
+
+    # バックフィルが必要か確認
+    from fetch_cache import get_first_date, backfill_cache
+    needs_backfill = []
+    for c in codes[:200]:  # サンプルチェック（全銘柄は重いので代表）
+        first = get_first_date(c)
+        if first is None or first > oos_start:
+            needs_backfill.append(c)
+    
+    if len(needs_backfill) > 10:
+        print(f"バックフィルが必要な銘柄: {len(needs_backfill)}件 → {oos_start}まで遡って取得します", flush=True)
+        backfill_cache(codes, backfill_to=oos_start, workers=16)
+    else:
+        print(f"キャッシュに十分な履歴データあり (バックフィル不要)", flush=True)
+
+    warmup = (datetime.strptime(oos_start, "%Y-%m-%d") - timedelta(days=200)).strftime("%Y-%m-%d")
+    prices_dict = {}
+    for c in codes:
+        df = read_ohlcv(c, warmup, oos_end)
+        if df is not None and not df.empty and "AdjC" in df.columns:
+            prices_dict[c] = df
+
+    if not prices_dict:
+        print("OOS検証: データなし", flush=True)
+        return None
+
+    print(f"OOS検証: {len(prices_dict)}銘柄ロード完了", flush=True)
+
+    nikkei = get_nikkei_history(warmup, oos_end)
+    lb = best_params.get("lookback", 60)
+    factor_dfs = precompute(prices_dict, nikkei, [lb])
+
+    rebalance = best_params.get("rebalance", "weekly")
+    # monthly も対応
+    rebal_dates = get_rebalance_dates(warmup, oos_end, rebalance)
+    all_prices = pd.DataFrame({c: df["AdjC"] for c, df in prices_dict.items() if "AdjC" in df.columns})
+    return_df = all_prices.pct_change()
+
+    result = eval_params(best_params, factor_dfs, prices_dict, rebal_dates, nikkei, oos_start, return_df)
+    if result:
+        print(
+            f"OOS結果: total={result['total_return_pct']}%, "
+            f"sharpe={result['sharpe']}, max_dd={result['max_dd_pct']}%, "
+            f"alpha={result['alpha_pct']}%, nikkei={result['nikkei_pct']}%",
+            flush=True,
+        )
+    else:
+        print("OOS検証: 結果なし（データ不足）", flush=True)
+
+    return result
+
+
 if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()

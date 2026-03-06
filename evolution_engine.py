@@ -41,7 +41,7 @@ from pathlib import Path
 from fetch_cache import read_ohlcv
 from universe import get_top_liquid_tickers
 from backtest import get_rebalance_dates, get_nikkei_history
-from optimize import precompute, eval_params, run_optuna_optimization
+from optimize import precompute, eval_params, run_optuna_optimization, run_oos_validation
 
 QUEUE_FILE  = Path('backtest/hypothesis_queue.json')
 DONE_FILE   = Path('backtest/hypothesis_done.json')
@@ -177,6 +177,9 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
         'high52_w':         [0.0, 0.1, 0.2, 0.25, 0.3, 0.35, 0.4],
         'omega_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'short_momentum_w': [0.0, 0.05, 0.1, 0.15, 0.2],
+        'dip_absorption_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'price_acceleration_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'trend_efficiency_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'tail_ratio_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'sector_residual_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'intraday_strength_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
@@ -389,7 +392,43 @@ def run_evolution():
         # GA local_search 完了後にファクター整理を実行（best result のパラメータで）
         print('\n--- ファクター整理 (cleanup_weak_signals) ---', flush=True)
         cleanup_weak_signals(p)
-    
+
+    # ---- Step2b: OOS検証 (Walk-Forward Out-of-Sample) ----
+    print('\n--- OOS検証 (Walk-Forward Out-of-Sample) ---', flush=True)
+    current_best_params = queue['baseline'].get('params', bp)
+    oos_result = None
+    try:
+        # prices_dict のコードリストを再利用（APIレート制限回避）
+        loaded_codes = list(prices_dict.keys())
+        oos_result = run_oos_validation(
+            current_best_params,
+            oos_start="2020-01-01",
+            n_codes=N_CODES,
+            codes=loaded_codes,
+        )
+    except Exception as e:
+        print(f'OOS検証エラー（スキップ）: {e}', flush=True)
+
+    if oos_result:
+        train_total = queue['baseline'].get('total_pct', 0)
+        oos_total   = oos_result.get('total_return_pct', 0)
+        print(
+            f'\nOOS vs 訓練: OOS={oos_total:+.1f}% / 訓練={train_total:+.1f}% / '
+            f'OOS sharpe={oos_result["sharpe"]:.3f} max_dd={oos_result["max_dd_pct"]:.1f}%',
+            flush=True,
+        )
+        # evolution_logとqueueにoos_resultを保存
+        queue['baseline']['oos_result'] = _fb(oos_result)
+        QUEUE_FILE.write_text(json.dumps(_fb(queue), ensure_ascii=False, indent=2))
+        append_log(
+            'oos_validation',
+            f'OOS検証 ({oos_result["n_trades"]}取引, 2020〜)',
+            oos_result,
+            win=oos_result['total_return_pct'] > 0,
+            delta=oos_total - train_total,
+            oos_result=oos_result,
+        )
+
     # ---- Step3: 新ファクター試験 ----
     print('\n--- 新ファクター試験 ---', flush=True)
     tested_factors = set(queue.get('tested_factors', []))
@@ -499,7 +538,7 @@ def cleanup_weak_signals(baseline_params):
         print(f'  cleanup_weak_signals エラー（スキップ）: {e}', flush=True)
 
 
-def append_log(hid, desc, result, win, delta):
+def append_log(hid, desc, result, win, delta, oos_result=None):
     log = json.loads(EVO_LOG.read_text()) if EVO_LOG.exists() else {'best10':[], 'all':[], 'total':0}
     entry = {
         'at': datetime.now().isoformat(), 'id': hid, 'desc': desc, 'win': int(win),
@@ -510,6 +549,15 @@ def append_log(hid, desc, result, win, delta):
         'max_dd_pct': result.get('max_dd_pct') if result else None,
         'params': {k: result[k] for k in result if '_w' in k or k in ['lookback','top_n','rebalance']} if result else {},
     }
+    if oos_result:
+        entry['oos_result'] = {
+            'total_return_pct': oos_result.get('total_return_pct'),
+            'sharpe': oos_result.get('sharpe'),
+            'max_dd_pct': oos_result.get('max_dd_pct'),
+            'alpha_pct': oos_result.get('alpha_pct'),
+            'nikkei_pct': oos_result.get('nikkei_pct'),
+            'n_trades': oos_result.get('n_trades'),
+        }
     all_entries = log.get('all', []) + [entry]
     valid = sorted([x for x in all_entries if x.get('sharpe') is not None],
                    key=lambda x: x['sharpe'], reverse=True)

@@ -3205,5 +3205,346 @@
       "n_trades=116",
       "delta_return=-368.2%"
     ]
+  },
+  {
+    "at": "2026-03-05T17:35:14.727797",
+    "id": "combo_high52_all_universe+high52_midcap",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_midcap"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.682,
+    "total_return_pct": 7.8,
+    "alpha_pct": -90.4,
+    "max_dd_pct": 22.39,
+    "delta_sharpe": -3.4440000000000004,
+    "score": 7.8,
+    "adopted": 0,
+    "reasons": [
+      "total_return=+7.8%",
+      "max_dd=22.4%",
+      "n_trades=116",
+      "delta_return=-364.7%"
+    ]
+  },
+  {
+    "at": "2026-03-05T17:35:14.809991",
+    "id": "combo_high52_all_universe+high52_w_boost",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.2,
+      "rs_w": 0.2,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.483,
+    "total_return_pct": 4.73,
+    "alpha_pct": -93.47,
+    "max_dd_pct": 22.84,
+    "delta_sharpe": -3.6430000000000002,
+    "score": 4.73,
+    "adopted": 0,
+    "reasons": [
+      "total_return=+4.7%",
+      "max_dd=22.8%",
+      "n_trades=116",
+      "delta_return=-367.7%"
+    ]
+  },
+  {
+    "at": "2026-03-05T17:35:14.890621",
+    "id": "combo_high52_midcap+high52_w_boost",
+    "hypotheses": [
+      "high52_midcap",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.15,
+      "smooth_w": 0.15,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.453,
+    "total_return_pct": 4.27,
+    "alpha_pct": -93.93,
+    "max_dd_pct": 23.3,
+    "delta_sharpe": -3.6730000000000005,
+    "score": 4.27,
+    "adopted": 0,
+    "reasons": [
+      "total_return=+4.3%",
+      "max_dd=23.3%",
+      "n_trades=116",
+      "delta_return=-368.2%"
+    ]
+  },
+  {
+    "at": "2026-03-05T17:43:04.947416",
+    "id": "combo_topn1_extreme_concentration+oos_validation",
+    "hypotheses": [
+      "topn1_extreme_concentration",
+      "oos_validation"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 3,
+      "rebalance": "weekly",
+      "ret_w": 0.3,
+      "rs_w": 0.3,
+      "green_w": 0.2,
+      "smooth_w": 0.2,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.856,
+    "total_return_pct": 13.78,
+    "alpha_pct": -97.16,
+    "max_dd_pct": 30.64,
+    "delta_sharpe": -3.2700000000000005,
+    "score": 13.78,
+    "adopted": 0,
+    "reasons": [
+      "total_return=+13.8%",
+      "max_dd=30.6%",
+      "n_trades=116",
+      "delta_return=-358.7%"
+    ]
+  },
+  {
+    "at": "2026-03-05T17:43:05.037604",
+    "id": "combo_high52_all_universe+high52_midcap",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_midcap"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.682,
+    "total_return_pct": 7.8,
+    "alpha_pct": -103.14,
+    "max_dd_pct": 22.39,
+    "delta_sharpe": -3.4440000000000004,
+    "score": 7.8,
+    "adopted": 0,
+    "reasons": [
+      "total_return=+7.8%",
+      "max_dd=22.4%",
+      "n_trades=116",
+      "delta_return=-364.7%"
+    ]
+  },
+  {
+    "at": "2026-03-05T17:43:05.127364",
+    "id": "combo_high52_all_universe+high52_w_boost",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.2,
+      "rs_w": 0.2,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.483,
+    "total_return_pct": 4.73,
+    "alpha_pct": -106.21,
+    "max_dd_pct": 22.84,
+    "delta_sharpe": -3.6430000000000002,
+    "score": 4.73,
+    "adopted": 0,
+    "reasons": [
+      "total_return=+4.7%",
+      "max_dd=22.8%",
+      "n_trades=116",
+      "delta_return=-367.7%"
+    ]
+  },
+  {
+    "at": "2026-03-05T17:43:05.215746",
+    "id": "combo_high52_midcap+high52_w_boost",
+    "hypotheses": [
+      "high52_midcap",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.15,
+      "smooth_w": 0.15,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.453,
+    "total_return_pct": 4.27,
+    "alpha_pct": -106.66,
+    "max_dd_pct": 23.3,
+    "delta_sharpe": -3.6730000000000005,
+    "score": 4.27,
+    "adopted": 0,
+    "reasons": [
+      "total_return=+4.3%",
+      "max_dd=23.3%",
+      "n_trades=116",
+      "delta_return=-368.2%"
+    ]
+  },
+  {
+    "at": "2026-03-05T17:44:17.352066",
+    "id": "combo_topn1_extreme_concentration+oos_validation",
+    "hypotheses": [
+      "topn1_extreme_concentration",
+      "oos_validation"
+    ],
+    "merged_params": {
+      "lookback": 60,
+      "top_n": 3,
+      "rebalance": "weekly",
+      "ret_w": 0.3,
+      "rs_w": 0.3,
+      "green_w": 0.2,
+      "smooth_w": 0.2,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.856,
+    "total_return_pct": 13.78,
+    "alpha_pct": -97.16,
+    "max_dd_pct": 30.64,
+    "delta_sharpe": -3.2700000000000005,
+    "score": 13.78,
+    "adopted": 0,
+    "reasons": [
+      "total_return=+13.8%",
+      "max_dd=30.6%",
+      "n_trades=116",
+      "delta_return=-358.7%"
+    ]
+  },
+  {
+    "at": "2026-03-05T17:44:17.435202",
+    "id": "combo_high52_all_universe+high52_midcap",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_midcap"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.682,
+    "total_return_pct": 7.8,
+    "alpha_pct": -103.14,
+    "max_dd_pct": 22.39,
+    "delta_sharpe": -3.4440000000000004,
+    "score": 7.8,
+    "adopted": 0,
+    "reasons": [
+      "total_return=+7.8%",
+      "max_dd=22.4%",
+      "n_trades=116",
+      "delta_return=-364.7%"
+    ]
+  },
+  {
+    "at": "2026-03-05T17:44:17.516547",
+    "id": "combo_high52_all_universe+high52_w_boost",
+    "hypotheses": [
+      "high52_all_universe",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.2,
+      "rs_w": 0.2,
+      "green_w": 0.1375,
+      "smooth_w": 0.1375,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.483,
+    "total_return_pct": 4.73,
+    "alpha_pct": -106.21,
+    "max_dd_pct": 22.84,
+    "delta_sharpe": -3.6430000000000002,
+    "score": 4.73,
+    "adopted": 0,
+    "reasons": [
+      "total_return=+4.7%",
+      "max_dd=22.8%",
+      "n_trades=116",
+      "delta_return=-367.7%"
+    ]
+  },
+  {
+    "at": "2026-03-05T17:44:17.597972",
+    "id": "combo_high52_midcap+high52_w_boost",
+    "hypotheses": [
+      "high52_midcap",
+      "high52_w_boost"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.225,
+      "rs_w": 0.225,
+      "green_w": 0.15,
+      "smooth_w": 0.15,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.453,
+    "total_return_pct": 4.27,
+    "alpha_pct": -106.66,
+    "max_dd_pct": 23.3,
+    "delta_sharpe": -3.6730000000000005,
+    "score": 4.27,
+    "adopted": 0,
+    "reasons": [
+      "total_return=+4.3%",
+      "max_dd=23.3%",
+      "n_trades=116",
+      "delta_return=-368.2%"
+    ]
   }
 ]

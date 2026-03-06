@@ -1022,6 +1022,64 @@
       }
     },
     {
+      "at": "2026-03-05T17:42:56.901161",
+      "id": "oos_validation",
+      "desc": "OOS検証 (231取引, 2020〜)",
+      "win": 1,
+      "delta_sharpe": -102.77000000000004,
+      "sharpe": 2.065,
+      "total_return_pct": 269.7,
+      "alpha_pct": 135.93,
+      "max_dd_pct": 41.73,
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "oos_result": {
+        "total_return_pct": 269.7,
+        "sharpe": 2.065,
+        "max_dd_pct": 41.73,
+        "alpha_pct": 135.93,
+        "nikkei_pct": 133.77,
+        "n_trades": 231
+      }
+    },
+    {
+      "at": "2026-03-05T17:44:09.294187",
+      "id": "oos_validation",
+      "desc": "OOS検証 (231取引, 2020〜)",
+      "win": 1,
+      "delta_sharpe": -102.77000000000004,
+      "sharpe": 2.065,
+      "total_return_pct": 269.7,
+      "alpha_pct": 135.93,
+      "max_dd_pct": 41.73,
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "oos_result": {
+        "total_return_pct": 269.7,
+        "sharpe": 2.065,
+        "max_dd_pct": 41.73,
+        "alpha_pct": 135.93,
+        "nikkei_pct": 133.77,
+        "n_trades": 231
+      }
+    },
+    {
       "at": "2026-03-05T10:01:38.727362",
       "id": "vol_candle_exit",
       "desc": "大出来高陰線でエグジットシグナル追加",
@@ -2036,5 +2094,5 @@
       }
     }
   ],
-  "total": 81
+  "total": 83
 }

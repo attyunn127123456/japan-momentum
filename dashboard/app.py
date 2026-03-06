@@ -323,6 +323,29 @@ def backtest_evolution():
     return JSONResponse(sanitize(data))
 
 
+@app.get("/api/backtest/oos")
+def backtest_oos():
+    """最新OOS検証結果を返す。hypothesis_queue.json の baseline.oos_result から読む。"""
+    q_path = BASE / "backtest/hypothesis_queue.json"
+    if not q_path.exists():
+        return JSONResponse({"error": "no hypothesis data"}, status_code=404)
+    try:
+        q = json.loads(q_path.read_text())
+        oos = q.get("baseline", {}).get("oos_result")
+        if not oos:
+            return JSONResponse({"error": "OOS結果なし（まだ実行されていないか、データ不足）"}, status_code=404)
+        baseline = q.get("baseline", {})
+        return JSONResponse(sanitize({
+            "oos_result": oos,
+            "train_total_pct": baseline.get("total_pct"),
+            "train_sharpe": baseline.get("sharpe"),
+            "oos_start": "2020-01-01",
+            "params": baseline.get("params"),
+        }))
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
 
 @app.get("/")

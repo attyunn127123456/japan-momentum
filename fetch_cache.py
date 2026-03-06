@@ -41,6 +41,13 @@ def get_last_date(code: str) -> str:
     return df.index.max().strftime("%Y-%m-%d")
 
 
+def get_first_date(code: str) -> str:
+    df = load_cache(code)
+    if df.empty:
+        return None
+    return df.index.min().strftime("%Y-%m-%d")
+
+
 def fetch_and_cache(code: str, start: str, end: str) -> bool:
     """1銘柄のデータを取得してキャッシュ。既存データがあれば差分のみ取得。"""
     last = get_last_date(code)
@@ -68,6 +75,63 @@ def fetch_and_cache(code: str, start: str, end: str) -> bool:
     except Exception as e:
         print(f"  [WARN] {code}: {e}")
         return False
+
+
+def backfill_one(code: str, backfill_to: str, retries: int = 3) -> bool:
+    """1銘柄のデータを backfill_to 以前まで遡って取得してキャッシュに追記。"""
+    import time as _time
+    first = get_first_date(code)
+    if first is None:
+        # キャッシュがない場合は通常取得
+        return fetch_and_cache(code, backfill_to, datetime.now().strftime("%Y-%m-%d"))
+
+    if first <= backfill_to:
+        return True  # 既に充分古いデータがある
+
+    # backfill_to から既存キャッシュ開始日の前日まで取得
+    fetch_end = (datetime.strptime(first, "%Y-%m-%d") - timedelta(days=1)).strftime("%Y-%m-%d")
+    if fetch_end < backfill_to:
+        return True
+
+    for attempt in range(retries):
+        try:
+            new_df = get_daily_quotes_code(code, backfill_to, fetch_end)
+            if new_df is None or new_df.empty:
+                return True
+            existing = load_cache(code)
+            if not existing.empty:
+                combined = pd.concat([new_df, existing])
+                combined = combined[~combined.index.duplicated(keep='last')].sort_index()
+            else:
+                combined = new_df
+            save_cache(code, combined)
+            return True
+        except Exception as e:
+            err_str = str(e)
+            if "429" in err_str and attempt < retries - 1:
+                wait = 2 ** attempt + 1  # 2, 3秒
+                _time.sleep(wait)
+                continue
+            print(f"  [WARN backfill] {code}: {e}")
+            return False
+    return False
+
+
+def backfill_cache(codes: list, backfill_to: str = "2020-01-01", workers: int = 4):
+    """既存キャッシュを backfill_to まで遡って取得する。
+    レート制限対策で workers=4 がデフォルト。
+    """
+    print(f"OHLCVバックフィル: {len(codes)}銘柄 → {backfill_to}まで遡る")
+    done = errors = 0
+    with ThreadPoolExecutor(max_workers=workers) as exe:
+        futures = {exe.submit(backfill_one, c, backfill_to): c for c in codes}
+        for f in as_completed(futures):
+            done += 1
+            if not f.result():
+                errors += 1
+            if done % 50 == 0:
+                print(f"  バックフィル {done}/{len(codes)} 完了 (エラー:{errors})")
+    print(f"バックフィル完了: {done}銘柄, エラー:{errors}")
 
 
 def update_cache(codes: list, start: str = "2022-01-01", end: str = None, workers: int = 16):
