@@ -4495,7 +4495,7 @@
     {
       "id": "drawdown_depth_w",
       "desc": "短期ドローダウン深度ファクター: close/rolling_max(close, lb)で「まだ崩れていない」銘柄を選別しmax_dd制御",
-      "theory": "high52_wはGA最適化でweight≒0に収束（252日は長すぎ）。lookback期間の高値からの乖離は直近トレンドの健全性のリアルタイム指標。close/rolling_max(close,lb)が1.0に近い=上昇トレンド健在。OOSでmax_dd=41.73%と制約超過しておりDD制御が最優先。全既存ファクターと直交するポジション品質管理の情報次元。",
+      "theory": "high52_wはGA最適化でweight≒0に収束（252日は長すぎ）。lookback期間の高値からの乖離は直近トレンドの健全性のリアルタイム指標。close/rolling_max(close,lb)が1.0に近い=上昇トレンド健在。OOSでmax_dd=41.73%と制約超過しておりDD制御が最優先。",
       "factor_to_add": "drawdown_depth_w",
       "params": {
         "lookback": 60,
@@ -4516,7 +4516,7 @@
     {
       "id": "return_autocorr_w",
       "desc": "リターン自己相関ファクター: 日次リターンのlag-1自己相関でトレンド持続性を直接測定",
-      "theory": "自己相関は時系列の最も基本的な統計的性質だが既存ファクターで未測定。autocorr>0=トレンド持続型、<0=平均回帰型。top_n=2の5日保有期間中にトレンドが持続する銘柄を選ぶことが全リターンを決定。高autocorr銘柄は急反転リスク低くDD寄与も小。計算: Series.autocorr(lag=1) on rolling lb window。",
+      "theory": "自己相関は時系列の基本統計だが既存ファクターで未測定。autocorr>0=トレンド持続型。top_n=2の5日保有期間中にトレンドが持続する銘柄を選ぶことが全リターンを決定する。",
       "factor_to_add": "return_autocorr_w",
       "params": {
         "lookback": 60,
@@ -4537,7 +4537,7 @@
     {
       "id": "volume_slope_w",
       "desc": "出来高トレンドファクター: lookback期間の出来高の線形回帰スロープで注目度上昇中の銘柄を検出",
-      "theory": "既存出来高ファクター3つと直交: volume_confirm(水準比較→GA weight≒0)、accumulation(方向性→weight=0.127)、vol_return_corr(相関)。出来高の時系列トレンドは未測定。線形増加中の出来高=機関投資家の段階的ポジション構築中=買い未完了=モメンタム持続の先行指標。計算: linregress(range(lb), volume[-lb:]).slope正規化→ランクスコア。",
+      "theory": "既存出来高ファクターと直交。線形増加中の出来高=機関の段階的ポジション構築中=買い未完了=モメンタム持続の先行指標。",
       "factor_to_add": "volume_slope_w",
       "params": {
         "lookback": 60,
