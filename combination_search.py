@@ -63,10 +63,8 @@ def load_data():
         df = read_ohlcv(c, warmup, END)
         if df is None or df.empty or 'AdjC' not in df.columns:
             continue
-        avg_price = df['AdjC'].tail(20).mean()
-        if 200 <= avg_price <= 10000:
-            prices_dict[c] = df
-    print(f'  {len(prices_dict)}銘柄（中型株フィルタ後）', flush=True)
+        prices_dict[c] = df
+    print(f'  {len(prices_dict)}銘柄ロード完了', flush=True)
     nikkei = get_nikkei_history(warmup, END)
     return prices_dict, nikkei, warmup
 

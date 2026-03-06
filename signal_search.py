@@ -62,9 +62,7 @@ def load_prices_and_factors():
         df = read_ohlcv(c, warmup, END)
         if df is None or df.empty or "AdjC" not in df.columns:
             continue
-        avg_price = df["AdjC"].tail(20).mean()
-        if 200 <= avg_price <= 10000:
-            prices_dict[c] = df
+        prices_dict[c] = df
     print(f"  {len(prices_dict)}銘柄ロード完了", flush=True)
     nikkei = get_nikkei_history(warmup, END)
     factor_dfs = precompute(prices_dict, nikkei, [80])

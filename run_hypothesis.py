@@ -59,10 +59,7 @@ def run_universe_midcap(nikkei):
     for c in codes:
         df = read_ohlcv(c, warmup, END)
         if df is None or df.empty or "AdjC" not in df.columns: continue
-        # 価格フィルタ: 中型株近似（500〜5000円帯 = 中型が多い）
-        avg_price = df["AdjC"].tail(20).mean()
-        if 200 <= avg_price <= 10000:
-            prices_dict[c] = df
+        prices_dict[c] = df
     return prices_dict
 
 
