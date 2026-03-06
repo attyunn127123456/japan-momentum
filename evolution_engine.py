@@ -204,6 +204,7 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
         'sector_momentum_w':        [0.0, 0.05, 0.1, 0.15, 0.2],
         'overnight_return_w':       [0.0, 0.05, 0.1, 0.15, 0.2],
         'volume_acceleration_w':    [0.0, 0.05, 0.1, 0.15, 0.2],
+        'trailing_stop':            [-0.15, -0.10, -0.07, -0.05, -0.03, None],
     }
 
     def mutate(params):
@@ -389,6 +390,7 @@ def run_evolution():
                 'alpha_pct': r_train['alpha_pct'],
                 'max_dd_pct': r_train['max_dd_pct'],
                 'params': p,
+                'equity_curve': r_train.get('equity_curve', []),
                 'date': datetime.now().strftime('%Y-%m-%d'),
                 'hypothesis': 'local_search',
             }
@@ -479,6 +481,7 @@ def run_evolution():
             bp = test_p
             baseline['sharpe'] = r_train['sharpe']
             baseline['params'] = test_p
+            baseline['equity_curve'] = r_train.get('equity_curve', [])
             queue['baseline'] = {**baseline, 'date': datetime.now().strftime('%Y-%m-%d'), 'hypothesis': f'factor_{factor_name}'}
             print(f'  → ベースライン更新: sharpe={r_train["sharpe"]}', flush=True)
         

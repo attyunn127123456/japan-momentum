@@ -19,33 +19,16 @@ def main():
     baseline = q["baseline"]
     params = baseline.get("params", {})
 
-    # 2. equity_curve 取得
-    # まず oos_result から取得（最も信頼できるソース）
-    oos = baseline.get("oos_result", {})
-    equity_curve = oos.get("equity_curve", [])
+    # 2. equity_curve 取得（baseline.equity_curve を単一ソースとして使用）
+    equity_curve = baseline.get("equity_curve", [])
 
     if not equity_curve:
-        # フォールバック: evolution_log.json の all エントリから equity_curve 付きを探す
-        log_path = Path("backtest/evolution_log.json")
-        if log_path.exists():
-            log = json.loads(log_path.read_text())
-            entries = []
-            if isinstance(log, list):
-                entries = [e for e in log if e.get("equity_curve")]
-            elif isinstance(log, dict):
-                entries = [e for e in log.get("all", []) if e.get("equity_curve")]
-            if entries:
-                best = max(entries, key=lambda e: e.get("total_return_pct", 0))
-                equity_curve = best["equity_curve"]
-                print(f"evolution_log からequity_curve取得: total={best.get('total_return_pct')}%", flush=True)
-
-    if not equity_curve:
-        print("equity_curveなし、スキップ", flush=True)
+        print("equity_curve未保存。evolution完了後に再実行してください。", flush=True)
         return
 
-    total_return_pct = oos.get("total_return_pct") or baseline.get("total_pct")
-    sharpe = oos.get("sharpe") or baseline.get("sharpe")
-    max_dd_pct = oos.get("max_dd_pct") or baseline.get("max_dd_pct")
+    total_return_pct = baseline.get("total_pct")
+    sharpe = baseline.get("sharpe")
+    max_dd_pct = baseline.get("max_dd_pct")
 
     print(f"ベスト: total={total_return_pct}%, sharpe={sharpe}", flush=True)
 

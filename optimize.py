@@ -276,6 +276,90 @@ def build_score_df(factor_dfs, lb, weights):
     return score.astype(float) if score is not None else None
 
 
+def compute_exit_signal(prices_df, current_date, entry_date, params):
+    """
+    現在保有中の銘柄の「天井スコア」を計算。
+    複数シグナルを合成し、スコアが exit_threshold を超えたら売り。
+    上昇中（直近高値から5%以内かつエントリー比プラス）はスコアを半減させる。
+
+    Returns: (should_exit: bool, score: float)
+    """
+    try:
+        lb = params.get("exit_lookback", 20)
+        mask = prices_df.index <= current_date
+        df = prices_df[mask].tail(lb + 5)
+        if len(df) < 10:
+            return False, 0.0
+
+        close = df['AdjC'].values
+        high = df['H'].values if 'H' in df.columns else close
+        low = df['L'].values if 'L' in df.columns else close
+        # 出来高カラム名: Vo または AdjVo
+        if 'Vo' in df.columns:
+            volume = df['Vo'].values
+        elif 'AdjVo' in df.columns:
+            volume = df['AdjVo'].values
+        else:
+            volume = None
+
+        score = 0.0
+
+        # 1. RSIシグナル（RSI > 75 = 過熱）
+        rsi_w = params.get("exit_rsi_w", 0.3)
+        if len(close) >= 14:
+            delta = np.diff(close)
+            gain = np.where(delta > 0, delta, 0)
+            loss = np.where(delta < 0, -delta, 0)
+            avg_gain = np.mean(gain[-14:])
+            avg_loss = np.mean(loss[-14:])
+            if avg_loss > 0:
+                rs = avg_gain / avg_loss
+                rsi = 100 - 100 / (1 + rs)
+                if rsi > 75:
+                    score += rsi_w * (rsi - 75) / 25  # 75〜100を0〜1に正規化
+
+        # 2. クライマックス出来高（出来高 > 平均の2.0倍）
+        vol_w = params.get("exit_vol_w", 0.25)
+        if volume is not None and len(volume) >= 10:
+            avg_vol = np.mean(volume[-10:-1])
+            current_vol = volume[-1]
+            if avg_vol > 0 and current_vol > avg_vol * 2.0:
+                score += vol_w * min((current_vol / avg_vol - 2.0) / 2.0, 1.0)
+
+        # 3. 高値からの下落（直近高値から-3%以上落ちた）
+        dd_w = params.get("exit_dd_w", 0.3)
+        peak = np.max(close[-lb:])
+        current = close[-1]
+        dd_from_peak = (current - peak) / peak
+        if dd_from_peak < -0.03:
+            score += dd_w * min(abs(dd_from_peak) / 0.15, 1.0)
+
+        # 4. モメンタム失速（短期モメンタムが鈍化）
+        mom_w = params.get("exit_mom_w", 0.15)
+        if len(close) >= 11:
+            ret5  = (close[-1] / close[-6]  - 1) if close[-6]  > 0 else 0
+            ret10 = (close[-1] / close[-11] - 1) if close[-11] > 0 else 0
+            if ret5 < ret10 * 0.3:  # 直近5日が直近10日の30%未満 = 失速
+                score += mom_w
+
+        # エントリー後上昇中は売らない（高値更新中はスコア半減）
+        if entry_date is not None:
+            mask_entry = (prices_df.index >= entry_date) & (prices_df.index <= current_date)
+            since_entry = prices_df[mask_entry]['AdjC']
+            if len(since_entry) >= 2:
+                entry_price = since_entry.iloc[0]
+                recent_high = since_entry.max()
+                current_price = since_entry.iloc[-1]
+                if current_price >= entry_price * 1.02 and current_price >= recent_high * 0.95:
+                    score *= 0.5
+
+        threshold = params.get("exit_threshold", 0.5)
+        return score >= threshold, round(score, 3)
+
+    except Exception:
+        return False, 0.0
+
+
 def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, return_df):
     lb, tn = params["lookback"], params["top_n"]
     weights = {k: params.get(k+"_w", 0.0) for k in ["ret","rs","green","smooth","resilience"]}
@@ -447,68 +531,83 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
         return None
     
     dates = [d for d in rebal_dates if str(d.date()) >= start]
-    
+
+    # トレーリングストップ設定（例: -0.07 = 高値から7%下落で即売り）
+    trailing_stop = params.get("trailing_stop", None)
+
+    def calc_period_return(code, date, next_date):
+        """トレーリングストップを考慮した保有期間リターンを計算"""
+        if trailing_stop is not None and code in prices_dict:
+            try:
+                price_df = prices_dict[code]
+                mask = (price_df.index > date) & (price_df.index <= next_date)
+                period_prices = price_df.loc[mask, 'AdjC']
+                if len(period_prices) > 0:
+                    prev = price_df.loc[price_df.index <= date, 'AdjC']
+                    if len(prev) == 0:
+                        return None
+                    entry_price = prev.iloc[-1]
+                    if entry_price <= 0:
+                        return None
+                    peak = entry_price
+                    exit_price = period_prices.iloc[-1]  # デフォルトは週末価格
+                    for daily_price in period_prices:
+                        peak = max(peak, daily_price)
+                        if (daily_price - peak) / peak <= trailing_stop:
+                            exit_price = daily_price  # ストップ発動
+                            break
+                    return (exit_price - entry_price) / entry_price
+            except Exception:
+                pass
+        # trailing_stopなし or データなし: return_dfから通常計算
+        if code in return_df.columns:
+            r = return_df.at[next_date, code]
+            if not np.isnan(r):
+                return r
+        return None
+
     portfolio = 1_000_000.0
     returns = []
-    
+    equity_curve = []
+
     for i, date in enumerate(dates[:-1]):
         next_date = dates[i+1]
         if date not in score_df.index:
             continue
-        
+
         row = score_df.loc[date].dropna()
         if row.empty:
             continue
         top = row.nlargest(tn).index.tolist()
-        
-        # リターン計算
+
+        # リターン計算（trailing_stop対応）
         tot, cnt = 0.0, 0
         if date in return_df.index and next_date in return_df.index:
             for code in top:
-                if code in return_df.columns:
-                    r = return_df.at[next_date, code]
-                    if not np.isnan(r):
-                        tot += r; cnt += 1
+                r = calc_period_return(code, date, next_date)
+                if r is not None:
+                    tot += r; cnt += 1
         if cnt > 0:
             r = tot / cnt
-            portfolio *= (1+r)
+            portfolio *= (1 + r)
             returns.append(r)
-    
+
+        # equity_curve 記録
+        equity_curve.append({
+            "date": str(date.date()),
+            "value": round((portfolio / 1_000_000 - 1) * 100, 2),
+            "holdings": [str(c) for c in top]
+        })
+
     if len(returns) < 5:
         return None
-    
+
     arr = np.array(returns)
     tr = portfolio/1_000_000 - 1
     sharpe = float(arr.mean()/arr.std()*np.sqrt(252)) if arr.std()>0 else 0
     cum = np.cumprod(1+arr); peak = np.maximum.accumulate(cum)
     dd = float(abs(((cum-peak)/peak).min()))
     nk = nikkei.loc[start:]; nk_ret = float(nk.iloc[-1]/nk.iloc[0]-1) if len(nk)>1 else 0
-
-    # 週次時系列データを収集（dashboard用）
-    equity_curve = []
-    portfolio2 = 1_000_000.0
-    for i, date in enumerate(dates[:-1]):
-        next_date = dates[i+1]
-        if date not in score_df.index:
-            continue
-        row = score_df.loc[date].dropna()
-        if row.empty:
-            continue
-        top = row.nlargest(tn).index.tolist()
-        tot, cnt = 0.0, 0
-        if date in return_df.index and next_date in return_df.index:
-            for code in top:
-                if code in return_df.columns:
-                    r = return_df.at[next_date, code]
-                    if not np.isnan(r):
-                        tot += r; cnt += 1
-        if cnt > 0:
-            portfolio2 *= (1 + tot/cnt)
-        equity_curve.append({
-            "date": str(date.date()),
-            "value": round((portfolio2/1_000_000 - 1) * 100, 2),
-            "holdings": [str(c) for c in top]
-        })
 
     return {**params, "total_return_pct": round(tr*100,2),
             "alpha_pct": round((tr-nk_ret)*100,2), "sharpe": round(sharpe,3),
@@ -700,10 +799,14 @@ def run_optuna_optimization(baseline_params, factor_dfs, prices_dict, nikkei,
                 weights[core_k] = 0.0
 
         trial_rb = trial.suggest_categorical('rebalance', ['weekly', 'monthly', 'daily'])
+        # trailing_stop: 0.0 = なし, 0.03〜0.15 = 3〜15%ストップ
+        trial_stop_raw = trial.suggest_float("trailing_stop_raw", 0.0, 0.15)
+        trial_trailing = -trial_stop_raw if trial_stop_raw > 0.001 else None
         params = {
             'lookback': trial_lb,
             'top_n': top_n,
             'rebalance': trial_rb,
+            'trailing_stop': trial_trailing,
             **weights,
         }
 
