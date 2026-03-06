@@ -1768,3 +1768,33 @@ INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
 INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
 INFO:     182.170.23.52:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
 INFO:     127.0.0.1:61269 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [75628]
+INFO:     Started server process [75783]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [75783]
+INFO:     Started server process [75810]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:61404 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+  ユニバース: キャッシュから2000銘柄読み込み
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 500銘柄×1lb / 7.0秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:220: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+INFO:     127.0.0.1:61428 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61489 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+事前計算完了: 500銘柄×1lb / 5.9秒
+/Users/panda/Projects/japan-momentum/dashboard/app.py:220: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+INFO:     127.0.0.1:61432 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK

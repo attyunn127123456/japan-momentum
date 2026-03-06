@@ -460,6 +460,108 @@ async function loadTimeseriesCharts(){
   }
 }
 
+let _cumulativeChart = null;
+
+function renderCumulativeChart(data){
+  const weekly = (data.weekly || []).sort((a,b) => a.date.localeCompare(b.date));
+  const nikkeiWeekly = (data.nikkei_weekly || []).sort((a,b) => a.date.localeCompare(b.date));
+
+  if(!weekly.length && !nikkeiWeekly.length) return;
+
+  // 100スタートに正規化
+  const normalize = (arr) => {
+    if(!arr.length) return [];
+    const base = arr[0].value;
+    return arr.map(d => ({ date: d.date, value: base !== 0 ? d.value / base * 100 : d.value }));
+  };
+
+  const portNorm = normalize(weekly);
+  const nikkeiNorm = normalize(nikkeiWeekly);
+
+  // 月単位でラベルを間引く（X軸が密にならないよう）
+  const allDates = [...new Set([...portNorm.map(d=>d.date), ...nikkeiNorm.map(d=>d.date)])].sort();
+  const labelSet = new Set();
+  allDates.forEach(d => { const ym = d.slice(0,7); labelSet.add(ym); });
+  // 月ラベルは3ヶ月おきに表示
+  const labelMonths = [...labelSet].filter((_,i) => i % 3 === 0);
+
+  const portMap = Object.fromEntries(portNorm.map(d=>[d.date, d.value]));
+  const nikkeiMap = Object.fromEntries(nikkeiNorm.map(d=>[d.date, d.value]));
+
+  const wrap = document.getElementById('bt-cumulative-wrap');
+  wrap.style.display = 'block';
+
+  const ctx = document.getElementById('bt-cumulative-chart').getContext('2d');
+  if(_cumulativeChart){ _cumulativeChart.destroy(); }
+
+  _cumulativeChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: allDates,
+      datasets: [
+        {
+          label: 'ポートフォリオ',
+          data: allDates.map(d => portMap[d] ?? null),
+          borderColor: '#58a6ff',
+          backgroundColor: 'rgba(88,166,255,0.08)',
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0.3,
+          spanGaps: true
+        },
+        {
+          label: '日経225',
+          data: allDates.map(d => nikkeiMap[d] ?? null),
+          borderColor: '#8b949e',
+          backgroundColor: 'transparent',
+          borderWidth: 1.5,
+          borderDash: [4, 4],
+          pointRadius: 0,
+          tension: 0.3,
+          spanGaps: true
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          display: true,
+          labels: { color: '#c9d1d9', font: { size: 11 }, boxWidth: 20 }
+        },
+        tooltip: {
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y !== null ? ctx.parsed.y.toFixed(1) : '-'}`
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: '#8b949e',
+            font: { size: 10 },
+            maxRotation: 0,
+            callback: function(val, idx) {
+              const d = allDates[idx];
+              if(!d) return '';
+              const ym = d.slice(0,7);
+              return labelMonths.includes(ym) && d === allDates.find(x => x.startsWith(ym)) ? ym : '';
+            }
+          },
+          grid: { color: '#21262d' }
+        },
+        y: {
+          ticks: { color: '#8b949e', font: { size: 10 } },
+          grid: { color: '#21262d' },
+          title: { display: true, text: '累積指数（開始=100）', color: '#8b949e', font: { size: 10 } }
+        }
+      }
+    }
+  });
+}
+
 function renderMonthlyTable(data){
   const monthly = data.monthly || [];
   if(!monthly.length){ document.getElementById('bt-monthly-loading').textContent = 'データなし'; return; }

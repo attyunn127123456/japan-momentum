@@ -153,147 +153,125 @@ def regime():
 
 @app.get("/api/backtest/timeseries")
 def backtest_timeseries():
-    """週次ポートフォリオ時系列・月次リターン・保有銘柄を返す。timeseries_cache.jsonを使う。"""
+    """週次ポートフォリオ時系列・月次リターン・保有銘柄を返す。
+    optimize.py の eval_params()（Optunaベース）で生成・キャッシュする。
+    """
+    import sys
+    import os
     import time
+    import pandas as pd
+    from datetime import datetime as _dt, timedelta as _td
 
     cache_path = BASE / "backtest/timeseries_cache.json"
 
-    def build_timeseries(raw: dict) -> dict:
-        """timeseries_cache.jsonのrawデータを整形してフロント用に返す"""
-        import pandas as pd
-
-        # 新形式（run_baseline_cache.py生成）: weekly/monthly/nikkei_weekly/holdingsが直接ある
-        if "weekly" in raw and raw["weekly"]:
-            result = {
-                "weekly": raw["weekly"],
-                "monthly": raw.get("monthly", []),
-                "nikkei_weekly": raw.get("nikkei_weekly", []),
-                "params": raw.get("params", raw.get("summary", {})),
-                "holdings": raw.get("holdings", []),
-            }
-            return result
-
-        # 旧形式フォールバック: all_trades/equity_curveから計算
-        all_trades = raw.get("all_trades", [])
-        equity_curve = raw.get("equity_curve", [])
-        initial_capital = raw.get("initial_capital", 1_000_000)
-        summary = raw.get("summary", {})
-
-        if not all_trades:
-            return {"error": "no trades data", "weekly": [], "monthly": [], "nikkei_weekly": [], "holdings": []}
-
-        weekly = [
-            {"date": t["date"], "value": round(t["portfolio_value"] / initial_capital * 100, 2)}
-            for t in all_trades
-        ]
-
-        nikkei_weekly = []
-        if equity_curve:
-            nikkei_weekly = [
-                {"date": e["date"], "value": round(e["nikkei"] / initial_capital * 100, 2)}
-                for e in equity_curve
-                if e.get("nikkei") is not None
-            ]
-
-        monthly = []
-        try:
-            if len(all_trades) >= 2:
-                portfolio_values = {t["date"]: t["portfolio_value"] for t in all_trades}
-                series = pd.Series(portfolio_values)
-                series.index = pd.to_datetime(series.index)
-                series = series.sort_index()
-                monthly_end = series.resample("ME").last().dropna()
-                if len(monthly_end) >= 2:
-                    monthly_returns = monthly_end.pct_change().dropna() * 100
-                    monthly = [
-                        {"month": str(d)[:7], "return_pct": round(float(r), 2)}
-                        for d, r in zip(monthly_returns.index, monthly_returns.values)
-                    ]
-        except Exception:
-            monthly = []
-
-        # holdingsをall_tradesから構築
-        name_map = {}
-        # equities_master.parquet（全銘柄）から銘柄名取得
-        try:
-            import pandas as _pd
-            master_path = BASE / "data/fundamentals/equities_master.parquet"
-            if master_path.exists():
-                master_df = _pd.read_parquet(master_path)
-                for _, row in master_df.iterrows():
-                    code = str(row["Code"]).strip()
-                    name = str(row["CoName"]).strip()
-                    if code and name:
-                        name_map[code] = name
-        except Exception:
-            pass
-        # フォールバック: results/latest.json
-        try:
-            latest_path = BASE / "results/latest.json"
-            if latest_path.exists():
-                latest = json.loads(latest_path.read_text())
-                for r in latest.get("results", []):
-                    code = (r.get("ticker", "") or r.get("code", "")).replace(".T", "")
-                    if code and r.get("name") and code not in name_map:
-                        name_map[code] = r["name"]
-        except Exception:
-            pass
-
-        holdings = []
-        for trade in all_trades:
-            tickers = trade.get("top_n", [])
-            stocks = [{"code": t.replace(".T", ""), "name": name_map.get(t.replace(".T", ""), t.replace(".T", "")), "score": None} for t in tickers]
-            holdings.append({"date": trade["date"], "stocks": stocks})
-
-        return {
-            "weekly": weekly,
-            "monthly": monthly,
-            "nikkei_weekly": nikkei_weekly,
-            "params": summary,
-            "holdings": holdings,
-        }
-
+    # キャッシュ確認（24時間以内なら再利用）
     if cache_path.exists():
-        age = time.time() - cache_path.stat().st_mtime
-        if age < 86400:
-            raw = json.loads(cache_path.read_text())
-            built = build_timeseries(raw)
-            if not built.get("error") and (built.get("weekly") or built.get("holdings")):
-                return JSONResponse(sanitize(built))
+        try:
+            cache = json.loads(cache_path.read_text())
+            cached_at_str = cache.get("cached_at", "2000-01-01")
+            cached_at = _dt.fromisoformat(cached_at_str)
+            if _dt.now() - cached_at < _td(hours=24):
+                # 新形式キャッシュ（weekly/monthly/holdingsが直接ある）
+                if cache.get("weekly") or cache.get("holdings"):
+                    return JSONResponse(sanitize(cache))
+        except Exception:
+            pass
 
-    # キャッシュなし or 空 → バックテスト実行（重い処理）
+    # キャッシュなし or 期限切れ → eval_params()で再生成
     try:
-        import sys
         sys.path.insert(0, str(BASE))
-        from backtest import run_backtest
-        from datetime import datetime as _dt, timedelta as _td
-        import os
+        from optimize import precompute, eval_params
+        from backtest import get_nikkei_history, get_rebalance_dates
+        from universe import get_top_liquid_tickers
+        from fetch_cache import read_ohlcv
 
+        # ベースラインパラメータ取得
         q_path = BASE / "backtest/hypothesis_queue.json"
         if not q_path.exists():
             return JSONResponse({"error": "hypothesis_queue.json not found"}, status_code=404)
-
         q = json.loads(q_path.read_text())
-        baseline = q.get("baseline", {})
-        params = baseline.get("params", {})
+        params = q.get("baseline", {}).get("params", {})
         if not params:
             return JSONResponse({"error": "baseline params not found"}, status_code=404)
 
-        end = _dt.now().strftime("%Y-%m-%d")
-        start = "2023-01-01"
+        START = "2023-01-01"
+        END = _dt.now().strftime("%Y-%m-%d")
+        lb = params.get("lookback", 60)
+        rebalance = params.get("rebalance", "weekly")
 
         orig_dir = os.getcwd()
         os.chdir(str(BASE))
         try:
-            run_backtest(start, end, params.get("top_n", 2), params.get("rebalance", "weekly"))
+            # データ読み込み
+            codes = get_top_liquid_tickers(2000)
+            warmup = (_dt.strptime(START, "%Y-%m-%d") - _td(days=200)).strftime("%Y-%m-%d")
+            prices_dict = {}
+            for c in codes:
+                df = read_ohlcv(c, warmup, END)
+                if df is not None and not df.empty and "AdjC" in df.columns:
+                    prices_dict[c] = df
+
+            nikkei = get_nikkei_history(warmup, END)
+            # precompute: prices_dict(dict), nikkei, lookbacks(list) → factor_dfs
+            factor_dfs = precompute(prices_dict, nikkei, [lb])
+
+            rebal_dates = get_rebalance_dates(warmup, END, rebalance)
+            all_prices = pd.DataFrame({c: df["AdjC"] for c, df in prices_dict.items()})
+            return_df = all_prices.pct_change()
+
+            result = eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, START, return_df)
         finally:
             os.chdir(orig_dir)
 
-        if cache_path.exists():
-            raw = json.loads(cache_path.read_text())
-            return JSONResponse(sanitize(build_timeseries(raw)))
-        else:
-            return JSONResponse({"error": "timeseries cache not generated"}, status_code=500)
+        if not result or "equity_curve" not in result:
+            return JSONResponse({"error": "backtest failed or no equity_curve"}, status_code=500)
+
+        equity_curve = result["equity_curve"]
+
+        # 月次リターン計算
+        df_eq = pd.DataFrame(equity_curve).set_index("date")
+        df_eq.index = pd.to_datetime(df_eq.index)
+        monthly_end = df_eq["value"].resample("ME").last()
+        monthly_start = monthly_end.shift(1).fillna(0)
+        monthly_return = ((monthly_end - monthly_start) / (100 + monthly_start) * 100).round(2)
+        monthly = [{"month": str(d)[:7], "return_pct": float(r)} for d, r in monthly_return.items()]
+
+        # 銘柄名マッピング
+        name_map = {}
+        try:
+            master_path = BASE / "data/fundamentals/equities_master.parquet"
+            if master_path.exists():
+                master = pd.read_parquet(master_path)
+                # 利用可能な名前カラムを探す
+                name_col = next(
+                    (c for c in ["CoName", "CompanyName", "Name", "name", "CompanyNameInEnglish"]
+                     if c in master.columns),
+                    None
+                )
+                if name_col:
+                    name_map = dict(zip(master["Code"].astype(str), master[name_col].astype(str)))
+        except Exception:
+            pass
+
+        # holdings（各週の保有銘柄、新しい順）
+        holdings = []
+        for entry in reversed(equity_curve):
+            stocks = [
+                {"code": code, "name": name_map.get(str(code), str(code))}
+                for code in entry["holdings"]
+            ]
+            holdings.append({"date": entry["date"], "stocks": stocks})
+
+        cache_data = {
+            "params": params,
+            "cached_at": _dt.now().isoformat(),
+            "total_return_pct": result.get("total_return_pct"),
+            "weekly": [{"date": e["date"], "value": e["value"] + 100} for e in equity_curve],
+            "monthly": monthly,
+            "holdings": holdings,
+        }
+        cache_path.write_text(json.dumps(cache_data, ensure_ascii=False, indent=2))
+        return JSONResponse(sanitize(cache_data))
 
     except Exception as e:
         import traceback
