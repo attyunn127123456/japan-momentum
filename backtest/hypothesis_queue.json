@@ -39,7 +39,7 @@
     "hypothesis": "vol_divergence_distribution_detect"
   },
   "running": 1,
-  "current_hypothesis": "atr_adaptive_trailing",
+  "current_hypothesis": "exit_vol_divergence_w",
   "last_result": {
     "id": "vol_divergence_distribution_detect",
     "result": {
@@ -5287,7 +5287,7 @@
         "volume_acceleration_w": 0.05,
         "close_location_w": 0.05
       },
-      "status": "pending"
+      "status": "running"
     },
     {
       "id": "return_skew_filter_w",

@@ -73,7 +73,7 @@
       "desc": "出来高乖離+加速度ファクターでディストリビューション（天井圏の売り抜け）検知：vol_return_corr_w, volume_acceleration_w, close_location_w追加",
       "type": "hypothesis",
       "param_key": null,
-      "status": "active",
+      "status": "rejected",
       "best_weight": null,
       "sharpe_contribution": 41.53,
       "added_at": "2026-03-06"

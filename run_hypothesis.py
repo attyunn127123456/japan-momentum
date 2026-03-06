@@ -29,7 +29,7 @@ QUEUE_FILE = Path("backtest/hypothesis_queue.json")
 DONE_FILE  = Path("backtest/hypothesis_done.json")
 START = "2023-01-01"
 END   = datetime.now().strftime("%Y-%m-%d")
-N_CODES = 2000
+N_CODES = 4000
 DELTA_THRESHOLD = 5.0  # total_return_pct の改善幅（5%以上で採用）
 
 

@@ -950,6 +950,45 @@
       }
     },
     {
+      "at": "2026-03-06T14:21:24.288603",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=80 tn=4",
+      "win": 0,
+      "delta_sharpe": -0.496,
+      "sharpe": 3.403,
+      "total_return_pct": 652.01,
+      "alpha_pct": 553.81,
+      "max_dd_pct": 28.4,
+      "params": {
+        "lookback": 80,
+        "top_n": 4,
+        "rebalance": "weekly",
+        "exit_rsi_w": 0.13966437674579277,
+        "exit_vol_w": 0.26494379144323454,
+        "exit_dd_w": 0.16747999085712806,
+        "exit_mom_w": 0.20586479861339346,
+        "ret_w": 0.11150174166291496,
+        "green_w": 0.0886288782639648,
+        "smooth_w": 0.043414425600578864,
+        "resilience_w": 0.05952690718699109,
+        "high52_w": 0.0061522233156206824,
+        "omega_w": 0.07017777402643241,
+        "cluster_boost_w": 0.028565722382617068,
+        "ret_skip_w": 0.0632611682943819,
+        "win_streak_w": 0.050280174820947515,
+        "momentum_consistency_w": 0.08459974060278035,
+        "upside_capture_w": 0.034003136064339676,
+        "return_autocorr_w": 0.00023717303392484826,
+        "short_momentum_w": 0.10466030082066823,
+        "volume_confirm_w": 0.06475034501350059,
+        "gap_momentum_w": 0.04599499349206496,
+        "accumulation_w": 0.01789946681582171,
+        "volume_slope_w": 0.06509501056460198,
+        "clean_momentum_w": 0.06125081803784814,
+        "rs_w": 0.0
+      }
+    },
+    {
       "at": "2026-03-05T11:57:14.083656",
       "id": "local_search",
       "desc": "局所探索ベスト lb=40 tn=10",
@@ -2696,5 +2735,5 @@
       }
     }
   ],
-  "total": 100
+  "total": 101
 }

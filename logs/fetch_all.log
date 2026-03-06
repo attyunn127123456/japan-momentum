@@ -1925,3 +1925,6 @@ for url: https://api.jquants.com/v2/equities/bars/daily?code=43900&from=2022-01-
   [WARN] 58210: 429 Client Error:  for url: https://api.jquants.com/v2/equities/bars/daily?code=58210&from=2022-01-01&to=2026-03-05
 完了: 1026銘柄, エラー:930
 完了！
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+取得開始: 1905銘柄 (2016-01-01〜)

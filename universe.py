@@ -13,8 +13,8 @@ from jquants import get_daily_quotes_date, get_master
 CACHE_TTL_HOURS = 24  # 1日キャッシュ
 
 
-def get_top_liquid_tickers(n: int = 2000) -> list[str]:
-    """売買代金上位N銘柄のコードリスト（4桁）を返す"""
+def get_top_liquid_tickers(n: int = 4000) -> list[str]:
+    """売買代金上位N銘柄のコードリスト（プライム+スタンダード+グロース全銘柄対象）"""
     import time
 
     cache_path = Path(f"data/universe_cache_{n}.json")
@@ -58,7 +58,7 @@ def get_top_liquid_tickers(n: int = 2000) -> list[str]:
 
     # 投資信託・ETF除外（MktNm == 'その他'）
     master = get_master()
-    exclude_codes = set(master[master['MktNm'] == 'その他']['Code'].astype(str).tolist())
+    exclude_codes = set(master[master['MktNm'].isin(['その他', 'TOKYO PRO MARKET'])]['Code'].astype(str).tolist())
     print(f"    除外: 投資信託/ETF {len(exclude_codes)}銘柄")
 
     # ランキング
