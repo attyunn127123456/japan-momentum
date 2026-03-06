@@ -17,7 +17,7 @@
     "date": "2026-03-05",
     "hypothesis": "topn1_extreme_concentration"
   },
-  "running": 1,
+  "running": false,
   "current_hypothesis": "daily_rebalance_unlock",
   "last_result": {
     "id": "topn1_extreme_concentration",
@@ -2274,6 +2274,69 @@
         ]
       },
       "status": "running"
+    },
+    {
+      "id": "trend_efficiency_w",
+      "desc": "トレンド効率ファクター (Kaufman Efficiency Ratio): 価格変動の方向性効率=|net移動|/総移動距離 で「真っ直ぐ上がる銘柄」を検出",
+      "theory": "smooth_wは日次リターンの標準偏差の低さ(=静かさ)を測るが、強いトレンド中の銘柄はボラが高くても方向性は一貫している。Efficiency Ratio = abs(close[t]-close[t-lb]) / sum(abs(close[i]-close[i-1]))は0〜1の値で、1に近いほどジグザグせず直線的に動いている。top_n=1-2の極集中では「確信を持って一方向に動いている銘柄」に全資金を置くことが最善。smooth_w(低ボラ)との相関は低い:高ボラでも方向が一貫していれば効率は高い。Kaufman(1995)のAdaptive Moving Averageで実証済みの指標。OHLCの終値のみで計算可能。",
+      "factor_to_add": "trend_efficiency_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.07,
+        "green_w": 0.12,
+        "smooth_w": 0.12,
+        "omega_w": 0.1,
+        "short_momentum_w": 0.12,
+        "accumulation_w": 0.12,
+        "upside_capture_w": 0.11,
+        "gap_momentum_w": 0.1,
+        "trend_efficiency_w": 0.12
+      },
+      "status": "pending"
+    },
+    {
+      "id": "price_acceleration_w",
+      "desc": "価格加速度ファクター（モメンタムの2次微分）: 10日リターンの10日変化量でモメンタムが加速中の銘柄を早期捕捉",
+      "theory": "short_momentum_w(直近5-10日リターン)はモメンタムの「水準」(1次微分)を測るが、「加速しているか」(2次微分)は未測定。price_acceleration = ret_10d[t] - ret_10d[t-10]が正で大きい銘柄は、10日前よりも今の方がモメンタムが強い=まだピークに達していない加速フェーズにある。過去のmomentum_acceleration(前半/後半40日比較, failed)は粒度が粗すぎた。10日単位の加速度は週次リバランスとの整合性が高く、「先週より今週の方が強い」銘柄を直接検出する。top_n=1-2では「今この瞬間に最も加速している」銘柄に乗ることが+400%への鍵。ret_skip_w(長期)やwin_streak_w(連騰日数)とは完全に直交する情報次元。",
+      "factor_to_add": "price_acceleration_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.07,
+        "green_w": 0.12,
+        "smooth_w": 0.12,
+        "omega_w": 0.1,
+        "short_momentum_w": 0.1,
+        "accumulation_w": 0.12,
+        "upside_capture_w": 0.11,
+        "gap_momentum_w": 0.1,
+        "price_acceleration_w": 0.14
+      },
+      "status": "pending"
+    },
+    {
+      "id": "dip_absorption_w",
+      "desc": "ディップ吸収力ファクター: 日中下落からの回復力を測定し「売り圧力を吸収できる銘柄」を選定（max_dd制約対策）",
+      "theory": "現在max_dd=38.76%で制約40%にギリギリ。DDを直接減らすには「下がっても戻る銘柄」を選ぶことが最も効果的。dip_absorption = mean((close-low)/(open-low)) for days where low < open: 日中にdipしたがcloseで回復した度合い。1.0超=dipから完全回復+α、0.5=半分しか戻らず。resilience_w(市場下落日の相対強度)やhigher_lows_w(安値切り上げ)とは異なり、銘柄「自身の」日中下落からの回復力を測定する独自情報。top_n=1-2では1銘柄の日中急落がポートフォリオmax_ddを直接決定するため、dip吸収力が高い銘柄を選ぶことでDD制約を満たしつつリターンを維持できる。OHLCのみで計算可能。",
+      "factor_to_add": "dip_absorption_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.07,
+        "green_w": 0.11,
+        "smooth_w": 0.11,
+        "omega_w": 0.1,
+        "short_momentum_w": 0.12,
+        "accumulation_w": 0.12,
+        "upside_capture_w": 0.11,
+        "gap_momentum_w": 0.1,
+        "dip_absorption_w": 0.14
+      },
+      "status": "pending"
     }
   ],
   "tested_factors": [
