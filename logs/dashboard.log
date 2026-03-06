@@ -2441,3 +2441,14 @@ INFO:     127.0.0.1:62982 - "GET /api/timeseries HTTP/1.1" 404 Not Found
 INFO:     127.0.0.1:63014 - "GET /api/backtest HTTP/1.1" 200 OK
 INFO:     127.0.0.1:63016 - "GET / HTTP/1.1" 200 OK
 INFO:     127.0.0.1:63025 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK

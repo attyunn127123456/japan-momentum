@@ -9,6 +9,21 @@
 import itertools, time, traceback
 import json_safe as json
 
+def _backup_baseline(baseline):
+    """ベースライン更新前に自動バックアップ"""
+    from datetime import datetime
+    from pathlib import Path
+    import json
+    try:
+        Path('backtest/backups').mkdir(exist_ok=True)
+        ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+        total = baseline.get('total_pct', 0)
+        p = f'backtest/backups/baseline_{ts}_total{total:.1f}.json'
+        Path(p).write_text(json.dumps(baseline, ensure_ascii=False, indent=2, default=str))
+        print(f'[backup] {p}', flush=True)
+    except Exception as e:
+        print(f'[backup] 失敗: {e}', flush=True)
+
 def _fb(o):
     """bool/NaN/Inf をJSONシリアライズ可能に変換"""
     if isinstance(o, bool): return int(o)
@@ -384,6 +399,8 @@ def run_evolution():
                    r_train, adopted, r_train['sharpe'] - baseline['sharpe'])
         if adopted:
             print(f'\n✅ 局所探索で改善: sharpe {baseline["sharpe"]} → {r_train["sharpe"]}', flush=True)
+            # ベースライン更新前にバックアップ
+            _backup_baseline(queue['baseline'])
             queue['baseline'] = {
                 'sharpe': r_train['sharpe'],
                 'total_pct': r_train['total_return_pct'],
@@ -589,3 +606,4 @@ if __name__ == '__main__':
         print(f'エラー: {e}')
         traceback.print_exc()
         DONE_FILE.write_text(json.dumps(_fb({'status': 'error', 'id': 'evolution', 'error': str(e)}), ensure_ascii=False))
+# baseline backup は evolution_engine.py 内で自動実行される
