@@ -143,14 +143,17 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
 <div id="panel-ranking" class="panel">
   <div id="ranking-loading" class="empty-state">データ取得中...</div>
   <div id="ranking-wrap" style="display:none">
+    <div id="ranking-header" style="background:#161b22;border:1px solid #21262d;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#e6edf3;"></div>
     <div class="mobile-only" id="ranking-cards"></div>
     <div class="desktop-only table-wrap">
       <table><thead><tr>
-        <th onclick="sortRank(0)">#</th><th onclick="sortRank(1)">銘柄</th><th>銘柄名</th>
-        <th onclick="sortRank(2)">セクター</th><th onclick="sortRank(3)">スコア↓</th>
-        <th onclick="sortRank(4)">RS</th><th onclick="sortRank(5)">中期リターン</th>
-        <th onclick="sortRank(6)">出来高</th><th onclick="sortRank(7)">陽線率</th>
-        <th onclick="sortRank(8)">RS加速</th><th>現在値</th>
+        <th onclick="sortRankNew(0)">#</th>
+        <th onclick="sortRankNew(1)">銘柄</th>
+        <th>銘柄名</th>
+        <th onclick="sortRankNew(2)">スコア↓</th>
+        <th onclick="sortRankNew(3)">株価</th>
+        <th onclick="sortRankNew(4)">5日リターン</th>
+        <th onclick="sortRankNew(5)">20日リターン</th>
       </tr></thead><tbody id="ranking-body"></tbody></table>
     </div>
   </div>
@@ -311,6 +314,13 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
 <script>
 const GITHUB_RAW = 'https://raw.githubusercontent.com/attyunn127123456/japan-momentum/main';
 
+function toJST(isoStr){
+  if(!isoStr) return '';
+  try{
+    const d = new Date(isoStr);
+    return d.toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).replace(/\//g,'-');
+  }catch(e){ return isoStr; }
+}
 function sc(s){ return s>=65?'score-hi':s>=50?'score-md':'score-lo'; }
 function rc(v){ return v>=0?'pos':'neg'; }
 function fR(v){ return '<span class="'+rc(v)+'">'+(v>0?'+':'')+v.toFixed(1)+'%</span>'; }
@@ -373,7 +383,7 @@ async function loadPicks(){
 
   const p = data.params || {};
   document.getElementById('picks-meta').textContent =
-    `基準日: ${data.as_of} | lookback: ${p.lookback}日 | 保有数: ${p.top_n}銘柄 | リバランス: ${p.rebalance} | バックテスト総リターン: +${(p.total_return_pct||0).toFixed(1)}%`;
+    `基準日: ${toJST(data.as_of)||data.as_of} | lookback: ${p.lookback}日 | 保有数: ${p.top_n}銘柄 | リバランス: ${p.rebalance} | バックテスト総リターン: +${(p.total_return_pct||0).toFixed(1)}%`;
 
   // 持ち替え推奨
   const chEl = document.getElementById('picks-changes');
@@ -444,7 +454,7 @@ async function loadSignals(){
   if(!data){ try { const r=await fetch(GITHUB_RAW+'/data/signal_history.json'); if(r.ok){ const h=await r.json(); data=h[h.length-1]; } } catch(e){} }
   if(!data){ document.getElementById('signals-loading').textContent='⚠️ daily_signal.py を実行してください'; return; }
   sigData=data.results||[];
-  document.getElementById('last-updated').textContent=(data.date||'')+' ← '+(data.prev_date||'');
+  document.getElementById('last-updated').textContent=(toJST(data.date)||data.date||'')+' ← '+(toJST(data.prev_date)||data.prev_date||'');
   const buy=sigData.filter(r=>r.verdict==='BUY').length;
   const sell=sigData.filter(r=>r.verdict==='SELL').length;
   const newT=sigData.filter(r=>r.rank_today<=20&&(r.rank_yesterday||999)>20).length;
@@ -499,35 +509,63 @@ function sortSig(col){
 
 // RANKING
 let rankData=[];
+let rankNewData = null;
 async function loadRanking(){
   let data;
-  try { const r=await fetch('/api/today'); if(r.ok) data=await r.json(); } catch(e){}
-  if(!data){ try { const r=await fetch(GITHUB_RAW+'/results/latest.json'); if(r.ok) data=await r.json(); } catch(e){} }
-  if(!data){ document.getElementById('ranking-loading').textContent='⚠️ screener.py を実行してください'; return; }
-  rankData=data.results||[];
-  renderRank(rankData);
+  try { const r=await fetch('/api/ranking'); if(r.ok) data=await r.json(); } catch(e){}
+  if(!data || data.error){
+    document.getElementById('ranking-loading').textContent='⚠️ ランキングデータ取得失敗: '+(data&&data.error||'接続エラー');
+    return;
+  }
+  rankNewData = data.rankings || [];
+  renderRankNew(rankNewData, data);
   document.getElementById('ranking-loading').style.display='none';
   document.getElementById('ranking-wrap').style.display='block';
 }
-function renderRank(rows){
-  const top=rows.slice(0,50);
-  document.getElementById('ranking-cards').innerHTML=top.map((r,i)=>makeCard(r,i,true)).join('');
-  document.getElementById('ranking-body').innerHTML=top.map((r,i)=>'<tr>'
-    +'<td class="dim">'+(i+1)+'</td>'
-    +'<td><strong>'+(r.ticker||r.code||'').replace('.T','')+'</strong></td>'
-    +'<td>'+(r.name||'')+'</td><td class="dim">'+(r.sector||'').slice(0,8)+'</td>'
-    +'<td><span class="'+sc(r.score)+'">'+r.score.toFixed(1)+'</span></td>'
-    +'<td class="'+rc(r.rs_score)+'">'+(r.rs_score>0?'+':'')+r.rs_score.toFixed(1)+'</td>'
-    +'<td>'+fR(r.return_5_25d)+'</td><td>'+vb(r.volume_acceleration)+'</td>'
-    +'<td class="'+rc(r.green_day_ratio-0.5)+'">'+(r.green_day_ratio*100).toFixed(0)+'%</td>'
-    +'<td class="'+rc(r.rs_acceleration)+'">'+(r.rs_acceleration>0?'+':'')+r.rs_acceleration.toFixed(2)+'</td>'
-    +'<td class="dim">¥'+(r.price||0).toLocaleString()+'</td>'
-    +'</tr>').join('');
+function renderRankNew(rows, data){
+  const p = (data||{}).params || {};
+  const topCodes = (data||{}).top_codes || [];
+  // ヘッダー: 現在の推奨
+  const hdr = document.getElementById('ranking-header');
+  if(hdr && topCodes.length > 0){
+    const nm = (data.rankings||[]).filter(r=>topCodes.includes(r.code)).map(r=>'<strong style="color:#58a6ff">'+r.name+'('+r.code+')</strong>').join(' と ');
+    const lb = p.lookback||'-'; const tn = p.top_n||'-'; const tp = (p.total_return_pct||0).toFixed(1);
+    const asOf = data.as_of ? '<span style="color:#8b949e;font-size:11px;margin-left:8px">基準日: '+(toJST(data.as_of)||data.as_of)+'</span>' : '';
+    hdr.innerHTML = '🎯 現在の推奨: '+nm+asOf
+      +'<span style="color:#8b949e;font-size:11px;margin-left:16px">ベースライン lb='+lb+', top_n='+tn+', バックテスト: <span style="color:#3fb950">+'+tp+'%</span></span>';
+  }
+  // モバイルカード
+  document.getElementById('ranking-cards').innerHTML=rows.map((r,i)=>{
+    const bg = r.is_top ? 'background:#0d2137;border-color:#1c4a6e;' : '';
+    const ret5 = r.ret5d_pct!=null ? ('<span class="'+(r.ret5d_pct>=0?'pos':'neg')+'">'+(r.ret5d_pct>=0?'+':'')+r.ret5d_pct.toFixed(1)+'%</span>') : '-';
+    return '<div class="stock-card" style="'+bg+'">'
+      +'<div class="card-top"><div><span class="card-code">'+r.rank+'. '+r.code+'</span><span class="card-name" style="font-size:13px;margin-left:6px">'+r.name+'</span></div>'
+      +(r.is_top?'<span class="badge b-buy">推奨</span>':'')+'</div>'
+      +'<div class="card-metrics"><div class="card-metric"><div class="mk">スコア</div><div class="mv">'+r.score.toFixed(3)+'</div></div>'
+      +'<div class="card-metric"><div class="mk">株価</div><div class="mv">¥'+(r.price!=null?r.price.toLocaleString():'-')+'</div></div>'
+      +'<div class="card-metric"><div class="mk">5日</div><div class="mv">'+ret5+'</div></div></div></div>';
+  }).join('');
+  // デスクトップテーブル
+  document.getElementById('ranking-body').innerHTML=rows.map(r=>{
+    const bg = r.is_top ? 'background:#0d2137;' : '';
+    const r5 = r.ret5d_pct!=null ? ('<span class="'+(r.ret5d_pct>=0?'pos':'neg')+'">'+(r.ret5d_pct>=0?'+':'')+r.ret5d_pct.toFixed(1)+'%</span>') : '-';
+    const r20 = r.ret20d_pct!=null ? ('<span class="'+(r.ret20d_pct>=0?'pos':'neg')+'">'+(r.ret20d_pct>=0?'+':'')+r.ret20d_pct.toFixed(1)+'%</span>') : '-';
+    return '<tr style="'+bg+'">'
+      +'<td class="dim">'+r.rank+'</td>'
+      +'<td><strong style="color:'+(r.is_top?'#58a6ff':'#e6edf3')+'">'+r.code+'</strong>'+(r.is_top?' <span class="badge b-buy" style="font-size:10px">推奨</span>':'')+'</td>'
+      +'<td>'+r.name+'</td>'
+      +'<td>'+r.score.toFixed(3)+'</td>'
+      +'<td class="dim">¥'+(r.price!=null?r.price.toLocaleString():'-')+'</td>'
+      +'<td>'+r5+'</td>'
+      +'<td>'+r20+'</td>'
+      +'</tr>';
+  }).join('');
 }
-function sortRank(col){
-  const keys=[null,'code','sector','score','rs_score','return_5_25d','volume_acceleration','green_day_ratio','rs_acceleration'];
-  const key=keys[col]; if(!key||!rankData) return;
-  renderRank([...rankData].sort((a,b)=>{ const av=a[key],bv=b[key]; return typeof av==='string'?bv.localeCompare(av):bv-av; }));
+function sortRankNew(col){
+  const keys=['rank','code',null,'score','price','ret5d_pct','ret20d_pct'];
+  const key=keys[col]; if(!key||!rankNewData) return;
+  const sorted=[...rankNewData].sort((a,b)=>{ const av=a[key],bv=b[key]; if(av==null)return 1; if(bv==null)return -1; return typeof av==='string'?av.localeCompare(bv):bv-av; });
+  renderRankNew(sorted, {params:{},top_codes:(rankNewData.filter(r=>r.is_top).map(r=>r.code))});
 }
 
 // BACKTEST (統合)
@@ -784,7 +822,7 @@ function renderHypothesis(h){
     {l:'トータルリターン', v: bl.total_pct != null ? pct(bl.total_pct) : '-', c: bl.total_pct>=0?'pos':'neg'},
     {l:'最大ドローダウン', v: bl.max_dd_pct != null ? bl.max_dd_pct+'%' : '-', c:'neg'},
     {l:'起源仮説', v: bl.hypothesis || 'initial', c:''},
-    {l:'更新日', v: bl.date || '-', c:''},
+    {l:'更新日', v: toJST(bl.date)||bl.date||'-', c:''},
   ].map(({l,v,c})=>'<div class="stat-card"><div class="lbl">'+l+'</div><div class="val '+c+'">'+v+'</div></div>').join('');
 
   // 実行中バナー
