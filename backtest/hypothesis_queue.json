@@ -4527,6 +4527,69 @@
       },
       "status": "done_win",
       "theory": "出来高が線形増加中=機関の段階的ポジション構築=モメンタム持続"
+    },
+    {
+      "id": "return_autocorr_w",
+      "desc": "リターン自己相関ファクター: 日次リターンのlag-1自己相関でトレンド持続性（正の自己相関）vs平均回帰（負の自己相関）を判別",
+      "theory": "モメンタム利益の源泉はリターンの正の自己相関（トレンド持続性）。自己相関が負の銘柄はモメンタムが機能せず、選択すると翌週リバーサルで損失を被る。OOSの2020-2021水没期はchoppy市場で多くの銘柄が負の自己相関だったと推定され、このファクターでフィルタリングすれば回避できる。Lo-MacKinlay(1988)で実証されたvariance ratio testの簡易版として、モメンタムが「機能するか」のメタ指標を提供。ret_w（リターン水準）やsmooth_w（ボラの低さ）とは完全に直交する情報次元。IS-OOSギャップを縮めるのに最も効果的なファクター候補。",
+      "factor_to_add": "return_autocorr_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.07,
+        "green_w": 0.12,
+        "smooth_w": 0.12,
+        "omega_w": 0.1,
+        "short_momentum_w": 0.12,
+        "accumulation_w": 0.12,
+        "upside_capture_w": 0.11,
+        "gap_momentum_w": 0.1,
+        "return_autocorr_w": 0.12
+      },
+      "status": "pending"
+    },
+    {
+      "id": "volume_slope_w",
+      "desc": "出来高トレンドファクター: 対数出来高のrolling回帰傾きで機関投資家の参入/離脱トレンドを検出",
+      "theory": "volume_confirm_w（出来高水準の比率）やaccumulation_w（上昇日/下落日の出来高比）はGA最適化で低重みに収束した。出来高の「水準」や「方向性」ではなく「トレンド（傾き）」が未測定の情報次元。対数出来高の回帰傾きが正=機関投資家が日々少しずつポジションを積み増している=モメンタムの持続力が高い。傾きが負=出来高が漸減=機関が離脱中=モメンタム崩壊の前兆。特にtop_n=2で2銘柄に全資金を置く場合、「本当に機関が買い続けている」銘柄だけを選ぶことでmax_dd=38.76%を30%以下に抑えられる可能性がある。OOSの2020-2022水没期は偽モメンタム（出来高減少中の価格上昇）を掴んでいた可能性が高い。",
+      "factor_to_add": "volume_slope_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.07,
+        "green_w": 0.11,
+        "smooth_w": 0.11,
+        "omega_w": 0.1,
+        "short_momentum_w": 0.12,
+        "accumulation_w": 0.1,
+        "upside_capture_w": 0.11,
+        "gap_momentum_w": 0.1,
+        "volume_slope_w": 0.14
+      },
+      "status": "pending"
+    },
+    {
+      "id": "clean_momentum_w",
+      "desc": "クリーンモメンタムファクター: ピークからの乖離10%以内の期間のみのリターンを累積し、純粋な上昇トレンド強度を測定",
+      "theory": "ret_w（ルックバック期間の総リターン）は「-20%下落→+25%回復」の銘柄も+5%のモメンタムとして評価するが、この銘柄は安定したトレンドではなくV字回復に過ぎない。clean_momentumはピークからの下落が10%以内の期間のみのリターンを合算し、「ドローダウンなしでどれだけ上がったか」を測定する。top_n=1-2の極集中投資では、1銘柄のV字回復型偽モメンタムが致命的な損失をもたらす。clean_momentumが高い銘柄は「真っ直ぐ上がっている」ことが保証され、翌週も上昇を継続する確率が高い。OOSの2020-2021では回復型銘柄を多く選んでしまい水没した可能性があり、このファクターで銘柄選択精度を根本的に改善する。ret_wとは情報が一部重複するが、DD期間の除外という条件付きフィルタリングで直交的な追加情報を提供。",
+      "factor_to_add": "clean_momentum_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.05,
+        "green_w": 0.11,
+        "smooth_w": 0.11,
+        "omega_w": 0.1,
+        "short_momentum_w": 0.12,
+        "accumulation_w": 0.12,
+        "upside_capture_w": 0.11,
+        "gap_momentum_w": 0.1,
+        "clean_momentum_w": 0.16
+      },
+      "status": "pending"
     }
   ],
   "tested_factors": [

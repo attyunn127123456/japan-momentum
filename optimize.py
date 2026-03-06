@@ -40,7 +40,7 @@ def precompute(prices_dict, nikkei, lookbacks):
     down_mask = (nk_rets < -0.01).astype(float)
     
     # lb -> factor -> {code: Series}
-    data = {lb: {"ret":{},"rs":{},"green":{},"smooth":{},"resilience":{},"ret5":{},"ret10":{},"omega":{},"high52":{},"close_location":{},"range_expand":{},"win_streak":{},"sector_momentum":{},"overnight_return":{},"volume_acceleration":{},"higher_lows":{},"body_strength":{},"vol_return_corr":{},"accumulation":{},"momentum_consistency":{},"upside_capture":{},"gap_momentum":{},"volume_confirm":{},"ret_skip":{},"cluster_boost":{}} for lb in lookbacks}
+    data = {lb: {"ret":{},"rs":{},"green":{},"smooth":{},"resilience":{},"ret5":{},"ret10":{},"omega":{},"high52":{},"close_location":{},"range_expand":{},"win_streak":{},"sector_momentum":{},"overnight_return":{},"volume_acceleration":{},"higher_lows":{},"body_strength":{},"vol_return_corr":{},"accumulation":{},"momentum_consistency":{},"upside_capture":{},"gap_momentum":{},"volume_confirm":{},"ret_skip":{},"cluster_boost":{},"return_autocorr":{},"volume_slope":{},"clean_momentum":{}} for lb in lookbacks}
 
     # 業種コードマップを読み込む
     try:
@@ -202,6 +202,32 @@ def precompute(prices_dict, nikkei, lookbacks):
             mom20 = dr.rolling(20).mean()
             cluster = ((mom5.gt(0).astype(float) + mom10.gt(0).astype(float) + mom20.gt(0).astype(float)) / 3.0)
             data[lb]["cluster_boost"][code] = cluster.rolling(lb).mean().astype(float)
+
+            # return_autocorr: リターン自己相関（lag-1）
+            autocorr = dr.rolling(lb).apply(
+                lambda x: pd.Series(x).autocorr(lag=1) if len(x) >= 10 else np.nan,
+                raw=True
+            ).astype(float)
+            data[lb]["return_autocorr"][code] = autocorr
+
+            # volume_slope: 出来高トレンド（対数出来高のrolling回帰傾き）
+            if "Volume" in df.columns:
+                vol_vs = df["Volume"].reindex(p.index).replace(0, np.nan)
+                log_vol = np.log(vol_vs.clip(lower=1))
+                vol_slope = log_vol.rolling(lb).apply(
+                    lambda x: np.polyfit(range(len(x)), x, 1)[0] if len(x) >= 10 else np.nan,
+                    raw=True
+                ).astype(float)
+                data[lb]["volume_slope"][code] = vol_slope
+            else:
+                data[lb]["volume_slope"][code] = pd.Series(np.nan, index=p.index)
+
+            # clean_momentum: ピークからの乖離が10%以内の期間のみのリターン累積
+            running_max = p.expanding().max()
+            dd_from_peak = (p / running_max - 1)
+            in_uptrend = (dd_from_peak >= -0.10).astype(float)
+            clean_ret = (dr * in_uptrend).rolling(lb).sum().astype(float)
+            data[lb]["clean_momentum"][code] = clean_ret
 
     # 業種モメンタムを一括計算（全銘柄のretが揃ってから）
     for lb in lookbacks:
@@ -389,6 +415,24 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
     if cluster_boost_w > 0 and lb in factor_dfs and 'cluster_boost' in factor_dfs[lb]:
         cb_ranked = factor_dfs[lb]['cluster_boost'].rank(axis=1, pct=True)
         score_df = cb_ranked * cluster_boost_w if score_df is None else score_df + cb_ranked * cluster_boost_w
+
+    # リターン自己相関ファクター
+    return_autocorr_w = params.get('return_autocorr_w', 0.0)
+    if return_autocorr_w > 0 and lb in factor_dfs and 'return_autocorr' in factor_dfs[lb]:
+        ra_ranked = factor_dfs[lb]['return_autocorr'].rank(axis=1, pct=True)
+        score_df = ra_ranked * return_autocorr_w if score_df is None else score_df + ra_ranked * return_autocorr_w
+
+    # 出来高トレンドファクター
+    volume_slope_w = params.get('volume_slope_w', 0.0)
+    if volume_slope_w > 0 and lb in factor_dfs and 'volume_slope' in factor_dfs[lb]:
+        vs_ranked = factor_dfs[lb]['volume_slope'].rank(axis=1, pct=True)
+        score_df = vs_ranked * volume_slope_w if score_df is None else score_df + vs_ranked * volume_slope_w
+
+    # クリーンモメンタムファクター
+    clean_momentum_w = params.get('clean_momentum_w', 0.0)
+    if clean_momentum_w > 0 and lb in factor_dfs and 'clean_momentum' in factor_dfs[lb]:
+        cm_ranked = factor_dfs[lb]['clean_momentum'].rank(axis=1, pct=True)
+        score_df = cm_ranked * clean_momentum_w if score_df is None else score_df + cm_ranked * clean_momentum_w
 
     if score_df is None:
         return None
@@ -589,6 +633,7 @@ def run_optuna_optimization(baseline_params, factor_dfs, prices_dict, nikkei,
         'ret_skip_w', 'volume_confirm_w', 'gap_momentum_w',
         'close_location_w', 'range_expand_w', 'win_streak_w',
         'accumulation_w', 'momentum_consistency_w', 'upside_capture_w',
+        'return_autocorr_w', 'volume_slope_w', 'clean_momentum_w',
     ]
 
     base_lb = baseline_params.get('lookback', 60)
@@ -603,7 +648,8 @@ def run_optuna_optimization(baseline_params, factor_dfs, prices_dict, nikkei,
     # eval_paramsがaliasで対応する重みキーも含める
     alias_supported = ['short_momentum_w','cluster_boost_w','ret_skip_w',
                        'volume_confirm_w','gap_momentum_w','omega_w',
-                       'accumulation_w','momentum_consistency_w','upside_capture_w']
+                       'accumulation_w','momentum_consistency_w','upside_capture_w',
+                       'return_autocorr_w','volume_slope_w','clean_momentum_w']
     # factor_dfsにあるものはcorr計算でフィルタ、aliasはそのまま通す
     fdf_factors = [f[:-2] if f.endswith("_w") else f for f in all_weight_factors
                    if f[:-2] in existing_factors]
