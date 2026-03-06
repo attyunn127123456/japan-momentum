@@ -78,30 +78,54 @@ def main():
 
     # 5. ranking_cache.json 生成
     last_entry = equity_curve[-1]
-    top_codes = [str(c) for c in last_entry.get("holdings", [])]
 
-    # 直近20週のholdings出現頻度でスコア付け
-    code_counts = Counter()
-    for e in equity_curve[-20:]:
-        for c in e.get("holdings", []):
-            code_counts[str(c)] += 1
+    signal_path = Path("backtest/daily_signal_output.json")
+    if signal_path.exists():
+        sig = json.loads(signal_path.read_text())
+        top_codes = [s['code'] for s in sig.get('recommended', [])]
+        top20 = sig.get('top20', [])
+        as_of = sig.get('as_of', last_entry['date'])
 
-    rankings = []
-    for rank, (code, count) in enumerate(code_counts.most_common(50), 1):
-        rankings.append({
-            "rank": rank,
-            "code": code,
-            "name": name_map.get(code, code),
-            "score": round(count / 20, 3),
-            "price": None,
-            "ret5d_pct": None,
-            "ret20d_pct": None,
-            "is_top": code in top_codes,
-        })
+        rankings = []
+        for rank, s in enumerate(top20, 1):
+            rankings.append({
+                "rank": rank,
+                "code": s['code'],
+                "name": s['name'],
+                "score": s['score'],  # 実際のfloatスコア
+                "price": None,
+                "ret5d_pct": None,
+                "ret20d_pct": None,
+                "is_top": s['code'] in top_codes,
+            })
+        print(f"daily_signal_output.json からランキング生成 (as_of:{as_of}, top20:{len(rankings)}件)", flush=True)
+    else:
+        # フォールバック: equity_curveのholdings出現頻度
+        top_codes = [str(c) for c in last_entry.get("holdings", [])]
+        as_of = last_entry["date"]
+
+        code_counts = Counter()
+        for e in equity_curve[-20:]:
+            for c in e.get("holdings", []):
+                code_counts[str(c)] += 1
+
+        rankings = []
+        for rank, (code, count) in enumerate(code_counts.most_common(50), 1):
+            rankings.append({
+                "rank": rank,
+                "code": code,
+                "name": name_map.get(code, code),
+                "score": round(count / 20, 3),
+                "price": None,
+                "ret5d_pct": None,
+                "ret20d_pct": None,
+                "is_top": code in top_codes,
+            })
+        print(f"フォールバック: equity_curveのholdings出現頻度からランキング生成", flush=True)
 
     ranking_cache = {
         "cached_at": datetime.now().strftime("%Y-%m-%d %H:%M JST"),
-        "as_of": last_entry["date"],
+        "as_of": as_of,
         "params": {
             "lookback": params.get("lookback"),
             "top_n": params.get("top_n", 2),
