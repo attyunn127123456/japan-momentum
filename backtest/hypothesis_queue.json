@@ -26,10 +26,10 @@
       "smooth_w": 0.2,
       "resilience_w": 0.0,
       "total_return_pct": 153.82,
-      "alpha_pct": 35.7,
+      "alpha_pct": 20.05,
       "sharpe": 1.714,
       "max_dd_pct": 41.74,
-      "nikkei_pct": 118.13,
+      "nikkei_pct": 133.77,
       "n_trades": 231,
       "equity_curve": [
         {
@@ -4495,7 +4495,7 @@
     {
       "id": "drawdown_depth_w",
       "desc": "短期ドローダウン深度ファクター: close/rolling_max(close, lb)で「まだ崩れていない」銘柄を選別しmax_dd制御",
-      "theory": "high52_w(252日高値)はGA最適化でweight≒0に収束した（長すぎて情報が古い）。一方、lookback期間（60日）の高値からの乖離は「直近トレンドがまだ生きているか」のリアルタイム指標。close/rolling_max(close,lb)が1.0に近い銘柄はlb期間の上昇トレンドが健在で、崩れ始めた銘柄（0.9以下）を自動回避する。top_n=2で1銘柄が下落を始めた瞬間に翌週のリバランスで入れ替わるため、ポートフォリオレベルのmax_ddが直接的に改善される。現在のmax_dd=38.76%はOOSで41.73%に悪化しており、DD制御が最優先課題。このファクターは全既存ファクターと直交する「ポジション品質管理」の情報次元を追加する。計算: close/rolling_max(close, lb)のランクスコア。",
+      "theory": "high52_wはGA最適化でweight≒0に収束（252日は長すぎ）。lookback期間の高値からの乖離は直近トレンドの健全性のリアルタイム指標。close/rolling_max(close,lb)が1.0に近い=上昇トレンド健在。OOSでmax_dd=41.73%と制約超過しておりDD制御が最優先。全既存ファクターと直交するポジション品質管理の情報次元。",
       "factor_to_add": "drawdown_depth_w",
       "params": {
         "lookback": 60,
@@ -4516,7 +4516,7 @@
     {
       "id": "return_autocorr_w",
       "desc": "リターン自己相関ファクター: 日次リターンのlag-1自己相関でトレンド持続性を直接測定",
-      "theory": "自己相関(autocorrelation)は時系列の最も基本的な統計的性質だが、既存ファクターで一切測定されていない。autocorr > 0は「昨日上がった銘柄は今日も上がりやすい」= トレンド持続型。autocorr < 0は「昨日上がったら今日は下がる」= 平均回帰型。top_n=2の週次リバランスでは、持ち越し期間（5日）中にトレンドが持続する銘柄を選ぶことが全リターンを決定する。高autocorr銘柄は急反転リスクが低く、保有期間中のDD寄与も小さい。smooth_w（ボラ低さ）やtrend_efficiency（方向効率）と部分的に相関するが、autocorrは時間的な依存構造そのものを測る唯一のファクター。計算: pandas.Series.autocorr(lag=1) on rolling window of lb daily returns。OHLCの終値のみで計算可能。",
+      "theory": "自己相関は時系列の最も基本的な統計的性質だが既存ファクターで未測定。autocorr>0=トレンド持続型、<0=平均回帰型。top_n=2の5日保有期間中にトレンドが持続する銘柄を選ぶことが全リターンを決定。高autocorr銘柄は急反転リスク低くDD寄与も小。計算: Series.autocorr(lag=1) on rolling lb window。",
       "factor_to_add": "return_autocorr_w",
       "params": {
         "lookback": 60,
@@ -4536,8 +4536,8 @@
     },
     {
       "id": "volume_slope_w",
-      "desc": "出来高トレンドファクター: lookback期間の出来高の線形回帰スロープで「注目度が高まり続けている」銘柄を検出",
-      "theory": "既存の出来高ファクター3つは全て異なる側面を測る: volume_confirm_w(直近/過去の水準比較→GA weight≒0に収束)、accumulation_w(上昇日/下落日の比率→weight=0.127で重要)、vol_return_corr_w(リターンとの相関)。しかし「出来高そのものが時系列として増加しているか」のトレンドは未測定。出来高が線形に増加し続けている銘柄は、機関投資家が段階的にポジションを構築している最中であり、まだ買いが完了していない=モメンタム持続の最強の先行指標。逆に出来高が減少トレンドの銘柄は関心が薄れており、いつ急落してもおかしくない。linregress(range(lb), volume[-lb:]).slopeを正規化してランクスコア化。OHLCVのVolumeのみで計算可能。accumulation_wとの相関は低い（方向性vs水準トレンドで直交）。",
+      "desc": "出来高トレンドファクター: lookback期間の出来高の線形回帰スロープで注目度上昇中の銘柄を検出",
+      "theory": "既存出来高ファクター3つと直交: volume_confirm(水準比較→GA weight≒0)、accumulation(方向性→weight=0.127)、vol_return_corr(相関)。出来高の時系列トレンドは未測定。線形増加中の出来高=機関投資家の段階的ポジション構築中=買い未完了=モメンタム持続の先行指標。計算: linregress(range(lb), volume[-lb:]).slope正規化→ランクスコア。",
       "factor_to_add": "volume_slope_w",
       "params": {
         "lookback": 60,
