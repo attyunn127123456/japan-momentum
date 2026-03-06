@@ -2228,6 +2228,46 @@
         "tail_ratio_w": 0.14
       },
       "status": "done_win"
+    },
+    {
+      "id": "topn1_extreme_concentration",
+      "desc": "top_n=1の極限集中投資: Optunaのtop_n下限を1に拡張して1銘柄集中の破壊力を検証",
+      "theory": "top_n=10→3→2で+36%→+168%→+241%と集中するほどリターンが急増。しかしOptuna内でtop_n下限が2にハードコードされており、top_n=1は物理的に探索不可能だった。1銘柄集中は毎週最強の1銘柄に全資金を投入する究極のモメンタム戦略。max_dd制約40%内でリスクは管理可能（現在のmax_dd=13%なので余裕あり）。実装: optimize.pyのsuggest_int(\"top_n\", 2, 7)を(1, 7)に変更するだけ。",
+      "param_change": "optimize.py L602: suggest_int(\"top_n\", 2, 7) → suggest_int(\"top_n\", 1, 7)",
+      "params": {
+        "top_n_min": 1,
+        "top_n_max": 7
+      },
+      "status": "pending"
+    },
+    {
+      "id": "short_lookback_exploration",
+      "desc": "lookback短期化探索: lb=20,30,45を追加して短期モメンタム×極集中の組み合わせを解禁",
+      "theory": "現在のlookback候補は[40,60,80]のみ。lb=60がtop_n=2で最適だが、より短いlookback(20-45日)は未探索。短期lookbackは「今まさに動き出した銘柄」を早期に捕捉でき、top_n=1-2の極集中と組み合わせると「最も爆発的な初動」に全資金を乗せられる。Jegadeesh-Titman(1993)でも1ヶ月モメンタムが最高リターンを記録するケースがある。lb=20（約1ヶ月）は週次リバランスと4:1の比率で自然なサイクル。実装: GRID[\"lookback\"]に20,30,45を追加し、precompute()の対象lookbackリストを拡張。",
+      "param_change": "optimize.py L23: GRID[\"lookback\"] = [40,60,80] → [20,30,45,60,80]",
+      "params": {
+        "lookback_candidates": [
+          20,
+          30,
+          45,
+          60,
+          80
+        ]
+      },
+      "status": "pending"
+    },
+    {
+      "id": "daily_rebalance_unlock",
+      "desc": "デイリーリバランス解禁: Optuna内のrebalanceをweekly固定からdaily探索可能に変更",
+      "theory": "GRID[\"rebalance\"]には\"daily\"が定義済みだが、Optuna objective内でrebalance=\"weekly\"が固定（L624）。top_n=1-2の極集中ポートフォリオでは、1日遅れが週間リターンの大きな差になる。日次リバランスなら「昨日まで最強だった銘柄が今日失速したら即乗り換え」が可能。特にtop_n=1では最強銘柄の入れ替えが頻繁に起き、週次では1週間古い銘柄を持ち続けるロスが大きい。バックテスト期間の日経+98%環境では取引コスト以上のリターンが期待できる。実装: Optunaにrebalanceをcategorical探索として追加し、date_map[rb]を参照するよう変更。",
+      "param_change": "optimize.py L624: rebalance=\"weekly\"固定 → trial.suggest_categorical(\"rebalance\", [\"weekly\", \"daily\"])",
+      "params": {
+        "rebalance_candidates": [
+          "weekly",
+          "daily"
+        ]
+      },
+      "status": "pending"
     }
   ],
   "tested_factors": [
