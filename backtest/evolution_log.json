@@ -1113,6 +1113,151 @@
       }
     },
     {
+      "at": "2026-03-05T17:46:43.590056",
+      "id": "oos_validation",
+      "desc": "OOS検証 (231取引, 2020〜)",
+      "win": 1,
+      "delta_sharpe": -218.65000000000003,
+      "sharpe": 1.714,
+      "total_return_pct": 153.82,
+      "alpha_pct": 35.7,
+      "max_dd_pct": 41.74,
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "oos_result": {
+        "total_return_pct": 153.82,
+        "sharpe": 1.714,
+        "max_dd_pct": 41.74,
+        "alpha_pct": 35.7,
+        "nikkei_pct": 118.13,
+        "n_trades": 231
+      }
+    },
+    {
+      "at": "2026-03-05T17:48:45.601929",
+      "id": "oos_validation",
+      "desc": "OOS検証 (231取引, 2020〜)",
+      "win": 1,
+      "delta_sharpe": -218.65000000000003,
+      "sharpe": 1.714,
+      "total_return_pct": 153.82,
+      "alpha_pct": 20.05,
+      "max_dd_pct": 41.74,
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "oos_result": {
+        "total_return_pct": 153.82,
+        "sharpe": 1.714,
+        "max_dd_pct": 41.74,
+        "alpha_pct": 20.05,
+        "nikkei_pct": 133.77,
+        "n_trades": 231
+      }
+    },
+    {
+      "at": "2026-03-05T17:50:00.773768",
+      "id": "oos_validation",
+      "desc": "OOS検証 (231取引, 2020〜)",
+      "win": 1,
+      "delta_sharpe": -218.65000000000003,
+      "sharpe": 1.714,
+      "total_return_pct": 153.82,
+      "alpha_pct": 20.05,
+      "max_dd_pct": 41.74,
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "oos_result": {
+        "total_return_pct": 153.82,
+        "sharpe": 1.714,
+        "max_dd_pct": 41.74,
+        "alpha_pct": 20.05,
+        "nikkei_pct": 133.77,
+        "n_trades": 231
+      }
+    },
+    {
+      "at": "2026-03-05T17:50:39.464943",
+      "id": "oos_validation",
+      "desc": "OOS検証 (231取引, 2020〜)",
+      "win": 1,
+      "delta_sharpe": -218.65000000000003,
+      "sharpe": 1.714,
+      "total_return_pct": 153.82,
+      "alpha_pct": 20.05,
+      "max_dd_pct": 41.74,
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "oos_result": {
+        "total_return_pct": 153.82,
+        "sharpe": 1.714,
+        "max_dd_pct": 41.74,
+        "alpha_pct": 20.05,
+        "nikkei_pct": 133.77,
+        "n_trades": 231
+      }
+    },
+    {
+      "at": "2026-03-05T17:51:18.547157",
+      "id": "oos_validation",
+      "desc": "OOS検証 (231取引, 2020〜)",
+      "win": 1,
+      "delta_sharpe": -218.65000000000003,
+      "sharpe": 1.714,
+      "total_return_pct": 153.82,
+      "alpha_pct": 35.7,
+      "max_dd_pct": 41.74,
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      },
+      "oos_result": {
+        "total_return_pct": 153.82,
+        "sharpe": 1.714,
+        "max_dd_pct": 41.74,
+        "alpha_pct": 35.7,
+        "nikkei_pct": 118.13,
+        "n_trades": 231
+      }
+    },
+    {
       "at": "2026-03-05T11:57:24.452379",
       "id": "omega_factor",
       "desc": "Omega比ファクター追加: 上昇速度÷下落幅の非対称性スコア（w=0.2）",
@@ -2094,5 +2239,5 @@
       }
     }
   ],
-  "total": 83
+  "total": 88
 }

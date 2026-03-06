@@ -4547,7 +4547,7 @@
         "gap_momentum_w": 0.1,
         "return_autocorr_w": 0.12
       },
-      "status": "pending"
+      "status": "done_win"
     },
     {
       "id": "volume_slope_w",
@@ -4568,7 +4568,7 @@
         "gap_momentum_w": 0.1,
         "volume_slope_w": 0.14
       },
-      "status": "pending"
+      "status": "done_win"
     },
     {
       "id": "clean_momentum_w",
@@ -4589,7 +4589,7 @@
         "gap_momentum_w": 0.1,
         "clean_momentum_w": 0.16
       },
-      "status": "pending"
+      "status": "done_win"
     }
   ],
   "tested_factors": [
