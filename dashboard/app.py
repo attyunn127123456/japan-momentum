@@ -2,7 +2,8 @@
 import json
 import math
 from pathlib import Path
-from fastapi import FastAPI
+import pandas as pd
+from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse
 
@@ -234,6 +235,59 @@ async def get_ranking():
         return JSONResponse({"error": "キャッシュ未生成。generate_dashboard_cache.py を実行してください。",
                              "rankings": []}, status_code=404)
     return JSONResponse(sanitize(json.loads(cache_path.read_text())))
+
+
+@app.get("/api/stock/{code}")
+async def get_stock_info(code: str):
+    """特定銘柄のモメンタム情報を返す（コード or 銘柄名で検索）"""
+    cache_path = BASE / "backtest/ranking_cache.json"
+    if not cache_path.exists():
+        raise HTTPException(status_code=404, detail="キャッシュ未生成。generate_dashboard_cache.py を実行してください。")
+
+    ranking = json.loads(cache_path.read_text())
+    rankings = ranking.get('rankings', [])
+
+    # コード or 銘柄名で検索
+    found = None
+    code_normalized = code.zfill(5)
+    for r in rankings:
+        if r.get('code') == code or r.get('code') == code_normalized:
+            found = r
+            break
+    if not found:
+        # 銘柄名部分一致で検索
+        for r in rankings:
+            if code in r.get('name', ''):
+                found = r
+                break
+
+    # top1のスコアを最大値として参照
+    top_score = rankings[0].get('score') if rankings else None
+
+    if not found:
+        # ランキング外の銘柄でも基本情報を返す
+        master_path = BASE / "data/fundamentals/equities_master.parquet"
+        name_map = {}
+        if master_path.exists():
+            master = pd.read_parquet(master_path)
+            name_col = next((c for c in ["CoName", "CompanyName", "Name"] if c in master.columns), None)
+            if name_col:
+                name_map = dict(zip(master["Code"].astype(str), master[name_col].astype(str)))
+        name = name_map.get(code, name_map.get(code_normalized, "不明"))
+        found = {
+            "code": code,
+            "name": name,
+            "score": None,
+            "rank": None,
+            "is_top": False,
+            "in_ranking": False,
+        }
+    else:
+        found = dict(found)
+        found["in_ranking"] = True
+
+    found["top_score"] = top_score
+    return JSONResponse(sanitize(found))
 
 
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")

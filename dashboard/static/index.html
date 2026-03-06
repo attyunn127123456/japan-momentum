@@ -109,6 +109,7 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
   <div class="tab" onclick="showTab('backtest')" id="bt-tab">📈 バックテスト</div>
   <div class="tab" onclick="showTab('picks')">🎯 今週の推奨</div>
   <div class="tab" onclick="showTab('history')">📅 履歴</div>
+  <div class="tab" onclick="showTab('stocksearch')">🔍 銘柄検索</div>
 </div>
 <div class="content">
 
@@ -310,6 +311,18 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
   <div id="history-content"><div class="empty-state">日付を選択してください</div></div>
 </div>
 
+<div id="panel-stocksearch" class="panel">
+  <div style="margin-bottom:16px">
+    <div class="section-title">🔍 銘柄検索</div>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+      <input id="stock-search-input" class="search-box" style="width:200px;font-size:14px;padding:8px 14px"
+        placeholder="コード例: 7203 / 銘柄名" onkeydown="if(event.key==='Enter')searchStock()">
+      <button onclick="searchStock()" style="padding:7px 18px;border-radius:20px;border:1px solid #30363d;background:#1c3a4a;color:#58a6ff;cursor:pointer;font-size:13px;font-weight:600">検索</button>
+    </div>
+    <div id="stock-search-result"></div>
+  </div>
+</div>
+
 </div>
 <script>
 const GITHUB_RAW = 'https://raw.githubusercontent.com/attyunn127123456/japan-momentum/main';
@@ -331,11 +344,59 @@ function pct(v,d=1){ return (v>0?'+':'')+v.toFixed(d)+'%'; }
 function showTab(n){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  ['signals','ranking','backtest','picks','history'].forEach((x,i)=>{
+  ['signals','ranking','backtest','picks','history','stocksearch'].forEach((x,i)=>{
     if(x===n){ document.querySelectorAll('.tab')[i].classList.add('active'); document.getElementById('panel-'+x).classList.add('active'); }
   });
   if(n==='backtest' && !btLoaded) loadBacktest();
   if(n==='picks' && !picksLoaded) loadPicks();
+}
+
+async function searchStock(){
+  const q = document.getElementById('stock-search-input').value.trim();
+  if(!q){ return; }
+  const el = document.getElementById('stock-search-result');
+  el.innerHTML = '<div class="dim" style="padding:20px 0">検索中...</div>';
+  try {
+    const res = await fetch('/api/stock/'+encodeURIComponent(q));
+    if(!res.ok){
+      const err = await res.json();
+      el.innerHTML = '<div class="empty-state">エラー: '+(err.detail||res.statusText)+'</div>';
+      return;
+    }
+    const d = await res.json();
+    const topScore = d.top_score || 1;
+    const scoreBarWidth = (d.score != null && topScore > 0) ? Math.round(d.score / topScore * 100) : 0;
+    const scoreColor = d.score == null ? '#8b949e' : (d.score/topScore > 0.8 ? '#3fb950' : d.score/topScore > 0.5 ? '#d29922' : '#8b949e');
+    const isTopBadge = d.is_top ? '<span class="badge b-buy" style="margin-left:8px">★ 推奨銘柄</span>' : '';
+    const rankText = d.rank != null ? '#'+d.rank : 'ランク外';
+    const scoreText = d.score != null ? d.score.toFixed(4) : 'N/A';
+    el.innerHTML = `
+      <div class="hypothesis-card" style="max-width:500px">
+        <div class="h-title" style="font-size:16px">
+          <span style="color:#58a6ff;font-weight:700">${d.code}</span>
+          <span style="margin-left:8px">${d.name}</span>
+          ${isTopBadge}
+        </div>
+        <div class="h-result" style="margin-top:14px;gap:24px">
+          <div class="h-metric"><span class="hml">モメンタムスコア</span><span style="font-size:22px;font-weight:800;color:${scoreColor}">${scoreText}</span></div>
+          <div class="h-metric"><span class="hml">ランキング</span><span style="font-size:20px;font-weight:700">${rankText}</span></div>
+        </div>
+        ${d.score != null ? `
+        <div style="margin-top:14px">
+          <div class="bar-row" style="font-size:12px">
+            <span class="bar-label" style="width:90px;color:#8b949e">スコア（top比）</span>
+            <div class="bar-track" style="flex:1;height:10px">
+              <div class="bar-fill" style="width:${scoreBarWidth}%;background:${scoreColor}"></div>
+            </div>
+            <span class="bar-val" style="width:50px;text-align:right;color:${scoreColor}">${scoreBarWidth}%</span>
+          </div>
+        </div>` : ''}
+        ${!d.in_ranking ? '<div class="dim" style="margin-top:10px;font-size:12px">※ 現在のランキングキャッシュには含まれていません</div>' : ''}
+      </div>
+    `;
+  } catch(e){
+    el.innerHTML = '<div class="empty-state">取得失敗: '+e.message+'</div>';
+  }
 }
 
 // PICKS

@@ -1222,3 +1222,121 @@ openclaw system event 送信完了
 完了: cross_sectional_vol_rank_w | status=added_to_ga | factor=cross_sectional_vol_rank_w
 全仮説消化。即opusに新仮説生成を依頼します。
 openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+次の仮説を自動起動: unexplored_ohlcv_factors_batch1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: unexplored_ohlcv_factors_batch1 - 未探索ファクター投入（body_strength_w, overnight_return_w, higher_lows_w）：precompute()に実装済みだがGA探索されていない8ファクターのうち3つを一括追加
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×3lb / 336.6秒
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:523: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+Traceback (most recent call last):
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 566, in main
+    save_queue(queue)
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 41, in save_queue
+    QUEUE_FILE.write_text(json.dumps(_fb(q), ensure_ascii=False, indent=2))
+  File "/Users/panda/Projects/japan-momentum/json_safe.py", line 22, in dumps
+    return _json.dumps(_sanitize(obj), **kwargs)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 201, in encode
+    chunks = list(chunks)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 431, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 405, in _iterencode_dict
+    yield from chunks
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 405, in _iterencode_dict
+    yield from chunks
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 438, in _iterencode
+    o = _default(o)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type bool is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 613, in <module>
+    main()
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 582, in main
+    save_queue(queue)
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 41, in save_queue
+    QUEUE_FILE.write_text(json.dumps(_fb(q), ensure_ascii=False, indent=2))
+  File "/Users/panda/Projects/japan-momentum/json_safe.py", line 22, in dumps
+    return _json.dumps(_sanitize(obj), **kwargs)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 201, in encode
+    chunks = list(chunks)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 431, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 405, in _iterencode_dict
+    yield from chunks
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 405, in _iterencode_dict
+    yield from chunks
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 438, in _iterencode
+    o = _default(o)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type bool is not JSON serializable
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: rsi_heavy_early_exit - RSI重視の早期天井エグジット：exit_dd_w支配(0.42)→RSI+モメンタム重視に変更してmax_ddを35%以下に抑制
+  ユニバース: キャッシュから2000銘柄読み込み
+事前計算完了: 2000銘柄×3lb / 339.2秒
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:523: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+Traceback (most recent call last):
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 566, in main
+    save_queue(queue)
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 41, in save_queue
+    QUEUE_FILE.write_text(json.dumps(_fb(q), ensure_ascii=False, indent=2))
+  File "/Users/panda/Projects/japan-momentum/json_safe.py", line 22, in dumps
+    return _json.dumps(_sanitize(obj), **kwargs)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 201, in encode
+    chunks = list(chunks)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 431, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 405, in _iterencode_dict
+    yield from chunks
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 405, in _iterencode_dict
+    yield from chunks
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 438, in _iterencode
+    o = _default(o)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type bool is not JSON serializable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 613, in <module>
+    main()
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 582, in main
+    save_queue(queue)
+  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 41, in save_queue
+    QUEUE_FILE.write_text(json.dumps(_fb(q), ensure_ascii=False, indent=2))
+  File "/Users/panda/Projects/japan-momentum/json_safe.py", line 22, in dumps
+    return _json.dumps(_sanitize(obj), **kwargs)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 201, in encode
+    chunks = list(chunks)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 431, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 405, in _iterencode_dict
+    yield from chunks
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 405, in _iterencode_dict
+    yield from chunks
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 438, in _iterencode
+    o = _default(o)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type bool is not JSON serializable
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(

@@ -1,0 +1,6 @@
+ダッシュボードキャッシュ生成開始...
+ベスト: total=1246.33%, sharpe=3.899
+timeseries_cache.json 生成完了 (weekly:138件, monthly:38件, holdings:50件)
+ranking_cache.json 生成完了 (top:['31030', '40220', '29830'], rankings:35件)
+weekly_picks_cache.json 生成完了
+全キャッシュ生成完了！

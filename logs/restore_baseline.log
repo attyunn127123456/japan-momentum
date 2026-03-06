@@ -4,3 +4,17 @@
 ベストparams: total=783.52%, lb=40
   ユニバース: キャッシュから2000銘柄読み込み
 価格データ: 2000銘柄
+事前計算完了: 2000銘柄×5lb / 580.9秒
+/tmp/restore_baseline.py:38: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
+eval_params実行中...
+結果: total=465.38%, sharpe=3.962, max_dd=33.94%
+equity_curve: 138件
+hypothesis_queue.json更新完了
+ダッシュボードキャッシュ生成開始...
+ベスト: total=465.38%, sharpe=3.962
+timeseries_cache.json 生成完了 (weekly:138件, monthly:38件, holdings:50件)
+ranking_cache.json 生成完了 (top:['31030', '45960'], rankings:23件)
+weekly_picks_cache.json 生成完了
+全キャッシュ生成完了！
+完了！

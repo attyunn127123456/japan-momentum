@@ -1,22 +1,28 @@
 {
-  "cached_at": "2026-03-06 12:31 JST",
+  "cached_at": "2026-03-06 12:54 JST",
   "as_of": "2026-02-16",
   "params": {
-    "lookback": 40,
-    "top_n": 2,
+    "lookback": 60,
+    "top_n": 3,
     "rebalance": "weekly",
-    "total_return_pct": 21.26
+    "total_return_pct": 1246.33
   },
   "recommended": [
     {
-      "code": "19500",
-      "name": "日本電設工業",
+      "code": "31030",
+      "name": "ユニチカ",
+      "price": null,
+      "score": 0.15
+    },
+    {
+      "code": "40220",
+      "name": "ラサ工業",
       "price": null,
       "score": 0.05
     },
     {
-      "code": "18470",
-      "name": "イチケン",
+      "code": "29830",
+      "name": "アールプランナー",
       "price": null,
       "score": 0.05
     }
@@ -24,40 +30,47 @@
   "changes": {
     "buy": [
       {
-        "code": "19500",
-        "name": "日本電設工業",
+        "code": "40220",
+        "name": "ラサ工業",
         "price": null,
         "score": 0.05
       },
       {
-        "code": "18470",
-        "name": "イチケン",
+        "code": "29830",
+        "name": "アールプランナー",
         "price": null,
         "score": 0.05
       }
     ],
     "sell": [
       {
-        "code": "19390",
-        "name": "四電工",
+        "code": "39020",
+        "name": "メディカル・データ・ビジョン",
         "price": null,
-        "score": 0.05
+        "score": 0.2
       },
       {
-        "code": "18010",
-        "name": "大成建設",
+        "code": "15150",
+        "name": "日鉄鉱業",
         "price": null,
         "score": 0.05
       }
     ],
-    "hold": []
+    "hold": [
+      {
+        "code": "31030",
+        "name": "ユニチカ",
+        "price": null,
+        "score": 0.15
+      }
+    ]
   },
   "ranking": [
     {
       "rank": 1,
-      "code": "19480",
-      "name": "弘電社",
-      "score": 0.3,
+      "code": "285A0",
+      "name": "キオクシアホールディングス",
+      "score": 0.25,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -67,7 +80,7 @@
       "rank": 2,
       "code": "50160",
       "name": "ＪＸ金属",
-      "score": 0.25,
+      "score": 0.2,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -75,8 +88,8 @@
     },
     {
       "rank": 3,
-      "code": "194A0",
-      "name": "ＷＯＬＶＥＳ　ＨＡＮＤ",
+      "code": "57060",
+      "name": "三井金属",
       "score": 0.2,
       "price": null,
       "ret5d_pct": null,
@@ -85,8 +98,8 @@
     },
     {
       "rank": 4,
-      "code": "17230",
-      "name": "日本電技",
+      "code": "39020",
+      "name": "メディカル・データ・ビジョン",
       "score": 0.2,
       "price": null,
       "ret5d_pct": null,
@@ -95,8 +108,8 @@
     },
     {
       "rank": 5,
-      "code": "14180",
-      "name": "インターライフホールディングス",
+      "code": "58030",
+      "name": "フジクラ",
       "score": 0.15,
       "price": null,
       "ret5d_pct": null,
@@ -105,9 +118,9 @@
     },
     {
       "rank": 6,
-      "code": "18440",
-      "name": "大盛工業",
-      "score": 0.1,
+      "code": "19480",
+      "name": "弘電社",
+      "score": 0.15,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -115,9 +128,9 @@
     },
     {
       "rank": 7,
-      "code": "18930",
-      "name": "五洋建設",
-      "score": 0.1,
+      "code": "17230",
+      "name": "日本電技",
+      "score": 0.15,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -125,18 +138,18 @@
     },
     {
       "rank": 8,
-      "code": "202A0",
-      "name": "豆蔵",
-      "score": 0.1,
+      "code": "31030",
+      "name": "ユニチカ",
+      "score": 0.15,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
-      "is_top": false
+      "is_top": true
     },
     {
       "rank": 9,
-      "code": "18710",
-      "name": "ピーエス・コンストラクション",
+      "code": "23340",
+      "name": "イオレ",
       "score": 0.1,
       "price": null,
       "ret5d_pct": null,
@@ -145,9 +158,9 @@
     },
     {
       "rank": 10,
-      "code": "13840",
-      "name": "ホクリヨウ",
-      "score": 0.05,
+      "code": "194A0",
+      "name": "ＷＯＬＶＥＳ　ＨＡＮＤ",
+      "score": 0.1,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -155,9 +168,9 @@
     },
     {
       "rank": 11,
-      "code": "19090",
-      "name": "日本ドライケミカル",
-      "score": 0.05,
+      "code": "58170",
+      "name": "ＪＭＡＣＳ",
+      "score": 0.1,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -165,9 +178,9 @@
     },
     {
       "rank": 12,
-      "code": "189A0",
-      "name": "Ｄ＆Ｍカンパニー",
-      "score": 0.05,
+      "code": "38910",
+      "name": "ニッポン高度紙工業",
+      "score": 0.1,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
@@ -175,8 +188,8 @@
     },
     {
       "rank": 13,
-      "code": "19210",
-      "name": "巴コーポレーション",
+      "code": "18440",
+      "name": "大盛工業",
       "score": 0.05,
       "price": null,
       "ret5d_pct": null,
@@ -185,8 +198,8 @@
     },
     {
       "rank": 14,
-      "code": "155A0",
-      "name": "情報戦略テクノロジー",
+      "code": "43160",
+      "name": "ビーマップ",
       "score": 0.05,
       "price": null,
       "ret5d_pct": null,
@@ -195,8 +208,8 @@
     },
     {
       "rank": 15,
-      "code": "18150",
-      "name": "鉄建建設",
+      "code": "44640",
+      "name": "ソフト９９コーポレーション",
       "score": 0.05,
       "price": null,
       "ret5d_pct": null,
@@ -205,8 +218,8 @@
     },
     {
       "rank": 16,
-      "code": "19390",
-      "name": "四電工",
+      "code": "34860",
+      "name": "グローバル・リンク・マネジメント",
       "score": 0.05,
       "price": null,
       "ret5d_pct": null,
@@ -215,8 +228,8 @@
     },
     {
       "rank": 17,
-      "code": "18010",
-      "name": "大成建設",
+      "code": "44500",
+      "name": "パワーソリューションズ",
       "score": 0.05,
       "price": null,
       "ret5d_pct": null,
@@ -225,23 +238,33 @@
     },
     {
       "rank": 18,
-      "code": "19500",
-      "name": "日本電設工業",
+      "code": "39970",
+      "name": "トレードワークス",
       "score": 0.05,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
-      "is_top": true
+      "is_top": false
     },
     {
       "rank": 19,
-      "code": "18470",
-      "name": "イチケン",
+      "code": "31100",
+      "name": "日東紡績",
       "score": 0.05,
       "price": null,
       "ret5d_pct": null,
       "ret20d_pct": null,
-      "is_top": true
+      "is_top": false
+    },
+    {
+      "rank": 20,
+      "code": "45700",
+      "name": "免疫生物研究所",
+      "score": 0.05,
+      "price": null,
+      "ret5d_pct": null,
+      "ret20d_pct": null,
+      "is_top": false
     }
   ]
 }
