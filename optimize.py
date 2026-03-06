@@ -724,11 +724,10 @@ def run_oos_validation(best_params, oos_start="2020-01-01", oos_end=None, n_code
         if first is None or first > oos_start:
             needs_backfill.append(c)
     
-    if len(needs_backfill) > 10:
-        print(f"バックフィルが必要な銘柄: {len(needs_backfill)}件 → {oos_start}まで遡って取得します", flush=True)
-        backfill_cache(codes, backfill_to=oos_start, workers=16)
+    if needs_backfill:
+        print(f"バックフィル対象: {len(needs_backfill)}件（レート制限回避のためスキップ）", flush=True)
     else:
-        print(f"キャッシュに十分な履歴データあり (バックフィル不要)", flush=True)
+        print(f"キャッシュに十分な履歴データあり", flush=True)
 
     warmup = (datetime.strptime(oos_start, "%Y-%m-%d") - timedelta(days=200)).strftime("%Y-%m-%d")
     prices_dict = {}
