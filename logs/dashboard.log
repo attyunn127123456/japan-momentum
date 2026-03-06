@@ -1343,3 +1343,138 @@ INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not 
 INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
 INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
 INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     20.205.226.191:0 - "GET /.trash7206/index.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /.well-known/logs233/index.php?p= HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-content/themes/haha.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-content/themes/theme/about.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-content/plugins/plugin/index.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /xmr.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /about.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /admin.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /adminfuns.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /as.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /bolt.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /cgi-bin/ HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /class-t.api.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /edit.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /ff1.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /fff.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /inputs.php?p= HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /ioxi-o.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /lite.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /ms-edit.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /rip.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /update/da222.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /upload.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wk/index.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-act.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-admin/css/bolt.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-admin/js/ HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-admin/js/widgets/ HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-admin/maint/ HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-admin/ HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-content/themes/ HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-content/themes/admin.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-content/uploads/ HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-content/uploads/admin.php HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-includes/ HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-includes/js/crop/ HTTP/1.1" 404 Not Found
+INFO:     20.205.226.191:0 - "GET /wp-links-opml.php HTTP/1.1" 404 Not Found
+INFO:     93.123.109.214:0 - "GET / HTTP/1.1" 200 OK
+INFO:     93.123.109.214:0 - "GET /.env HTTP/1.1" 404 Not Found
+INFO:     93.123.109.214:0 - "GET / HTTP/1.1" 200 OK
+INFO:     93.123.109.214:0 - "GET /.env HTTP/1.1" 404 Not Found
+INFO:     93.123.109.214:0 - "GET /.env.bak HTTP/1.1" 404 Not Found
+INFO:     93.123.109.214:0 - "GET /.env.save HTTP/1.1" 404 Not Found
+INFO:     93.123.109.214:0 - "GET /backend/.env HTTP/1.1" 404 Not Found
+INFO:     93.123.109.214:0 - "GET /admin/.env HTTP/1.1" 404 Not Found
+INFO:     93.123.109.214:0 - "GET /.git/config HTTP/1.1" 404 Not Found
+INFO:     93.123.109.214:0 - "GET /config.php HTTP/1.1" 404 Not Found
+INFO:     93.123.109.214:0 - "GET /config.php.bak HTTP/1.1" 404 Not Found
+INFO:     93.123.109.214:0 - "GET /config.js HTTP/1.1" 404 Not Found
+INFO:     93.123.109.214:0 - "GET /aws-config.js HTTP/1.1" 404 Not Found
+INFO:     93.123.109.214:0 - "GET /aws.config.js HTTP/1.1" 404 Not Found
+INFO:     93.123.109.214:0 - "GET /.git/HEAD HTTP/1.1" 404 Not Found
+INFO:     93.123.109.214:0 - "GET /.git/config HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [68610]
+INFO:     Started server process [71872]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:56630 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [71872]
+INFO:     Started server process [71938]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:56719 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK

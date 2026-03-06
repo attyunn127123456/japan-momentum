@@ -207,6 +207,17 @@ def run_backtest(start: str, end: str, top_n: int, rebalance: str, use_regime: b
         with open(out_dir / fname, "w") as f:
             json.dump(result, f, ensure_ascii=False, indent=2)
 
+    # タイムシリーズキャッシュ（全トレード保存）
+    timeseries_cache = {
+        "summary": summary,
+        "all_trades": trades_log,  # 全リバランス履歴（切り捨てなし）
+        "equity_curve": equity_curve,  # 日経週次データ
+        "nikkei_start": n_start,
+        "initial_capital": 1_000_000,
+    }
+    with open(out_dir / "timeseries_cache.json", "w") as f:
+        json.dump(timeseries_cache, f, ensure_ascii=False, indent=2)
+
     print("\n=== バックテスト結果 ===")
     for k, v in summary.items():
         print(f"  {k}: {v}")

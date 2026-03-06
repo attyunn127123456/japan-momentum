@@ -17,8 +17,8 @@
     "date": "2026-03-05",
     "hypothesis": "topn1_extreme_concentration"
   },
-  "running": 0,
-  "current_hypothesis": null,
+  "running": 1,
+  "current_hypothesis": "daily_rebalance_unlock",
   "last_result": {
     "id": "topn1_extreme_concentration",
     "result": {
@@ -2260,7 +2260,7 @@
           80
         ]
       },
-      "status": "pending"
+      "status": "running"
     },
     {
       "id": "daily_rebalance_unlock",
@@ -2273,7 +2273,7 @@
           "daily"
         ]
       },
-      "status": "pending"
+      "status": "running"
     }
   ],
   "tested_factors": [

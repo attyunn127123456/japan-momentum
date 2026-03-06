@@ -96,6 +96,7 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
 .factor-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #1f6feb, #58a6ff); transition: width 0.5s; }
 .factor-bar-val { width: 42px; text-align: right; color: #8b949e; flex-shrink: 0; }
 </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
 <div class="header">
@@ -170,6 +171,20 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
     <!-- 最新ベースライン解説 -->
     <div class="section-title" id="bt-baseline-detail-title" style="display:none">🏆 最新ベースライン解説</div>
     <div id="bt-baseline-detail" style="display:none"></div>
+
+    <!-- 週次ポートフォリオ時系列チャート -->
+    <div class="section-title">📈 週次ポートフォリオ時系列</div>
+    <div id="bt-timeseries-wrap" style="background:#161b22;border:1px solid #21262d;border-radius:8px;padding:16px;margin-bottom:14px">
+      <div id="bt-timeseries-loading" style="color:#8b949e;font-size:13px;text-align:center;padding:24px">読み込み中...</div>
+      <canvas id="bt-timeseries-chart" style="display:none;max-height:300px"></canvas>
+    </div>
+
+    <!-- 月次リターン棒グラフ -->
+    <div class="section-title">📅 月次リターン推移</div>
+    <div id="bt-monthly-wrap" style="background:#161b22;border:1px solid #21262d;border-radius:8px;padding:16px;margin-bottom:14px">
+      <div id="bt-monthly-loading" style="color:#8b949e;font-size:13px;text-align:center;padding:24px">読み込み中...</div>
+      <canvas id="bt-monthly-chart" style="display:none;max-height:260px"></canvas>
+    </div>
 
     <!-- シグナルライブラリ -->
     <div class="section-title">📡 シグナルライブラリ</div>
@@ -395,10 +410,184 @@ async function loadBacktest(silent){
       document.getElementById('bt-loading').style.display='none';
       document.getElementById('bt-wrap').style.display='block';
     }
+    // タイムシリーズチャート（非同期で後から読み込み）
+    loadTimeseriesCharts();
   } catch(e) {
     if(isFirst) document.getElementById('bt-loading').textContent='⚠️ データ取得エラー: '+e.message;
     console.error('loadBacktest error:', e);
   }
+}
+
+// タイムシリーズチャート
+let tsChartInstance = null;
+let monthlyChartInstance = null;
+
+async function loadTimeseriesCharts(){
+  try {
+    const res = await fetch('/api/backtest/timeseries');
+    const data = await res.json();
+    if(data.error){
+      document.getElementById('bt-timeseries-loading').textContent = '⚠️ ' + data.error;
+      document.getElementById('bt-monthly-loading').textContent = '⚠️ データなし';
+      return;
+    }
+    renderTimeseriesChart(data);
+    renderMonthlyChart(data);
+  } catch(e){
+    document.getElementById('bt-timeseries-loading').textContent = '⚠️ 取得エラー: ' + e.message;
+    document.getElementById('bt-monthly-loading').textContent = '⚠️ 取得エラー';
+    console.error('timeseries error:', e);
+  }
+}
+
+function renderTimeseriesChart(data){
+  const weekly = data.weekly || [];
+  const nikkei = data.nikkei_weekly || [];
+  if(!weekly.length){ document.getElementById('bt-timeseries-loading').textContent = 'データなし'; return; }
+
+  document.getElementById('bt-timeseries-loading').style.display = 'none';
+  const canvas = document.getElementById('bt-timeseries-chart');
+  canvas.style.display = 'block';
+
+  if(tsChartInstance){ tsChartInstance.destroy(); }
+  const ctx = canvas.getContext('2d');
+
+  // ポートフォリオと日経のラベルをマージ（日経を週次サンプリング）
+  const portLabels = weekly.map(d => d.date);
+  const portValues = weekly.map(d => d.value);
+
+  // 日経データをポートフォリオ日付に対応させる（最近値を使用）
+  const nikkeiMap = {};
+  nikkei.forEach(n => { nikkeiMap[n.date] = n.value; });
+  const nikkeiValues = portLabels.map(d => {
+    if(nikkeiMap[d] != null) return nikkeiMap[d];
+    // 近い日付を探す
+    const dates = Object.keys(nikkeiMap).sort();
+    const closest = dates.reduce((prev, curr) =>
+      Math.abs(new Date(curr) - new Date(d)) < Math.abs(new Date(prev) - new Date(d)) ? curr : prev, dates[0]);
+    return nikkeiMap[closest] || null;
+  });
+
+  tsChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: portLabels,
+      datasets: [
+        {
+          label: 'ポートフォリオ',
+          data: portValues,
+          borderColor: '#58a6ff',
+          backgroundColor: 'rgba(88,166,255,0.08)',
+          borderWidth: 2,
+          pointRadius: 2,
+          pointHoverRadius: 4,
+          tension: 0.3,
+          fill: false,
+        },
+        {
+          label: '日経(TOPIX)',
+          data: nikkeiValues,
+          borderColor: '#6e7681',
+          backgroundColor: 'rgba(110,118,129,0.06)',
+          borderWidth: 1.5,
+          pointRadius: 0,
+          pointHoverRadius: 3,
+          tension: 0.3,
+          fill: false,
+          borderDash: [4, 3],
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { labels: { color: '#c9d1d9', font: { size: 12 } } },
+        tooltip: {
+          backgroundColor: '#1c2128',
+          borderColor: '#30363d',
+          borderWidth: 1,
+          titleColor: '#e6edf3',
+          bodyColor: '#c9d1d9',
+          callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${ctx.raw != null ? ctx.raw.toFixed(1) : '-'}`,
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#8b949e', font: { size: 10 }, maxTicksLimit: 12 },
+          grid: { color: 'rgba(48,54,61,0.5)' },
+        },
+        y: {
+          ticks: { color: '#8b949e', font: { size: 10 }, callback: v => v.toFixed(0) },
+          grid: { color: 'rgba(48,54,61,0.5)' },
+          title: { display: true, text: '累積リターン（100スタート）', color: '#8b949e', font: { size: 11 } },
+        }
+      }
+    }
+  });
+}
+
+function renderMonthlyChart(data){
+  const monthly = data.monthly || [];
+  if(!monthly.length){ document.getElementById('bt-monthly-loading').textContent = 'データなし'; return; }
+
+  document.getElementById('bt-monthly-loading').style.display = 'none';
+  const canvas = document.getElementById('bt-monthly-chart');
+  canvas.style.display = 'block';
+
+  if(monthlyChartInstance){ monthlyChartInstance.destroy(); }
+  const ctx = canvas.getContext('2d');
+
+  const labels = monthly.map(m => m.month);
+  const values = monthly.map(m => m.return_pct);
+  const colors = values.map(v => v >= 0 ? 'rgba(88,166,255,0.8)' : 'rgba(248,81,73,0.8)');
+  const borderColors = values.map(v => v >= 0 ? '#58a6ff' : '#f85149');
+
+  monthlyChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: '月次リターン(%)',
+        data: values,
+        backgroundColor: colors,
+        borderColor: borderColors,
+        borderWidth: 1,
+        borderRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1c2128',
+          borderColor: '#30363d',
+          borderWidth: 1,
+          titleColor: '#e6edf3',
+          bodyColor: '#c9d1d9',
+          callbacks: {
+            label: ctx => ` ${ctx.raw >= 0 ? '+' : ''}${ctx.raw.toFixed(2)}%`,
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#8b949e', font: { size: 10 }, maxRotation: 45 },
+          grid: { color: 'rgba(48,54,61,0.5)' },
+        },
+        y: {
+          ticks: { color: '#8b949e', font: { size: 10 }, callback: v => v.toFixed(1) + '%' },
+          grid: { color: 'rgba(48,54,61,0.5)' },
+          title: { display: true, text: '月次リターン (%)', color: '#8b949e', font: { size: 11 } },
+        }
+      }
+    }
+  });
 }
 
 function renderHypothesis(h){

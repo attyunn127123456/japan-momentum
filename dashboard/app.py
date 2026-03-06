@@ -151,6 +151,122 @@ def regime():
         data['best10'] = data['all'][:10]
     return JSONResponse(sanitize(data))
 
+@app.get("/api/backtest/timeseries")
+def backtest_timeseries():
+    """週次ポートフォリオ時系列と月次リターンを返す。timeseries_cache.jsonを使う。"""
+    import sys
+    import time
+    import asyncio
+    from concurrent.futures import ThreadPoolExecutor
+
+    cache_path = BASE / "backtest/timeseries_cache.json"
+
+    def build_timeseries(raw: dict) -> dict:
+        """timeseries_cache.jsonのrawデータを整形してフロント用に返す"""
+        import pandas as pd
+
+        all_trades = raw.get("all_trades", [])
+        equity_curve = raw.get("equity_curve", [])  # [{date, nikkei}, ...]
+        initial_capital = raw.get("initial_capital", 1_000_000)
+        summary = raw.get("summary", {})
+
+        if not all_trades:
+            return {"error": "no trades data", "weekly": [], "monthly": [], "nikkei_weekly": []}
+
+        # ポートフォリオ週次（100スタートに正規化）
+        weekly = [
+            {"date": t["date"], "value": round(t["portfolio_value"] / initial_capital * 100, 2)}
+            for t in all_trades
+        ]
+
+        # 日経週次（100スタートに正規化）
+        # equity_curve の nikkei 値は既に initial_capital スタートで正規化済み
+        nikkei_weekly = []
+        if equity_curve:
+            nikkei_weekly = [
+                {"date": e["date"], "value": round(e["nikkei"] / initial_capital * 100, 2)}
+                for e in equity_curve
+                if e.get("nikkei") is not None
+            ]
+
+        # 月次リターン計算
+        monthly = []
+        try:
+            if len(all_trades) >= 2:
+                portfolio_values = {t["date"]: t["portfolio_value"] for t in all_trades}
+                series = pd.Series(portfolio_values)
+                series.index = pd.to_datetime(series.index)
+                series = series.sort_index()
+                # 月末値でリサンプル
+                monthly_end = series.resample("ME").last().dropna()
+                if len(monthly_end) >= 2:
+                    monthly_returns = monthly_end.pct_change().dropna() * 100
+                    monthly = [
+                        {"month": str(d)[:7], "return_pct": round(float(r), 2)}
+                        for d, r in zip(monthly_returns.index, monthly_returns.values)
+                    ]
+        except Exception as e:
+            monthly = []
+
+        return {
+            "weekly": weekly,
+            "monthly": monthly,
+            "nikkei_weekly": nikkei_weekly,
+            "params": summary,
+        }
+
+    # キャッシュが存在すれば使う（24時間以内）
+    if cache_path.exists():
+        age = time.time() - cache_path.stat().st_mtime
+        if age < 86400:
+            raw = json.loads(cache_path.read_text())
+            return JSONResponse(sanitize(build_timeseries(raw)))
+
+    # キャッシュなし → バックテスト実行（重い処理）
+    try:
+        sys.path.insert(0, str(BASE))
+        from backtest import run_backtest
+        from datetime import datetime as _dt, timedelta as _td
+
+        # ベースラインパラメータ取得
+        q_path = BASE / "backtest/hypothesis_queue.json"
+        if not q_path.exists():
+            return JSONResponse({"error": "hypothesis_queue.json not found"}, status_code=404)
+
+        q = json.loads(q_path.read_text())
+        baseline = q.get("baseline", {})
+        params = baseline.get("params", {})
+        if not params:
+            return JSONResponse({"error": "baseline params not found"}, status_code=404)
+
+        end = _dt.now().strftime("%Y-%m-%d")
+        start = (_dt.now() - _td(days=365 * 3)).strftime("%Y-%m-%d")
+
+        # バックテスト実行（timeseries_cache.jsonも保存される）
+        import os
+        orig_dir = os.getcwd()
+        os.chdir(str(BASE))
+        try:
+            run_backtest(
+                start, end,
+                params.get("top_n", 5),
+                params.get("rebalance", "weekly")
+            )
+        finally:
+            os.chdir(orig_dir)
+
+        # 生成されたキャッシュを読む
+        if cache_path.exists():
+            raw = json.loads(cache_path.read_text())
+            return JSONResponse(sanitize(build_timeseries(raw)))
+        else:
+            return JSONResponse({"error": "timeseries cache not generated"}, status_code=500)
+
+    except Exception as e:
+        import traceback
+        return JSONResponse({"error": str(e), "trace": traceback.format_exc()}, status_code=500)
+
+
 @app.get("/api/backtest/evolution")
 def backtest_evolution():
     p = BASE / "backtest/evolution_log.json"
