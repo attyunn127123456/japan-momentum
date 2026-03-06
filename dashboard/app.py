@@ -213,7 +213,7 @@ def backtest_timeseries():
 
             nikkei = get_nikkei_history(warmup, END)
             # precompute: prices_dict(dict), nikkei, lookbacks(list) → factor_dfs
-            factor_dfs = precompute(prices_dict, nikkei, [lb])
+            factor_dfs = precompute(prices_dict, nikkei, [20, 40, 60, 80, 100])
 
             rebal_dates = get_rebalance_dates(warmup, END, rebalance)
             all_prices = pd.DataFrame({c: df["AdjC"] for c, df in prices_dict.items()})
@@ -411,7 +411,7 @@ async def get_weekly_picks():
 
     # precompute
     try:
-        factor_dfs = precompute(prices_dict, nikkei, [lb])
+        factor_dfs = precompute(prices_dict, nikkei, [20, 40, 60, 80, 100])
     except Exception as e:
         return JSONResponse({"error": f"precompute失敗: {e}"}, status_code=500)
 
@@ -581,7 +581,7 @@ async def get_ranking():
         return JSONResponse({"error": f"日経データ取得失敗: {e}"}, status_code=500)
 
     try:
-        factor_dfs = precompute(prices_dict, nikkei, [lb])
+        factor_dfs = precompute(prices_dict, nikkei, [20, 40, 60, 80, 100])
     except Exception as e:
         return JSONResponse({"error": f"precompute失敗: {e}"}, status_code=500)
 
