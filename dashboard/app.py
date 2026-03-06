@@ -346,6 +346,176 @@ def backtest_oos():
         return JSONResponse({"error": str(e)}, status_code=500)
 
 
+@app.get("/api/weekly_picks")
+async def get_weekly_picks():
+    import sys
+    sys.path.insert(0, str(BASE))
+    import json as _json
+    import pandas as pd
+    import numpy as np
+    from datetime import datetime, timedelta
+
+    # キャッシュ（1時間）
+    cache_path = BASE / "backtest/weekly_picks_cache.json"
+    if cache_path.exists():
+        try:
+            cache = _json.loads(cache_path.read_text())
+            cached_at = datetime.fromisoformat(cache.get("cached_at", "2000-01-01"))
+            if datetime.now() - cached_at < timedelta(hours=1):
+                return JSONResponse(sanitize(cache))
+        except Exception:
+            pass
+
+    try:
+        from optimize import precompute, build_score_df
+        from backtest import get_nikkei_history
+        from fetch_cache import read_ohlcv
+        from universe import get_top_liquid_tickers
+    except Exception as e:
+        return JSONResponse({"error": f"モジュールインポート失敗: {e}"}, status_code=500)
+
+    # ベースラインパラメータ取得
+    q_path = BASE / "backtest/hypothesis_queue.json"
+    if not q_path.exists():
+        return JSONResponse({"error": "hypothesis_queue.json が見つかりません"}, status_code=404)
+    q = _json.loads(q_path.read_text())
+    params = q.get("baseline", {}).get("params", {})
+    lb = params.get("lookback", 60)
+    top_n = params.get("top_n", 2)
+
+    # データロード
+    END = datetime.now().strftime("%Y-%m-%d")
+    warmup = (datetime.now() - timedelta(days=lb * 2 + 50)).strftime("%Y-%m-%d")
+
+    try:
+        codes = get_top_liquid_tickers(2000)
+    except Exception as e:
+        return JSONResponse({"error": f"ユニバース取得失敗: {e}"}, status_code=500)
+
+    prices_dict = {}
+    for c in codes:
+        try:
+            df = read_ohlcv(c, warmup, END)
+            if df is not None and not df.empty and 'AdjC' in df.columns:
+                prices_dict[c] = df
+        except Exception:
+            pass
+
+    if not prices_dict:
+        return JSONResponse({"error": "株価データが取得できませんでした"}, status_code=500)
+
+    try:
+        nikkei = get_nikkei_history(warmup, END)
+    except Exception as e:
+        return JSONResponse({"error": f"日経データ取得失敗: {e}"}, status_code=500)
+
+    # precompute
+    try:
+        factor_dfs = precompute(prices_dict, nikkei, [lb])
+    except Exception as e:
+        return JSONResponse({"error": f"precompute失敗: {e}"}, status_code=500)
+
+    # ウェイト取得（ベースラインパラメータ全ファクター対応）
+    weight_keys = ["ret", "rs", "green", "smooth", "resilience",
+                   "short_momentum", "high52", "omega", "close_location",
+                   "range_expand", "win_streak", "sector_momentum",
+                   "overnight_return", "volume_acceleration", "higher_lows",
+                   "body_strength", "vol_return_corr", "accumulation",
+                   "momentum_consistency", "upside_capture", "gap_momentum",
+                   "volume_confirm", "ret_skip", "cluster_boost",
+                   "return_autocorr", "volume_slope", "clean_momentum"]
+    weights = {k: params.get(k + "_w", 0.0) for k in weight_keys}
+
+    try:
+        score_df = build_score_df(factor_dfs, lb, weights)
+    except Exception as e:
+        return JSONResponse({"error": f"スコア計算失敗: {e}"}, status_code=500)
+
+    if score_df is None or score_df.empty:
+        return JSONResponse({"error": "スコア計算失敗（空のスコアDF）"}, status_code=500)
+
+    # 最新日のスコア
+    latest_date = score_df.index[-1]
+    latest_scores = score_df.loc[latest_date].dropna().sort_values(ascending=False)
+
+    # 1週前のスコア（前回推奨との比較）
+    prev_date = score_df.index[-2] if len(score_df) >= 2 else latest_date
+    prev_scores = score_df.loc[prev_date].dropna().sort_values(ascending=False) if prev_date != latest_date else latest_scores
+    prev_top = prev_scores.nlargest(top_n).index.tolist()
+    curr_top = latest_scores.nlargest(top_n).index.tolist()
+
+    # 銘柄名マッピング
+    name_map = {}
+    try:
+        master = pd.read_parquet(str(BASE / "data/fundamentals/equities_master.parquet"))
+        name_col = next((c for c in ["CoName", "CompanyName", "Name"] if c in master.columns), None)
+        if name_col:
+            name_map = dict(zip(master["Code"].astype(str), master[name_col].astype(str)))
+    except Exception:
+        pass
+
+    def stock_info(code):
+        df = prices_dict.get(code)
+        price = None
+        ret5d = None
+        if df is not None and not df.empty:
+            try:
+                price = round(float(df['AdjC'].iloc[-1]), 0)
+            except Exception:
+                pass
+            try:
+                if len(df) > 5:
+                    ret5d = round(float(df['AdjC'].pct_change(5).iloc[-1] * 100), 1)
+            except Exception:
+                pass
+        return {
+            "code": str(code),
+            "name": name_map.get(str(code), str(code)),
+            "price": price,
+            "score": round(float(latest_scores.get(code, 0)), 3),
+            "ret5d_pct": ret5d,
+        }
+
+    # 上位20のランキング
+    top20 = latest_scores.nlargest(20)
+    ranking = []
+    for rank, (code, score) in enumerate(top20.items(), 1):
+        info = stock_info(code)
+        info["rank"] = rank
+        info["is_recommended"] = code in curr_top
+        ranking.append(info)
+
+    # 持ち替え推奨
+    sell = [c for c in prev_top if c not in curr_top]
+    buy = [c for c in curr_top if c not in prev_top]
+    hold = [c for c in curr_top if c in prev_top]
+
+    result = {
+        "cached_at": datetime.now().isoformat(),
+        "as_of": str(latest_date.date()),
+        "params": {
+            "lookback": lb,
+            "top_n": top_n,
+            "rebalance": params.get("rebalance", "weekly"),
+            "total_return_pct": q.get("baseline", {}).get("total_pct", 0),
+        },
+        "recommended": [stock_info(c) for c in curr_top],
+        "changes": {
+            "buy": [stock_info(c) for c in buy],
+            "sell": [stock_info(c) for c in sell],
+            "hold": [stock_info(c) for c in hold],
+        },
+        "ranking": ranking,
+    }
+
+    try:
+        cache_path.write_text(_json.dumps(result, ensure_ascii=False, default=str, indent=2))
+    except Exception:
+        pass
+
+    return JSONResponse(sanitize(result))
+
+
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
 
 @app.get("/")

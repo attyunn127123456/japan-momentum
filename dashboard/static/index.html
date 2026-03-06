@@ -107,6 +107,7 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
   <div class="tab active" onclick="showTab('signals')">🔔 シグナル</div>
   <div class="tab" onclick="showTab('ranking')">📊 ランキング</div>
   <div class="tab" onclick="showTab('backtest')" id="bt-tab">📈 バックテスト</div>
+  <div class="tab" onclick="showTab('picks')">🎯 今週の推奨</div>
   <div class="tab" onclick="showTab('history')">📅 履歴</div>
 </div>
 <div class="content">
@@ -253,6 +254,51 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
   </div>
 </div>
 
+<!-- PICKS -->
+<div id="panel-picks" class="panel">
+  <div id="picks-loading" style="text-align:center;padding:40px;color:#8b949e">スコア計算中... (初回は数分かかります)</div>
+  <div id="picks-error" style="display:none;text-align:center;padding:20px;color:#f85149"></div>
+
+  <!-- おすすめ銘柄カード -->
+  <div id="picks-recommended" style="display:none">
+    <h3 style="color:#58a6ff;margin:0 0 12px;font-size:14px">🎯 今週のおすすめ銘柄</h3>
+    <div id="picks-recommended-cards" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px"></div>
+    <div id="picks-meta" style="font-size:11px;color:#8b949e;margin-bottom:20px"></div>
+  </div>
+
+  <!-- 持ち替え推奨 -->
+  <div id="picks-changes" style="display:none;margin-bottom:20px">
+    <h3 style="color:#58a6ff;margin:0 0 12px;font-size:14px">🔄 持ち替え推奨（前週比較）</h3>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <div id="picks-buy-section" style="flex:1;min-width:160px;background:#0d1117;border:1px solid #238636;border-radius:8px;padding:12px">
+        <div style="color:#3fb950;font-weight:600;font-size:13px;margin-bottom:8px">🟢 新規買い</div>
+        <div id="picks-buy-list"></div>
+      </div>
+      <div id="picks-sell-section" style="flex:1;min-width:160px;background:#0d1117;border:1px solid #da3633;border-radius:8px;padding:12px">
+        <div style="color:#f85149;font-weight:600;font-size:13px;margin-bottom:8px">🔴 売り（入れ替え）</div>
+        <div id="picks-sell-list"></div>
+      </div>
+      <div id="picks-hold-section" style="flex:1;min-width:160px;background:#0d1117;border:1px solid #21262d;border-radius:8px;padding:12px">
+        <div style="color:#8b949e;font-weight:600;font-size:13px;margin-bottom:8px">⚪ 継続保有</div>
+        <div id="picks-hold-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- スコアランキング上位20 -->
+  <div id="picks-ranking" style="display:none">
+    <h3 style="color:#58a6ff;margin:0 0 12px;font-size:14px">📊 スコアランキング Top 20</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>#</th><th>コード</th><th>銘柄名</th><th>スコア</th><th>株価</th><th>5日リターン</th>
+        </tr></thead>
+        <tbody id="picks-ranking-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <!-- HISTORY -->
 <div id="panel-history" class="panel">
   <div style="margin-bottom:12px">
@@ -275,10 +321,89 @@ function pct(v,d=1){ return (v>0?'+':'')+v.toFixed(d)+'%'; }
 function showTab(n){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  ['signals','ranking','backtest','history'].forEach((x,i)=>{
+  ['signals','ranking','backtest','picks','history'].forEach((x,i)=>{
     if(x===n){ document.querySelectorAll('.tab')[i].classList.add('active'); document.getElementById('panel-'+x).classList.add('active'); }
   });
   if(n==='backtest' && !btLoaded) loadBacktest();
+  if(n==='picks' && !picksLoaded) loadPicks();
+}
+
+// PICKS
+let picksLoaded = false;
+async function loadPicks(){
+  picksLoaded = true;
+  const loadEl = document.getElementById('picks-loading');
+  const errEl = document.getElementById('picks-error');
+  loadEl.style.display = 'block';
+  errEl.style.display = 'none';
+  let data;
+  try {
+    const r = await fetch('/api/weekly_picks');
+    data = await r.json();
+  } catch(e) {
+    loadEl.style.display = 'none';
+    errEl.style.display = 'block';
+    errEl.textContent = '⚠️ APIエラー: ' + e.message;
+    return;
+  }
+  if(data.error) {
+    loadEl.style.display = 'none';
+    errEl.style.display = 'block';
+    errEl.textContent = '⚠️ ' + data.error;
+    return;
+  }
+  loadEl.style.display = 'none';
+
+  // おすすめ銘柄カード
+  const recEl = document.getElementById('picks-recommended');
+  const recCards = document.getElementById('picks-recommended-cards');
+  recEl.style.display = 'block';
+  const rec = data.recommended || [];
+  recCards.innerHTML = rec.map(s => {
+    const ret = s.ret5d_pct;
+    const retStr = ret != null ? ('<span class="'+(ret>=0?'pos':'neg')+'">'+(ret>=0?'+':'')+ret.toFixed(1)+'%</span>') : '-';
+    return '<div style="background:#161b22;border:2px solid #58a6ff;border-radius:10px;padding:16px;min-width:180px;flex:1">'
+      +'<div style="font-size:20px;font-weight:700;color:#58a6ff">'+s.code+'</div>'
+      +'<div style="font-size:15px;font-weight:600;margin:4px 0">'+s.name+'</div>'
+      +'<div style="color:#8b949e;font-size:12px;margin-bottom:8px">スコア: <strong style="color:#f0f6fc">'+s.score.toFixed(3)+'</strong></div>'
+      +'<div style="font-size:12px">株価: ¥'+(s.price ? s.price.toLocaleString() : '-')+'</div>'
+      +'<div style="font-size:12px">5日リターン: '+retStr+'</div>'
+      +'</div>';
+  }).join('') || '<div style="color:#8b949e">推奨銘柄なし</div>';
+
+  const p = data.params || {};
+  document.getElementById('picks-meta').textContent =
+    `基準日: ${data.as_of} | lookback: ${p.lookback}日 | 保有数: ${p.top_n}銘柄 | リバランス: ${p.rebalance} | バックテスト総リターン: +${(p.total_return_pct||0).toFixed(1)}%`;
+
+  // 持ち替え推奨
+  const chEl = document.getElementById('picks-changes');
+  chEl.style.display = 'block';
+  const ch = data.changes || {};
+  function chItem(s){
+    const ret = s.ret5d_pct;
+    const retStr = ret != null ? (' <span class="'+(ret>=0?'pos':'neg')+'">'+(ret>=0?'+':'')+ret.toFixed(1)+'%</span>') : '';
+    return '<div style="font-size:12px;padding:4px 0;border-bottom:1px solid #21262d">'
+      +'<strong>'+s.code+'</strong> '+s.name+retStr+'</div>';
+  }
+  document.getElementById('picks-buy-list').innerHTML = (ch.buy||[]).map(chItem).join('') || '<div style="color:#8b949e;font-size:12px">なし</div>';
+  document.getElementById('picks-sell-list').innerHTML = (ch.sell||[]).map(chItem).join('') || '<div style="color:#8b949e;font-size:12px">なし</div>';
+  document.getElementById('picks-hold-list').innerHTML = (ch.hold||[]).map(chItem).join('') || '<div style="color:#8b949e;font-size:12px">なし</div>';
+
+  // ランキング
+  const rkEl = document.getElementById('picks-ranking');
+  rkEl.style.display = 'block';
+  const tbody = document.getElementById('picks-ranking-tbody');
+  tbody.innerHTML = (data.ranking||[]).map(r => {
+    const ret = r.ret5d_pct;
+    const retStr = ret != null ? ('<span class="'+(ret>=0?'pos':'neg')+'">'+(ret>=0?'+':'')+ret.toFixed(1)+'%</span>') : '-';
+    const star = r.is_recommended ? ' 🎯' : '';
+    return '<tr style="'+(r.is_recommended?'background:#0d1f0d':'')+'"><td>'+r.rank+'</td>'
+      +'<td style="font-weight:600;color:#58a6ff">'+r.code+star+'</td>'
+      +'<td>'+r.name+'</td>'
+      +'<td>'+r.score.toFixed(3)+'</td>'
+      +'<td>¥'+(r.price ? r.price.toLocaleString() : '-')+'</td>'
+      +'<td>'+retStr+'</td></tr>';
+  }).join('');
 }
 
 function badges(r){

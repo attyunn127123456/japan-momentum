@@ -494,3 +494,30 @@ openclaw system event 送信完了
   1118銘柄ロード完了
 ファンダメンタルファクター: 0銘柄
 ファクター事前計算...
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+
+=== Evolution Engine 起動 ===
+ベースライン: sharpe=4.126, total=372.47%
+データロード (2000銘柄)...
+  ユニバース: キャッシュから2000銘柄読み込み
+  1214銘柄ロード完了
+ファンダメンタルファクター: 0銘柄
+ファクター事前計算...
+事前計算完了: 1214銘柄×5lb / 343.2秒
+/Users/panda/Projects/japan-momentum/evolution_engine.py:337: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
+
+--- 局所探索 開始 (Optuna TPE) ---
+Factor Selection: 14→12個 (除外: {'clean_momentum_w', 'rs_w'})
+Optuna探索対象ファクター: ['ret_w', 'green_w', 'smooth_w', 'resilience_w', 'high52_w', 'omega_w', 'cluster_boost_w', 'ret_skip_w', 'win_streak_w', 'momentum_consistency_w', 'upside_capture_w', 'return_autocorr_w', 'short_momentum_w', 'volume_confirm_w', 'gap_momentum_w', 'accumulation_w', 'volume_slope_w', 'clean_momentum_w']
+Optuna TPE: 300trials 開始...
+  新ベスト: total=-9.1%, sharpe=-1.342, lb=60, tn=2
+  新ベスト: total=-8.0%, sharpe=-2.665, lb=100, tn=5
+  新ベスト: total=57.3%, sharpe=2.197, lb=80, tn=6
+  新ベスト: total=211.1%, sharpe=1.120, lb=100, tn=4
+  新ベスト: total=241.6%, sharpe=3.533, lb=100, tn=3
+  新ベスト: total=249.6%, sharpe=3.718, lb=100, tn=3
+  新ベスト: total=272.6%, sharpe=3.846, lb=100, tn=3
+  新ベスト: total=305.6%, sharpe=4.065, lb=100, tn=3
+  新ベスト: total=314.7%, sharpe=3.902, lb=40, tn=2
