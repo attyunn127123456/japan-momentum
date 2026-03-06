@@ -2012,7 +2012,7 @@
         "atr_short": 5,
         "atr_long": 40
       },
-      "status": "pending"
+      "status": "done_win"
     },
     {
       "id": "win_streak_w",
@@ -2032,6 +2032,67 @@
         "cluster_boost_w": 0.07,
         "win_streak_w": 0.13,
         "streak_window": 20
+      },
+      "status": "done_win"
+    },
+    {
+      "id": "accumulation_w",
+      "desc": "方向性出来高ファクター: 上昇日出来高と下落日出来高の比率でスマートマネーの蓄積を検出",
+      "theory": "volume_confirm_w（出来高水準の比較）はGA最適化で重み0に収束した。出来高の「水準」ではなく「方向性」が重要。上昇日に出来高が集中し下落日は枯れる銘柄は、機関投資家が計画的にポジションを積み増している蓄積(accumulation)フェーズにある。OBV的な方向性出来高フローは、ret/rs/greenとは完全に直交した需給情報。top_n=3の極集中では『本物の機関買い』がある銘柄のみを選ぶ必要があり、方向性出来高はその最良の判別器。計算: lookback期間中の(上昇日平均出来高)/(下落日平均出来高)をランクスコア化。",
+      "factor_to_add": "accumulation_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.22,
+        "green_w": 0.08,
+        "smooth_w": 0.0,
+        "high52_w": 0.1,
+        "short_momentum_w": 0.12,
+        "cluster_boost_w": 0.08,
+        "accumulation_w": 0.1
+      },
+      "status": "pending"
+    },
+    {
+      "id": "momentum_consistency_w",
+      "desc": "週次勝率ファクター: ルックバック期間中の週単位outperform回数で「安定した勝者」を識別",
+      "theory": "ret_wは合計リターンだが、1回の急騰で稼いだ銘柄も毎週コツコツ上がった銘柄も同じスコアになる。top_n=3の週次リバランスでは、翌週も上がる確率が高い「安定した勝者」を選ぶことが決定的。momentum_consistencyは過去12週のうち何週プラスだったかをカウントする勝率ファクター。週次勝率が高い銘柄は、短期的な需給のランダム変動ではなく、構造的な買い圧力（ファンダメンタル改善、テーマ継続、機関の段階的参入）によって駆動されている。ret_w（合計量）とは直交する「勝ちの安定性」情報を提供する。",
+      "factor_to_add": "momentum_consistency_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.28,
+        "rs_w": 0.22,
+        "green_w": 0.08,
+        "smooth_w": 0.0,
+        "high52_w": 0.1,
+        "short_momentum_w": 0.12,
+        "cluster_boost_w": 0.08,
+        "momentum_consistency_w": 0.12,
+        "consistency_weeks": 12
+      },
+      "status": "pending"
+    },
+    {
+      "id": "upside_capture_w",
+      "desc": "上方キャプチャ比率ファクター: 市場上昇日に市場以上に上がる銘柄（ベータ＋アルファの合成力）を検出",
+      "theory": "日経+98%の強気相場環境では、市場の上昇をどれだけ増幅できるかが最終リターンを決定する。upside_capture = (市場上昇日の銘柄平均リターン) / (市場上昇日の日経平均リターン)。rs_wは全日の相対強度だが、upside_captureは上昇日に限定した増幅率。上昇日captureが2.0の銘柄を3つ持てば、日経+98%で約+196%の寄与が期待できる。下落日の挙動はresilienceが担うが、upside_captureは攻撃面のみに特化し、bull市場でのリターン最大化に直結する。rs_wとは情報が一部重複するが、上昇日限定の条件付き統計量なので追加情報を持つ。",
+      "factor_to_add": "upside_capture_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.28,
+        "rs_w": 0.18,
+        "green_w": 0.08,
+        "smooth_w": 0.0,
+        "high52_w": 0.1,
+        "short_momentum_w": 0.12,
+        "cluster_boost_w": 0.08,
+        "upside_capture_w": 0.16
       },
       "status": "pending"
     }
