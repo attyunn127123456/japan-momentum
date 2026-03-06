@@ -407,9 +407,15 @@ def run_evolution():
 
             if wf_result:
                 print(f"WF結果: avg_total={wf_result['avg_total_return']:.1f}%, avg_sharpe={wf_result['avg_sharpe']:.3f}, n_passed={wf_result['n_passed']}/3", flush=True)
-                # 2/3以上合格でのみ採用
-                if wf_result["n_passed"] < 2:
-                    print(f"⚠️ Walk-Forward不合格（{wf_result['n_passed']}/3 fold合格）、採用スキップ", flush=True)
+                # fold3（直近2024-2026）合格が必須条件
+                fold3 = next((f for f in wf_result.get("folds", []) if f.get("id") == "fold3"), None)
+                fold3_passed = fold3 and fold3.get("passed", False)
+                print(f"WF: fold3（直近）={'✅合格' if fold3_passed else '❌不合格'}, n_passed={wf_result['n_passed']}/3", flush=True)
+                if not fold3_passed:
+                    print(f"⚠️ fold3（2024-2026）不合格 → 採用スキップ", flush=True)
+                    adopted = False
+                elif wf_result["n_passed"] < 1:
+                    print(f"⚠️ Walk-Forward全不合格 → 採用スキップ", flush=True)
                     adopted = False
             else:
                 print("Walk-Forward: 結果取得失敗、通常採用基準を適用", flush=True)
