@@ -2122,7 +2122,7 @@
         "upside_capture_w": 0.11,
         "gap_momentum_w": 0.1
       },
-      "status": "pending"
+      "status": "done_win"
     },
     {
       "id": "body_strength_w",
@@ -2143,7 +2143,7 @@
         "upside_capture_w": 0.11,
         "gap_momentum_w": 0.1
       },
-      "status": "pending"
+      "status": "done_win"
     },
     {
       "id": "vol_return_corr_w",
@@ -2163,6 +2163,69 @@
         "accumulation_w": 0.12,
         "upside_capture_w": 0.11,
         "gap_momentum_w": 0.1
+      },
+      "status": "done_win"
+    },
+    {
+      "id": "intraday_strength_w",
+      "desc": "日中強度ファクター: (close-open)/|open-prev_close|比率でオーバーナイトギャップ後の日中フォロースルー強度を測定",
+      "theory": "overnight_return_wはギャップ（夜間リターン）を捕捉し、gap_momentum_wはギャップアップの頻度を測るが、「ギャップ後に日中にさらに買われるか」は未測定。open→closeの日中リターンが正の日が多い銘柄は、ギャップだけでなく日本時間の実需買い（機関の成行き注文、ファンドのリバランス）が強い。overnight_return_w（夜間）と完全に直交する日中リターンの累積は、海外勢の夜間注文vs国内勢の日中注文を分離する新情報次元。top_n=2では2銘柄とも「夜も昼も買われ続ける」銘柄を選ぶ必要があり、日中強度はその判別器。計算: sum((close-open)/open, lookback)のランクスコア。",
+      "factor_to_add": "intraday_strength_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.07,
+        "green_w": 0.12,
+        "smooth_w": 0.12,
+        "omega_w": 0.1,
+        "short_momentum_w": 0.12,
+        "accumulation_w": 0.12,
+        "upside_capture_w": 0.11,
+        "gap_momentum_w": 0.1,
+        "intraday_strength_w": 0.12
+      },
+      "status": "pending"
+    },
+    {
+      "id": "sector_residual_w",
+      "desc": "業種残差モメンタムファクター: 銘柄リターンから業種平均リターンを差し引いた「業種効果を除いた純粋な銘柄固有アルファ」",
+      "theory": "rs_w（対日経相対強度）はベスト構成でweight=0に収束し棄却された。しかし参照ベンチマークが問題だった可能性がある。日経225は大型株偏重で中小型の動きを反映しない。業種コード（33業種）を使って「同業種内でのアウトパフォーマンス」を測れば、セクターローテーション効果を除去した純粋な銘柄固有モメンタムが抽出できる。sector_momentum_w（業種全体の強さ）は既にあるが逆に「業種の追い風を差し引いた残差」は未実装。半導体セクター全体が+50%の時に+80%の銘柄は残差+30%の真のアルファ持ち。Moskowitz & Grinblatt(1999)で実証済みの情報分解。計算: ret[code] - sector_avg_ret[sector33code]のランクスコア。",
+      "factor_to_add": "sector_residual_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.07,
+        "green_w": 0.11,
+        "smooth_w": 0.11,
+        "omega_w": 0.1,
+        "short_momentum_w": 0.12,
+        "accumulation_w": 0.12,
+        "upside_capture_w": 0.11,
+        "gap_momentum_w": 0.1,
+        "sector_residual_w": 0.14
+      },
+      "status": "pending"
+    },
+    {
+      "id": "tail_ratio_w",
+      "desc": "テールレシオファクター: 上側95パーセンタイルリターン÷下側5パーセンタイルの絶対値で「爆発力あるのに崩れにくい」銘柄を検出",
+      "theory": "omega_wは上昇日平均÷下落日平均で測定するが、これは「平均的な」非対称性。tail_ratioは分布の極端な部分（テール）に注目し、P95(daily_return)/|P5(daily_return)|を計算する。テールレシオが高い銘柄は「大きく上がる日はあるが、大きく下がる日は少ない」という非対称分布を持つ。top_n=2の極集中ポートフォリオでは1銘柄の急落リスクが致命的（現在max_dd=13%）。テールレシオが高い銘柄を選ぶことで、上方ポテンシャルを維持しつつ下方テールリスクを制限できる。omega_wとは情報が一部重複するが、テール（5%/95%）vs平均という異なる統計量で直交的な情報を提供。計算: (percentile95 / abs(percentile5))のランクスコア。",
+      "factor_to_add": "tail_ratio_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.07,
+        "green_w": 0.11,
+        "smooth_w": 0.11,
+        "omega_w": 0.08,
+        "short_momentum_w": 0.12,
+        "accumulation_w": 0.12,
+        "upside_capture_w": 0.11,
+        "gap_momentum_w": 0.1,
+        "tail_ratio_w": 0.14
       },
       "status": "pending"
     }
