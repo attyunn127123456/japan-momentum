@@ -157,13 +157,27 @@ def backtest_evolution():
     if not p.exists():
         return JSONResponse(sanitize({"best10": [], "all": [], "total": 0}))
     data = json.loads(p.read_text())
+
+    def dedup_by_return(entries):
+        """total_return_pct が小数第2位まで同じエントリーは最初の1件のみ残す"""
+        seen = set()
+        result = []
+        for e in entries:
+            key = round(e.get('total_return_pct', 0), 2)
+            if key not in seen:
+                seen.add(key)
+                result.append(e)
+        return result
+
     # total_return_pct 降順でソート
     if isinstance(data, list):
         data = sorted(data, key=lambda x: x.get('total_return_pct', 0), reverse=True)
-        return JSONResponse(sanitize({'best10': data[:10], 'all': data, 'total': len(data)}))
+        deduped = dedup_by_return(data)
+        return JSONResponse(sanitize({'best10': deduped[:10], 'all': data, 'total': len(data)}))
     if 'all' in data:
         data['all'] = sorted(data['all'], key=lambda x: x.get('total_return_pct', 0), reverse=True)
-        data['best10'] = data['all'][:10]
+        deduped = dedup_by_return(data['all'])
+        data['best10'] = deduped[:10]
     return JSONResponse(sanitize(data))
 
 

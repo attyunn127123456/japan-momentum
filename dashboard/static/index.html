@@ -89,6 +89,12 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
 .regime-neutral { background: #21262d; color: #8b949e; }
 .prog-track { width: 80px; background: #0d1117; border-radius: 3px; height: 5px; display: inline-block; overflow: hidden; vertical-align: middle; }
 .prog-fill { height: 100%; border-radius: 3px; background: #58a6ff; }
+/* Factor weight bars (baseline detail) */
+.factor-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 12px; }
+.factor-bar-label { width: 160px; color: #c9d1d9; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.factor-bar-track { flex: 1; background: #0d1117; border-radius: 4px; height: 10px; overflow: hidden; }
+.factor-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #1f6feb, #58a6ff); transition: width 0.5s; }
+.factor-bar-val { width: 42px; text-align: right; color: #8b949e; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -160,6 +166,10 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
     <div id="bt-running-banner" style="display:none; background:#1c3a4a; border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:13px; color:#58a6ff;">
       <span class="pulse"></span> 仮説検証中...
     </div>
+
+    <!-- 最新ベースライン解説 -->
+    <div class="section-title" id="bt-baseline-detail-title" style="display:none">🏆 最新ベースライン解説</div>
+    <div id="bt-baseline-detail" style="display:none"></div>
 
     <!-- シグナルライブラリ -->
     <div class="section-title">📡 シグナルライブラリ</div>
@@ -493,16 +503,95 @@ async function loadRegime(){
   } catch(e){ console.error('regime', e); }
 }
 
+const FACTOR_LABELS = {
+  ret_w: 'モメンタム（長期）', rs_w: '相対強度', green_w: '陽線率',
+  smooth_w: 'トレンド安定性', resilience_w: '下落耐性', high52_w: '52週高値接近度',
+  omega_w: '上下非対称性(Omega)', short_momentum_w: 'モメンタム（短期）',
+  cluster_boost_w: 'テーマ同調性', ret_skip_w: 'スキップモメンタム',
+  volume_confirm_w: '出来高確認', gap_momentum_w: 'ギャップアップ頻度',
+  close_location_w: '引け買い圧力', range_expand_w: 'ブレイクアウト強度',
+  win_streak_w: '連続陽線日数', sector_momentum_w: '業種モメンタム',
+  overnight_return_w: '夜間リターン', volume_acceleration_w: '出来高加速度',
+  trend_strength_w: 'トレンド強度(ADX)', price_channel_w: 'チャネルブレイク',
+  intraday_pressure_w: '日中買い圧力'
+};
+
+function hypothesisToJa(id, at){
+  if(!id) return id || '-';
+  if(['local_search','evolution_cycle','return_maximization_start'].includes(id)){
+    const dt = (at||'').slice(5,16).replace('T',' ');
+    return '最適化サイクル（' + dt + '）';
+  }
+  if(id === 'high52_all_universe') return '52週高値ユニバース拡大';
+  if(id === 'high52_midcap') return '52週高値中型株';
+  if(id === 'universe_midcap') return '中型株ユニバース';
+  const m = id.match(/^added_to_ga_(.+)$/);
+  if(m) return 'ファクター追加: ' + m[1];
+  return id;
+}
+
+function renderBaselineDetail(entry){
+  if(!entry) return;
+  const p = entry.params || {};
+  const titleEl = document.getElementById('bt-baseline-detail-title');
+  const detailEl = document.getElementById('bt-baseline-detail');
+  if(titleEl) titleEl.style.display = 'block';
+  if(detailEl) detailEl.style.display = 'block';
+
+  // Performance stats
+  const statsHtml = '<div class="stats-grid" style="margin-bottom:14px">'
+    + '<div class="stat-card"><div class="lbl">累積リターン</div><div class="val '+(entry.total_return_pct>=0?'pos':'neg')+'">'+pct(entry.total_return_pct||0)+'</div></div>'
+    + '<div class="stat-card"><div class="lbl">Sharpe比</div><div class="val '+(entry.sharpe>=0?'pos':'neg')+'">'+(entry.sharpe>=0?'+':'')+Number(entry.sharpe||0).toFixed(2)+'</div></div>'
+    + '<div class="stat-card"><div class="lbl">最大DD</div><div class="val neg">'+(entry.max_dd_pct||'-')+'%</div></div>'
+    + '<div class="stat-card"><div class="lbl">保有銘柄数</div><div class="val">'+(p.top_n||'-')+'</div></div>'
+    + '</div>';
+
+  // Factor weights - filter out 0, sort descending
+  const factors = Object.entries(p)
+    .filter(([k,v]) => k.endsWith('_w') && typeof v === 'number' && v > 0.0001)
+    .sort((a,b) => b[1]-a[1]);
+  const maxW = factors.length ? factors[0][1] : 1;
+  const barsHtml = factors.map(([k,v]) => {
+    const label = FACTOR_LABELS[k] || k.replace(/_w$/,'');
+    const pctW = Math.round((v/maxW)*100);
+    return '<div class="factor-bar-row">'
+      +'<div class="factor-bar-label">'+label+'</div>'
+      +'<div class="factor-bar-track"><div class="factor-bar-fill" style="width:'+pctW+'%"></div></div>'
+      +'<div class="factor-bar-val">'+(v*100).toFixed(1)+'%</div>'
+      +'</div>';
+  }).join('');
+
+  // Trading logic
+  const logicHtml = '<div style="margin-top:10px;padding:10px 14px;background:#0d1117;border-radius:8px;font-size:12px;color:#8b949e">'
+    +'💡 <strong style="color:#e6edf3">取引ロジック</strong>: '
+    +'過去 <strong style="color:#58a6ff">'+(p.lookback||'-')+'</strong> 日間のファクタースコアで銘柄をランキングし、'
+    +'上位 <strong style="color:#58a6ff">'+(p.top_n||'-')+'</strong> 銘柄を毎週リバランス'
+    +'</div>';
+
+  detailEl.innerHTML = statsHtml
+    + '<div style="background:#161b22;border:1px solid #21262d;border-radius:8px;padding:14px;margin-bottom:10px">'
+    + '<div style="font-size:11px;color:#8b949e;font-weight:600;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.05em">ファクター重み</div>'
+    + barsHtml
+    + '</div>'
+    + logicHtml;
+}
+
 async function loadEvolution(){
   try {
     const res = await fetch('/api/backtest/evolution');
     if(!res.ok) return;
     const data = await res.json();
     document.getElementById('bt-evo-meta').textContent = '| 累計'+data.total+'テスト';
+
+    // 最新ベースライン解説
+    if(data.best10 && data.best10.length > 0){
+      renderBaselineDetail(data.best10[0]);
+    }
+
     document.getElementById('bt-evo-tbody').innerHTML = (data.best10||[]).map((r,i)=>'<tr>'
       +'<td class="dim">'+(i+1)+'</td>'
       +'<td class="dim" style="font-size:11px">'+(r.at||'').slice(5,16).replace('T',' ')+'</td>'
-      +'<td style="max-width:180px;white-space:normal;font-size:12px">'+(r.desc||r.id)+'</td>'
+      +'<td style="max-width:200px;white-space:normal;font-size:12px">'+hypothesisToJa(r.id||r.hypothesis, r.at)+'</td>'
       +'<td class="'+(r.total_return_pct>=0?'pos':'neg')+'">'+pct(r.total_return_pct||0)+'</td>'
       +'<td class="neg">'+(r.max_dd_pct||0)+'%</td>'
       +'<td class="'+(r.sharpe>=0?'pos':'neg')+'">'+(r.sharpe>=0?'+':'')+r.sharpe+'</td>'

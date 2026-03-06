@@ -97,6 +97,38 @@
       }
     },
     {
+      "at": "2026-03-05T16:53:16.779995",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=2",
+      "win": 0,
+      "delta_sharpe": 0.0,
+      "sharpe": 5.17,
+      "total_return_pct": 241.06,
+      "alpha_pct": 142.86,
+      "max_dd_pct": 12.98,
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.0726172478170063,
+        "green_w": 0.12498564152496136,
+        "smooth_w": 0.12467957440176997,
+        "resilience_w": 0.012115895863647683,
+        "high52_w": 0.007755800195211394,
+        "omega_w": 0.10691059874530566,
+        "win_streak_w": 0.009645126163026483,
+        "short_momentum_w": 0.12134357564844933,
+        "cluster_boost_w": 0.0029910845834964705,
+        "ret_skip_w": 0.02089399732571734,
+        "volume_confirm_w": 0.040802981829753684,
+        "gap_momentum_w": 0.09866226445304284,
+        "accumulation_w": 0.12649588466164524,
+        "momentum_consistency_w": 0.011706564672688248,
+        "upside_capture_w": 0.118393762114278,
+        "rs_w": 0.0
+      }
+    },
+    {
       "at": "2026-03-05T12:54:56.489970",
       "id": "local_search",
       "desc": "局所探索ベスト lb=60 tn=3",
@@ -246,34 +278,6 @@
         "cluster_boost_w": 0.1,
         "volume_confirm_w": 0.0
       }
-    },
-    {
-      "at": "2026-03-05T16:09:17.755258",
-      "id": "local_search",
-      "desc": "局所探索ベスト lb=60 tn=3",
-      "win": 0,
-      "delta_sharpe": 0.017999999999999794,
-      "sharpe": 4.274,
-      "total_return_pct": 166.98,
-      "alpha_pct": 68.78,
-      "max_dd_pct": 18.76,
-      "params": {
-        "lookback": 60,
-        "top_n": 3,
-        "rebalance": "weekly",
-        "ret_w": 0.3162,
-        "rs_w": 0.2455,
-        "green_w": 0.1008,
-        "smooth_w": 0.0,
-        "resilience_w": 0.0961,
-        "high52_w": 0.1054,
-        "omega_w": 0.0,
-        "short_momentum_w": 0.1361,
-        "cluster_boost_w": 0.15,
-        "close_location_w": 0.0,
-        "range_expand_w": 0.0,
-        "win_streak_w": 0.0
-      }
     }
   ],
   "all": [
@@ -343,6 +347,38 @@
     },
     {
       "at": "2026-03-05T16:52:03.822597",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=2",
+      "win": 0,
+      "delta_sharpe": 0.0,
+      "sharpe": 5.17,
+      "total_return_pct": 241.06,
+      "alpha_pct": 142.86,
+      "max_dd_pct": 12.98,
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.0726172478170063,
+        "green_w": 0.12498564152496136,
+        "smooth_w": 0.12467957440176997,
+        "resilience_w": 0.012115895863647683,
+        "high52_w": 0.007755800195211394,
+        "omega_w": 0.10691059874530566,
+        "win_streak_w": 0.009645126163026483,
+        "short_momentum_w": 0.12134357564844933,
+        "cluster_boost_w": 0.0029910845834964705,
+        "ret_skip_w": 0.02089399732571734,
+        "volume_confirm_w": 0.040802981829753684,
+        "gap_momentum_w": 0.09866226445304284,
+        "accumulation_w": 0.12649588466164524,
+        "momentum_consistency_w": 0.011706564672688248,
+        "upside_capture_w": 0.118393762114278,
+        "rs_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T16:53:16.779995",
       "id": "local_search",
       "desc": "局所探索ベスト lb=60 tn=2",
       "win": 0,
@@ -1979,5 +2015,5 @@
       }
     }
   ],
-  "total": 79
+  "total": 80
 }

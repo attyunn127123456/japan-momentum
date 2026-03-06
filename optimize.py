@@ -40,7 +40,7 @@ def precompute(prices_dict, nikkei, lookbacks):
     down_mask = (nk_rets < -0.01).astype(float)
     
     # lb -> factor -> {code: Series}
-    data = {lb: {"ret":{},"rs":{},"green":{},"smooth":{},"resilience":{},"ret5":{},"ret10":{},"omega":{},"high52":{},"close_location":{},"range_expand":{},"win_streak":{},"sector_momentum":{},"overnight_return":{},"volume_acceleration":{}} for lb in lookbacks}
+    data = {lb: {"ret":{},"rs":{},"green":{},"smooth":{},"resilience":{},"ret5":{},"ret10":{},"omega":{},"high52":{},"close_location":{},"range_expand":{},"win_streak":{},"sector_momentum":{},"overnight_return":{},"volume_acceleration":{},"higher_lows":{},"body_strength":{},"vol_return_corr":{},"accumulation":{},"momentum_consistency":{},"upside_capture":{},"gap_momentum":{},"volume_confirm":{},"ret_skip":{},"cluster_boost":{}} for lb in lookbacks}
 
     # 業種コードマップを読み込む
     try:
@@ -127,7 +127,82 @@ def precompute(prices_dict, nikkei, lookbacks):
                 data[lb]["volume_acceleration"][code] = vol_accel
             else:
                 data[lb]["volume_acceleration"][code] = pd.Series(np.nan, index=p.index)
-    
+
+            # --- phantom weight解消: 未実装ファクター追加 ---
+
+            # higher_lows: 下値切り上げ（lb依存）
+            low_series = df["Low"].reindex(p.index).ffill() if "Low" in df.columns else p
+            rolling_low_min = low_series.rolling(lb).min()
+            higher_lows = rolling_low_min.diff(5).apply(lambda x: 1.0 if x > 0 else 0.0).rolling(10).mean().astype(float)
+            data[lb]["higher_lows"][code] = higher_lows
+
+            # body_strength: 実体強度（lb依存）
+            if "Open" in df.columns and "High" in df.columns and "Low" in df.columns:
+                op = df["Open"].reindex(p.index).ffill()
+                rng_bs = (df["High"].reindex(p.index).ffill() - df["Low"].reindex(p.index).ffill()).replace(0, np.nan)
+                body = (p - op) / rng_bs
+                data[lb]["body_strength"][code] = body.rolling(lb).mean().astype(float)
+            else:
+                data[lb]["body_strength"][code] = pd.Series(np.nan, index=p.index)
+
+            # vol_return_corr: 出来高リターン相関（lb依存）
+            if "Volume" in df.columns:
+                vol_vrc = df["Volume"].reindex(p.index).replace(0, np.nan)
+                vol_chg = vol_vrc.pct_change()
+                corr_series = dr.rolling(lb).corr(vol_chg).astype(float)
+                data[lb]["vol_return_corr"][code] = corr_series
+            else:
+                data[lb]["vol_return_corr"][code] = pd.Series(np.nan, index=p.index)
+
+            # accumulation: 方向性出来高（lb依存）
+            if "Volume" in df.columns:
+                vol_acc = df["Volume"].reindex(p.index).replace(0, np.nan)
+                up_vol = vol_acc.where(dr > 0, 0)
+                down_vol = vol_acc.where(dr < 0, 0)
+                accum = (up_vol.rolling(lb).sum() / (down_vol.rolling(lb).sum().replace(0, np.nan))).astype(float)
+                data[lb]["accumulation"][code] = accum
+            else:
+                data[lb]["accumulation"][code] = pd.Series(np.nan, index=p.index)
+
+            # momentum_consistency: 週次勝率（lb依存）
+            weekly_win = dr.rolling(5).sum().apply(lambda x: 1.0 if x > 0 else 0.0)
+            data[lb]["momentum_consistency"][code] = weekly_win.rolling(max(lb // 5, 1)).mean().astype(float)
+
+            # upside_capture: 上方キャプチャ（lb依存）
+            up_days = nk_rets > 0
+            stock_ret_on_up = dr.where(up_days)
+            nk_ret_on_up = nk_rets.reindex(dr.index).where(up_days.reindex(dr.index))
+            capture = (stock_ret_on_up.rolling(lb).mean() / nk_ret_on_up.rolling(lb).mean().replace(0, np.nan)).astype(float)
+            data[lb]["upside_capture"][code] = capture
+
+            # gap_momentum: 寄り付きギャップ累積（lb依存）
+            if "Open" in df.columns:
+                op_gm = df["Open"].reindex(p.index).ffill()
+                gap = (op_gm / p.shift(1) - 1)
+                data[lb]["gap_momentum"][code] = gap.rolling(lb).mean().astype(float)
+            else:
+                data[lb]["gap_momentum"][code] = pd.Series(np.nan, index=p.index)
+
+            # volume_confirm: 出来高確認モメンタム（lb依存）
+            if "Volume" in df.columns:
+                vol_vc = df["Volume"].reindex(p.index).replace(0, np.nan)
+                vol_avg_vc = vol_vc.rolling(lb).mean()
+                vol_confirm = (dr * (vol_vc / vol_avg_vc.replace(0, np.nan))).rolling(lb).mean().astype(float)
+                data[lb]["volume_confirm"][code] = vol_confirm
+            else:
+                data[lb]["volume_confirm"][code] = pd.Series(np.nan, index=p.index)
+
+            # ret_skip: スキップ期間モメンタム (lb+21日前から21日前)
+            ret_skip = (p.shift(21) / p.shift(lb + 21) - 1).astype(float)
+            data[lb]["ret_skip"][code] = ret_skip
+
+            # cluster_boost: マルチタイムフレームモメンタム一致度（lb依存）
+            mom5  = dr.rolling(5).mean()
+            mom10 = dr.rolling(10).mean()
+            mom20 = dr.rolling(20).mean()
+            cluster = ((mom5.gt(0).astype(float) + mom10.gt(0).astype(float) + mom20.gt(0).astype(float)) / 3.0)
+            data[lb]["cluster_boost"][code] = cluster.rolling(lb).mean().astype(float)
+
     # 業種モメンタムを一括計算（全銘柄のretが揃ってから）
     for lb in lookbacks:
         ret_df = pd.DataFrame(data[lb]["ret"])  # date x code
@@ -254,6 +329,66 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
             score_df = va_ranked * volume_acceleration_w
         else:
             score_df = score_df + va_ranked * volume_acceleration_w
+
+    # 下値切り上げファクター
+    higher_lows_w = params.get('higher_lows_w', 0.0)
+    if higher_lows_w > 0 and lb in factor_dfs and 'higher_lows' in factor_dfs[lb]:
+        hl_ranked = factor_dfs[lb]['higher_lows'].rank(axis=1, pct=True)
+        score_df = hl_ranked * higher_lows_w if score_df is None else score_df + hl_ranked * higher_lows_w
+
+    # 実体強度ファクター
+    body_strength_w = params.get('body_strength_w', 0.0)
+    if body_strength_w > 0 and lb in factor_dfs and 'body_strength' in factor_dfs[lb]:
+        bs_ranked = factor_dfs[lb]['body_strength'].rank(axis=1, pct=True)
+        score_df = bs_ranked * body_strength_w if score_df is None else score_df + bs_ranked * body_strength_w
+
+    # 出来高リターン相関ファクター
+    vol_return_corr_w = params.get('vol_return_corr_w', 0.0)
+    if vol_return_corr_w > 0 and lb in factor_dfs and 'vol_return_corr' in factor_dfs[lb]:
+        vrc_ranked = factor_dfs[lb]['vol_return_corr'].rank(axis=1, pct=True)
+        score_df = vrc_ranked * vol_return_corr_w if score_df is None else score_df + vrc_ranked * vol_return_corr_w
+
+    # 方向性出来高ファクター
+    accumulation_w = params.get('accumulation_w', 0.0)
+    if accumulation_w > 0 and lb in factor_dfs and 'accumulation' in factor_dfs[lb]:
+        acc_ranked = factor_dfs[lb]['accumulation'].rank(axis=1, pct=True)
+        score_df = acc_ranked * accumulation_w if score_df is None else score_df + acc_ranked * accumulation_w
+
+    # 週次勝率ファクター
+    momentum_consistency_w = params.get('momentum_consistency_w', 0.0)
+    if momentum_consistency_w > 0 and lb in factor_dfs and 'momentum_consistency' in factor_dfs[lb]:
+        mc_ranked = factor_dfs[lb]['momentum_consistency'].rank(axis=1, pct=True)
+        score_df = mc_ranked * momentum_consistency_w if score_df is None else score_df + mc_ranked * momentum_consistency_w
+
+    # 上方キャプチャファクター
+    upside_capture_w = params.get('upside_capture_w', 0.0)
+    if upside_capture_w > 0 and lb in factor_dfs and 'upside_capture' in factor_dfs[lb]:
+        uc_ranked = factor_dfs[lb]['upside_capture'].rank(axis=1, pct=True)
+        score_df = uc_ranked * upside_capture_w if score_df is None else score_df + uc_ranked * upside_capture_w
+
+    # 寄り付きギャップモメンタムファクター
+    gap_momentum_w = params.get('gap_momentum_w', 0.0)
+    if gap_momentum_w > 0 and lb in factor_dfs and 'gap_momentum' in factor_dfs[lb]:
+        gm_ranked = factor_dfs[lb]['gap_momentum'].rank(axis=1, pct=True)
+        score_df = gm_ranked * gap_momentum_w if score_df is None else score_df + gm_ranked * gap_momentum_w
+
+    # 出来高確認モメンタムファクター
+    volume_confirm_w = params.get('volume_confirm_w', 0.0)
+    if volume_confirm_w > 0 and lb in factor_dfs and 'volume_confirm' in factor_dfs[lb]:
+        vc_ranked = factor_dfs[lb]['volume_confirm'].rank(axis=1, pct=True)
+        score_df = vc_ranked * volume_confirm_w if score_df is None else score_df + vc_ranked * volume_confirm_w
+
+    # スキップ期間モメンタムファクター
+    ret_skip_w = params.get('ret_skip_w', 0.0)
+    if ret_skip_w > 0 and lb in factor_dfs and 'ret_skip' in factor_dfs[lb]:
+        rs_ranked = factor_dfs[lb]['ret_skip'].rank(axis=1, pct=True)
+        score_df = rs_ranked * ret_skip_w if score_df is None else score_df + rs_ranked * ret_skip_w
+
+    # マルチTFモメンタム一致度ファクター
+    cluster_boost_w = params.get('cluster_boost_w', 0.0)
+    if cluster_boost_w > 0 and lb in factor_dfs and 'cluster_boost' in factor_dfs[lb]:
+        cb_ranked = factor_dfs[lb]['cluster_boost'].rank(axis=1, pct=True)
+        score_df = cb_ranked * cluster_boost_w if score_df is None else score_df + cb_ranked * cluster_boost_w
 
     if score_df is None:
         return None

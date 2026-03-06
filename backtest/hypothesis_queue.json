@@ -2185,7 +2185,7 @@
         "gap_momentum_w": 0.1,
         "intraday_strength_w": 0.12
       },
-      "status": "pending"
+      "status": "done_win"
     },
     {
       "id": "sector_residual_w",
@@ -2206,7 +2206,7 @@
         "gap_momentum_w": 0.1,
         "sector_residual_w": 0.14
       },
-      "status": "pending"
+      "status": "done_win"
     },
     {
       "id": "tail_ratio_w",
@@ -2227,7 +2227,7 @@
         "gap_momentum_w": 0.1,
         "tail_ratio_w": 0.14
       },
-      "status": "pending"
+      "status": "done_win"
     }
   ],
   "tested_factors": [
