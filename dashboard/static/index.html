@@ -172,27 +172,13 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
     <div class="section-title" id="bt-baseline-detail-title" style="display:none">🏆 最新ベースライン解説</div>
     <div id="bt-baseline-detail" style="display:none"></div>
 
-    <!-- 週次ポートフォリオ時系列チャート -->
-    <div class="section-title">📈 週次ポートフォリオ時系列</div>
-    <div id="bt-timeseries-wrap" style="background:#161b22;border:1px solid #21262d;border-radius:8px;padding:16px;margin-bottom:14px">
-      <div id="bt-timeseries-loading" style="color:#8b949e;font-size:13px;text-align:center;padding:24px">読み込み中...</div>
-      <canvas id="bt-timeseries-chart" style="display:none;max-height:300px"></canvas>
-    </div>
-
-    <!-- 保有銘柄履歴テーブル -->
-    <div class="section-title">📋 保有銘柄履歴</div>
+    <!-- 週次保有銘柄テーブル（グラフ廃止・横並び表示） -->
+    <div class="section-title">📋 週次保有銘柄履歴</div>
     <div id="bt-holdings-wrap" style="background:#161b22;border:1px solid #21262d;border-radius:8px;padding:16px;margin-bottom:14px">
       <div id="bt-holdings-loading" style="color:#8b949e;font-size:13px;text-align:center;padding:24px">読み込み中...</div>
-      <div id="bt-holdings-table" style="display:none;max-height:400px;overflow-y:auto">
-        <table style="width:100%;border-collapse:collapse;font-size:12px">
-          <thead style="position:sticky;top:0;background:#161b22;z-index:1">
-            <tr>
-              <th style="text-align:left;padding:6px 10px;color:#8b949e;border-bottom:1px solid #21262d;white-space:nowrap">日付</th>
-              <th style="text-align:left;padding:6px 10px;color:#8b949e;border-bottom:1px solid #21262d;white-space:nowrap">銘柄コード</th>
-              <th style="text-align:left;padding:6px 10px;color:#8b949e;border-bottom:1px solid #21262d;white-space:nowrap">銘柄名</th>
-              <th style="text-align:right;padding:6px 10px;color:#8b949e;border-bottom:1px solid #21262d;white-space:nowrap">スコア</th>
-            </tr>
-          </thead>
+      <div id="bt-holdings-table" style="display:none;max-height:500px;overflow-y:auto">
+        <table id="bt-holdings-tbl" style="width:100%;border-collapse:collapse;font-size:12px">
+          <thead id="bt-holdings-thead" style="position:sticky;top:0;background:#161b22;z-index:1"></thead>
           <tbody id="bt-holdings-tbody"></tbody>
         </table>
       </div>
@@ -448,117 +434,22 @@ async function loadBacktest(silent){
   }
 }
 
-// タイムシリーズチャート
-let tsChartInstance = null;
-
 async function loadTimeseriesCharts(){
   try {
     const res = await fetch('/api/backtest/timeseries');
     const data = await res.json();
     if(data.error){
-      document.getElementById('bt-timeseries-loading').textContent = '⚠️ ' + data.error;
+      document.getElementById('bt-holdings-loading').textContent = '⚠️ ' + data.error;
       document.getElementById('bt-monthly-loading').textContent = '⚠️ データなし';
       return;
     }
-    renderTimeseriesChart(data);
-    renderMonthlyTable(data);
     renderHoldingsTable(data);
+    renderMonthlyTable(data);
   } catch(e){
-    document.getElementById('bt-timeseries-loading').textContent = '⚠️ 取得エラー: ' + e.message;
+    document.getElementById('bt-holdings-loading').textContent = '⚠️ 取得エラー: ' + e.message;
     document.getElementById('bt-monthly-loading').textContent = '⚠️ 取得エラー';
-    document.getElementById('bt-holdings-loading').textContent = '⚠️ 取得エラー';
     console.error('timeseries error:', e);
   }
-}
-
-function renderTimeseriesChart(data){
-  const weekly = data.weekly || [];
-  const nikkei = data.nikkei_weekly || [];
-  if(!weekly.length){ document.getElementById('bt-timeseries-loading').textContent = 'データなし'; return; }
-
-  document.getElementById('bt-timeseries-loading').style.display = 'none';
-  const canvas = document.getElementById('bt-timeseries-chart');
-  canvas.style.display = 'block';
-
-  if(tsChartInstance){ tsChartInstance.destroy(); }
-  const ctx = canvas.getContext('2d');
-
-  // ポートフォリオと日経のラベルをマージ（日経を週次サンプリング）
-  const portLabels = weekly.map(d => d.date);
-  const portValues = weekly.map(d => d.value);
-
-  // 日経データをポートフォリオ日付に対応させる（最近値を使用）
-  const nikkeiMap = {};
-  nikkei.forEach(n => { nikkeiMap[n.date] = n.value; });
-  const nikkeiValues = portLabels.map(d => {
-    if(nikkeiMap[d] != null) return nikkeiMap[d];
-    // 近い日付を探す
-    const dates = Object.keys(nikkeiMap).sort();
-    const closest = dates.reduce((prev, curr) =>
-      Math.abs(new Date(curr) - new Date(d)) < Math.abs(new Date(prev) - new Date(d)) ? curr : prev, dates[0]);
-    return nikkeiMap[closest] || null;
-  });
-
-  tsChartInstance = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: portLabels,
-      datasets: [
-        {
-          label: 'ポートフォリオ',
-          data: portValues,
-          borderColor: '#58a6ff',
-          backgroundColor: 'rgba(88,166,255,0.08)',
-          borderWidth: 2,
-          pointRadius: 2,
-          pointHoverRadius: 4,
-          tension: 0.3,
-          fill: false,
-        },
-        {
-          label: '日経(TOPIX)',
-          data: nikkeiValues,
-          borderColor: '#6e7681',
-          backgroundColor: 'rgba(110,118,129,0.06)',
-          borderWidth: 1.5,
-          pointRadius: 0,
-          pointHoverRadius: 3,
-          tension: 0.3,
-          fill: false,
-          borderDash: [4, 3],
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: { labels: { color: '#c9d1d9', font: { size: 12 } } },
-        tooltip: {
-          backgroundColor: '#1c2128',
-          borderColor: '#30363d',
-          borderWidth: 1,
-          titleColor: '#e6edf3',
-          bodyColor: '#c9d1d9',
-          callbacks: {
-            label: ctx => ` ${ctx.dataset.label}: ${ctx.raw != null ? ctx.raw.toFixed(1) : '-'}`,
-          }
-        }
-      },
-      scales: {
-        x: {
-          ticks: { color: '#8b949e', font: { size: 10 }, maxTicksLimit: 12 },
-          grid: { color: 'rgba(48,54,61,0.5)' },
-        },
-        y: {
-          ticks: { color: '#8b949e', font: { size: 10 }, callback: v => v.toFixed(0) },
-          grid: { color: 'rgba(48,54,61,0.5)' },
-          title: { display: true, text: '累積リターン（100スタート）', color: '#8b949e', font: { size: 11 } },
-        }
-      }
-    }
-  });
 }
 
 function renderMonthlyTable(data){
@@ -609,30 +500,45 @@ function renderHoldingsTable(data){
   document.getElementById('bt-holdings-loading').style.display = 'none';
   document.getElementById('bt-holdings-table').style.display = 'block';
 
-  const tdStyle = 'padding:5px 10px;border-bottom:1px solid #21262d;font-size:12px;';
-
   // 新しい週が上（降順）
   const desc = [...holdings].sort((a, b) => b.date.localeCompare(a.date));
 
-  const tbody = document.getElementById('bt-holdings-tbody');
-  const rows = [];
-  desc.forEach(week => {
+  // 最大保有銘柄数を求める（動的列数）
+  const maxStocks = Math.max(...desc.map(w => (w.stocks || []).length), 1);
+
+  const thStyle = 'text-align:left;padding:6px 10px;color:#8b949e;border-bottom:1px solid #21262d;white-space:nowrap;font-size:12px;';
+  const tdDateStyle = 'padding:5px 10px;border-bottom:1px solid #21262d;font-size:12px;color:#8b949e;white-space:nowrap;';
+  const tdStockStyle = 'padding:5px 10px;border-bottom:1px solid #21262d;font-size:12px;white-space:nowrap;';
+
+  // ヘッダ構築
+  let headerHtml = '<tr><th style="' + thStyle + '">日付</th>';
+  for(let i = 0; i < maxStocks; i++){
+    headerHtml += '<th style="' + thStyle + '">銘柄' + (i+1) + '</th>';
+  }
+  headerHtml += '</tr>';
+  document.getElementById('bt-holdings-thead').innerHTML = headerHtml;
+
+  // 行構築（1週 = 1行、銘柄を横並び）
+  const rows = desc.map(week => {
     const stocks = week.stocks || [];
-    stocks.forEach((s, i) => {
-      const scoreStr = s.score != null ? s.score.toFixed(1) : '-';
-      const scoreColor = s.score != null && s.score >= 65 ? '#3fb950' : s.score != null && s.score >= 50 ? '#d29922' : '#8b949e';
-      rows.push('<tr>'
-        + '<td style="' + tdStyle + 'color:#8b949e">' + (i === 0 ? week.date : '') + '</td>'
-        + '<td style="' + tdStyle + 'color:#58a6ff;font-weight:700">' + s.code + '</td>'
-        + '<td style="' + tdStyle + 'color:#c9d1d9">' + (s.name || s.code) + '</td>'
-        + '<td style="' + tdStyle + 'text-align:right;color:' + scoreColor + ';font-weight:600">' + scoreStr + '</td>'
-        + '</tr>');
-    });
-    if(stocks.length > 0) {
-      rows.push('<tr><td colspan="4" style="padding:2px;background:#0d1117"></td></tr>');
+    let rowHtml = '<tr><td style="' + tdDateStyle + '">' + week.date + '</td>';
+    for(let i = 0; i < maxStocks; i++){
+      const s = stocks[i];
+      if(s){
+        const scoreStr = s.score != null ? ' <span style="color:#8b949e;font-size:10px">(' + s.score.toFixed(1) + ')</span>' : '';
+        rowHtml += '<td style="' + tdStockStyle + '">'
+          + '<span style="color:#58a6ff;font-weight:700">' + s.code + '</span>'
+          + ' <span style="color:#c9d1d9">' + (s.name || s.code) + '</span>'
+          + scoreStr
+          + '</td>';
+      } else {
+        rowHtml += '<td style="' + tdStockStyle + 'color:#8b949e">-</td>';
+      }
     }
+    rowHtml += '</tr>';
+    return rowHtml;
   });
-  tbody.innerHTML = rows.join('');
+  document.getElementById('bt-holdings-tbody').innerHTML = rows.join('');
 }
 
 function renderHypothesis(h){

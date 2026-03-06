@@ -207,11 +207,85 @@ def run_backtest(start: str, end: str, top_n: int, rebalance: str, use_regime: b
         with open(out_dir / fname, "w") as f:
             json.dump(result, f, ensure_ascii=False, indent=2)
 
-    # タイムシリーズキャッシュ（全トレード保存）
+    # 名前マッピング: results/latest.json から取得
+    name_map = {}
+    try:
+        latest_path = out_dir.parent / "results/latest.json"
+        if latest_path.exists():
+            latest_data = json.loads(latest_path.read_text())
+            results_list = latest_data.get("results", [])
+            for r in results_list:
+                code = (r.get("ticker", "") or r.get("code", "")).replace(".T", "")
+                if code and r.get("name"):
+                    name_map[code] = r["name"]
+    except Exception:
+        pass
+
+    # weekly_holdingsのスコアマップ（最後52週）
+    weekly_holdings_score_map = {}
+    for wh in weekly_holdings:
+        weekly_holdings_score_map[wh["date"]] = {
+            t.replace(".T", ""): s for t, s in wh.get("scores", {}).items()
+        }
+
+    # holdings構築
+    holdings_list = []
+    for trade in trades_log:
+        date = trade["date"]
+        tickers = trade.get("top_n", [])
+        scores_for_date = weekly_holdings_score_map.get(date, {})
+        stocks = []
+        for ticker in tickers:
+            code = ticker.replace(".T", "")
+            stocks.append({
+                "code": code,
+                "name": name_map.get(code, code),
+                "score": scores_for_date.get(code),
+            })
+        holdings_list.append({"date": date, "stocks": stocks})
+
+    # weekly（100スタート正規化）
+    weekly_series = [
+        {"date": t["date"], "value": round(t["portfolio_value"] / 1_000_000 * 100, 2)}
+        for t in trades_log
+    ]
+
+    # nikkei_weekly（100スタート正規化）
+    nikkei_weekly_series = [
+        {"date": e["date"], "value": round(e["nikkei"] / 1_000_000 * 100, 2)}
+        for e in equity_curve
+        if e.get("nikkei") is not None
+    ]
+
+    # 月次リターン計算
+    monthly_list = []
+    try:
+        if len(trades_log) >= 2:
+            pv = {t["date"]: t["portfolio_value"] for t in trades_log}
+            series_m = pd.Series(pv)
+            series_m.index = pd.to_datetime(series_m.index)
+            series_m = series_m.sort_index()
+            monthly_end = series_m.resample("ME").last().dropna()
+            if len(monthly_end) >= 2:
+                monthly_returns = monthly_end.pct_change().dropna() * 100
+                monthly_list = [
+                    {"month": str(d)[:7], "return_pct": round(float(r), 2)}
+                    for d, r in zip(monthly_returns.index, monthly_returns.values)
+                ]
+    except Exception:
+        pass
+
+    # タイムシリーズキャッシュ（全トレード保存・新形式）
     timeseries_cache = {
+        "params": {"top_n": top_n, "rebalance": rebalance},
+        "cached_at": datetime.now().isoformat(),
         "summary": summary,
-        "all_trades": trades_log,  # 全リバランス履歴（切り捨てなし）
-        "equity_curve": equity_curve,  # 日経週次データ
+        "weekly": weekly_series,
+        "monthly": monthly_list,
+        "nikkei_weekly": nikkei_weekly_series,
+        "holdings": holdings_list,
+        "all_trades": trades_log,  # 後続処理用
+        "equity_curve": equity_curve,
         "nikkei_start": n_start,
         "initial_capital": 1_000_000,
     }

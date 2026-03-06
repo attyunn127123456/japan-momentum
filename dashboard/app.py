@@ -266,7 +266,7 @@ def backtest_timeseries():
             return JSONResponse({"error": "baseline params not found"}, status_code=404)
 
         end = _dt.now().strftime("%Y-%m-%d")
-        start = (_dt.now() - _td(days=365 * 3)).strftime("%Y-%m-%d")
+        start = "2023-01-01"
 
         orig_dir = os.getcwd()
         os.chdir(str(BASE))
