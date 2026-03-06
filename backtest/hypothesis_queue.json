@@ -26,10 +26,10 @@
       "smooth_w": 0.2,
       "resilience_w": 0.0,
       "total_return_pct": 153.82,
-      "alpha_pct": 20.05,
+      "alpha_pct": 35.7,
       "sharpe": 1.714,
       "max_dd_pct": 41.74,
-      "nikkei_pct": 133.77,
+      "nikkei_pct": 118.13,
       "n_trades": 231,
       "equity_curve": [
         {
@@ -4494,66 +4494,39 @@
     },
     {
       "id": "drawdown_depth_w",
-      "desc": "短期ドローダウン深度ファクター: close/rolling_max(close, lb)で「まだ崩れていない」銘柄を選別しmax_dd制御",
-      "theory": "high52_wはGA最適化でweight≒0に収束（252日は長すぎ）。lookback期間の高値からの乖離は直近トレンドの健全性のリアルタイム指標。close/rolling_max(close,lb)が1.0に近い=上昇トレンド健在。OOSでmax_dd=41.73%と制約超過しておりDD制御が最優先。",
+      "desc": "短期ドローダウン深度ファクター: close/rolling_max(close, lb)",
       "factor_to_add": "drawdown_depth_w",
       "params": {
         "lookback": 60,
         "top_n": 2,
-        "rebalance": "weekly",
-        "ret_w": 0.07,
-        "green_w": 0.12,
-        "smooth_w": 0.12,
-        "omega_w": 0.1,
-        "short_momentum_w": 0.12,
-        "accumulation_w": 0.12,
-        "upside_capture_w": 0.11,
-        "gap_momentum_w": 0.1,
-        "drawdown_depth_w": 0.12
+        "rebalance": "weekly"
       },
-      "status": "pending"
+      "status": "done_win",
+      "theory": "lookback期間の高値からの乖離で直近トレンドの健全性を測定"
     },
     {
       "id": "return_autocorr_w",
-      "desc": "リターン自己相関ファクター: 日次リターンのlag-1自己相関でトレンド持続性を直接測定",
-      "theory": "自己相関は時系列の基本統計だが既存ファクターで未測定。autocorr>0=トレンド持続型。top_n=2の5日保有期間中にトレンドが持続する銘柄を選ぶことが全リターンを決定する。",
+      "desc": "リターン自己相関ファクター: lag-1自己相関でトレンド持続性測定",
       "factor_to_add": "return_autocorr_w",
       "params": {
         "lookback": 60,
         "top_n": 2,
-        "rebalance": "weekly",
-        "ret_w": 0.07,
-        "green_w": 0.11,
-        "smooth_w": 0.11,
-        "omega_w": 0.1,
-        "short_momentum_w": 0.12,
-        "accumulation_w": 0.12,
-        "upside_capture_w": 0.11,
-        "gap_momentum_w": 0.1,
-        "return_autocorr_w": 0.14
+        "rebalance": "weekly"
       },
-      "status": "pending"
+      "status": "done_win",
+      "theory": "autocorr>0=トレンド持続型。保有期間中の急反転リスクを低減"
     },
     {
       "id": "volume_slope_w",
-      "desc": "出来高トレンドファクター: lookback期間の出来高の線形回帰スロープで注目度上昇中の銘柄を検出",
-      "theory": "既存出来高ファクターと直交。線形増加中の出来高=機関の段階的ポジション構築中=買い未完了=モメンタム持続の先行指標。",
+      "desc": "出来高トレンドファクター: 出来高の線形回帰スロープ",
       "factor_to_add": "volume_slope_w",
       "params": {
         "lookback": 60,
         "top_n": 2,
-        "rebalance": "weekly",
-        "ret_w": 0.07,
-        "green_w": 0.11,
-        "smooth_w": 0.11,
-        "omega_w": 0.1,
-        "short_momentum_w": 0.12,
-        "accumulation_w": 0.12,
-        "upside_capture_w": 0.11,
-        "gap_momentum_w": 0.1,
-        "volume_slope_w": 0.14
+        "rebalance": "weekly"
       },
-      "status": "pending"
+      "status": "done_win",
+      "theory": "出来高が線形増加中=機関の段階的ポジション構築=モメンタム持続"
     }
   ],
   "tested_factors": [
