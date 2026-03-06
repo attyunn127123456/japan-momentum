@@ -41,7 +41,7 @@ from pathlib import Path
 from fetch_cache import read_ohlcv
 from universe import get_top_liquid_tickers
 from backtest import get_rebalance_dates, get_nikkei_history
-from optimize import precompute, eval_params
+from optimize import precompute, eval_params, run_optuna_optimization
 
 QUEUE_FILE  = Path('backtest/hypothesis_queue.json')
 DONE_FILE   = Path('backtest/hypothesis_done.json')
@@ -177,6 +177,9 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
         'high52_w':         [0.0, 0.1, 0.2, 0.25, 0.3, 0.35, 0.4],
         'omega_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'short_momentum_w': [0.0, 0.05, 0.1, 0.15, 0.2],
+        'upside_capture_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'momentum_consistency_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'accumulation_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'close_location_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'range_expand_w':            [0.0, 0.05, 0.1, 0.15, 0.2],
         'win_streak_w':              [0.0, 0.05, 0.1, 0.15, 0.2],
@@ -334,13 +337,16 @@ def run_evolution():
                            stderr=subprocess.STDOUT)
             return  # run_hypothesis.pyがauto_nextで連鎖する
     
-    # ---- Step2: 局所探索 ----
-    print('\n--- 局所探索 開始 ---', flush=True)
+    # ---- Step2: 局所探索 (Optuna TPE) ----
+    print('\n--- 局所探索 開始 (Optuna TPE) ---', flush=True)
     bp = baseline.get('params', {
         'lookback':60,'top_n':10,'rebalance':'weekly',
         'ret_w':0.3,'rs_w':0.3,'green_w':0.2,'smooth_w':0.2,'resilience_w':0.0
     })
-    local_results = local_search(bp, factor_dfs, prices_dict, nikkei, date_map)
+    local_results = run_optuna_optimization(
+        bp, factor_dfs, prices_dict, nikkei, date_map,
+        START_TRAIN, return_df, n_trials=300
+    )
     
     # 複合評価
     best_local = None

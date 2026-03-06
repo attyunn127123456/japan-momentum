@@ -1224,3 +1224,51 @@ INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/signal_l
 INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/regime HTTP/1.1" 404 Not Found
 INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
 INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     51.89.23.223:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:d939:607f:5c6b:74ab:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     74.7.244.22:0 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK

@@ -2053,7 +2053,7 @@
         "cluster_boost_w": 0.08,
         "accumulation_w": 0.1
       },
-      "status": "pending"
+      "status": "done_win"
     },
     {
       "id": "momentum_consistency_w",
@@ -2074,7 +2074,7 @@
         "momentum_consistency_w": 0.12,
         "consistency_weeks": 12
       },
-      "status": "pending"
+      "status": "done_win"
     },
     {
       "id": "upside_capture_w",
@@ -2094,7 +2094,7 @@
         "cluster_boost_w": 0.08,
         "upside_capture_w": 0.16
       },
-      "status": "pending"
+      "status": "done_win"
     }
   ],
   "tested_factors": [

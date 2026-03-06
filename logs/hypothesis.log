@@ -964,3 +964,40 @@ openclaw system event 送信完了
 openclaw system event 送信完了
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: range_expand_w - レンジ拡大ファクター: ATR(5)/ATR(40)比率でボラティリティ拡大中の銘柄（ブレイクアウト初期）を検出
+  factor_to_add 検出: range_expand_w を GA の RANGES に追加します
+  range_expand_w は既に RANGES に存在します（スキップ）
+完了: range_expand_w | status=added_to_ga | factor=range_expand_w
+次の仮説を自動起動: win_streak_w
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: win_streak_w - 連騰ファクター: 直近N日間の最大連続陽線日数で「勢いが途切れていない」銘柄を検出
+  factor_to_add 検出: win_streak_w を GA の RANGES に追加します
+  win_streak_w は既に RANGES に存在します（スキップ）
+完了: win_streak_w | status=added_to_ga | factor=win_streak_w
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: accumulation_w - 方向性出来高ファクター: 上昇日出来高と下落日出来高の比率でスマートマネーの蓄積を検出
+  factor_to_add 検出: accumulation_w を GA の RANGES に追加します
+  ✅ accumulation_w を evolution_engine.py の RANGES に追加しました
+完了: accumulation_w | status=added_to_ga | factor=accumulation_w
+次の仮説を自動起動: momentum_consistency_w
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: momentum_consistency_w - 週次勝率ファクター: ルックバック期間中の週単位outperform回数で「安定した勝者」を識別
+  factor_to_add 検出: momentum_consistency_w を GA の RANGES に追加します
+  ✅ momentum_consistency_w を evolution_engine.py の RANGES に追加しました
+完了: momentum_consistency_w | status=added_to_ga | factor=momentum_consistency_w
+次の仮説を自動起動: upside_capture_w
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: upside_capture_w - 上方キャプチャ比率ファクター: 市場上昇日に市場以上に上がる銘柄（ベータ＋アルファの合成力）を検出
+  factor_to_add 検出: upside_capture_w を GA の RANGES に追加します
+  ✅ upside_capture_w を evolution_engine.py の RANGES に追加しました
+完了: upside_capture_w | status=added_to_ga | factor=upside_capture_w
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了

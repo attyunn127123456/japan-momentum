@@ -291,6 +291,140 @@ def run_grid(start="2023-01-01", end="2026-03-05", n_codes=2000):
     return results
 
 
+def select_independent_factors(factor_dfs, lb, all_factors, corr_threshold=0.7):
+    """相関0.7以上のファクターペアから弱い方を除外"""
+    factor_series = {}
+    for fname in all_factors:
+        if fname in factor_dfs.get(lb, {}):
+            s = factor_dfs[lb][fname].stack().dropna()
+            if len(s) > 100:
+                factor_series[fname] = s
+
+    if len(factor_series) < 2:
+        return list(factor_series.keys())
+
+    df = pd.DataFrame(factor_series).dropna()
+    if len(df) > 1000:
+        df = df.sample(1000, random_state=42)
+    corr = df.corr().abs()
+
+    # 除外ロジック：相関>threshold のペアで後に来る方を除外
+    selected = list(factor_series.keys())
+    to_remove = set()
+    for i, f1 in enumerate(selected):
+        for f2 in selected[i+1:]:
+            if f1 in corr.index and f2 in corr.index:
+                if corr.loc[f1, f2] > corr_threshold:
+                    to_remove.add(f2)  # f2を除外（f1優先）
+
+    result = [f for f in selected if f not in to_remove]
+    print(f"Factor Selection: {len(selected)}→{len(result)}個 (除外: {to_remove})")
+    return result
+
+
+def run_optuna_optimization(baseline_params, factor_dfs, prices_dict, nikkei,
+                            date_map, start, return_df, n_trials=300):
+    """Optuna TPEでパラメータ最適化。GAの local_search を置き換える。
+    Returns: [(params, result), ...] 形式（local_search と同じ形式）
+    """
+    import optuna
+    optuna.logging.set_verbosity(optuna.logging.WARNING)
+
+    all_weight_factors = [
+        'ret_w', 'rs_w', 'green_w', 'smooth_w', 'resilience_w',
+        'high52_w', 'omega_w', 'short_momentum_w', 'cluster_boost_w',
+        'ret_skip_w', 'volume_confirm_w', 'gap_momentum_w',
+        'close_location_w', 'range_expand_w', 'win_streak_w',
+        'accumulation_w', 'momentum_consistency_w', 'upside_capture_w',
+    ]
+
+    base_lb = baseline_params.get('lookback', 60)
+    available_lbs = [lb for lb in [20, 40, 60, 80, 100, 120] if lb in factor_dfs]
+    if not available_lbs:
+        available_lbs = [base_lb]
+
+    # Factor Selection（ベースlbで相関を計算）
+    factor_lb = base_lb if base_lb in factor_dfs else available_lbs[0]
+    active_factors = select_independent_factors(factor_dfs, factor_lb, all_weight_factors)
+    print(f"Optuna探索対象ファクター: {active_factors}", flush=True)
+    print(f"Optuna TPE: {n_trials}trials 開始...", flush=True)
+
+    all_results = []
+    best_score = -999.0
+
+    def objective(trial):
+        nonlocal best_score
+
+        # 構造パラメータ
+        trial_lb = trial.suggest_categorical('lookback', available_lbs)
+        top_n = trial.suggest_int('top_n', 2, 7)
+
+        # ファクター重み（0〜0.5の連続値）
+        weights = {}
+        for f in active_factors:
+            weights[f] = trial.suggest_float(f, 0.0, 0.5)
+
+        # 重みを正規化（合計1.0）
+        total_w = sum(weights.values())
+        if total_w > 0:
+            weights = {k: v / total_w for k, v in weights.items()}
+        else:
+            return -999.0
+
+        params = {
+            'lookback': trial_lb,
+            'top_n': top_n,
+            'rebalance': 'weekly',
+            **weights,
+        }
+
+        try:
+            r = eval_params(params, factor_dfs, prices_dict,
+                            date_map['weekly'], nikkei, start, return_df)
+            if r is None:
+                return -999.0
+            if r.get('max_dd_pct', 100) > 40:
+                return -999.0  # 制約違反ペナルティ
+            score = r.get('total_return_pct', -999.0)
+            all_results.append((params, r))
+
+            # ベスト更新時にログ
+            if score > best_score:
+                best_score = score
+                print(f"  新ベスト: total={score:.1f}%, sharpe={r.get('sharpe', 0):.3f}, "
+                      f"lb={trial_lb}, tn={top_n}", flush=True)
+
+            return float(score)
+        except Exception:
+            return -999.0
+
+    study = optuna.create_study(
+        direction='maximize',
+        sampler=optuna.samplers.TPESampler(seed=42, n_startup_trials=50),
+    )
+
+    # 現在のベストパラメータを初期試行として追加
+    try:
+        init_params = {
+            'lookback': baseline_params.get('lookback', available_lbs[0]),
+            'top_n': baseline_params.get('top_n', 3),
+        }
+        for f in active_factors:
+            init_params[f] = baseline_params.get(f, 0.0)
+        study.enqueue_trial(init_params)
+    except Exception:
+        pass
+
+    study.optimize(objective, n_trials=n_trials, show_progress_bar=False)
+
+    best_val = study.best_value if study.trials else -999.0
+    print(f"Optuna完了: {n_trials}trials, best_total={best_val:.1f}%", flush=True)
+
+    # total_return_pct 降順でソート、上位20件を返す（local_search と同形式）
+    all_results.sort(key=lambda x: x[1].get('total_return_pct', -999), reverse=True)
+    return all_results[:20]
+
+
 if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()

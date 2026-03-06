@@ -152,6 +152,34 @@
       }
     },
     {
+      "at": "2026-03-05T16:09:17.755258",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=3",
+      "win": 0,
+      "delta_sharpe": 0.017999999999999794,
+      "sharpe": 4.274,
+      "total_return_pct": 166.98,
+      "alpha_pct": 68.78,
+      "max_dd_pct": 18.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3162,
+        "rs_w": 0.2455,
+        "green_w": 0.1008,
+        "smooth_w": 0.0,
+        "resilience_w": 0.0961,
+        "high52_w": 0.1054,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.1361,
+        "cluster_boost_w": 0.15,
+        "close_location_w": 0.0,
+        "range_expand_w": 0.0,
+        "win_streak_w": 0.0
+      }
+    },
+    {
       "at": "2026-03-05T12:34:19.401289",
       "id": "local_search",
       "desc": "局所探索ベスト lb=60 tn=3",
@@ -220,30 +248,6 @@
         "smooth_w": 0.326,
         "resilience_w": 0.0736,
         "high52_w": 0.4162,
-        "omega_w": 0.0,
-        "short_momentum_w": 0.0
-      }
-    },
-    {
-      "at": "2026-03-05T12:03:15.572882",
-      "id": "local_search",
-      "desc": "局所探索ベスト lb=40 tn=7",
-      "win": 1,
-      "delta_sharpe": 0.29400000000000004,
-      "sharpe": 3.972,
-      "total_return_pct": 30.35,
-      "alpha_pct": -67.85,
-      "max_dd_pct": 5.48,
-      "params": {
-        "lookback": 40,
-        "top_n": 7,
-        "rebalance": "weekly",
-        "ret_w": 0.0,
-        "rs_w": 0.1313,
-        "green_w": 0.0656,
-        "smooth_w": 0.3209,
-        "resilience_w": 0.0725,
-        "high52_w": 0.4097,
         "omega_w": 0.0,
         "short_momentum_w": 0.0
       }
@@ -399,6 +403,34 @@
         "short_momentum_w": 0.152,
         "cluster_boost_w": 0.1,
         "volume_confirm_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-05T16:09:17.755258",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=60 tn=3",
+      "win": 0,
+      "delta_sharpe": 0.017999999999999794,
+      "sharpe": 4.274,
+      "total_return_pct": 166.98,
+      "alpha_pct": 68.78,
+      "max_dd_pct": 18.76,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.3162,
+        "rs_w": 0.2455,
+        "green_w": 0.1008,
+        "smooth_w": 0.0,
+        "resilience_w": 0.0961,
+        "high52_w": 0.1054,
+        "omega_w": 0.0,
+        "short_momentum_w": 0.1361,
+        "cluster_boost_w": 0.15,
+        "close_location_w": 0.0,
+        "range_expand_w": 0.0,
+        "win_streak_w": 0.0
       }
     },
     {
@@ -1828,5 +1860,5 @@
       }
     }
   ],
-  "total": 75
+  "total": 76
 }
