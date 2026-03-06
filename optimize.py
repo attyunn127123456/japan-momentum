@@ -534,10 +534,14 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
 
     # トレーリングストップ設定（例: -0.07 = 高値から7%下落で即売り）
     trailing_stop = params.get("trailing_stop", None)
+    # 天井検知エグジット設定
+    exit_threshold = params.get("exit_threshold", None)
 
     def calc_period_return(code, date, next_date):
-        """トレーリングストップを考慮した保有期間リターンを計算"""
-        if trailing_stop is not None and code in prices_dict:
+        """トレーリングストップ・天井検知エグジットを考慮した保有期間リターンを計算"""
+        use_trailing = trailing_stop is not None and code in prices_dict
+        use_exit_signal = exit_threshold is not None and code in prices_dict
+        if use_trailing or use_exit_signal:
             try:
                 price_df = prices_dict[code]
                 mask = (price_df.index > date) & (price_df.index <= next_date)
@@ -551,15 +555,22 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
                         return None
                     peak = entry_price
                     exit_price = period_prices.iloc[-1]  # デフォルトは週末価格
-                    for daily_price in period_prices:
+                    for idx, daily_price in period_prices.items():
                         peak = max(peak, daily_price)
-                        if (daily_price - peak) / peak <= trailing_stop:
+                        # トレーリングストップ判定
+                        if use_trailing and (daily_price - peak) / peak <= trailing_stop:
                             exit_price = daily_price  # ストップ発動
                             break
+                        # 天井検知エグジット判定（日次）
+                        if use_exit_signal:
+                            should_exit, _ = compute_exit_signal(price_df, idx, date, params)
+                            if should_exit:
+                                exit_price = daily_price  # 天井検知で即売り
+                                break
                     return (exit_price - entry_price) / entry_price
             except Exception:
                 pass
-        # trailing_stopなし or データなし: return_dfから通常計算
+        # trailing_stop/exit_signalなし or データなし: return_dfから通常計算
         if code in return_df.columns:
             r = return_df.at[next_date, code]
             if not np.isnan(r):
@@ -802,11 +813,25 @@ def run_optuna_optimization(baseline_params, factor_dfs, prices_dict, nikkei,
         # trailing_stop: 0.0 = なし, 0.03〜0.15 = 3〜15%ストップ
         trial_stop_raw = trial.suggest_float("trailing_stop_raw", 0.0, 0.15)
         trial_trailing = -trial_stop_raw if trial_stop_raw > 0.001 else None
+        # 天井検知エグジット: exit_threshold_raw=0.0 → 無効, >0 → 有効
+        trial_exit_threshold_raw = trial.suggest_float("exit_threshold_raw", 0.0, 0.8)
+        trial_exit_threshold = trial_exit_threshold_raw if trial_exit_threshold_raw > 0.05 else None
+        trial_exit_lookback = trial.suggest_int("exit_lookback", 10, 30)
+        trial_exit_rsi_w = trial.suggest_float("exit_rsi_w", 0.0, 0.5)
+        trial_exit_vol_w = trial.suggest_float("exit_vol_w", 0.0, 0.4)
+        trial_exit_dd_w = trial.suggest_float("exit_dd_w", 0.0, 0.5)
+        trial_exit_mom_w = trial.suggest_float("exit_mom_w", 0.0, 0.3)
         params = {
             'lookback': trial_lb,
             'top_n': top_n,
             'rebalance': trial_rb,
             'trailing_stop': trial_trailing,
+            'exit_threshold': trial_exit_threshold,
+            'exit_lookback': trial_exit_lookback,
+            'exit_rsi_w': trial_exit_rsi_w,
+            'exit_vol_w': trial_exit_vol_w,
+            'exit_dd_w': trial_exit_dd_w,
+            'exit_mom_w': trial_exit_mom_w,
             **weights,
         }
 
