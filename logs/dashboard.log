@@ -2427,3 +2427,17 @@ INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
 INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
 INFO:     182.170.23.52:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
 INFO:     182.170.23.52:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1476]
+INFO:     Started server process [5521]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8080 (Press CTRL+C to quit)
+INFO:     127.0.0.1:62965 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62967 - "GET /api/timeseries HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62982 - "GET /api/timeseries HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63014 - "GET /api/backtest HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63016 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63025 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
