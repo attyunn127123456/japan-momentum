@@ -127,7 +127,7 @@ def build_score_df(factor_dfs, lb, weights):
 
 def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, return_df):
     lb, tn = params["lookback"], params["top_n"]
-    weights = {k: params[k+"_w"] for k in ["ret","rs","green","smooth","resilience"]}
+    weights = {k: params.get(k+"_w", 0.0) for k in ["ret","rs","green","smooth","resilience"]}
     
     score_df = build_score_df(factor_dfs, lb, weights)
 
@@ -406,6 +406,11 @@ def run_optuna_optimization(baseline_params, factor_dfs, prices_dict, nikkei,
             weights = {k: v / total_w for k, v in weights.items()}
         else:
             return -999.0
+
+        # eval_params が必ず参照するコア5ファクターが欠けている場合は 0.0 で補完
+        for core_k in ['ret_w', 'rs_w', 'green_w', 'smooth_w', 'resilience_w']:
+            if core_k not in weights:
+                weights[core_k] = 0.0
 
         params = {
             'lookback': trial_lb,
