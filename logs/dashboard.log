@@ -1798,3 +1798,24 @@ INFO:     127.0.0.1:61489 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
 /Users/panda/Projects/japan-momentum/dashboard/app.py:220: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
   return_df = all_prices.pct_change()
 INFO:     127.0.0.1:61432 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET / HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     182.170.23.52:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     182.170.23.52:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61759 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK

@@ -262,11 +262,26 @@ def backtest_timeseries():
             ]
             holdings.append({"date": entry["date"], "stocks": stocks})
 
+        # 日経225週次累積指数（START以降、100スタート）
+        nikkei_weekly = []
+        try:
+            nikkei_from_start = nikkei[nikkei.index >= pd.Timestamp(START)]
+            nikkei_w = nikkei_from_start.resample("W-MON").last().dropna()
+            if len(nikkei_w) > 0:
+                base_val = nikkei_w.iloc[0]
+                nikkei_weekly = [
+                    {"date": str(d.date()), "value": round(float(v) / base_val * 100, 2)}
+                    for d, v in nikkei_w.items()
+                ]
+        except Exception:
+            nikkei_weekly = []
+
         cache_data = {
             "params": params,
             "cached_at": _dt.now().isoformat(),
             "total_return_pct": result.get("total_return_pct"),
             "weekly": [{"date": e["date"], "value": e["value"] + 100} for e in equity_curve],
+            "nikkei_weekly": nikkei_weekly,
             "monthly": monthly,
             "holdings": holdings,
         }
