@@ -1,11 +1,11 @@
 {
-  "cached_at": "2026-03-06 14:19 JST",
+  "cached_at": "2026-03-06 14:49 JST",
   "as_of": "2026-03-06",
   "params": {
     "lookback": 60,
     "top_n": 3,
     "rebalance": "weekly",
-    "total_return_pct": 1287.86
+    "total_return_pct": 1246.33
   },
   "recommended": [
     {

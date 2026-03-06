@@ -949,6 +949,104 @@ def run_oos_validation(best_params, oos_start="2020-01-01", oos_end=None, n_code
     return result
 
 
+def run_walk_forward_validation(params, n_codes=500, codes=None):
+    """
+    Walk-Forward Cross Validationを実行。
+    複数OOS期間での平均スコアを返す。
+
+    Returns: {
+        "folds": [{"id":..., "total_return_pct":..., "sharpe":..., "max_dd_pct":..., "passed":...}, ...],
+        "avg_total_return": ...,
+        "avg_sharpe": ...,
+        "avg_max_dd": ...,
+        "all_passed": bool,  # 全fold でmax_dd<45%かつtotal>0
+        "n_passed": int,     # 合格fold数
+    }
+    """
+    import warnings; warnings.filterwarnings('ignore')
+
+    FOLDS = [
+        {"id": "fold1", "test_start": "2021-01-01", "test_end": "2022-12-31"},
+        {"id": "fold2", "test_start": "2023-01-01", "test_end": "2024-06-30"},
+        {"id": "fold3", "test_start": "2024-07-01", "test_end": datetime.now().strftime("%Y-%m-%d")},
+    ]
+
+    # データロード（全期間分を1回だけロード）
+    overall_start = "2016-01-01"
+    overall_end = datetime.now().strftime("%Y-%m-%d")
+    warmup = (datetime.strptime(overall_start, "%Y-%m-%d") - timedelta(days=200)).strftime("%Y-%m-%d")
+
+    if codes is None:
+        codes = get_top_liquid_tickers(n_codes)
+
+    print(f"Walk-Forward: データロード ({len(codes)}銘柄)...", flush=True)
+    prices_dict = {}
+    for c in codes:
+        df = read_ohlcv(c, warmup, overall_end)
+        if df is not None and not df.empty and 'AdjC' in df.columns:
+            prices_dict[c] = df
+
+    if len(prices_dict) < 50:
+        print(f"Walk-Forward: データ不足 ({len(prices_dict)}銘柄)", flush=True)
+        return None
+
+    print(f"Walk-Forward: {len(prices_dict)}銘柄ロード完了", flush=True)
+
+    nikkei = get_nikkei_history(overall_start, overall_end)
+    lb = params.get("lookback", 60)
+    lookbacks = [lb] if lb else [20, 40, 60, 80, 100]
+    factor_dfs = precompute(prices_dict, nikkei, lookbacks)
+    return_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
+
+    fold_results = []
+    for fold in FOLDS:
+        try:
+            test_start = fold["test_start"]
+            test_end = fold["test_end"]
+            rebal = get_rebalance_dates(test_start, test_end, params.get("rebalance", "weekly"))
+            result = eval_params(params, factor_dfs, prices_dict, rebal, nikkei, test_start, return_df)
+
+            if result is None:
+                fold_results.append({"id": fold["id"], "error": "計算失敗", "passed": False})
+                continue
+
+            passed = (result["max_dd_pct"] < 45.0 and result["total_return_pct"] > 0)
+            fold_results.append({
+                "id": fold["id"],
+                "test_start": test_start,
+                "test_end": test_end,
+                "total_return_pct": result["total_return_pct"],
+                "sharpe": result["sharpe"],
+                "max_dd_pct": result["max_dd_pct"],
+                "passed": passed,
+            })
+            print(f"  fold={fold['id']}: total={result['total_return_pct']:.1f}%, sharpe={result['sharpe']:.3f}, max_dd={result['max_dd_pct']:.1f}% {'✅' if passed else '❌'}", flush=True)
+        except Exception as e:
+            fold_results.append({"id": fold["id"], "error": str(e), "passed": False})
+            print(f"  fold={fold['id']}: エラー {e}", flush=True)
+
+    valid = [
+        f for f in fold_results
+        if "total_return_pct" in f
+        and f["total_return_pct"] is not None
+        and not (isinstance(f["total_return_pct"], float) and np.isnan(f["total_return_pct"]))
+        and "max_dd_pct" in f
+        and f["max_dd_pct"] is not None
+        and not (isinstance(f["max_dd_pct"], float) and np.isnan(f["max_dd_pct"]))
+    ]
+    if not valid:
+        return None
+
+    return {
+        "folds": fold_results,
+        "avg_total_return": float(np.mean([f["total_return_pct"] for f in valid])),
+        "avg_sharpe": float(np.mean([f["sharpe"] for f in valid])),
+        "avg_max_dd": float(np.mean([f["max_dd_pct"] for f in valid])),
+        "all_passed": all(f["passed"] for f in fold_results),
+        "n_passed": sum(f["passed"] for f in fold_results),
+    }
+
+
 if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()

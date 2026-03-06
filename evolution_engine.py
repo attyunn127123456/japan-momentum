@@ -56,7 +56,7 @@ from pathlib import Path
 from fetch_cache import read_ohlcv
 from universe import get_top_liquid_tickers
 from backtest import get_rebalance_dates, get_nikkei_history
-from optimize import precompute, eval_params, run_optuna_optimization, run_oos_validation
+from optimize import precompute, eval_params, run_optuna_optimization, run_oos_validation, run_walk_forward_validation
 
 QUEUE_FILE  = Path('backtest/hypothesis_queue.json')
 DONE_FILE   = Path('backtest/hypothesis_done.json')
@@ -395,13 +395,34 @@ def run_evolution():
     
     if best_local:
         p, r_train, r_val, adopted, reasons = best_local
+        wf_result = None
+
+        if adopted:
+            # ベースライン更新前にWalk-Forward検証
+            print("\n--- Walk-Forward Cross Validation ---", flush=True)
+            try:
+                wf_result = run_walk_forward_validation(p, n_codes=N_CODES, codes=list(prices_dict.keys()))
+            except Exception as wf_e:
+                print(f"Walk-Forward検証エラー（スキップ）: {wf_e}", flush=True)
+
+            if wf_result:
+                print(f"WF結果: avg_total={wf_result['avg_total_return']:.1f}%, avg_sharpe={wf_result['avg_sharpe']:.3f}, n_passed={wf_result['n_passed']}/3", flush=True)
+                # 2/3以上合格でのみ採用
+                if wf_result["n_passed"] < 2:
+                    print(f"⚠️ Walk-Forward不合格（{wf_result['n_passed']}/3 fold合格）、採用スキップ", flush=True)
+                    adopted = False
+            else:
+                print("Walk-Forward: 結果取得失敗、通常採用基準を適用", flush=True)
+
         append_log('local_search', f'局所探索ベスト lb={p["lookback"]} tn={p["top_n"]}',
-                   r_train, adopted, r_train['sharpe'] - baseline['sharpe'])
+                   r_train, adopted, r_train['sharpe'] - baseline['sharpe'],
+                   walk_forward=wf_result)
+
         if adopted:
             print(f'\n✅ 局所探索で改善: sharpe {baseline["sharpe"]} → {r_train["sharpe"]}', flush=True)
             # ベースライン更新前にバックアップ
             _backup_baseline(queue['baseline'])
-            queue['baseline'] = {
+            new_baseline = {
                 'sharpe': r_train['sharpe'],
                 'total_pct': r_train['total_return_pct'],
                 'alpha_pct': r_train['alpha_pct'],
@@ -411,6 +432,9 @@ def run_evolution():
                 'date': datetime.now().strftime('%Y-%m-%d'),
                 'hypothesis': 'local_search',
             }
+            if wf_result:
+                new_baseline['walk_forward'] = wf_result
+            queue['baseline'] = new_baseline
             QUEUE_FILE.write_text(json.dumps(_fb(queue), ensure_ascii=False, indent=2))
             baseline = queue['baseline']
 
@@ -572,7 +596,7 @@ def cleanup_weak_signals(baseline_params):
         print(f'  cleanup_weak_signals エラー（スキップ）: {e}', flush=True)
 
 
-def append_log(hid, desc, result, win, delta, oos_result=None):
+def append_log(hid, desc, result, win, delta, oos_result=None, walk_forward=None):
     log = json.loads(EVO_LOG.read_text()) if EVO_LOG.exists() else {'best10':[], 'all':[], 'total':0}
     entry = {
         'at': datetime.now().isoformat(), 'id': hid, 'desc': desc, 'win': int(win),
@@ -591,6 +615,15 @@ def append_log(hid, desc, result, win, delta, oos_result=None):
             'alpha_pct': oos_result.get('alpha_pct'),
             'nikkei_pct': oos_result.get('nikkei_pct'),
             'n_trades': oos_result.get('n_trades'),
+        }
+    if walk_forward:
+        entry['walk_forward'] = {
+            'avg_total_return': walk_forward.get('avg_total_return'),
+            'avg_sharpe': walk_forward.get('avg_sharpe'),
+            'avg_max_dd': walk_forward.get('avg_max_dd'),
+            'n_passed': walk_forward.get('n_passed'),
+            'all_passed': walk_forward.get('all_passed'),
+            'folds': walk_forward.get('folds', []),
         }
     all_entries = log.get('all', []) + [entry]
     valid = sorted([x for x in all_entries if x.get('sharpe') is not None],

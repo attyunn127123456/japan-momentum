@@ -6,56 +6,56 @@
       "id": "ret",
       "desc": "80日リターン",
       "status": "rejected",
-      "best_weight": 0.3,
+      "best_weight": 0.06,
       "sharpe_contribution": null
     },
     {
       "id": "rs",
       "desc": "日経対比相対強度",
       "status": "rejected",
-      "best_weight": 0.3,
+      "best_weight": 0.0,
       "sharpe_contribution": 0.162
     },
     {
       "id": "green",
       "desc": "陽線率",
-      "status": "candidate",
-      "best_weight": 0.2,
-      "sharpe_contribution": -0.009
+      "status": "active",
+      "best_weight": 0.04,
+      "sharpe_contribution": 0.027
     },
     {
       "id": "smooth",
       "desc": "上昇の滑らかさ",
       "status": "rejected",
-      "best_weight": 0.2,
+      "best_weight": 0.04,
       "sharpe_contribution": 0.22
     },
     {
       "id": "high52",
       "desc": "52週高値への近さ",
       "status": "rejected",
-      "best_weight": 0.4706,
+      "best_weight": 0.11,
       "sharpe_contribution": 1.544
     },
     {
       "id": "resilience",
       "desc": "下落相場での耐性",
       "status": "rejected",
-      "best_weight": 0.0,
+      "best_weight": 0.08,
       "sharpe_contribution": 0.024
     },
     {
       "id": "omega",
       "desc": "上昇速度÷下落幅（非対称性）",
       "status": "rejected",
-      "best_weight": 0.0,
+      "best_weight": 0.05,
       "sharpe_contribution": null
     },
     {
       "id": "short_momentum",
       "desc": "直近5-10日短期リターン",
       "status": "rejected",
-      "best_weight": 0.0,
+      "best_weight": 0.03,
       "sharpe_contribution": null
     },
     {
@@ -107,6 +107,6 @@
     "volume_acceleration_w": 0.05,
     "close_location_w": 0.05
   },
-  "baseline_sharpe": 3.95,
+  "baseline_sharpe": 1.194,
   "last_updated": "2026-03-06"
 }

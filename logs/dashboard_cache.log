@@ -4,3 +4,19 @@ timeseries_cache.json 生成完了 (weekly:138件, monthly:38件, holdings:50件
 ranking_cache.json 生成完了 (top:['31030', '40220', '29830'], rankings:35件)
 weekly_picks_cache.json 生成完了
 全キャッシュ生成完了！
+ダッシュボードキャッシュ生成開始...
+ベスト: total=1246.33%, sharpe=3.899, max_dd=38.0%
+params lb=60, top_n=3
+daily_signalを使用: as_of=2026-03-06
+ranking_cache.json 更新: 2026-03-06, top=['31030', '24370', '31680'], rankings=20件
+weekly_picks_cache.json 更新完了
+timeseries_cache.json 更新完了 (weekly:138件, monthly:38件, holdings:50件)
+全キャッシュ更新完了！
+ダッシュボードキャッシュ生成開始...
+ベスト: total=1246.33%, sharpe=3.899, max_dd=38.0%
+params lb=60, top_n=3
+daily_signalを使用: as_of=2026-03-06
+ranking_cache.json 更新: 2026-03-06, top=['31030', '24370', '31680'], rankings=20件
+weekly_picks_cache.json 更新完了
+timeseries_cache.json 更新完了 (weekly:138件, monthly:38件, holdings:50件)
+全キャッシュ更新完了！
