@@ -353,7 +353,7 @@ async def get_weekly_picks():
     import json as _json
     import pandas as pd
     import numpy as np
-    from datetime import datetime, timedelta, timezone
+    from datetime import datetime, timedelta
 
     # キャッシュ（1時間）
     cache_path = BASE / "backtest/weekly_picks_cache.json"
@@ -491,7 +491,7 @@ async def get_weekly_picks():
     hold = [c for c in curr_top if c in prev_top]
 
     result = {
-        "cached_at": datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M JST"),
+        "cached_at": datetime.now().strftime("%Y-%m-%d %H:%M JST"),
         "as_of": str(latest_date.date()),
         "params": {
             "lookback": lb,
@@ -523,7 +523,7 @@ async def get_ranking():
     import json as _json
     import pandas as pd
     import numpy as np
-    from datetime import datetime, timedelta, timezone
+    from datetime import datetime, timedelta
 
     # キャッシュ（1時間）
     cache_path = BASE / "backtest/ranking_cache.json"
@@ -596,8 +596,30 @@ async def get_ranking():
                    "return_autocorr", "volume_slope", "clean_momentum"]
     weights = {k: params.get(k + "_w", 0.0) for k in weight_keys}
 
+    def build_score_nan_safe(fdfs, lb_, w_):
+        """NaN伝播を防ぐスコア計算: fill_value=0 でNaNを無視して加算"""
+        facs = fdfs[lb_]
+        score = None
+        for fac, w in w_.items():
+            if w == 0:
+                continue
+            # short_momentum は ret5 + ret10 の平均として扱う
+            if fac == "short_momentum":
+                r5 = facs.get("ret5")
+                r10 = facs.get("ret10")
+                if r5 is None or r10 is None:
+                    continue
+                df = ((r5 + r10) / 2).rank(axis=1, pct=True)
+            else:
+                df = facs.get(fac)
+                if df is None:
+                    continue
+            term = df * w
+            score = term if score is None else score.add(term, fill_value=0)
+        return score.astype(float) if score is not None else None
+
     try:
-        score_df = build_score_df(factor_dfs, lb, weights)
+        score_df = build_score_nan_safe(factor_dfs, lb, weights)
     except Exception as e:
         return JSONResponse({"error": f"スコア計算失敗: {e}"}, status_code=500)
 
@@ -653,7 +675,7 @@ async def get_ranking():
         })
 
     result = {
-        "cached_at": datetime.now(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M JST"),
+        "cached_at": datetime.now().strftime("%Y-%m-%d %H:%M JST"),
         "as_of": str(latest_date.date()),
         "params": {
             "lookback": lb,
