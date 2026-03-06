@@ -271,8 +271,14 @@ async def get_stock_info(code: str):
     target_code = None
 
     # 1. コード直接指定（数字のみ）
+    # J-Quantsは4桁TSEコード末尾に"0"を付けた5桁形式 (例: 6227 → 62270)
     if query.isdigit():
-        target_code = query.zfill(5)
+        if len(query) == 4:
+            target_code = query + "0"
+        elif len(query) == 5:
+            target_code = query
+        else:
+            target_code = query[-5:]  # 長すぎる場合は末尾5桁
     else:
         # 2. 名前で検索（正規化して部分一致）
         q_norm = normalize(query)
