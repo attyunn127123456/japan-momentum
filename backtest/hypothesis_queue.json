@@ -2102,6 +2102,69 @@
         "upside_capture_w": 0.16
       },
       "status": "done_win"
+    },
+    {
+      "id": "higher_lows_w",
+      "desc": "下値切り上げファクター: 直近安値が過去安値を上回る比率で売り圧力の減少を検出",
+      "theory": "rolling_min(low,10)が半期前のrolling_min(low,10)を上回っている銘柄は、売り圧力が構造的に減少し底が切り上がっている。retやsmooth_wは終値のみを見るが、higher_lowsは安値（日中の最大恐怖点）に着目し、買い手が安値を支えている証拠を捉える。top_n=2の極集中では1銘柄の急落が致命的なため、底が固い銘柄を選ぶことでmax_ddを抑えつつリターンを維持できる。計算: rolling_min(low,10)[t] / rolling_min(low,10)[t-30]のランクスコア。OHLCVのLowのみで計算可能。",
+      "factor_to_add": "higher_lows_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.07,
+        "green_w": 0.12,
+        "smooth_w": 0.12,
+        "omega_w": 0.1,
+        "short_momentum_w": 0.12,
+        "higher_lows_w": 0.12,
+        "accumulation_w": 0.12,
+        "upside_capture_w": 0.11,
+        "gap_momentum_w": 0.1
+      },
+      "status": "pending"
+    },
+    {
+      "id": "body_strength_w",
+      "desc": "実体強度ファクター: (close-open)/(high-low)の平均値で確信を持った方向性売買の強さを測定",
+      "theory": "日中レンジに対する実体（open→close変動）の比率が高い銘柄は、ヒゲ（迷い）が少なく確信を持った方向性売買が支配的。green_wは陽線か陰線かの2値、close_location_wは終値のレンジ内位置だが、body_strengthは始値→終値の方向性の強度を連続値で測定する直交情報。top_n=2では2銘柄の質が全てを決めるため、方向性が明確で迷いのない銘柄を選ぶことが急反転リスクの回避に直結する。計算: mean((close-open)/(high-low), lookback)のランクスコア。OHLC4値で計算可能。",
+      "factor_to_add": "body_strength_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.07,
+        "green_w": 0.11,
+        "smooth_w": 0.11,
+        "omega_w": 0.1,
+        "short_momentum_w": 0.12,
+        "body_strength_w": 0.12,
+        "accumulation_w": 0.12,
+        "upside_capture_w": 0.11,
+        "gap_momentum_w": 0.1
+      },
+      "status": "pending"
+    },
+    {
+      "id": "vol_return_corr_w",
+      "desc": "出来高リターン相関ファクター: 日次リターンと出来高変化率のrolling相関で健全なトレンドを検出",
+      "theory": "価格が上がるときに出来高も増える（正の相関）銘柄は、需給が一致した健全なトレンドにある。逆に出来高が減る中で価格だけ上がる銘柄は空洞化した上昇で持続しない。accumulation_w（上昇日/下落日の出来高比）は2値的な方向性だが、vol_return_corrは連続的な相関係数で日々の共変動の強さを測定する。相関が高い=大口投資家がトレンドに沿って売買している=モメンタム持続力が高い。top_n=2で選ぶ2銘柄が「本物のトレンド」であることを保証する判別器。計算: rolling_corr(daily_return, volume_pct_change, lookback)のランクスコア。",
+      "factor_to_add": "vol_return_corr_w",
+      "params": {
+        "lookback": 60,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.07,
+        "green_w": 0.11,
+        "smooth_w": 0.11,
+        "omega_w": 0.1,
+        "short_momentum_w": 0.12,
+        "vol_return_corr_w": 0.12,
+        "accumulation_w": 0.12,
+        "upside_capture_w": 0.11,
+        "gap_momentum_w": 0.1
+      },
+      "status": "pending"
     }
   ],
   "tested_factors": [
