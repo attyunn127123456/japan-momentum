@@ -168,7 +168,7 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
     <!-- 累積リターン比較グラフ -->
     <div id="bt-cumulative-wrap" style="background:#161b22;border:1px solid #21262d;border-radius:8px;padding:14px;margin-top:12px;margin-bottom:12px;display:none">
       <div style="font-size:12px;color:#8b949e;margin-bottom:8px;font-weight:600">📈 累積リターン比較（ポートフォリオ vs 日経225）</div>
-      <canvas id="bt-cumulative-chart" height="250"></canvas>
+      <div style="position:relative;height:200px"><canvas id="bt-cumulative-chart"></canvas></div>
     </div>
 
     <div id="bt-running-banner" style="display:none; background:#1c3a4a; border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:13px; color:#58a6ff;">
@@ -524,7 +524,7 @@ function renderCumulativeChart(data){
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false,
+      maintainAspectRatio: true,
       interaction: { mode: 'index', intersect: false },
       plugins: {
         legend: {
