@@ -588,7 +588,14 @@ async function loadEvolution(){
       renderBaselineDetail(data.best10[0]);
     }
 
-    document.getElementById('bt-evo-tbody').innerHTML = (data.best10||[]).map((r,i)=>'<tr>'
+    // 重複除去: (total_return, sharpe, max_dd, lb, top_n) が同じものは最初の1件のみ
+    const seenKeys = new Set();
+    const dedupBest10 = (data.best10||[]).filter(r => {
+      const key = [Math.round((r.total_return_pct||0)*10), Math.round((r.sharpe||0)*100), Math.round((r.max_dd_pct||0)*10), r.params?.lookback, r.params?.top_n].join('|');
+      if(seenKeys.has(key)) return false;
+      seenKeys.add(key); return true;
+    });
+    document.getElementById('bt-evo-tbody').innerHTML = dedupBest10.map((r,i)=>'<tr>'
       +'<td class="dim">'+(i+1)+'</td>'
       +'<td class="dim" style="font-size:11px">'+(r.at||'').slice(5,16).replace('T',' ')+'</td>'
       +'<td style="max-width:200px;white-space:normal;font-size:12px">'+hypothesisToJa(r.id||r.hypothesis, r.at)+'</td>'
