@@ -179,11 +179,22 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
       <canvas id="bt-timeseries-chart" style="display:none;max-height:300px"></canvas>
     </div>
 
-    <!-- 月次リターン棒グラフ -->
+    <!-- 月次リターン数値テーブル -->
     <div class="section-title">📅 月次リターン推移</div>
     <div id="bt-monthly-wrap" style="background:#161b22;border:1px solid #21262d;border-radius:8px;padding:16px;margin-bottom:14px">
       <div id="bt-monthly-loading" style="color:#8b949e;font-size:13px;text-align:center;padding:24px">読み込み中...</div>
-      <canvas id="bt-monthly-chart" style="display:none;max-height:260px"></canvas>
+      <div id="bt-monthly-table" style="display:none;max-height:400px;overflow-y:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:11px">
+          <thead style="position:sticky;top:0;background:#161b22;z-index:1">
+            <tr>
+              <th style="text-align:left;padding:6px 10px;color:#8b949e;border-bottom:1px solid #21262d;white-space:nowrap">月</th>
+              <th style="text-align:right;padding:6px 10px;color:#8b949e;border-bottom:1px solid #21262d;white-space:nowrap">リターン</th>
+              <th style="text-align:right;padding:6px 10px;color:#8b949e;border-bottom:1px solid #21262d;white-space:nowrap">累積</th>
+            </tr>
+          </thead>
+          <tbody id="bt-monthly-tbody"></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- シグナルライブラリ -->
@@ -420,7 +431,6 @@ async function loadBacktest(silent){
 
 // タイムシリーズチャート
 let tsChartInstance = null;
-let monthlyChartInstance = null;
 
 async function loadTimeseriesCharts(){
   try {
@@ -432,7 +442,7 @@ async function loadTimeseriesCharts(){
       return;
     }
     renderTimeseriesChart(data);
-    renderMonthlyChart(data);
+    renderMonthlyTable(data);
   } catch(e){
     document.getElementById('bt-timeseries-loading').textContent = '⚠️ 取得エラー: ' + e.message;
     document.getElementById('bt-monthly-loading').textContent = '⚠️ 取得エラー';
@@ -530,64 +540,43 @@ function renderTimeseriesChart(data){
   });
 }
 
-function renderMonthlyChart(data){
+function renderMonthlyTable(data){
   const monthly = data.monthly || [];
   if(!monthly.length){ document.getElementById('bt-monthly-loading').textContent = 'データなし'; return; }
 
   document.getElementById('bt-monthly-loading').style.display = 'none';
-  const canvas = document.getElementById('bt-monthly-chart');
-  canvas.style.display = 'block';
+  document.getElementById('bt-monthly-table').style.display = 'block';
 
-  if(monthlyChartInstance){ monthlyChartInstance.destroy(); }
-  const ctx = canvas.getContext('2d');
-
-  const labels = monthly.map(m => m.month);
-  const values = monthly.map(m => m.return_pct);
-  const colors = values.map(v => v >= 0 ? 'rgba(88,166,255,0.8)' : 'rgba(248,81,73,0.8)');
-  const borderColors = values.map(v => v >= 0 ? '#58a6ff' : '#f85149');
-
-  monthlyChartInstance = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        label: '月次リターン(%)',
-        data: values,
-        backgroundColor: colors,
-        borderColor: borderColors,
-        borderWidth: 1,
-        borderRadius: 3,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#1c2128',
-          borderColor: '#30363d',
-          borderWidth: 1,
-          titleColor: '#e6edf3',
-          bodyColor: '#c9d1d9',
-          callbacks: {
-            label: ctx => ` ${ctx.raw >= 0 ? '+' : ''}${ctx.raw.toFixed(2)}%`,
-          }
-        }
-      },
-      scales: {
-        x: {
-          ticks: { color: '#8b949e', font: { size: 10 }, maxRotation: 45 },
-          grid: { color: 'rgba(48,54,61,0.5)' },
-        },
-        y: {
-          ticks: { color: '#8b949e', font: { size: 10 }, callback: v => v.toFixed(1) + '%' },
-          grid: { color: 'rgba(48,54,61,0.5)' },
-          title: { display: true, text: '月次リターン (%)', color: '#8b949e', font: { size: 11 } },
-        }
-      }
-    }
+  // 月を昇順にソートして累積計算
+  const sorted = [...monthly].sort((a, b) => a.month.localeCompare(b.month));
+  let cum = 1.0;
+  const rows = sorted.map(m => {
+    cum *= (1 + m.return_pct / 100);
+    return { month: m.month, ret: m.return_pct, cum: (cum - 1) * 100 };
   });
+
+  // 表示は降順（新しい月が上）
+  const desc = [...rows].reverse();
+  const finalCum = rows.length ? rows[rows.length - 1].cum : 0;
+
+  const tdStyle = 'padding:5px 10px;border-bottom:1px solid #21262d;';
+  const tbody = document.getElementById('bt-monthly-tbody');
+  tbody.innerHTML = desc.map(r => {
+    const retCls = r.ret >= 0 ? '#3fb950' : '#f85149';
+    const cumCls = r.cum >= 0 ? '#3fb950' : '#f85149';
+    const retStr = (r.ret >= 0 ? '+' : '') + r.ret.toFixed(2) + '%';
+    const cumStr = (r.cum >= 0 ? '+' : '') + r.cum.toFixed(1) + '%';
+    return '<tr>'
+      + '<td style="' + tdStyle + 'color:#c9d1d9;font-size:11px">' + r.month + '</td>'
+      + '<td style="' + tdStyle + 'text-align:right;color:' + retCls + ';font-size:11px;font-weight:600">' + retStr + '</td>'
+      + '<td style="' + tdStyle + 'text-align:right;color:' + cumCls + ';font-size:11px">' + cumStr + '</td>'
+      + '</tr>';
+  }).join('')
+  + '<tr style="border-top:2px solid #30363d">'
+  + '<td style="padding:7px 10px;font-size:12px;font-weight:700;color:#e6edf3">合計</td>'
+  + '<td style="padding:7px 10px;text-align:right"></td>'
+  + '<td style="padding:7px 10px;text-align:right;font-size:12px;font-weight:700;color:' + (finalCum >= 0 ? '#3fb950' : '#f85149') + '">' + (finalCum >= 0 ? '+' : '') + finalCum.toFixed(1) + '%</td>'
+  + '</tr>';
 }
 
 function renderHypothesis(h){
