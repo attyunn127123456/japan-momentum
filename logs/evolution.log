@@ -521,3 +521,148 @@ Optuna TPE: 300trials 開始...
   新ベスト: total=272.6%, sharpe=3.846, lb=100, tn=3
   新ベスト: total=305.6%, sharpe=4.065, lb=100, tn=3
   新ベスト: total=314.7%, sharpe=3.902, lb=40, tn=2
+  新ベスト: total=384.8%, sharpe=4.273, lb=40, tn=2
+  新ベスト: total=412.3%, sharpe=4.416, lb=40, tn=2
+  新ベスト: total=422.6%, sharpe=4.616, lb=40, tn=2
+  新ベスト: total=423.9%, sharpe=4.491, lb=40, tn=2
+  新ベスト: total=428.8%, sharpe=4.617, lb=40, tn=2
+  新ベスト: total=506.0%, sharpe=4.900, lb=40, tn=2
+  新ベスト: total=539.9%, sharpe=4.950, lb=40, tn=2
+  新ベスト: total=542.0%, sharpe=5.003, lb=40, tn=2
+  新ベスト: total=573.5%, sharpe=5.146, lb=40, tn=2
+  新ベスト: total=578.7%, sharpe=5.043, lb=40, tn=2
+  新ベスト: total=587.5%, sharpe=5.094, lb=40, tn=2
+  新ベスト: total=690.1%, sharpe=5.394, lb=40, tn=2
+  新ベスト: total=730.1%, sharpe=5.480, lb=40, tn=2
+  新ベスト: total=753.2%, sharpe=5.532, lb=40, tn=2
+  新ベスト: total=753.3%, sharpe=5.560, lb=40, tn=2
+  新ベスト: total=761.7%, sharpe=5.591, lb=40, tn=2
+  新ベスト: total=762.7%, sharpe=5.596, lb=40, tn=2
+  新ベスト: total=783.5%, sharpe=5.674, lb=40, tn=2
+Optuna完了: 300trials, best_total=783.5%
+  sharpe=5.674 score=+783.520 ✅ lb=40 tn=2
+  sharpe=5.596 score=+762.680 ✅ lb=40 tn=2
+  sharpe=5.591 score=+761.680 ✅ lb=40 tn=2
+  sharpe=5.560 score=+753.320 ✅ lb=40 tn=2
+  sharpe=5.532 score=+753.240 ✅ lb=40 tn=2
+  sharpe=5.507 score=+738.470 ✅ lb=40 tn=2
+  sharpe=5.493 score=+730.160 ✅ lb=40 tn=2
+  sharpe=5.480 score=+730.090 ✅ lb=40 tn=2
+  sharpe=5.487 score=+727.990 ✅ lb=40 tn=2
+  sharpe=5.445 score=+721.000 ✅ lb=40 tn=2
+  sharpe=5.397 score=+710.070 ✅ lb=40 tn=2
+  sharpe=5.406 score=+702.120 ✅ lb=40 tn=2
+  sharpe=5.307 score=+692.500 ✅ lb=40 tn=2
+  sharpe=5.394 score=+690.120 ✅ lb=40 tn=2
+  sharpe=5.304 score=+689.860 ✅ lb=40 tn=2
+  sharpe=5.378 score=+688.640 ✅ lb=40 tn=2
+  sharpe=5.370 score=+686.280 ✅ lb=40 tn=2
+  sharpe=5.313 score=+686.140 ✅ lb=40 tn=2
+  sharpe=5.523 score=+680.540 ✅ lb=40 tn=2
+  sharpe=5.308 score=+679.910 ✅ lb=40 tn=2
+
+✅ 局所探索で改善: sharpe 4.126 → 5.674
+
+--- ファクター整理 (cleanup_weak_signals) ---
+  cleanup_weak_signals: 変更なし
+
+--- OOS検証 (Walk-Forward Out-of-Sample) ---
+
+=== OOS検証: 2020-01-01〜2026-03-05 ===
+バックフィル対象: 56件（レート制限回避のためスキップ）
+OOS検証: 1214銘柄ロード完了
+事前計算完了: 1214銘柄×1lb / 104.6秒
+/Users/panda/Projects/japan-momentum/optimize.py:808: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+/Users/panda/Projects/japan-momentum/optimize.py:808: FutureWarning: Downcasting object dtype arrays on .fillna, .ffill, .bfill is deprecated and will change in a future version. Call result.infer_objects(copy=False) instead. To opt-in to the future behavior, set `pd.set_option('future.no_silent_downcasting', True)`
+  return_df = all_prices.pct_change()
+OOS結果: total=221.46%, sharpe=1.801, max_dd=48.69%, alpha=103.33%, nikkei=118.13%
+
+OOS vs 訓練: OOS=+221.5% / 訓練=+783.5% / OOS sharpe=1.801 max_dd=48.7%
+
+--- 新ファクター試験 ---
+
+--- 組み合わせテスト 開始 ---
+候補仮説: 6件
+データロード (200銘柄)...
+  ユニバース: キャッシュから200銘柄読み込み
+  200銘柄ロード完了
+事前計算完了: 200銘柄×4lb / 41.8秒
+/Users/panda/Projects/japan-momentum/combination_search.py:134: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df  = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
+組み合わせ数: 15
+  combo_local_search+topn1_extreme_concentration: エラー 50
+  combo_local_search+high52_all_universe: sharpe=1.354 delta=-4.320 score=+21.770 不採用
+  combo_local_search+high52_midcap: sharpe=1.194 delta=-4.480 score=+18.780 不採用
+  combo_local_search+high52_w_boost: sharpe=1.254 delta=-4.420 score=+19.620 不採用
+  combo_local_search+oos_validation: エラー 50
+  combo_topn1_extreme_concentration+high52_all_universe: エラー 70
+  combo_topn1_extreme_concentration+high52_midcap: エラー 70
+  combo_topn1_extreme_concentration+high52_w_boost: エラー 70
+  combo_topn1_extreme_concentration+oos_validation: sharpe=1.189 delta=-4.485 score=+21.890 不採用
+  combo_high52_all_universe+high52_midcap: sharpe=0.442 delta=-5.232 score=+4.190 不採用
+  combo_high52_all_universe+high52_w_boost: sharpe=0.319 delta=-5.355 score=+2.250 不採用
+  combo_high52_all_universe+oos_validation: エラー 70
+  combo_high52_midcap+high52_w_boost: sharpe=0.263 delta=-5.411 score=+1.390 不採用
+  combo_high52_midcap+oos_validation: エラー 70
+  combo_high52_w_boost+oos_validation: エラー 70
+組み合わせテスト完了: 7件 / combo_log保存
+
+=== Signal Search 開始 ===
+  ユニバース: キャッシュから200銘柄読み込み
+  200銘柄ロード完了
+事前計算完了: 200銘柄×1lb / 10.7秒
+/Users/panda/Projects/japan-momentum/signal_search.py:69: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = pd.DataFrame({c: prices_dict[c]["AdjC"] for c in prices_dict}).pct_change()
+
+[Step1] Ablation Test
+  ベースライン sharpe=0.730
+  ⚠️  green: sharpe低下 -0.0090 → candidate（他との相性あり）
+  ⚠️  topn1_extreme_concentration: sharpe低下 +0.0000 → candidate（他との相性あり）
+
+[Step2] 新シグナル追加テスト
+  ⚠️  rsi14: ファクターデータなし → スキップ
+  ⚠️  ma_deviation: ファクターデータなし → スキップ
+  ⚠️  momentum_12_1: ファクターデータなし → スキップ
+  ⚠️  eps_growth: ファクターデータなし → スキップ
+  ⚠️  rev_growth: ファクターデータなし → スキップ
+  ⚠️  credit_ratio: ファクターデータなし → スキップ
+
+[Step3] 全シグナル同時重み最適化
+  最適化対象: ['green_w', 'topn1_extreme_concentration_w']
+  グリッド組み合わせ: 64件（正規化後に重複除去）
+  最適化完了: best_sharpe=0.730
+  最適重み: {'rs_w': 0.3, 'green_w': 0.2, 'high52_w': 0.4706, 'ret_w': 0.3, 'smooth_w': 0.2, 'resilience_w': 0.0}
+
+[Step4] ベースライン更新
+  ベースライン変化なし: 5.674 >= 0.730
+
+=== Signal Search 完了 (15秒) ===
+  最終 baseline_sharpe=0.730
+
+=== Evolution cycle 完了 ===
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+
+=== Evolution Engine 起動 ===
+ベースライン: sharpe=5.674, total=783.52%
+データロード (2000銘柄)...
+  ユニバース: キャッシュから2000銘柄読み込み
+  2000銘柄ロード完了
+ファンダメンタルファクター: 0銘柄
+ファクター事前計算...
+事前計算完了: 2000銘柄×5lb / 585.3秒
+/Users/panda/Projects/japan-momentum/evolution_engine.py:337: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
+
+--- 局所探索 開始 (Optuna TPE) ---
+Factor Selection: 14→13個 (除外: {'rs_w'})
+Optuna探索対象ファクター: ['ret_w', 'green_w', 'smooth_w', 'resilience_w', 'high52_w', 'omega_w', 'cluster_boost_w', 'ret_skip_w', 'win_streak_w', 'momentum_consistency_w', 'upside_capture_w', 'return_autocorr_w', 'clean_momentum_w', 'short_momentum_w', 'volume_confirm_w', 'gap_momentum_w', 'accumulation_w', 'volume_slope_w']
+Optuna TPE: 300trials 開始...
+  新ベスト: total=-18.6%, sharpe=-4.970, lb=40, tn=2
+  新ベスト: total=-11.7%, sharpe=-3.435, lb=100, tn=5
+  新ベスト: total=75.4%, sharpe=2.527, lb=80, tn=6
+  新ベスト: total=82.0%, sharpe=2.255, lb=40, tn=3
+  新ベスト: total=106.7%, sharpe=2.893, lb=100, tn=5
+  新ベスト: total=174.1%, sharpe=3.037, lb=60, tn=3

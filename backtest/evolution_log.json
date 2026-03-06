@@ -1,6 +1,41 @@
 {
   "best10": [
     {
+      "at": "2026-03-05T18:26:47.290176",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=40 tn=2",
+      "win": 1,
+      "delta_sharpe": 1.548,
+      "sharpe": 5.674,
+      "total_return_pct": 783.52,
+      "alpha_pct": 685.32,
+      "max_dd_pct": 23.85,
+      "params": {
+        "lookback": 40,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.09172571588484228,
+        "green_w": 0.004489097395586231,
+        "smooth_w": 0.036521865053101676,
+        "resilience_w": 0.008656031711038088,
+        "high52_w": 0.02204654612501106,
+        "omega_w": 0.08040509683271588,
+        "cluster_boost_w": 0.04071376748779478,
+        "ret_skip_w": 0.008200132434931593,
+        "win_streak_w": 0.08129730617455636,
+        "momentum_consistency_w": 0.09576963761207115,
+        "upside_capture_w": 0.013327920294685701,
+        "return_autocorr_w": 0.037546584286003264,
+        "short_momentum_w": 0.09802995167783411,
+        "volume_confirm_w": 0.009418454687222893,
+        "gap_momentum_w": 0.058694210163647315,
+        "accumulation_w": 0.09967638654055386,
+        "volume_slope_w": 0.11131857659965684,
+        "clean_momentum_w": 0.10216271903874698,
+        "rs_w": 0.0
+      }
+    },
+    {
       "at": "2026-03-05T16:49:23.487965",
       "id": "local_search",
       "desc": "局所探索ベスト lb=60 tn=2",
@@ -252,35 +287,44 @@
         "short_momentum_w": 0.1514,
         "cluster_boost_w": 0.1
       }
-    },
-    {
-      "at": "2026-03-05T15:44:19.912821",
-      "id": "local_search",
-      "desc": "局所探索ベスト lb=60 tn=3",
-      "win": 0,
-      "delta_sharpe": 0.02400000000000002,
-      "sharpe": 4.28,
-      "total_return_pct": 167.9,
-      "alpha_pct": 69.7,
-      "max_dd_pct": 18.76,
-      "params": {
-        "lookback": 60,
-        "top_n": 3,
-        "rebalance": "weekly",
-        "ret_w": 0.3532,
-        "rs_w": 0.2683,
-        "green_w": 0.1088,
-        "smooth_w": 0.0,
-        "resilience_w": 0.0,
-        "high52_w": 0.1177,
-        "omega_w": 0.0,
-        "short_momentum_w": 0.152,
-        "cluster_boost_w": 0.1,
-        "volume_confirm_w": 0.0
-      }
     }
   ],
   "all": [
+    {
+      "at": "2026-03-05T18:26:47.290176",
+      "id": "local_search",
+      "desc": "局所探索ベスト lb=40 tn=2",
+      "win": 1,
+      "delta_sharpe": 1.548,
+      "sharpe": 5.674,
+      "total_return_pct": 783.52,
+      "alpha_pct": 685.32,
+      "max_dd_pct": 23.85,
+      "params": {
+        "lookback": 40,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.09172571588484228,
+        "green_w": 0.004489097395586231,
+        "smooth_w": 0.036521865053101676,
+        "resilience_w": 0.008656031711038088,
+        "high52_w": 0.02204654612501106,
+        "omega_w": 0.08040509683271588,
+        "cluster_boost_w": 0.04071376748779478,
+        "ret_skip_w": 0.008200132434931593,
+        "win_streak_w": 0.08129730617455636,
+        "momentum_consistency_w": 0.09576963761207115,
+        "upside_capture_w": 0.013327920294685701,
+        "return_autocorr_w": 0.037546584286003264,
+        "short_momentum_w": 0.09802995167783411,
+        "volume_confirm_w": 0.009418454687222893,
+        "gap_momentum_w": 0.058694210163647315,
+        "accumulation_w": 0.09967638654055386,
+        "volume_slope_w": 0.11131857659965684,
+        "clean_momentum_w": 0.10216271903874698,
+        "rs_w": 0.0
+      }
+    },
     {
       "at": "2026-03-05T16:49:23.487965",
       "id": "local_search",
@@ -1135,6 +1179,49 @@
         "alpha_pct": 143.73,
         "nikkei_pct": 118.13,
         "n_trades": 231
+      }
+    },
+    {
+      "at": "2026-03-05T18:28:35.109351",
+      "id": "oos_validation",
+      "desc": "OOS検証 (240取引, 2020〜)",
+      "win": 1,
+      "delta_sharpe": -562.06,
+      "sharpe": 1.801,
+      "total_return_pct": 221.46,
+      "alpha_pct": 103.33,
+      "max_dd_pct": 48.69,
+      "params": {
+        "lookback": 40,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.09172571588484228,
+        "green_w": 0.004489097395586231,
+        "smooth_w": 0.036521865053101676,
+        "resilience_w": 0.008656031711038088,
+        "high52_w": 0.02204654612501106,
+        "omega_w": 0.08040509683271588,
+        "cluster_boost_w": 0.04071376748779478,
+        "ret_skip_w": 0.008200132434931593,
+        "win_streak_w": 0.08129730617455636,
+        "momentum_consistency_w": 0.09576963761207115,
+        "upside_capture_w": 0.013327920294685701,
+        "return_autocorr_w": 0.037546584286003264,
+        "short_momentum_w": 0.09802995167783411,
+        "volume_confirm_w": 0.009418454687222893,
+        "gap_momentum_w": 0.058694210163647315,
+        "accumulation_w": 0.09967638654055386,
+        "volume_slope_w": 0.11131857659965684,
+        "clean_momentum_w": 0.10216271903874698,
+        "rs_w": 0.0
+      },
+      "oos_result": {
+        "total_return_pct": 221.46,
+        "sharpe": 1.801,
+        "max_dd_pct": 48.69,
+        "alpha_pct": 103.33,
+        "nikkei_pct": 118.13,
+        "n_trades": 240
       }
     },
     {
@@ -2326,5 +2413,5 @@
       }
     }
   ],
-  "total": 91
+  "total": 93
 }

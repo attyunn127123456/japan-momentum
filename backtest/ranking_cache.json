@@ -1,0 +1,535 @@
+{
+  "cached_at": "2026-03-06 11:40 JST",
+  "as_of": "2026-03-05",
+  "params": {
+    "lookback": 40,
+    "top_n": 2,
+    "weights": {
+      "ret": 0.09172571588484228,
+      "green": 0.004489097395586231,
+      "smooth": 0.036521865053101676,
+      "resilience": 0.008656031711038088,
+      "short_momentum": 0.09802995167783411,
+      "high52": 0.02204654612501106,
+      "omega": 0.08040509683271588,
+      "win_streak": 0.08129730617455636,
+      "accumulation": 0.09967638654055386,
+      "momentum_consistency": 0.09576963761207115,
+      "upside_capture": 0.013327920294685701,
+      "gap_momentum": 0.058694210163647315,
+      "volume_confirm": 0.009418454687222893,
+      "ret_skip": 0.008200132434931593,
+      "cluster_boost": 0.04071376748779478,
+      "return_autocorr": 0.037546584286003264,
+      "volume_slope": 0.11131857659965684,
+      "clean_momentum": 0.10216271903874698
+    },
+    "total_return_pct": 783.52
+  },
+  "top_codes": [
+    "31030",
+    "23440"
+  ],
+  "rankings": [
+    {
+      "rank": 1,
+      "code": "31030",
+      "name": "ユニチカ",
+      "score": 1.669,
+      "price": 1722.0,
+      "ret5d_pct": 6.5,
+      "ret20d_pct": 158.2,
+      "is_top": true
+    },
+    {
+      "rank": 2,
+      "code": "23440",
+      "name": "平安レイサービス",
+      "score": 1.396,
+      "price": 1475.0,
+      "ret5d_pct": -0.2,
+      "ret20d_pct": 56.1,
+      "is_top": true
+    },
+    {
+      "rank": 3,
+      "code": "38640",
+      "name": "三菱製紙",
+      "score": 1.255,
+      "price": 887.0,
+      "ret5d_pct": 6.9,
+      "ret20d_pct": 32.2,
+      "is_top": false
+    },
+    {
+      "rank": 4,
+      "code": "485A0",
+      "name": "パワーエックス",
+      "score": 1.204,
+      "price": 4525.0,
+      "ret5d_pct": 30.2,
+      "ret20d_pct": 115.7,
+      "is_top": false
+    },
+    {
+      "rank": 5,
+      "code": "58010",
+      "name": "古河電気工業",
+      "score": 1.182,
+      "price": 28465.0,
+      "ret5d_pct": 1.6,
+      "ret20d_pct": 99.8,
+      "is_top": false
+    },
+    {
+      "rank": 6,
+      "code": "19380",
+      "name": "日本リーテック",
+      "score": 1.181,
+      "price": 2994.0,
+      "ret5d_pct": -6.0,
+      "ret20d_pct": 27.7,
+      "is_top": false
+    },
+    {
+      "rank": 7,
+      "code": "57060",
+      "name": "三井金属",
+      "score": 1.177,
+      "price": 34170.0,
+      "ret5d_pct": -5.6,
+      "ret20d_pct": 64.2,
+      "is_top": false
+    },
+    {
+      "rank": 8,
+      "code": "23210",
+      "name": "ソフトフロントホールディングス",
+      "score": 1.163,
+      "price": 358.0,
+      "ret5d_pct": 84.5,
+      "ret20d_pct": 82.7,
+      "is_top": false
+    },
+    {
+      "rank": 9,
+      "code": "45960",
+      "name": "窪田製薬ホールディングス",
+      "score": 1.144,
+      "price": 135.0,
+      "ret5d_pct": -43.8,
+      "ret20d_pct": 15.4,
+      "is_top": false
+    },
+    {
+      "rank": 10,
+      "code": "51210",
+      "name": "藤倉コンポジット",
+      "score": 1.134,
+      "price": 2745.0,
+      "ret5d_pct": 2.5,
+      "ret20d_pct": 17.8,
+      "is_top": false
+    },
+    {
+      "rank": 11,
+      "code": "22240",
+      "name": "コモ",
+      "score": 1.124,
+      "price": 3910.0,
+      "ret5d_pct": -2.4,
+      "ret20d_pct": 6.8,
+      "is_top": false
+    },
+    {
+      "rank": 12,
+      "code": "34650",
+      "name": "ケイアイスター不動産",
+      "score": 1.124,
+      "price": 7330.0,
+      "ret5d_pct": -7.2,
+      "ret20d_pct": 17.8,
+      "is_top": false
+    },
+    {
+      "rank": 13,
+      "code": "46590",
+      "name": "エイジス",
+      "score": 1.114,
+      "price": 4435.0,
+      "ret5d_pct": 0.0,
+      "ret20d_pct": 48.8,
+      "is_top": false
+    },
+    {
+      "rank": 14,
+      "code": "46200",
+      "name": "藤倉化成",
+      "score": 1.114,
+      "price": 1170.0,
+      "ret5d_pct": 6.1,
+      "ret20d_pct": 53.9,
+      "is_top": false
+    },
+    {
+      "rank": 15,
+      "code": "48880",
+      "name": "ステラファーマ",
+      "score": 1.106,
+      "price": 469.0,
+      "ret5d_pct": 10.6,
+      "ret20d_pct": 33.6,
+      "is_top": false
+    },
+    {
+      "rank": 16,
+      "code": "19590",
+      "name": "クラフティア",
+      "score": 1.105,
+      "price": 10055.0,
+      "ret5d_pct": -1.3,
+      "ret20d_pct": 16.3,
+      "is_top": false
+    },
+    {
+      "rank": 17,
+      "code": "53440",
+      "name": "ＭＡＲＵＷＡ",
+      "score": 1.101,
+      "price": 63130.0,
+      "ret5d_pct": 5.0,
+      "ret20d_pct": 22.3,
+      "is_top": false
+    },
+    {
+      "rank": 18,
+      "code": "18470",
+      "name": "イチケン",
+      "score": 1.094,
+      "price": 6310.0,
+      "ret5d_pct": -0.3,
+      "ret20d_pct": 26.7,
+      "is_top": false
+    },
+    {
+      "rank": 19,
+      "code": "29830",
+      "name": "アールプランナー",
+      "score": 1.078,
+      "price": 2109.0,
+      "ret5d_pct": -0.4,
+      "ret20d_pct": 18.5,
+      "is_top": false
+    },
+    {
+      "rank": 20,
+      "code": "31660",
+      "name": "ＯＣＨＩホールディングス",
+      "score": 1.07,
+      "price": 1576.0,
+      "ret5d_pct": -1.2,
+      "ret20d_pct": 5.7,
+      "is_top": false
+    },
+    {
+      "rank": 21,
+      "code": "50740",
+      "name": "テスホールディングス",
+      "score": 1.061,
+      "price": 572.0,
+      "ret5d_pct": -0.9,
+      "ret20d_pct": 52.5,
+      "is_top": false
+    },
+    {
+      "rank": 22,
+      "code": "17160",
+      "name": "第一カッター興業",
+      "score": 1.061,
+      "price": 1593.0,
+      "ret5d_pct": 1.1,
+      "ret20d_pct": 13.9,
+      "is_top": false
+    },
+    {
+      "rank": 23,
+      "code": "40630",
+      "name": "信越化学工業",
+      "score": 1.06,
+      "price": 6226.0,
+      "ret5d_pct": 4.1,
+      "ret20d_pct": 21.3,
+      "is_top": false
+    },
+    {
+      "rank": 24,
+      "code": "17930",
+      "name": "大本組",
+      "score": 1.056,
+      "price": 1915.0,
+      "ret5d_pct": -2.8,
+      "ret20d_pct": 22.5,
+      "is_top": false
+    },
+    {
+      "rank": 25,
+      "code": "34160",
+      "name": "ピクスタ",
+      "score": 1.053,
+      "price": 942.0,
+      "ret5d_pct": 0.9,
+      "ret20d_pct": 2.2,
+      "is_top": false
+    },
+    {
+      "rank": 26,
+      "code": "46900",
+      "name": "日本パレットプール",
+      "score": 1.048,
+      "price": 2501.0,
+      "ret5d_pct": -0.1,
+      "ret20d_pct": -4.2,
+      "is_top": false
+    },
+    {
+      "rank": 27,
+      "code": "45880",
+      "name": "オンコリスバイオファーマ",
+      "score": 1.047,
+      "price": 2937.0,
+      "ret5d_pct": 11.8,
+      "ret20d_pct": 70.2,
+      "is_top": false
+    },
+    {
+      "rank": 28,
+      "code": "52080",
+      "name": "有沢製作所",
+      "score": 1.043,
+      "price": 2583.0,
+      "ret5d_pct": -2.0,
+      "ret20d_pct": 40.0,
+      "is_top": false
+    },
+    {
+      "rank": 29,
+      "code": "22210",
+      "name": "岩塚製菓",
+      "score": 1.043,
+      "price": 3275.0,
+      "ret5d_pct": -1.1,
+      "ret20d_pct": 7.6,
+      "is_top": false
+    },
+    {
+      "rank": 30,
+      "code": "34450",
+      "name": "ＲＳ　Ｔｅｃｈｎｏｌｏｇｉｅｓ",
+      "score": 1.038,
+      "price": 4195.0,
+      "ret5d_pct": 2.3,
+      "ret20d_pct": 7.2,
+      "is_top": false
+    },
+    {
+      "rank": 31,
+      "code": "45480",
+      "name": "生化学工業",
+      "score": 1.034,
+      "price": 744.0,
+      "ret5d_pct": -2.0,
+      "ret20d_pct": 6.0,
+      "is_top": false
+    },
+    {
+      "rank": 32,
+      "code": "40040",
+      "name": "レゾナック・ホールディングス",
+      "score": 1.032,
+      "price": 11990.0,
+      "ret5d_pct": 4.9,
+      "ret20d_pct": 28.6,
+      "is_top": false
+    },
+    {
+      "rank": 33,
+      "code": "255A0",
+      "name": "ジーエルテクノホールディングス",
+      "score": 1.031,
+      "price": 3875.0,
+      "ret5d_pct": -3.6,
+      "ret20d_pct": 17.2,
+      "is_top": false
+    },
+    {
+      "rank": 34,
+      "code": "53930",
+      "name": "ニチアス",
+      "score": 1.028,
+      "price": 8811.0,
+      "ret5d_pct": -4.5,
+      "ret20d_pct": 11.0,
+      "is_top": false
+    },
+    {
+      "rank": 35,
+      "code": "268A0",
+      "name": "リガク・ホールディングス",
+      "score": 1.025,
+      "price": 1805.0,
+      "ret5d_pct": -6.2,
+      "ret20d_pct": 50.8,
+      "is_top": false
+    },
+    {
+      "rank": 36,
+      "code": "25880",
+      "name": "プレミアムウォーターホールディングス",
+      "score": 1.025,
+      "price": 4005.0,
+      "ret5d_pct": -2.9,
+      "ret20d_pct": 19.9,
+      "is_top": false
+    },
+    {
+      "rank": 37,
+      "code": "27510",
+      "name": "テンポスホールディングス",
+      "score": 1.025,
+      "price": 4000.0,
+      "ret5d_pct": 0.5,
+      "ret20d_pct": 5.4,
+      "is_top": false
+    },
+    {
+      "rank": 38,
+      "code": "19500",
+      "name": "日本電設工業",
+      "score": 1.023,
+      "price": 5070.0,
+      "ret5d_pct": -0.4,
+      "ret20d_pct": 26.4,
+      "is_top": false
+    },
+    {
+      "rank": 39,
+      "code": "19750",
+      "name": "朝日工業社",
+      "score": 1.01,
+      "price": 4255.0,
+      "ret5d_pct": -8.7,
+      "ret20d_pct": 13.8,
+      "is_top": false
+    },
+    {
+      "rank": 40,
+      "code": "33610",
+      "name": "トーエル",
+      "score": 1.01,
+      "price": 945.0,
+      "ret5d_pct": 3.3,
+      "ret20d_pct": 7.4,
+      "is_top": false
+    },
+    {
+      "rank": 41,
+      "code": "34340",
+      "name": "アルファ",
+      "score": 1.01,
+      "price": 1396.0,
+      "ret5d_pct": 3.4,
+      "ret20d_pct": 10.4,
+      "is_top": false
+    },
+    {
+      "rank": 42,
+      "code": "18100",
+      "name": "松井建設",
+      "score": 1.01,
+      "price": 1811.0,
+      "ret5d_pct": -5.3,
+      "ret20d_pct": 18.5,
+      "is_top": false
+    },
+    {
+      "rank": 43,
+      "code": "52140",
+      "name": "日本電気硝子",
+      "score": 1.008,
+      "price": 6740.0,
+      "ret5d_pct": -0.9,
+      "ret20d_pct": -2.7,
+      "is_top": false
+    },
+    {
+      "rank": 44,
+      "code": "29700",
+      "name": "ＧＬＣ　ＧＲＯＵＰ",
+      "score": 1.008,
+      "price": 1170.0,
+      "ret5d_pct": -4.8,
+      "ret20d_pct": 42.7,
+      "is_top": false
+    },
+    {
+      "rank": 45,
+      "code": "49660",
+      "name": "上村工業",
+      "score": 1.002,
+      "price": 21300.0,
+      "ret5d_pct": -0.2,
+      "ret20d_pct": 12.5,
+      "is_top": false
+    },
+    {
+      "rank": 46,
+      "code": "24370",
+      "name": "Ｓｈｉｎｗａ　Ｗｉｓｅ　Ｈｏｌｄｉｎｇｓ",
+      "score": 0.994,
+      "price": 725.0,
+      "ret5d_pct": 25.0,
+      "ret20d_pct": 30.9,
+      "is_top": false
+    },
+    {
+      "rank": 47,
+      "code": "57270",
+      "name": "東邦チタニウム",
+      "score": 0.987,
+      "price": 2810.0,
+      "ret5d_pct": 22.7,
+      "ret20d_pct": 47.9,
+      "is_top": false
+    },
+    {
+      "rank": 48,
+      "code": "28710",
+      "name": "ニチレイ",
+      "score": 0.983,
+      "price": 2060.0,
+      "ret5d_pct": -1.5,
+      "ret20d_pct": 7.0,
+      "is_top": false
+    },
+    {
+      "rank": 49,
+      "code": "31980",
+      "name": "ＳＦＰホールディングス",
+      "score": 0.978,
+      "price": 2095.0,
+      "ret5d_pct": -4.4,
+      "ret20d_pct": -6.1,
+      "is_top": false
+    },
+    {
+      "rank": 50,
+      "code": "31680",
+      "name": "ＭＥＲＦ",
+      "score": 0.974,
+      "price": 1785.0,
+      "ret5d_pct": 12.5,
+      "ret20d_pct": 71.8,
+      "is_top": false
+    }
+  ]
+}
