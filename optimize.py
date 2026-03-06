@@ -20,7 +20,7 @@ from universe import get_top_liquid_tickers
 from backtest import get_rebalance_dates, get_nikkei_history
 
 GRID = {
-    "lookback":     [40, 60, 80],
+    "lookback":     [20, 30, 45, 60, 80],
     "top_n":        [5, 10, 20],
     "rebalance":    ["weekly", "daily"],
     "ret_w":        [0.3, 0.5, 0.7],
@@ -599,7 +599,7 @@ def run_optuna_optimization(baseline_params, factor_dfs, prices_dict, nikkei,
 
         # 構造パラメータ
         trial_lb = trial.suggest_categorical('lookback', available_lbs)
-        top_n = trial.suggest_int('top_n', 2, 7)
+        top_n = trial.suggest_int('top_n', 1, 7)
 
         # ファクター重み（0〜0.5の連続値）
         weights = {}
@@ -618,16 +618,17 @@ def run_optuna_optimization(baseline_params, factor_dfs, prices_dict, nikkei,
             if core_k not in weights:
                 weights[core_k] = 0.0
 
+        trial_rb = trial.suggest_categorical('rebalance', ['weekly', 'daily'])
         params = {
             'lookback': trial_lb,
             'top_n': top_n,
-            'rebalance': 'weekly',
+            'rebalance': trial_rb,
             **weights,
         }
 
         try:
             r = eval_params(params, factor_dfs, prices_dict,
-                            date_map['weekly'], nikkei, start, return_df)
+                            date_map[trial_rb], nikkei, start, return_df)
             if r is None:
                 return -999.0
             if r.get('max_dd_pct', 100) > 40:
