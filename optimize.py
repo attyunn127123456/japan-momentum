@@ -360,7 +360,7 @@ def compute_exit_signal(prices_df, current_date, entry_date, params):
         return False, 0.0
 
 
-def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, return_df, long_short=False):
+def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, return_df, long_short=False, use_open_prices=False):
     lb, tn = params["lookback"], params["top_n"]
     weights = {k: params.get(k+"_w", 0.0) for k in ["ret","rs","green","smooth","resilience"]}
     
@@ -537,8 +537,73 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
     # 天井検知エグジット設定
     exit_threshold = params.get("exit_threshold", None)
 
-    def calc_period_return(code, date, next_date):
-        """トレーリングストップ・天井検知エグジットを考慮した保有期間リターンを計算"""
+    def calc_period_return(code, date, next_date, next_next_date=None):
+        """
+        保有期間リターンを計算。
+        use_open_prices=True の場合:
+          - エントリー: next_date の AdjO（翌朝初値）
+          - エグジット: 天井/ストップ発動時は当日 AdjC、それ以外は next_next_date の AdjO
+        通常モード:
+          - エントリー: date の AdjC（前日終値）
+          - エグジット: next_date の AdjC（次リバランス日終値）
+        """
+        if use_open_prices and code in prices_dict:
+            try:
+                price_df = prices_dict[code]
+                # エントリー: next_date の AdjO（翌朝初値）
+                if 'AdjO' not in price_df.columns:
+                    pass  # fallthrough to normal mode
+                else:
+                    entry_rows = price_df.loc[price_df.index == next_date, 'AdjO']
+                    if len(entry_rows) == 0:
+                        pass  # fallthrough
+                    else:
+                        entry_price = float(entry_rows.iloc[0])
+                        if entry_price <= 0 or np.isnan(entry_price):
+                            pass  # fallthrough
+                        else:
+                            # エグジット候補: next_next_date の AdjO
+                            exit_price = None
+                            if next_next_date is not None:
+                                exit_rows = price_df.loc[price_df.index == next_next_date, 'AdjO']
+                                if len(exit_rows) > 0:
+                                    exit_price = float(exit_rows.iloc[0])
+
+                            # 当日（next_date）内でのストップ/天井シグナル判定
+                            use_trailing = trailing_stop is not None
+                            use_exit_signal = exit_threshold is not None
+                            if use_trailing or use_exit_signal:
+                                mask = price_df.index == next_date
+                                day_close = price_df.loc[mask, 'AdjC']
+                                if len(day_close) > 0:
+                                    close_price = float(day_close.iloc[0])
+                                    peak = entry_price
+                                    # trailing_stop: 当日内に entry→close で判定
+                                    if use_trailing:
+                                        peak = max(peak, close_price)
+                                        if (close_price - peak) / peak <= trailing_stop:
+                                            exit_price = close_price  # 当日引けでストップ
+                                    # 天井シグナル: 当日引け時点で判定
+                                    if use_exit_signal and exit_price is None:
+                                        should_exit, _ = compute_exit_signal(price_df, next_date, date, params)
+                                        if should_exit:
+                                            exit_price = close_price  # 当日引けでエグジット
+
+                            if exit_price is None:
+                                # next_next_dateのAdjOも取れない場合は当日終値にフォールバック
+                                day_close = price_df.loc[price_df.index == next_date, 'AdjC']
+                                if len(day_close) > 0:
+                                    exit_price = float(day_close.iloc[0])
+
+                            if exit_price and exit_price > 0 and not np.isnan(exit_price):
+                                ret = (exit_price - entry_price) / entry_price
+                                # 取引コスト: 片道0.05%（往復0.1%）
+                                ret -= 0.001
+                                return ret if not np.isnan(ret) else None
+            except Exception:
+                pass
+
+        # 通常モード（終値ベース）
         use_trailing = trailing_stop is not None and code in prices_dict
         use_exit_signal = exit_threshold is not None and code in prices_dict
         if use_trailing or use_exit_signal:
@@ -554,26 +619,23 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
                     if entry_price <= 0 or np.isnan(entry_price):
                         return None
                     peak = entry_price
-                    exit_price = period_prices.iloc[-1]  # デフォルトは週末価格
+                    exit_price = period_prices.iloc[-1]
                     for idx, daily_price in period_prices.items():
                         if np.isnan(daily_price):
-                            continue  # NaN日はスキップ
+                            continue
                         peak = max(peak, daily_price)
-                        # トレーリングストップ判定
                         if use_trailing and (daily_price - peak) / peak <= trailing_stop:
-                            exit_price = daily_price  # ストップ発動
+                            exit_price = daily_price
                             break
-                        # 天井検知エグジット判定（日次）
                         if use_exit_signal:
                             should_exit, _ = compute_exit_signal(price_df, idx, date, params)
                             if should_exit:
-                                exit_price = daily_price  # 天井検知で即売り
+                                exit_price = daily_price
                                 break
                     ret = (exit_price - entry_price) / entry_price
                     return ret if not np.isnan(ret) else None
             except Exception:
                 pass
-        # trailing_stop/exit_signalなし or データなし: return_dfから通常計算
         if code in return_df.columns:
             r = return_df.at[next_date, code]
             if not np.isnan(r):
@@ -586,6 +648,7 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
 
     for i, date in enumerate(dates[:-1]):
         next_date = dates[i+1]
+        next_next_date = dates[i+2] if i+2 < len(dates) else None
         if date not in score_df.index:
             continue
 
@@ -605,13 +668,13 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
         tot, cnt = 0.0, 0
         if date in return_df.index and next_date in return_df.index:
             for code in top:
-                r = calc_period_return(code, date, next_date)
+                r = calc_period_return(code, date, next_date, next_next_date)
                 if r is not None:
                     tot += r; cnt += 1
             if long_short and short_top:
                 short_tot, short_cnt = 0.0, 0
                 for code in short_top:
-                    r = calc_period_return(code, date, next_date)
+                    r = calc_period_return(code, date, next_date, next_next_date)
                     if r is not None:
                         # ショート: リターン反転 - 借株コスト0.1%/週
                         short_tot += (-r - 0.001)

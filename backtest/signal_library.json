@@ -87,6 +87,66 @@
       "best_weight": null,
       "sharpe_contribution": 0.0,
       "added_at": "2026-03-07"
+    },
+    {
+      "id": "intraday_trend_quality",
+      "desc": "日中トレンド品質ファクター: (Close-Open)/(High-Low)の平均で機関の計画的売買 vs ディストリビューションを識別",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3597.19,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "recovery_speed_factor",
+      "desc": "回復速度ファクター: ルックバック期間内のドローダウンからの回復速度を測定し、底堅い需要を持つ銘柄を選別",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3630.07,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "short_lookback_exploration",
+      "desc": "lookback短期化探索: lb=20,30,45を追加して短期モメンタム×極集中の組み合わせを解禁",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3631.88,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "daily_rebalance_unlock",
+      "desc": "デイリーリバランス解禁: Optuna内のrebalanceをweekly固定からdaily探索可能に変更",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3631.88,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "unexplored_ohlcv_factors_batch1",
+      "desc": "未探索ファクター投入（body_strength_w, overnight_return_w, higher_lows_w）：precompute()に実装済みだがGA探索されていない8ファクターのうち3つを一括追加",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3634.65,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "rsi_heavy_early_exit",
+      "desc": "RSI重視の早期天井エグジット：exit_dd_w支配(0.42)→RSI+モメンタム重視に変更してmax_ddを35%以下に抑制",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3642.08,
+      "added_at": "2026-03-07"
     }
   ],
   "current_weights": {

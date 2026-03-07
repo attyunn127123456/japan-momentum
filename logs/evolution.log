@@ -2,142 +2,14 @@
   warnings.warn(
 
 === Evolution Engine 起動 ===
-ベースライン: sharpe=4.888, total=3554.06%
+ベースライン: sharpe=0.0, total=0.0%
 データロード (4000銘柄)...
-  ユニバース: 直近20日の売買代金でランキング中...
-    5/20日 完了
-    10/20日 完了
-    15/20日 完了
-    除外: 投資信託/ETF 669銘柄
-  ユニバース: 売買代金上位3780銘柄を選定
+  ユニバース: キャッシュから3780銘柄読み込み
   3774銘柄ロード完了
 ファンダメンタルファクター: 0銘柄
 ファクター事前計算...
-事前計算完了: 3774銘柄×5lb / 1165.9秒
-/Users/panda/Projects/japan-momentum/evolution_engine.py:413: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
+事前計算完了: 3774銘柄×5lb / 2970.8秒
+/Users/panda/Projects/japan-momentum/evolution_engine.py:415: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  print('ファクター事前計算...', flush=True)
 
---- 局所探索 開始 (Optuna TPE) ---
-Factor Selection: 14→11個 (除外: {'cluster_boost_w', 'rs_w', 'ret_skip_w'})
-Optuna探索対象ファクター: ['ret_w', 'green_w', 'smooth_w', 'resilience_w', 'high52_w', 'omega_w', 'win_streak_w', 'momentum_consistency_w', 'upside_capture_w', 'return_autocorr_w', 'clean_momentum_w', 'short_momentum_w', 'cluster_boost_w', 'ret_skip_w', 'volume_confirm_w', 'gap_momentum_w', 'accumulation_w', 'volume_slope_w']
-Optuna TPE: 300trials 開始...
-  新ベスト: total=-22.3%, sharpe=-3.058, lb=100, tn=2
-  新ベスト: total=128.2%, sharpe=1.947, lb=60, tn=5
-  新ベスト: total=256.5%, sharpe=2.740, lb=100, tn=6
-  新ベスト: total=301.8%, sharpe=2.805, lb=100, tn=4
-  新ベスト: total=342.5%, sharpe=2.708, lb=100, tn=3
-  新ベスト: total=383.8%, sharpe=2.770, lb=100, tn=3
-  新ベスト: total=412.3%, sharpe=2.863, lb=100, tn=3
-  新ベスト: total=451.4%, sharpe=2.939, lb=100, tn=3
-  新ベスト: total=975.6%, sharpe=3.573, lb=100, tn=3
-  新ベスト: total=1029.0%, sharpe=3.676, lb=100, tn=3
-  新ベスト: total=1145.1%, sharpe=3.752, lb=100, tn=3
-  新ベスト: total=1201.3%, sharpe=3.814, lb=100, tn=3
-  新ベスト: total=1352.1%, sharpe=3.932, lb=100, tn=3
-Optuna完了: 300trials, best_total=1352.1%
-  sharpe=3.932 score=+1352.120 ❌ lb=100 tn=3
-  sharpe=3.875 score=+1326.780 ❌ lb=100 tn=3
-  sharpe=3.879 score=+1295.800 ❌ lb=100 tn=3
-  sharpe=3.870 score=+1281.390 ❌ lb=100 tn=3
-  sharpe=3.872 score=+1276.060 ❌ lb=100 tn=3
-  sharpe=3.919 score=+1274.980 ❌ lb=100 tn=3
-  sharpe=3.831 score=+1272.800 ❌ lb=100 tn=3
-  sharpe=3.822 score=+1254.070 ❌ lb=100 tn=3
-  sharpe=3.821 score=+1245.430 ❌ lb=100 tn=3
-  sharpe=3.824 score=+1240.590 ❌ lb=100 tn=3
-  sharpe=3.877 score=+1231.240 ❌ lb=100 tn=3
-  sharpe=3.762 score=+1207.620 ❌ lb=100 tn=3
-  sharpe=3.803 score=+1204.720 ❌ lb=100 tn=3
-  sharpe=3.814 score=+1201.310 ❌ lb=100 tn=3
-  sharpe=3.758 score=+1182.830 ❌ lb=100 tn=3
-  sharpe=3.748 score=+1156.120 ❌ lb=100 tn=3
-  sharpe=3.748 score=+1152.520 ❌ lb=100 tn=3
-  sharpe=3.752 score=+1145.060 ❌ lb=100 tn=3
-  sharpe=3.707 score=+1130.630 ❌ lb=100 tn=3
-  sharpe=3.774 score=+1129.070 ❌ lb=100 tn=3
-
---- ファクター整理 (cleanup_weak_signals) ---
-  cleanup_weak_signals: 変更なし
-
---- OOS検証 (Walk-Forward Out-of-Sample) ---
-
-=== OOS検証: 2020-01-01〜2026-03-07 ===
-バックフィル対象: 41件（レート制限回避のためスキップ）
-OOS検証: 3774銘柄ロード完了
-事前計算完了: 3774銘柄×1lb / 410.2秒
-/Users/panda/Projects/japan-momentum/optimize.py:939: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-OOS結果: total=2792.1%, sharpe=2.735, max_dd=68.64%, alpha=2673.13%, nikkei=118.97%
-
-OOS vs 訓練: OOS=+2792.1% / 訓練=+3554.1% / OOS sharpe=2.735 max_dd=68.6%
-✅ OOS合格: sharpe=2.735 (要≥2.735), total_return=2792.1% (要>50.0%)
-
---- 新ファクター試験 ---
-
---- 組み合わせテスト 開始 ---
-候補仮説: 7件
-データロード (200銘柄)...
-  ユニバース: キャッシュから200銘柄読み込み
-  200銘柄ロード完了
-事前計算完了: 200銘柄×4lb / 47.0秒
-/Users/panda/Projects/japan-momentum/combination_search.py:134: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df  = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
-組み合わせ数: 21
-  combo_local_search+topn1_extreme_concentration: エラー 50
-  combo_local_search+vol_divergence_distribution_detect: エラー 50
-  combo_local_search+oos_validation: エラー 70
-  combo_local_search+high52_all_universe: sharpe=1.092 delta=-3.796 score=+15.610 不採用
-  combo_local_search+high52_midcap: sharpe=1.131 delta=-3.757 score=+17.010 不採用
-  combo_local_search+high52_w_boost: sharpe=1.046 delta=-3.842 score=+14.330 不採用
-  combo_topn1_extreme_concentration+vol_divergence_distribution_detect: sharpe=1.509 delta=-3.379 score=+29.900 不採用
-  combo_topn1_extreme_concentration+oos_validation: sharpe=1.029 delta=-3.859 score=+17.640 不採用
-  combo_topn1_extreme_concentration+high52_all_universe: エラー 70
-  combo_topn1_extreme_concentration+high52_midcap: エラー 70
-  combo_topn1_extreme_concentration+high52_w_boost: エラー 70
-  combo_vol_divergence_distribution_detect+oos_validation: sharpe=1.171 delta=-3.717 score=+19.590 不採用
-  combo_vol_divergence_distribution_detect+high52_all_universe: エラー 70
-  combo_vol_divergence_distribution_detect+high52_midcap: エラー 70
-  combo_vol_divergence_distribution_detect+high52_w_boost: エラー 70
-  combo_oos_validation+high52_all_universe: エラー 90
-  combo_oos_validation+high52_midcap: エラー 90
-  combo_oos_validation+high52_w_boost: エラー 90
-  combo_high52_all_universe+high52_midcap: sharpe=0.643 delta=-4.245 score=+7.240 不採用
-  combo_high52_all_universe+high52_w_boost: sharpe=0.746 delta=-4.142 score=+8.820 不採用
-  combo_high52_midcap+high52_w_boost: sharpe=0.607 delta=-4.281 score=+6.640 不採用
-組み合わせテスト完了: 9件 / combo_log保存
-
-=== Signal Search 開始 ===
-  ユニバース: キャッシュから200銘柄読み込み
-  200銘柄ロード完了
-事前計算完了: 200銘柄×1lb / 11.9秒
-/Users/panda/Projects/japan-momentum/signal_search.py:69: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = pd.DataFrame({c: prices_dict[c]["AdjC"] for c in prices_dict}).pct_change()
-
-[Step1] Ablation Test
-  ベースライン sharpe=0.812
-  ⚠️  topn1_extreme_concentration: sharpe低下 +0.0000 → candidate（他との相性あり）
-  ⚠️  fold1_robust_drawdown_guard: sharpe低下 +0.0000 → candidate（他との相性あり）
-
-[Step2] 新シグナル追加テスト
-  ⚠️  rsi14: ファクターデータなし → スキップ
-  ⚠️  ma_deviation: ファクターデータなし → スキップ
-  ⚠️  momentum_12_1: ファクターデータなし → スキップ
-  ⚠️  eps_growth: ファクターデータなし → スキップ
-  ⚠️  rev_growth: ファクターデータなし → スキップ
-  ⚠️  credit_ratio: ファクターデータなし → スキップ
-
-[Step3] 全シグナル同時重み最適化
-  最適化対象: ['topn1_extreme_concentration_w', 'fold1_robust_drawdown_guard_w']
-  グリッド組み合わせ: 64件（正規化後に重複除去）
-  最適化完了: best_sharpe=0.812
-  最適重み: {'rs_w': 0.0, 'green_w': 0.04, 'high52_w': 0.11, 'ret_w': 0.06, 'smooth_w': 0.04, 'resilience_w': 0.08, 'exit_rsi_w': 0.13, 'exit_vol_w': 0.23, 'exit_dd_w': 0.42, 'exit_mom_w': 0.25, 'omega_w': 0.05, 'cluster_boost_w': 0.04, 'ret_skip_w': 0.05, 'win_streak_w': 0.02, 'momentum_consistency_w': 0.1, 'upside_capture_w': 0.02, 'return_autocorr_w': 0.004, 'clean_momentum_w': 0.08, 'short_momentum_w': 0.03, 'volume_confirm_w': 0.06, 'gap_momentum_w': 0.008, 'accumulation_w': 0.04, 'volume_slope_w': 0.09, 'vol_return_corr_w': 0.05, 'volume_acceleration_w': 0.05, 'close_location_w': 0.05}
-
-[Step4] ベースライン更新
-  ベースライン変化なし: 4.888 >= 0.812
-
-=== Signal Search 完了 (13秒) ===
-  最終 baseline_sharpe=0.812
-
-=== Evolution cycle 完了 ===
-ダッシュボードキャッシュ生成バックグラウンド起動
-openclaw system event 送信完了
+--- 手動仮説: short_lookback_exploration ---

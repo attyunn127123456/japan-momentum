@@ -1,3 +1,259 @@
 {
-  "best10": []
+  "best10": [
+    {
+      "at": "2026-03-07T16:10:39.757303",
+      "id": "intraday_trend_quality",
+      "desc": "日中トレンド品質ファクター: (Close-Open)/(High-Low)の平均で機関の計画的売買 vs ディストリビューションを識別",
+      "win": 0,
+      "delta_sharpe": -3597.19,
+      "sharpe": -0.5,
+      "total_return_pct": -43.13,
+      "alpha_pct": -142.09,
+      "max_dd_pct": 60.41,
+      "params": {
+        "lookback": 100,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.1,
+        "rs_w": 0.0,
+        "green_w": 0.09,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-07T17:47:20.400407",
+      "id": "unexplored_ohlcv_factors_batch1",
+      "desc": "未探索ファクター投入（body_strength_w, overnight_return_w, higher_lows_w）：precompute()に実装済みだがGA探索されていない8ファクターのうち3つを一括追加",
+      "win": 0,
+      "delta_sharpe": -3634.65,
+      "sharpe": -0.911,
+      "total_return_pct": -80.59,
+      "alpha_pct": -100.13,
+      "max_dd_pct": 85.82,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.06,
+        "rs_w": 0.0,
+        "green_w": 0.04,
+        "smooth_w": 0.04,
+        "resilience_w": 0.08
+      }
+    },
+    {
+      "at": "2026-03-07T16:33:53.573469",
+      "id": "recovery_speed_factor",
+      "desc": "回復速度ファクター: ルックバック期間内のドローダウンからの回復速度を測定し、底堅い需要を持つ銘柄を選別",
+      "win": 0,
+      "delta_sharpe": -3630.07,
+      "sharpe": -1.468,
+      "total_return_pct": -76.01,
+      "alpha_pct": -95.56,
+      "max_dd_pct": 89.01,
+      "params": {
+        "lookback": 100,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.1,
+        "rs_w": 0.0,
+        "green_w": 0.09,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-07T17:49:08.118552",
+      "id": "rsi_heavy_early_exit",
+      "desc": "RSI重視の早期天井エグジット：exit_dd_w支配(0.42)→RSI+モメンタム重視に変更してmax_ddを35%以下に抑制",
+      "win": false,
+      "delta_sharpe": -3642.08,
+      "sharpe": -1.525,
+      "total_return_pct": -88.02,
+      "alpha_pct": -107.56,
+      "max_dd_pct": 92.18,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.06,
+        "rs_w": 0.0,
+        "green_w": 0.04,
+        "smooth_w": 0.04,
+        "resilience_w": 0.08
+      }
+    },
+    {
+      "at": "2026-03-07T17:28:41.078485",
+      "id": "short_lookback_exploration",
+      "desc": "lookback短期化探索: lb=20,30,45を追加して短期モメンタム×極集中の組み合わせを解禁",
+      "win": 0,
+      "delta_sharpe": -3631.88,
+      "sharpe": -1.886,
+      "total_return_pct": -77.82,
+      "alpha_pct": -97.36,
+      "max_dd_pct": 84.15,
+      "params": {
+        "lookback": 100,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-07T17:30:23.849056",
+      "id": "daily_rebalance_unlock",
+      "desc": "デイリーリバランス解禁: Optuna内のrebalanceをweekly固定からdaily探索可能に変更",
+      "win": 0,
+      "delta_sharpe": -3631.88,
+      "sharpe": -1.886,
+      "total_return_pct": -77.82,
+      "alpha_pct": -97.36,
+      "max_dd_pct": 84.15,
+      "params": {
+        "lookback": 100,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    }
+  ],
+  "all": [
+    {
+      "at": "2026-03-07T16:10:39.757303",
+      "id": "intraday_trend_quality",
+      "desc": "日中トレンド品質ファクター: (Close-Open)/(High-Low)の平均で機関の計画的売買 vs ディストリビューションを識別",
+      "win": 0,
+      "delta_sharpe": -3597.19,
+      "sharpe": -0.5,
+      "total_return_pct": -43.13,
+      "alpha_pct": -142.09,
+      "max_dd_pct": 60.41,
+      "params": {
+        "lookback": 100,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.1,
+        "rs_w": 0.0,
+        "green_w": 0.09,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-07T17:47:20.400407",
+      "id": "unexplored_ohlcv_factors_batch1",
+      "desc": "未探索ファクター投入（body_strength_w, overnight_return_w, higher_lows_w）：precompute()に実装済みだがGA探索されていない8ファクターのうち3つを一括追加",
+      "win": 0,
+      "delta_sharpe": -3634.65,
+      "sharpe": -0.911,
+      "total_return_pct": -80.59,
+      "alpha_pct": -100.13,
+      "max_dd_pct": 85.82,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.06,
+        "rs_w": 0.0,
+        "green_w": 0.04,
+        "smooth_w": 0.04,
+        "resilience_w": 0.08
+      }
+    },
+    {
+      "at": "2026-03-07T16:33:53.573469",
+      "id": "recovery_speed_factor",
+      "desc": "回復速度ファクター: ルックバック期間内のドローダウンからの回復速度を測定し、底堅い需要を持つ銘柄を選別",
+      "win": 0,
+      "delta_sharpe": -3630.07,
+      "sharpe": -1.468,
+      "total_return_pct": -76.01,
+      "alpha_pct": -95.56,
+      "max_dd_pct": 89.01,
+      "params": {
+        "lookback": 100,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.1,
+        "rs_w": 0.0,
+        "green_w": 0.09,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-07T17:49:08.118552",
+      "id": "rsi_heavy_early_exit",
+      "desc": "RSI重視の早期天井エグジット：exit_dd_w支配(0.42)→RSI+モメンタム重視に変更してmax_ddを35%以下に抑制",
+      "win": false,
+      "delta_sharpe": -3642.08,
+      "sharpe": -1.525,
+      "total_return_pct": -88.02,
+      "alpha_pct": -107.56,
+      "max_dd_pct": 92.18,
+      "params": {
+        "lookback": 60,
+        "top_n": 3,
+        "rebalance": "weekly",
+        "ret_w": 0.06,
+        "rs_w": 0.0,
+        "green_w": 0.04,
+        "smooth_w": 0.04,
+        "resilience_w": 0.08
+      }
+    },
+    {
+      "at": "2026-03-07T17:28:41.078485",
+      "id": "short_lookback_exploration",
+      "desc": "lookback短期化探索: lb=20,30,45を追加して短期モメンタム×極集中の組み合わせを解禁",
+      "win": 0,
+      "delta_sharpe": -3631.88,
+      "sharpe": -1.886,
+      "total_return_pct": -77.82,
+      "alpha_pct": -97.36,
+      "max_dd_pct": 84.15,
+      "params": {
+        "lookback": 100,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-07T17:30:23.849056",
+      "id": "daily_rebalance_unlock",
+      "desc": "デイリーリバランス解禁: Optuna内のrebalanceをweekly固定からdaily探索可能に変更",
+      "win": 0,
+      "delta_sharpe": -3631.88,
+      "sharpe": -1.886,
+      "total_return_pct": -77.82,
+      "alpha_pct": -97.36,
+      "max_dd_pct": 84.15,
+      "params": {
+        "lookback": 100,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    }
+  ],
+  "total": 6
 }

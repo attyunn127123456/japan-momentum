@@ -71,7 +71,7 @@ def score_on_date(prices_dict: dict, nikkei: pd.Series, ticker: str, date: pd.Ti
     return scores["total"] if scores["valid"] else None
 
 
-def run_backtest(start: str, end: str, top_n: int, rebalance: str, use_regime: bool = False, long_short: bool = False) -> dict:
+def run_backtest(start: str, end: str, top_n: int, rebalance: str, use_regime: bool = False, long_short: bool = False, use_open_prices: bool = False) -> dict:
     from universe import get_top_liquid_tickers
     from fetch_cache import read_ohlcv
     raw_codes = get_top_liquid_tickers(500)
@@ -325,5 +325,6 @@ if __name__ == "__main__":
     parser.add_argument("--top-n", type=int, default=5)
     parser.add_argument("--rebalance", default="daily", choices=["daily", "weekly", "biweekly", "monthly"])
     parser.add_argument("--long-short", action="store_true", help="ロングショート戦略（上位N買い+下位N空売り）")
+    parser.add_argument("--use-open-prices", action="store_true", help="初値エントリー・初値/終値エグジット戦略")
     args = parser.parse_args()
-    run_backtest(args.start, args.end, args.top_n, args.rebalance, long_short=args.long_short)
+    run_backtest(args.start, args.end, args.top_n, args.rebalance, long_short=args.long_short, use_open_prices=args.use_open_prices)

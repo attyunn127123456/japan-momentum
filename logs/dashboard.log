@@ -226,3 +226,185 @@ INFO:     Finished server process [72594]
 INFO:     Started server process [72677]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
+INFO:     122.164.126.53:0 - "HEAD / HTTP/1.1" 405 Method Not Allowed
+INFO:     122.164.126.53:0 - "HEAD / HTTP/1.1" 405 Method Not Allowed
+INFO:     104.37.46.6:0 - "HEAD / HTTP/1.1" 405 Method Not Allowed
+INFO:     122.164.126.53:0 - "GET / HTTP/1.1" 200 OK
+INFO:     122.164.126.53:0 - "HEAD / HTTP/1.1" 405 Method Not Allowed
+INFO:     122.164.126.53:0 - "GET / HTTP/1.1" 200 OK
+INFO:     122.164.126.53:0 - "GET /about HTTP/1.1" 404 Not Found
+INFO:     122.164.126.53:0 - "GET /about HTTP/1.1" 404 Not Found
+INFO:     122.164.126.53:0 - "GET /about HTTP/1.1" 404 Not Found
+INFO:     122.164.126.53:0 - "GET / HTTP/1.1" 200 OK
+INFO:     122.164.126.53:0 - "GET / HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'evolution_engine.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [72677]
+INFO:     Started server process [81345]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     35.210.79.196:0 - "GET /admin/serverConfig.json HTTP/1.1" 404 Not Found
+INFO:     35.210.79.196:0 - "GET /admin/serverConfig.json HTTP/1.1" 404 Not Found
+WARNING:  StatReload detected changes in 'evolution_engine.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [81345]
+INFO:     Started server process [81564]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'evolution_engine.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [81564]
+INFO:     Started server process [82695]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/is-oos-compare HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/paper-trade/history HTTP/1.1" 200 OK
+INFO:     122.164.126.53:0 - "HEAD / HTTP/1.1" 405 Method Not Allowed
+INFO:     122.164.126.53:0 - "GET / HTTP/1.1" 200 OK
+INFO:     122.164.126.53:0 - "GET / HTTP/1.1" 200 OK
+INFO:     122.164.126.53:0 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     2a09:bac6:d862:16aa::242:ab:0 - "GET /wp-login.php HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/paper-trade/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/is-oos-compare HTTP/1.1" 200 OK
+INFO:     122.164.126.53:0 - "GET / HTTP/1.1" 200 OK
+INFO:     122.164.126.53:0 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     122.164.126.53:0 - "GET /sitemap.xml HTTP/1.1" 404 Not Found
+INFO:     122.164.126.53:0 - "GET /sitemap_index.xml HTTP/1.1" 404 Not Found
+INFO:     122.164.126.53:0 - "GET /sitemap1.xml HTTP/1.1" 404 Not Found
+INFO:     122.164.126.53:0 - "GET /sitemap.xml.gz HTTP/1.1" 404 Not Found
+INFO:     122.164.126.53:0 - "GET /sitemaps/sitemap-videos.xml HTTP/1.1" 404 Not Found
+INFO:     2a01:4f8:1c1a:3b48::1:0 - "GET / HTTP/1.1" 200 OK
+INFO:     74.7.244.22:0 - "GET /robots.txt HTTP/1.1" 404 Not Found
+INFO:     209.54.107.130:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/paper-trade/history HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/is-oos-compare HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/is-oos-compare HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/paper-trade/history HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK
+INFO:     45.154.98.78:0 - "GET / HTTP/1.1" 200 OK
+INFO:     45.154.98.78:0 - "GET / HTTP/1.1" 200 OK
+INFO:     45.154.98.78:0 - "GET /wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /xmlrpc.php?rsd HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET / HTTP/1.1" 200 OK
+INFO:     45.154.98.78:0 - "GET /blog/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /web/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /wordpress/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /website/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /wp/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /news/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /2018/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /2019/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /shop/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /wp1/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /test/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /media/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /wp2/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /site/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /cms/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     45.154.98.78:0 - "GET /sito/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/backtest/is-oos-compare HTTP/1.1" 200 OK
+INFO:     2400:2200:9f0:3a46:b92d:9f2a:1f2:a7a:0 - "GET /api/paper-trade/history HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'optimize.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [82695]
+INFO:     Started server process [98114]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'optimize.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [98114]
+INFO:     Started server process [98191]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'optimize.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [98191]
+INFO:     Started server process [98208]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'optimize.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [98208]
+INFO:     Started server process [98232]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'backtest.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [98232]
+INFO:     Started server process [98251]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'backtest.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [98251]
+INFO:     Started server process [98273]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
