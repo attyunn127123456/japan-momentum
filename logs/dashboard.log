@@ -1105,3 +1105,57 @@ INFO:     Finished server process [70593]
 INFO:     Started server process [70691]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
+INFO:     54.242.41.96:0 - "GET / HTTP/1.1" 200 OK
+INFO:     54.242.41.96:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/paper-trade/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/is-oos-compare HTTP/1.1" 200 OK
+INFO:     2a09:bac5:55f9:25b9::3c2:16:0 - "GET /wp-login.php HTTP/1.1" 404 Not Found
+INFO:     100.55.150.137:0 - "GET / HTTP/1.1" 200 OK
+INFO:     100.55.150.137:0 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+INFO:     100.55.150.137:0 - "GET /favicon.png HTTP/1.1" 404 Not Found
+INFO:     100.55.150.137:0 - "GET / HTTP/1.1" 200 OK
+INFO:     100.55.150.137:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     100.55.150.137:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     100.55.150.137:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     100.55.150.137:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     54.174.109.174:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2600:3c06::f03c:95ff:feea:809f:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/signals HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/history HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/ranking HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/hypothesis HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/signal_library HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/regime HTTP/1.1" 404 Not Found
+INFO:     111.102.197.97:0 - "GET /api/backtest/evolution HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/optimize HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/is-oos-compare HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/paper-trade/history HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'run_regime_signal.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [70691]
+INFO:     Started server process [82380]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'market_regime.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [82380]
+INFO:     Started server process [82592]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.

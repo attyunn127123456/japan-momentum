@@ -1,0 +1,42 @@
+{
+  "2024-01-15": {
+    "date": "2024-01-15",
+    "regime": "choppy",
+    "score": 0.6908,
+    "signals": {
+      "breadth": 0.4126,
+      "mom5": 0.0548,
+      "mom20": 0.0729,
+      "mom60": 0.0935,
+      "foreign_flow": -0.3246,
+      "cross_vol": 0.019672,
+      "earnings_momentum": 0.4426
+    },
+    "recommended_strategy": {
+      "top_n": 4,
+      "lookback": 60,
+      "trailing_stop": -0.04,
+      "use_cash": false
+    }
+  },
+  "2026-03-06": {
+    "date": "2026-03-06",
+    "regime": "bull_trend",
+    "score": 0.6881,
+    "signals": {
+      "breadth": 0.72,
+      "mom5": -0.0563,
+      "mom20": 0.0168,
+      "mom60": 0.0938,
+      "foreign_flow": 0.1213,
+      "cross_vol": 0.024591,
+      "earnings_momentum": 0.3832
+    },
+    "recommended_strategy": {
+      "top_n": 2,
+      "lookback": 100,
+      "trailing_stop": -0.027,
+      "use_cash": false
+    }
+  }
+}

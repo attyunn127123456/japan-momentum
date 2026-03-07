@@ -127,6 +127,27 @@
       }
     },
     {
+      "at": "2026-03-07T23:18:56.777020",
+      "id": "resilience_dominant_v1",
+      "desc": "耐性主導モメンタム: resilience/bear_resilience/upside_captureを最重視。exit緩め(trailing=-0.035)で2021-2022のチョッピーな相場でのWhipsaw回避。lb=100/tn=2/20+ファクター維持",
+      "win": 0,
+      "delta_sharpe": -119.554,
+      "sharpe": -0.19,
+      "total_return_pct": -63.64,
+      "alpha_pct": -209.85,
+      "max_dd_pct": 82.77,
+      "params": {
+        "lookback": 100,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.05,
+        "rs_w": 0.0,
+        "green_w": 0.06,
+        "smooth_w": 0.04,
+        "resilience_w": 0.12
+      }
+    },
+    {
       "at": "2026-03-07T19:32:26.397408",
       "id": "exit_rsi_dominant_v2",
       "desc": "IS2016-2020専用: exit_rsi_w=0.55に強化、exit_lookback=18に短縮。2018VIXショック・2020コロナ急落での早期天井脱出を重視",
@@ -170,27 +191,6 @@
     },
     {
       "at": "2026-03-07T19:59:28.063540",
-      "id": "mid_diverse_tn5_lb80_antioverfitC",
-      "desc": "探索空間変更C: lb=80×top_n=5×7ファクター中間モデル。GAがlb=40に収束するのを防ぎ、lb=80の別の山を探索する",
-      "win": 0,
-      "delta_sharpe": -3587.92,
-      "sharpe": -0.405,
-      "total_return_pct": -33.86,
-      "alpha_pct": -53.4,
-      "max_dd_pct": 60.17,
-      "params": {
-        "lookback": 80,
-        "top_n": 5,
-        "rebalance": "weekly",
-        "ret_w": 0.2,
-        "rs_w": 0.0,
-        "green_w": 0.1,
-        "smooth_w": 0.0,
-        "resilience_w": 0.0
-      }
-    },
-    {
-      "at": "2026-03-07T20:12:45.831197",
       "id": "mid_diverse_tn5_lb80_antioverfitC",
       "desc": "探索空間変更C: lb=80×top_n=5×7ファクター中間モデル。GAがlb=40に収束するのを防ぎ、lb=80の別の山を探索する",
       "win": 0,
@@ -336,6 +336,27 @@
         "green_w": 0.095,
         "smooth_w": 0.033,
         "resilience_w": 0.068
+      }
+    },
+    {
+      "at": "2026-03-07T23:18:56.777020",
+      "id": "resilience_dominant_v1",
+      "desc": "耐性主導モメンタム: resilience/bear_resilience/upside_captureを最重視。exit緩め(trailing=-0.035)で2021-2022のチョッピーな相場でのWhipsaw回避。lb=100/tn=2/20+ファクター維持",
+      "win": 0,
+      "delta_sharpe": -119.554,
+      "sharpe": -0.19,
+      "total_return_pct": -63.64,
+      "alpha_pct": -209.85,
+      "max_dd_pct": 82.77,
+      "params": {
+        "lookback": 100,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.05,
+        "rs_w": 0.0,
+        "green_w": 0.06,
+        "smooth_w": 0.04,
+        "resilience_w": 0.12
       }
     },
     {
@@ -573,7 +594,7 @@
       "at": "2026-03-07T22:22:40.893813",
       "id": "loose_trailing_stop_v1",
       "desc": "trailing_stop=-0.045に緩和（ベースライン-0.027→-0.045）。exit_threshold=0.20に微調整。lb=100/tn=2/全20+ファクター維持",
-      "win": false,
+      "win": 0,
       "delta_sharpe": -3639.24,
       "sharpe": -0.912,
       "total_return_pct": -85.18,
@@ -651,6 +672,27 @@
         "green_w": 0.043,
         "smooth_w": 0.041,
         "resilience_w": 0.087
+      }
+    },
+    {
+      "at": "2026-03-07T23:41:42.740603",
+      "id": "quality_trend_v1",
+      "desc": "品質トレンド追従: smooth/consistency/clean_momentum/price_efficiencyなど「トレンドの質」ファクターを集中配分。exit_vol_w高めで2022型ボラスパイク早期検知。lb=100/tn=2維持",
+      "win": false,
+      "delta_sharpe": -119.741,
+      "sharpe": -1.148,
+      "total_return_pct": -86.5,
+      "alpha_pct": -232.71,
+      "max_dd_pct": 90.48,
+      "params": {
+        "lookback": 100,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.06,
+        "rs_w": 0.0,
+        "green_w": 0.07,
+        "smooth_w": 0.1,
+        "resilience_w": 0.05
       }
     },
     {
@@ -1074,5 +1116,5 @@
       }
     }
   ],
-  "total": 41
+  "total": 43
 }

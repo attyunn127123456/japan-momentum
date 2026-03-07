@@ -2,3 +2,28 @@
   warnings.warn(
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
+仮説実行: resilience_dominant_v1 - 耐性主導モメンタム: resilience/bear_resilience/upside_captureを最重視。exit緩め(trailing=-0.035)で2021-2022のチョッピーな相場でのWhipsaw回避。lb=100/tn=2/20+ファクター維持
+  ユニバース: キャッシュから3780銘柄読み込み
+事前計算完了: 3286銘柄×3lb / 804.8秒
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+事前計算完了: 3286銘柄×1lb / 267.3秒
+完了: resilience_dominant_v1 | delta_sharpe=-119.554 | ❌ LOSE | 1083秒
+次の仮説を自動起動: quality_trend_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: quality_trend_v1 - 品質トレンド追従: smooth/consistency/clean_momentum/price_efficiencyなど「トレンドの質」ファクターを集中配分。exit_vol_w高めで2022型ボラスパイク早期検知。lb=100/tn=2維持
+  ユニバース: キャッシュから3780銘柄読み込み
+事前計算完了: 3286銘柄×3lb / 788.8秒
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+事前計算完了: 3286銘柄×1lb / 263.9秒
+完了: quality_trend_v1 | delta_sharpe=-119.741 | ❌ LOSE | 1065秒
+次の仮説を自動起動: volume_confirmed_trend_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: volume_confirmed_trend_v1 - 出来高確認型トレンド: volume_confirm/volume_slope/accumulation/up_down_vol_ratioなど出来高系ファクターを重視。偽ブレイクアウト排除で2021-2022のトラップ回避。exit_dd_w高めで損切り早期化。lb=100/tn=2維持
+  ユニバース: キャッシュから3780銘柄読み込み
+事前計算完了: 3286銘柄×3lb / 791.3秒
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()

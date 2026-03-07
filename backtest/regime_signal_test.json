@@ -1,0 +1,61 @@
+{
+  "passed": 3,
+  "total": 3,
+  "pass_rate": 1.0,
+  "cases": [
+    {
+      "label": "2020年コロナ暴落",
+      "date": "2020-03-13",
+      "expected": "crash",
+      "actual": "crash",
+      "passed": true,
+      "score": 0.1828,
+      "signals": {
+        "breadth": -0.9717,
+        "mom5": -0.1426,
+        "mom20": -0.2635,
+        "mom60": -0.2643,
+        "foreign_flow": 0.0,
+        "cross_vol": 0.025726,
+        "earnings_momentum": 0.4
+      },
+      "note": "日経平均が1週間で-15%超の急落局面"
+    },
+    {
+      "label": "2023年AI相場",
+      "date": "2023-06-30",
+      "expected": "bull_trend",
+      "actual": "bull_trend",
+      "passed": true,
+      "score": 0.6172,
+      "signals": {
+        "breadth": -0.1562,
+        "mom5": 0.0105,
+        "mom20": 0.0485,
+        "mom60": 0.1314,
+        "foreign_flow": -0.4866,
+        "cross_vol": 0.015519,
+        "earnings_momentum": 0.4222
+      },
+      "note": "ChatGPTブーム・日経平均が年初から+25%超"
+    },
+    {
+      "label": "2022年弱気相場",
+      "date": "2022-10-14",
+      "expected": "bear_trend",
+      "actual": "bear_trend",
+      "passed": true,
+      "score": 0.4719,
+      "signals": {
+        "breadth": 0.5571,
+        "mom5": -0.0126,
+        "mom20": -0.0445,
+        "mom60": 0.003,
+        "foreign_flow": 0.3263,
+        "cross_vol": 0.016561,
+        "earnings_momentum": 0.3478
+      },
+      "note": "米金利上昇・円安・インフレによる調整局面"
+    }
+  ]
+}

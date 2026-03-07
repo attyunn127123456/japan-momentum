@@ -257,6 +257,26 @@
       "best_weight": null,
       "sharpe_contribution": -3639.24,
       "added_at": "2026-03-07"
+    },
+    {
+      "id": "resilience_dominant_v1",
+      "desc": "耐性主導モメンタム: resilience/bear_resilience/upside_captureを最重視。exit緩め(trailing=-0.035)で2021-2022のチョッピーな相場でのWhipsaw回避。lb=100/tn=2/20+ファクター維持",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -119.554,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "quality_trend_v1",
+      "desc": "品質トレンド追従: smooth/consistency/clean_momentum/price_efficiencyなど「トレンドの質」ファクターを集中配分。exit_vol_w高めで2022型ボラスパイク早期検知。lb=100/tn=2維持",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -119.741,
+      "added_at": "2026-03-07"
     }
   ],
   "current_weights": {
