@@ -27,8 +27,8 @@ from optimize import precompute, eval_params
 
 QUEUE_FILE = Path("backtest/hypothesis_queue.json")
 DONE_FILE  = Path("backtest/hypothesis_done.json")
-START = "2016-01-01"   # IS訓練期間（OOSと重複しない）
-END   = "2020-12-31"   # IS訓練期間終了
+START = "2021-01-01"   # IS訓練期間（直近5年）
+END   = "2025-12-31"   # IS訓練期間終了
 N_CODES = 4000
 DELTA_THRESHOLD = 5.0  # total_return_pct の改善幅（5%以上で採用）
 
@@ -293,9 +293,9 @@ def main():
         "weekly": get_rebalance_dates(warmup, END, "weekly"),
         "daily":  get_rebalance_dates(warmup, END, "daily"),
     }
-    # OOS検証用 date_map（2021-2022: fold1）
-    VAL_START = "2021-01-01"
-    VAL_END   = "2022-12-31"
+    # OOS検証用 date_map（2026年: 今年の実績で検証）
+    VAL_START = "2026-01-01"
+    VAL_END   = datetime.now().strftime("%Y-%m-%d")
     val_rebal_dates = {
         "weekly": get_rebalance_dates(VAL_START, VAL_END, "weekly"),
         "daily":  get_rebalance_dates(VAL_START, VAL_END, "daily"),

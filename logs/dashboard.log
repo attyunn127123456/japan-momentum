@@ -1197,3 +1197,43 @@ INFO:     111.102.197.97:0 - "GET /api/backtest/timeseries HTTP/1.1" 200 OK
 INFO:     111.102.197.97:0 - "GET /api/paper-trade/history HTTP/1.1" 200 OK
 INFO:     111.102.197.97:0 - "GET /api/backtest/is-oos-compare HTTP/1.1" 200 OK
 INFO:     111.102.197.97:0 - "GET /api/weekly_picks HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'evolution_engine.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [83691]
+INFO:     Started server process [86469]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'evolution_engine.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [86469]
+INFO:     Started server process [87583]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'run_hypothesis.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [87583]
+INFO:     Started server process [89600]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'evolution_engine.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [89600]
+INFO:     Started server process [89616]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'run_hypothesis.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [89616]
+INFO:     Started server process [89659]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.

@@ -63,10 +63,10 @@ DONE_FILE   = Path('backtest/hypothesis_done.json')
 EVO_LOG     = Path('backtest/evolution_log.json')
 
 MAX_ACTIVE_FACTORS = 7  # 同時に使えるファクターの最大数（0より大きいウェイトを持つもの）
-START_TRAIN = '2016-01-01'   # IS訓練期間（OOSと重複しないよう2016-2020に固定）
-END_TRAIN   = '2020-12-31'   # IS訓練期間終了
-START_VAL   = '2021-01-01'   # 検証期間開始（fold1と同期）
-END_VAL     = '2022-12-31'   # 検証期間終了
+START_TRAIN = '2021-01-01'   # IS訓練期間（直近5年）
+END_TRAIN   = '2025-12-31'   # IS訓練期間終了
+START_VAL   = '2026-01-01'   # 検証期間開始（今年）
+END_VAL     = datetime.now().strftime('%Y-%m-%d')  # 今日まで
 END         = datetime.now().strftime('%Y-%m-%d')
 N_CODES     = 4000
 
@@ -214,6 +214,8 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
         'high52_w':         [0.0, 0.1, 0.2, 0.25, 0.3, 0.35, 0.4],
         'omega_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'short_momentum_w': [0.0, 0.05, 0.1, 0.15, 0.2],
+        'downside_stability_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'intraday_trend_ratio_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'overnight_intraday_agreement_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'sector_return_dispersion_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'gap_fill_resistance_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
