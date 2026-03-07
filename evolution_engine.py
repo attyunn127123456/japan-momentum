@@ -452,7 +452,8 @@ def run_evolution():
     })
     local_results = run_optuna_optimization(
         bp, factor_dfs, prices_dict, nikkei, date_map_train,
-        START_TRAIN, return_df, n_trials=300
+        START_TRAIN, return_df, n_trials=300,
+        val_date_map=date_map_val, val_start=START_VAL,
     )
     
     # 複合評価

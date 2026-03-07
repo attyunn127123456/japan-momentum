@@ -13,3 +13,18 @@
   print('ファクター事前計算...', flush=True)
 
 --- 手動仮説: short_lookback_exploration ---
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+
+=== Evolution Engine 起動 ===
+ベースライン: sharpe=4.888, total=3554.06%
+データロード (4000銘柄)...
+  ユニバース: キャッシュから3780銘柄読み込み
+  3774銘柄ロード完了
+ファンダメンタルファクター: 0銘柄
+ファクター事前計算...
+事前計算完了: 3774銘柄×5lb / 3005.4秒
+/Users/panda/Projects/japan-momentum/evolution_engine.py:418: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
+
+--- 手動仮説: exit_volume_divergence_enhanced ---

@@ -826,7 +826,8 @@ def select_independent_factors(factor_dfs, lb, all_factors, corr_threshold=0.7):
 
 
 def run_optuna_optimization(baseline_params, factor_dfs, prices_dict, nikkei,
-                            date_map, start, return_df, n_trials=300):
+                            date_map, start, return_df, n_trials=300,
+                            val_date_map=None, val_start=None):
     """Optuna TPEでパラメータ最適化。GAの local_search を置き換える。
     Returns: [(params, result), ...] 形式（local_search と同じ形式）
     """
@@ -923,20 +924,48 @@ def run_optuna_optimization(baseline_params, factor_dfs, prices_dict, nikkei,
         }
 
         try:
-            r = eval_params(params, factor_dfs, prices_dict,
-                            date_map[trial_rb], nikkei, start, return_df)
-            if r is None:
+            rb_key = trial_rb if trial_rb in date_map else 'weekly'
+
+            # IS期間の評価
+            r_is = eval_params(params, factor_dfs, prices_dict,
+                               date_map[rb_key], nikkei, start, return_df)
+            if r_is is None:
                 return -999.0
-            if r.get('max_dd_pct', 100) > 40:
-                return -999.0  # 制約違反ペナルティ
-            score = r.get('total_return_pct', -999.0)
-            all_results.append((params, r))
+            if r_is.get('max_dd_pct', 100) > 50:
+                return -999.0  # IS期間のDD上限
+
+            # Calmar比（リターン÷MaxDD）: Sharpeよりモメンタム戦略に適している
+            is_dd = max(r_is.get('max_dd_pct', 100), 1.0)
+            is_calmar = r_is.get('total_return_pct', 0) / is_dd
+
+            # OOS期間の評価（val_date_mapが渡されている場合）
+            oos_calmar = None
+            if val_date_map is not None and val_start is not None:
+                val_rb_key = trial_rb if trial_rb in val_date_map else 'weekly'
+                r_val = eval_params(params, factor_dfs, prices_dict,
+                                    val_date_map[val_rb_key], nikkei, val_start, return_df)
+                if r_val is not None and r_val.get('n_trades', 0) >= 10:
+                    val_dd = max(r_val.get('max_dd_pct', 100), 1.0)
+                    oos_calmar = r_val.get('total_return_pct', 0) / val_dd
+
+            # 複合スコア: OOS重視（IS 30% + OOS 70%）
+            if oos_calmar is not None:
+                score = is_calmar * 0.3 + oos_calmar * 0.7
+                # OOSがマイナスリターンなら大幅ペナルティ
+                if r_val.get('total_return_pct', 0) < 0:
+                    score -= 50.0
+            else:
+                # OOSなし（フォールバック）: IS calmarのみ
+                score = is_calmar
+
+            all_results.append((params, r_is))
 
             # ベスト更新時にログ
             if score > best_score:
                 best_score = score
-                print(f"  新ベスト: total={score:.1f}%, sharpe={r.get('sharpe', 0):.3f}, "
-                      f"lb={trial_lb}, tn={top_n}", flush=True)
+                oos_str = f", oos_total={r_val.get('total_return_pct',0):.1f}%" if oos_calmar is not None else ""
+                print(f"  新ベスト: is_total={r_is.get('total_return_pct',0):.1f}%"
+                      f"{oos_str}, calmar={score:.2f}, lb={trial_lb}, tn={top_n}", flush=True)
 
             return float(score)
         except Exception:

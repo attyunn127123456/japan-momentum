@@ -286,10 +286,19 @@ def main():
     save_queue(queue)
 
     warmup = (datetime.strptime(START,"%Y-%m-%d")-timedelta(days=200)).strftime("%Y-%m-%d")
-    nikkei = get_nikkei_history(warmup, END)
+    # 全期間ロード（OOS検証のため2021-2022も必要）
+    OVERALL_END = datetime.now().strftime("%Y-%m-%d")
+    nikkei = get_nikkei_history(warmup, OVERALL_END)
     rebal_dates = {
         "weekly": get_rebalance_dates(warmup, END, "weekly"),
         "daily":  get_rebalance_dates(warmup, END, "daily"),
+    }
+    # OOS検証用 date_map（2021-2022: fold1）
+    VAL_START = "2021-01-01"
+    VAL_END   = "2022-12-31"
+    val_rebal_dates = {
+        "weekly": get_rebalance_dates(VAL_START, VAL_END, "weekly"),
+        "daily":  get_rebalance_dates(VAL_START, VAL_END, "daily"),
     }
 
     try:
@@ -544,14 +553,39 @@ def main():
             lb = test_params['lookback']
             if lb not in [40, 60, 80]:
                 factor_dfs.update(precompute(prices_dict, nikkei, [lb]))
-            result = eval_params(test_params, factor_dfs, prices_dict,
-                                 rebal_dates[test_params['rebalance']], nikkei, START, return_df)
+            rb_key = test_params.get('rebalance', 'weekly')
+        result = eval_params(test_params, factor_dfs, prices_dict,
+                                 rebal_dates.get(rb_key, rebal_dates['weekly']), nikkei, START, return_df)
+
+        # OAS検証（2021-2022 fold1）も実施
+        result_val = None
+        if result is not None:
+            try:
+                result_val = eval_params(test_params, factor_dfs, prices_dict,
+                                         val_rebal_dates.get(rb_key, val_rebal_dates['weekly']),
+                                         nikkei, VAL_START, return_df)
+            except Exception:
+                pass
 
         elapsed = time.time() - t0
         baseline = queue["baseline"]
-        # 採用判定: total_return_pctの改善幅で評価（sharpeではなく）
-        delta = round(result['total_return_pct'] - baseline.get('total_pct', 0), 3) if result else None
-        win = delta is not None and delta > DELTA_THRESHOLD and result['max_dd_pct'] < 40
+
+        # 採用判定: IS Calmar比 × OAS通過の複合スコア
+        if result:
+            is_calmar = result['total_return_pct'] / max(result.get('max_dd_pct', 100), 1.0)
+            base_calmar = baseline.get('total_pct', 0) / max(baseline.get('max_dd_pct', 100), 1.0)
+            delta = round(is_calmar - base_calmar, 3)
+            oas_pass = (result_val is not None and
+                        result_val.get('total_return_pct', -999) > 0 and
+                        result_val.get('max_dd_pct', 100) < 50)
+            win = delta > 0.5 and result['max_dd_pct'] < 45 and oas_pass
+            if result_val:
+                print(f"  OAS (2021-2022): total={result_val.get('total_return_pct',0):.1f}%, "
+                      f"sharpe={result_val.get('sharpe',0):.3f}, dd={result_val.get('max_dd_pct',0):.1f}% "
+                      f"{'✅' if oas_pass else '❌'}", flush=True)
+        else:
+            delta = None
+            win = False
 
         next_h["status"] = "done_win" if win else "done_lose"
         next_h["result"] = result

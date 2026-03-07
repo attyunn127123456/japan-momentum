@@ -73,7 +73,7 @@
       "desc": "出来高乖離+加速度ファクターでディストリビューション（天井圏の売り抜け）検知：vol_return_corr_w, volume_acceleration_w, close_location_w追加",
       "type": "hypothesis",
       "param_key": null,
-      "status": "rejected",
+      "status": "candidate",
       "best_weight": null,
       "sharpe_contribution": 41.53,
       "added_at": "2026-03-06"
@@ -146,6 +146,116 @@
       "status": "candidate",
       "best_weight": null,
       "sharpe_contribution": -3642.08,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "atr_adaptive_trailing_stop",
+      "desc": "ATR適応型トレイリングストップ：固定%ストップをATR×倍率に置換して銘柄ボラに応じた動的ストップ",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3648.13,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "return_skewness_filter",
+      "desc": "リターン歪度ファクター：正の歪度（右テール肥大）銘柄を優遇し、負の歪度（左テール＝暴落リスク大）銘柄を回避",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3535.85,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "exit_volume_divergence_enhanced",
+      "desc": "天井検知エグジット強化：出来高乖離（価格上昇+出来高減少）と連続陰線パターンを追加してexit精度を改善",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3634.8,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "sparse_tn4_lb60_antioverfitA",
+      "desc": "探索空間変更A: lb=60×top_n=4×スパース6ファクター。OOS実績のあるlb=60をベースに、tn=4の中間集中度で過学習を防ぐスパースモデル",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3607.74,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "oos_proven_tn3_lb60_antioverfitB",
+      "desc": "探索空間変更B: OOS成功パラメータ(lb=60)×tn=3集中×5ファクターのみ。過去にIS 4.28を達成したlb=60/tn=3の6ファクター構成をさらに絞ったシンプルモデル",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3624.5,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "mid_diverse_tn5_lb80_antioverfitC",
+      "desc": "探索空間変更C: lb=80×top_n=5×7ファクター中間モデル。GAがlb=40に収束するのを防ぎ、lb=80の別の山を探索する",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3587.92,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "vol_adj_positive_weeks",
+      "desc": "ボラ調整済み正週率ファクター: 週次リターン÷週次実現ボラで正の率を測定し、真のリスク調整済み一貫性を識別",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3630.07,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "exit_rsi_dominant_v2",
+      "desc": "IS2016-2020専用: exit_rsi_w=0.55に強化、exit_lookback=18に短縮。2018VIXショック・2020コロナ急落での早期天井脱出を重視",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3618.84,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "exit_rsi_dominant_v3",
+      "desc": "exit_rsi_w=0.60に大幅強化。ベースライン全20+ファクター搭載・lb=100/tn=2維持。RSI天井検知を支配的にし2018末・2020コロナでの早期脱出精度を最大化",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3608.9,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "open_price_entry_exit",
+      "desc": "use_open_prices=True: 初値でエントリー/エグジット。ベースライン全パラメータ維持（lb=100/tn=2/exit系フル搭載）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3613.7,
+      "added_at": "2026-03-07"
+    },
+    {
+      "id": "loose_trailing_stop_v1",
+      "desc": "trailing_stop=-0.045に緩和（ベースライン-0.027→-0.045）。exit_threshold=0.20に微調整。lb=100/tn=2/全20+ファクター維持",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -3639.24,
       "added_at": "2026-03-07"
     }
   ],
