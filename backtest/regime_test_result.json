@@ -1,0 +1,79 @@
+{
+  "fixed_params": {
+    "IS": {
+      "total_return_pct": -34.47,
+      "sharpe": -0.196,
+      "max_dd_pct": 41.66,
+      "alpha_pct": -54.01,
+      "nikkei_pct": 19.54,
+      "n_trades": 189
+    },
+    "OOS": {
+      "total_return_pct": 57.71,
+      "sharpe": 1.396,
+      "max_dd_pct": 47.74,
+      "alpha_pct": 52.3,
+      "nikkei_pct": 5.41,
+      "n_trades": 84
+    }
+  },
+  "regime_adaptive": {
+    "IS": {
+      "total_return_pct": -46.19,
+      "sharpe": -1.056,
+      "max_dd_pct": 56.6,
+      "alpha_pct": -65.73,
+      "nikkei_pct": 19.54,
+      "n_trades": 151
+    },
+    "OOS": {
+      "total_return_pct": -36.44,
+      "sharpe": -1.81,
+      "max_dd_pct": 45.78,
+      "alpha_pct": -41.85,
+      "nikkei_pct": 5.41,
+      "n_trades": 75
+    }
+  },
+  "comparison": "IS: fixed=-34.47% vs regime=-46.19% (差=-11.72%) | OOS: fixed=+57.71% vs regime=-36.44% (差=-94.15%)",
+  "run_at": "2026-03-07T23:14:13.289839",
+  "params": {
+    "best_params": {
+      "lookback": 100,
+      "top_n": 2,
+      "rebalance": "weekly",
+      "trailing_stop": -0.0271,
+      "exit_threshold": 0.16,
+      "exit_lookback": 24,
+      "exit_rsi_w": 0.432,
+      "exit_vol_w": 0.23,
+      "exit_dd_w": 0.15,
+      "ret_w": 0.1,
+      "upside_capture_w": 0.098,
+      "green_w": 0.095,
+      "win_streak_w": 0.089,
+      "rs_w": 0.0
+    },
+    "defensive_params": {
+      "lookback": 40,
+      "top_n": 5,
+      "rebalance": "weekly",
+      "trailing_stop": -0.015,
+      "exit_threshold": 0.16,
+      "exit_lookback": 24,
+      "exit_rsi_w": 0.5,
+      "exit_vol_w": 0.23,
+      "exit_dd_w": 0.15,
+      "ret_w": 0.1,
+      "upside_capture_w": 0.098,
+      "green_w": 0.095,
+      "win_streak_w": 0.089,
+      "rs_w": 0.0
+    },
+    "regime_map": {
+      "bull": "params",
+      "bear": "None=cash",
+      "choppy": "params"
+    }
+  }
+}

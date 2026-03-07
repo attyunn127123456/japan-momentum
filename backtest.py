@@ -46,6 +46,36 @@ def get_nikkei_history(start: str, end: str) -> pd.Series:
     return df.set_index("Date").sort_index()["C"].dropna()
 
 
+def detect_regime(nikkei_series: pd.Series, as_of_date, lookback_days: int = 60) -> str:
+    """
+    直近の市場データからレジームを判定。
+    Returns: 'bull' | 'bear' | 'choppy'
+
+    判定ロジック:
+    1. nikkei_series から as_of_date までの直近 lookback_days 日を取得
+    2. 60日モメンタム = (現在値 / lookback_days前の値) - 1
+    レジーム定義:
+    - bull:  60日モメンタム > +5%
+    - bear:  60日モメンタム < -5%
+    - choppy: それ以外（-5% 〜 +5%）
+    """
+    as_of_date = pd.Timestamp(as_of_date)
+    past = nikkei_series.loc[:as_of_date].dropna()
+    if len(past) < lookback_days:
+        return 'choppy'
+    current_val = float(past.iloc[-1])
+    past_val = float(past.iloc[-lookback_days])
+    if past_val <= 0:
+        return 'choppy'
+    momentum = current_val / past_val - 1
+    if momentum > 0.05:
+        return 'bull'
+    elif momentum < -0.05:
+        return 'bear'
+    else:
+        return 'choppy'
+
+
 def get_rebalance_dates(start: str, end: str, freq: str) -> list:
     s, e = pd.Timestamp(start), pd.Timestamp(end)
     freq_map = {"daily": "B", "weekly": "W-MON", "biweekly": "2W-MON", "monthly": "MS"}
@@ -101,6 +131,9 @@ def run_backtest(start: str, end: str, top_n: int, rebalance: str, use_regime: b
     for i, reb_date in enumerate(rebalance_dates):
         # レジーム対応: use_regime=True のとき重みとtop_nを動的切り替え
         if use_regime:
+            from backtest import detect_regime as _detect_regime
+            _regime = _detect_regime(nikkei, reb_date)
+            print(f"  [regime] {reb_date.date()} → {_regime}")
             _w = _rw.get_weights_for_date(nikkei, reb_date)
             top_n = _w["top_n"]
         # スコア計算
@@ -326,5 +359,8 @@ if __name__ == "__main__":
     parser.add_argument("--rebalance", default="daily", choices=["daily", "weekly", "biweekly", "monthly"])
     parser.add_argument("--long-short", action="store_true", help="ロングショート戦略（上位N買い+下位N空売り）")
     parser.add_argument("--use-open-prices", action="store_true", help="初値エントリー・初値/終値エグジット戦略")
+    parser.add_argument("--regime", action="store_true", help="レジーム判定結果を表示しながら実行")
     args = parser.parse_args()
-    run_backtest(args.start, args.end, args.top_n, args.rebalance, long_short=args.long_short, use_open_prices=args.use_open_prices)
+    run_backtest(args.start, args.end, args.top_n, args.rebalance,
+                 use_regime=getattr(args, 'regime', False),
+                 long_short=args.long_short, use_open_prices=args.use_open_prices)

@@ -360,7 +360,160 @@ def compute_exit_signal(prices_df, current_date, entry_date, params):
         return False, 0.0
 
 
-def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, return_df, long_short=False, use_open_prices=False):
+def _eval_params_regime(default_params, factor_dfs, prices_dict, rebal_dates, nikkei, start,
+                        return_df, regime_params, long_short=False, use_open_prices=False):
+    """
+    レジーム適応型 eval_params。
+    リバランス日ごとに detect_regime() を呼び、対応する params に切り替えて評価。
+    regime_params[regime] = None の場合はそのリバランス期間をスキップ（キャッシュ保持）。
+    """
+    from backtest import detect_regime
+
+    dates = [d for d in rebal_dates if str(d.date()) >= start]
+
+    # 各 regime ごとに score_df をキャッシュ（lookback が異なる可能性があるため）
+    _score_cache = {}
+
+    def get_score_df_for_params(p):
+        lb = p["lookback"]
+        weights = {k: p.get(k + "_w", 0.0) for k in ["ret", "rs", "green", "smooth", "resilience"]}
+        cache_key = (lb, tuple(sorted(weights.items())))
+        if cache_key not in _score_cache:
+            _score_cache[cache_key] = build_score_df(factor_dfs, lb, weights)
+        return _score_cache[cache_key]
+
+    portfolio = 1_000_000.0
+    returns = []
+    equity_curve = []
+
+    for i, date in enumerate(dates[:-1]):
+        next_date = dates[i + 1]
+        next_next_date = dates[i + 2] if i + 2 < len(dates) else None
+
+        # レジーム判定
+        regime = detect_regime(nikkei, date)
+        # regime_params に対応するエントリーがあれば上書き、なければ default_params を使用
+        if regime in regime_params:
+            active_params = regime_params[regime]
+        else:
+            active_params = default_params
+
+        # None = 全キャッシュ（ポジション取らない）
+        if active_params is None:
+            equity_curve.append({
+                "date": str(date.date()),
+                "value": round((portfolio / 1_000_000 - 1) * 100, 2),
+                "holdings": [],
+                "regime": regime,
+            })
+            continue
+
+        lb = active_params["lookback"]
+        tn = active_params["top_n"]
+        score_df = get_score_df_for_params(active_params)
+
+        if score_df is None or date not in score_df.index:
+            continue
+
+        row = score_df.loc[date].dropna()
+        if row.empty:
+            continue
+        top = row.nlargest(tn).index.tolist()
+
+        trailing_stop = active_params.get("trailing_stop", None)
+        exit_threshold = active_params.get("exit_threshold", None)
+
+        def calc_period_return(code, date, next_date, next_next_date=None):
+            use_trailing = trailing_stop is not None and code in prices_dict
+            use_exit_signal = exit_threshold is not None and code in prices_dict
+            if use_trailing or use_exit_signal:
+                try:
+                    price_df = prices_dict[code]
+                    mask = (price_df.index > date) & (price_df.index <= next_date)
+                    period_prices = price_df.loc[mask, 'AdjC']
+                    if len(period_prices) > 0:
+                        prev = price_df.loc[price_df.index <= date, 'AdjC']
+                        if len(prev) == 0:
+                            return None
+                        entry_price = prev.iloc[-1]
+                        if entry_price <= 0 or np.isnan(entry_price):
+                            return None
+                        peak = entry_price
+                        exit_price = period_prices.iloc[-1]
+                        for idx, daily_price in period_prices.items():
+                            if np.isnan(daily_price):
+                                continue
+                            peak = max(peak, daily_price)
+                            if use_trailing and (daily_price - peak) / peak <= trailing_stop:
+                                exit_price = daily_price
+                                break
+                            if use_exit_signal:
+                                should_exit, _ = compute_exit_signal(price_df, idx, date, active_params)
+                                if should_exit:
+                                    exit_price = daily_price
+                                    break
+                        ret = (exit_price - entry_price) / entry_price
+                        return ret if not np.isnan(ret) else None
+                except Exception:
+                    pass
+            if code in return_df.columns:
+                r = return_df.at[next_date, code]
+                if not np.isnan(r):
+                    return r
+            return None
+
+        tot, cnt = 0.0, 0
+        if date in return_df.index and next_date in return_df.index:
+            for code in top:
+                r = calc_period_return(code, date, next_date, next_next_date)
+                if r is not None:
+                    tot += r
+                    cnt += 1
+
+        if cnt > 0:
+            r = tot / cnt
+            portfolio *= (1 + r)
+            returns.append(r)
+
+        equity_curve.append({
+            "date": str(date.date()),
+            "value": round((portfolio / 1_000_000 - 1) * 100, 2),
+            "holdings": [str(c) for c in top],
+            "regime": regime,
+        })
+
+    if len(returns) < 5:
+        return None
+
+    arr = np.array(returns)
+    tr = portfolio / 1_000_000 - 1
+    sharpe = float(arr.mean() / arr.std() * np.sqrt(252)) if arr.std() > 0 else 0
+    cum = np.cumprod(1 + arr)
+    peak = np.maximum.accumulate(cum)
+    dd = float(abs(((cum - peak) / peak).min()))
+    nk = nikkei.loc[start:]
+    nk_ret = float(nk.iloc[-1] / nk.iloc[0] - 1) if len(nk) > 1 else 0
+
+    return {
+        **default_params,
+        "total_return_pct": round(tr * 100, 2),
+        "alpha_pct": round((tr - nk_ret) * 100, 2),
+        "sharpe": round(sharpe, 3),
+        "max_dd_pct": round(dd * 100, 2),
+        "nikkei_pct": round(nk_ret * 100, 2),
+        "n_trades": len(returns),
+        "equity_curve": equity_curve,
+        "regime_adaptive": True,
+    }
+
+
+def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, return_df,
+                long_short=False, use_open_prices=False, regime_params=None):
+    # regime_params が渡された場合はレジーム適応型モードで実行
+    if regime_params is not None:
+        return _eval_params_regime(params, factor_dfs, prices_dict, rebal_dates, nikkei, start,
+                                   return_df, regime_params, long_short=long_short,
+                                   use_open_prices=use_open_prices)
     lb, tn = params["lookback"], params["top_n"]
     weights = {k: params.get(k+"_w", 0.0) for k in ["ret","rs","green","smooth","resilience"]}
     
