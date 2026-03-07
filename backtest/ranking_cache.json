@@ -1,11 +1,11 @@
 {
-  "cached_at": "2026-03-06 14:49 JST",
+  "cached_at": "2026-03-07 14:53 JST",
   "as_of": "2026-03-06",
   "params": {
-    "lookback": 60,
-    "top_n": 3,
+    "lookback": 100,
+    "top_n": 2,
     "rebalance": "weekly",
-    "total_return_pct": 1246.33
+    "total_return_pct": 3554.06
   },
   "top_codes": [
     "31030",

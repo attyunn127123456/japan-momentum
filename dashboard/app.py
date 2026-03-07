@@ -323,6 +323,197 @@ async def get_stock_info(code: str):
     }))
 
 
+@app.get("/api/paper-trade/history")
+def paper_trade_history():
+    """ペーパートレード履歴を返す。ファイルがなければ空配列。"""
+    p = BASE / "backtest/paper_trade_log.json"
+    if not p.exists():
+        return JSONResponse({"entries": []})
+    return JSONResponse(sanitize(json.loads(p.read_text())))
+
+
+@app.post("/api/paper-trade/record")
+def paper_trade_record():
+    """今週のTOP2銘柄をペーパートレードログに記録する。"""
+    try:
+        # ranking_cache.json からTOP銘柄を取得
+        ranking_path = BASE / "backtest/ranking_cache.json"
+        if not ranking_path.exists():
+            return JSONResponse({"error": "ranking_cache.json が見つかりません"}, status_code=404)
+        ranking = json.loads(ranking_path.read_text())
+        top_n = ranking.get("params", {}).get("top_n", 2)
+        top_codes = ranking.get("top_codes", [])[:top_n]
+        if not top_codes:
+            return JSONResponse({"error": "TOP銘柄が見つかりません"}, status_code=404)
+        as_of = ranking.get("as_of", "")
+
+        # 週の月曜日を week キーにする
+        from datetime import datetime, timedelta
+        try:
+            dt = datetime.strptime(as_of, "%Y-%m-%d")
+        except Exception:
+            dt = datetime.today()
+        monday = dt - timedelta(days=dt.weekday())
+        week_key = monday.strftime("%Y-%m-%d")
+
+        # daily_signal_output.json からエントリー価格（price）を取得
+        signal_path = BASE / "backtest/daily_signal_output.json"
+        entry_prices = {}
+        if signal_path.exists():
+            sig = json.loads(signal_path.read_text())
+            all_scores = sig.get("all_scores", sig.get("top20", sig.get("recommended", [])))
+            price_map = {s["code"]: s.get("price") for s in all_scores if s.get("price") is not None}
+            for code in top_codes:
+                if code in price_map:
+                    entry_prices[code] = price_map[code]
+
+        # 既存ログを読み込み
+        log_path = BASE / "backtest/paper_trade_log.json"
+        if log_path.exists():
+            log = json.loads(log_path.read_text())
+        else:
+            log = {"entries": []}
+
+        # 同じ週がすでに存在する場合はスキップ
+        existing_weeks = [e["week"] for e in log.get("entries", [])]
+        if week_key in existing_weeks:
+            return JSONResponse({"message": f"week {week_key} はすでに記録済みです", "week": week_key})
+
+        # 新エントリーを追加
+        new_entry = {
+            "week": week_key,
+            "holdings": top_codes,
+            "entry_prices": entry_prices,
+            "exit_prices": {},
+            "status": "open",
+            "return_pct": None,
+        }
+        log.setdefault("entries", []).append(new_entry)
+        log_path.write_text(json.dumps(log, ensure_ascii=False, indent=2))
+
+        return JSONResponse(sanitize({"message": "記録しました", "entry": new_entry}))
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/backtest/is-oos-compare")
+def backtest_is_oos_compare():
+    """IS（学習期間）とOOS（検証期間）のエクイティカーブを返す。"""
+    result = {}
+
+    # IS: timeseries_cache.json
+    ts_path = BASE / "backtest/timeseries_cache.json"
+    if ts_path.exists():
+        ts = json.loads(ts_path.read_text())
+        weekly = ts.get("weekly", [])
+        is_curve = [{"date": d["date"], "value": d["value"]} for d in weekly if "date" in d and "value" in d]
+        is_sharpe = ts.get("sharpe")
+        is_total = ts.get("total_return_pct")
+        result["is"] = {
+            "label": "IS (学習期間 2023〜)",
+            "curve": is_curve,
+            "sharpe": is_sharpe,
+            "total_pct": is_total,
+        }
+    else:
+        result["is"] = {"label": "IS (学習期間 2023〜)", "curve": [], "sharpe": None, "total_pct": None}
+
+    # OOS: hypothesis_queue.json > baseline.oos_result
+    q_path = BASE / "backtest/hypothesis_queue.json"
+    if q_path.exists():
+        try:
+            q = json.loads(q_path.read_text())
+            oos_result = q.get("baseline", {}).get("oos_result", {})
+            oos_curve_raw = oos_result.get("equity_curve", [])
+            oos_curve = [{"date": d["date"], "value": d["value"]} for d in oos_curve_raw if "date" in d and "value" in d]
+            oos_sharpe = oos_result.get("sharpe")
+            oos_total = oos_result.get("total_return_pct", oos_result.get("total_pct"))
+            result["oos"] = {
+                "label": "OOS (検証期間 2020〜)",
+                "curve": oos_curve,
+                "sharpe": oos_sharpe,
+                "total_pct": oos_total,
+            }
+        except Exception:
+            result["oos"] = {"label": "OOS (検証期間 2020〜)", "curve": [], "sharpe": None, "total_pct": None}
+    else:
+        result["oos"] = {"label": "OOS (検証期間 2020〜)", "curve": [], "sharpe": None, "total_pct": None}
+
+    return JSONResponse(sanitize(result))
+
+
+@app.get("/api/backtest/is-oos-compare")
+def backtest_is_oos_compare():
+    """IS（学習期間）とOOS（検証期間）のエクイティカーブを両方返す。"""
+    q_path = BASE / "backtest/hypothesis_queue.json"
+    ts_path = BASE / "backtest/timeseries_cache.json"
+    result = {}
+    # IS
+    if ts_path.exists():
+        ts = json.loads(ts_path.read_text())
+        result["is"] = {
+            "label": "IS（学習期間）",
+            "curve": ts.get("weekly", []),
+            "sharpe": ts.get("sharpe"),
+            "total_pct": ts.get("total_return_pct"),
+        }
+    # OOS
+    if q_path.exists():
+        q = json.loads(q_path.read_text())
+        baseline = q.get("baseline", {})
+        oos = baseline.get("oos_result", {})
+        if oos:
+            result["oos"] = {
+                "label": "OOS（検証期間 2020〜）",
+                "curve": oos.get("equity_curve", []),
+                "sharpe": oos.get("sharpe"),
+                "total_pct": oos.get("total_return_pct"),
+                "alpha_pct": oos.get("alpha_pct"),
+            }
+        result["train_sharpe"] = baseline.get("sharpe")
+        result["train_total_pct"] = baseline.get("total_pct")
+    return JSONResponse(sanitize(result))
+
+
+@app.get("/api/paper-trade/history")
+def paper_trade_history():
+    p = BASE / "backtest/paper_trade_log.json"
+    if not p.exists():
+        return JSONResponse({"entries": []})
+    return JSONResponse(sanitize(json.loads(p.read_text())))
+
+
+@app.post("/api/paper-trade/record")
+def paper_trade_record():
+    """今週のTOP2シグナルをペーパートレードログに記録する。"""
+    import datetime
+    ranking_path = BASE / "backtest/ranking_cache.json"
+    log_path = BASE / "backtest/paper_trade_log.json"
+    if not ranking_path.exists():
+        return JSONResponse({"error": "ranking_cache.json なし"}, status_code=404)
+    ranking = json.loads(ranking_path.read_text())
+    rankings = ranking.get("rankings", [])[:2]
+    holdings = [r.get("code") or r.get("ticker", "") for r in rankings]
+    entry_prices = {r.get("code") or r.get("ticker", ""): r.get("close") or r.get("price") for r in rankings}
+    week = datetime.date.today().strftime("%Y-%m-%d")
+    entry = {
+        "week": week,
+        "holdings": holdings,
+        "entry_prices": entry_prices,
+        "exit_prices": {},
+        "status": "open",
+        "return_pct": None,
+    }
+    log = {"entries": []}
+    if log_path.exists():
+        log = json.loads(log_path.read_text())
+    # 同じ週の重複防止
+    log["entries"] = [e for e in log["entries"] if e.get("week") != week]
+    log["entries"].append(entry)
+    log_path.write_text(json.dumps(log, ensure_ascii=False, indent=2))
+    return JSONResponse({"ok": True, "entry": entry})
+
+
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
 
 @app.get("/")

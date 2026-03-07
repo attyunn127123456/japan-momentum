@@ -33,6 +33,19 @@ N_CODES = 4000
 DELTA_THRESHOLD = 5.0  # total_return_pct の改善幅（5%以上で採用）
 
 
+def _load_baseline_params():
+    """hypothesis_queue.json からベースラインパラメータを動的に読み込む"""
+    try:
+        q = json.loads(QUEUE_FILE.read_text())
+        return q.get('baseline', {}).get('params', {})
+    except Exception:
+        return {}
+
+BASELINE_PARAMS = _load_baseline_params()
+BASE_LB = BASELINE_PARAMS.get('lookback', 40)
+BASE_TN = BASELINE_PARAMS.get('top_n', 2)
+
+
 def load_queue():
     return json.loads(QUEUE_FILE.read_text())
 
@@ -43,7 +56,7 @@ def save_queue(q):
 
 def run_baseline(prices_dict, nikkei, factor_dfs, return_df, rebal_dates):
     """ベースラインのスコアを返す"""
-    p = {"lookback":60,"top_n":5,"rebalance":"weekly",
+    p = {"lookback":BASE_LB,"top_n":BASE_TN,"rebalance":"weekly",
          "ret_w":0.3,"rs_w":0.3,"green_w":0.2,"smooth_w":0.2,"resilience_w":0.0}
     return eval_params(p, factor_dfs, prices_dict, rebal_dates["weekly"], nikkei, START, return_df)
 
@@ -75,8 +88,8 @@ def run_new_high_breakout(prices_dict, nikkei, rebal_dates, return_df):
 
     # new_highを追加したevalを実行
     best = None
-    for top_n in [5, 10]:
-        p = {"lookback":60,"top_n":top_n,"rebalance":"weekly",
+    for top_n in [BASE_TN, BASE_TN * 2]:
+        p = {"lookback":BASE_LB,"top_n":top_n,"rebalance":"weekly",
              "ret_w":0.3,"rs_w":0.3,"green_w":0.2,"smooth_w":0.2,"resilience_w":0.0}
         r = eval_params_with_filter(p, factor_dfs, prices_dict,
                                      rebal_dates["weekly"], nikkei, START, return_df)
@@ -332,7 +345,7 @@ def main():
                         factor_dfs[(code,60)]["safe"] = (1 - danger).clip(0,1)
             all_prices = pd.DataFrame({c: prices_dict[c]["AdjC"] for c in prices_dict}).astype(float)
             return_df = all_prices.pct_change()
-            p = {"lookback":60,"top_n":5,"rebalance":"weekly",
+            p = {"lookback":BASE_LB,"top_n":BASE_TN,"rebalance":"weekly",
                  "ret_w":0.3,"rs_w":0.3,"green_w":0.2,"smooth_w":0.2,"resilience_w":0.0}
             result = eval_params(p, factor_dfs, prices_dict, rebal_dates["weekly"], nikkei, START, return_df)
 
@@ -343,10 +356,10 @@ def main():
                 df = read_ohlcv(c, warmup, END)
                 if df is not None and not df.empty and "AdjC" in df.columns:
                     prices_dict[c] = df
-            factor_dfs = precompute(prices_dict, nikkei, [60])
+            factor_dfs = precompute(prices_dict, nikkei, [BASE_LB])
             all_prices = pd.DataFrame({c: prices_dict[c]["AdjC"] for c in prices_dict}).astype(float)
             return_df = all_prices.pct_change()
-            p = {"lookback":60,"top_n":5,"rebalance":"weekly",
+            p = {"lookback":BASE_LB,"top_n":BASE_TN,"rebalance":"weekly",
                  "ret_w":0.2,"rs_w":0.2,"green_w":0.1,"smooth_w":0.2,"resilience_w":0.3}
             result = eval_params(p, factor_dfs, prices_dict, rebal_dates["weekly"], nikkei, START, return_df)
 

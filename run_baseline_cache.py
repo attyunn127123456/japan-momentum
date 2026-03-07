@@ -23,7 +23,7 @@ if _q_path.exists():
         print(f"  ベストパラメータ使用 (total={_baseline.get('total_pct', '?')}%): {PARAMS}")
     else:
         PARAMS = {
-            "lookback": 60,
+            "lookback": 40,
             "top_n": 2,
             "rebalance": "weekly",
             "ret_w": 0.3,
@@ -34,7 +34,7 @@ if _q_path.exists():
         print("  フォールバックパラメータ使用")
 else:
     PARAMS = {
-        "lookback": 60,
+        "lookback": 40,
         "top_n": 2,
         "rebalance": "weekly",
         "ret_w": 0.3,

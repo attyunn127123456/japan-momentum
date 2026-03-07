@@ -61,10 +61,16 @@ from optimize import precompute, eval_params, run_optuna_optimization, run_oos_v
 QUEUE_FILE  = Path('backtest/hypothesis_queue.json')
 DONE_FILE   = Path('backtest/hypothesis_done.json')
 EVO_LOG     = Path('backtest/evolution_log.json')
+
+MAX_ACTIVE_FACTORS = 7  # 同時に使えるファクターの最大数（0より大きいウェイトを持つもの）
 START_TRAIN = '2023-01-01'   # 訓練期間
 START_VAL   = '2025-01-01'   # 検証期間（汎化性チェック用）
 END         = datetime.now().strftime('%Y-%m-%d')
 N_CODES     = 4000
+
+# OOSの最低基準
+OOS_SHARPE_MIN = 1.5
+OOS_TOTAL_RETURN_MIN = 50.0  # %
 
 # ========== 複合評価ルール ==========
 def evaluate(result_train, result_val, baseline):
@@ -95,9 +101,9 @@ def evaluate(result_train, result_val, baseline):
     else:
         reasons.append(f'n_trades={r["n_trades"]}')
 
-    # 採用条件: total_returnがベースラインより+5%以上改善、かつmax_dd < 40%
+    # 採用条件: total_returnがベースラインより+5%以上改善、max_dd < 45%、かつIS sharpeがベースラインを超えること
     delta_return = r['total_return_pct'] - baseline.get('total_pct', 0)
-    adopted = delta_return > 5 and r['max_dd_pct'] < 40
+    adopted = delta_return > 5 and r['max_dd_pct'] < 45 and r['sharpe'] > baseline.get('sharpe', 0)
     reasons.append(f'delta_return={delta_return:+.1f}%')
 
     return adopted, round(score, 3), reasons
@@ -165,6 +171,22 @@ def load_fundamental_factors():
     return factors
 
 
+# ========== ファクター数制限ヘルパー ==========
+def apply_factor_limit(p, max_factors=None):
+    """アクティブファクター数を MAX_ACTIVE_FACTORS 以下に制限する。
+    0.005 より大きいウェイトを持つファクターのうち、値の小さいものから削る。"""
+    if max_factors is None:
+        max_factors = MAX_ACTIVE_FACTORS
+    active_factor_count = sum(1 for k, v in p.items() if k.endswith('_w') and v > 0.005)
+    if active_factor_count > max_factors:
+        factor_weights = [(k, v) for k, v in p.items() if k.endswith('_w') and v > 0.005]
+        factor_weights.sort(key=lambda x: x[1])  # 小さい順
+        to_zero = factor_weights[:active_factor_count - max_factors]
+        for k, _ in to_zero:
+            p[k] = 0.0
+    return p
+
+
 # ========== 局所探索 (GA版) ==========
 def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fund_factors=None):
     """遺伝的アルゴリズムで局所探索（全網羅の代わりに進化的探索）"""
@@ -190,6 +212,37 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
         'high52_w':         [0.0, 0.1, 0.2, 0.25, 0.3, 0.35, 0.4],
         'omega_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'short_momentum_w': [0.0, 0.05, 0.1, 0.15, 0.2],
+        'vol_contraction_breakout_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'path_convexity_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'bear_resilience_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'relative_volume_breakout_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'intraday_trend_strength_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'drawdown_recovery_speed_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'price_efficiency_ratio_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'updown_vol_asymmetry_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'higher_low_streak_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'market_down_day_alpha_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'market_decorrelation_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'lower_shadow_support_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'overnight_gap_persistence_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'intraday_range_quality_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'cross_lookback_stability_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'sector_breadth_confirm_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'multi_tf_agreement_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'pv_covar_trend_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'body_dominance_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'up_down_vol_ratio_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'buying_pressure_trend_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'volume_distribution_skew_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'volatility_squeeze_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'dd_recovery_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'vol_up_down_ratio_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'price_efficiency_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'price_level_persistence_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'intraday_range_trend_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'relative_volume_momentum_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'range_position_trend_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'mtf_convergence_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'liquidity_resilience_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'cross_sectional_vol_rank_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'max_dd_ratio_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
@@ -235,6 +288,8 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
             for k in weight_keys:
                 p[k] = round(p.get(k, 0) / total, 4)
         p['rebalance'] = bp.get('rebalance', 'weekly')
+        # ファクター数制限を適用
+        p = apply_factor_limit(p)
         return p
 
     def eval_params_local(p):
@@ -245,7 +300,7 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
             return None
 
     # 初期母集団（ベスト + ランダム変異19個）
-    population = [dict(bp)]
+    population = [apply_factor_limit(dict(bp))]
     for _ in range(19):
         population.append(mutate(bp))
 
@@ -258,6 +313,8 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
     for gen in range(N_GENERATIONS):
         gen_results = []
         for p in population:
+            # ファクター数制限: 評価前に上限を超えたものを削る
+            p = apply_factor_limit(p)
             r = eval_params_local(p)
             if r:
                 gen_results.append((r['sharpe'], p, r))
@@ -483,6 +540,38 @@ def run_evolution():
             delta=oos_total - train_total,
             oos_result=oos_result,
         )
+
+        # OOS合格判定
+        oos_sharpe = oos_result.get('sharpe') or 0
+        oos_total_ret = oos_result.get('total_return_pct') or 0
+        baseline_oos_sharpe = queue['baseline'].get('oos_result', {}).get('sharpe') or 0
+        # baseline OOS sharpeとOOS_SHARPE_MINの両方を満たす必要がある
+        required_oos_sharpe = max(OOS_SHARPE_MIN, baseline_oos_sharpe)
+        oos_passed = (oos_sharpe >= required_oos_sharpe and oos_total_ret > OOS_TOTAL_RETURN_MIN)
+
+        if not oos_passed:
+            print(
+                f'⚠️ OOS不合格: sharpe={oos_sharpe:.3f} (要≥{required_oos_sharpe:.3f}), '
+                f'total_return={oos_total_ret:.1f}% (要>{OOS_TOTAL_RETURN_MIN}%)',
+                flush=True,
+            )
+            DONE_FILE.write_text(json.dumps(_fb({
+                'status': 'oos_failed',
+                'id': 'evolution_cycle',
+                'win': 0,
+                'oos_sharpe': oos_sharpe,
+                'oos_total_return_pct': oos_total_ret,
+                'required_oos_sharpe': required_oos_sharpe,
+                'required_oos_total_return_pct': OOS_TOTAL_RETURN_MIN,
+                'result': _fb(queue['baseline']),
+                'at': datetime.now().isoformat(),
+            }), ensure_ascii=False, indent=2))
+        else:
+            print(
+                f'✅ OOS合格: sharpe={oos_sharpe:.3f} (要≥{required_oos_sharpe:.3f}), '
+                f'total_return={oos_total_ret:.1f}% (要>{OOS_TOTAL_RETURN_MIN}%)',
+                flush=True,
+            )
 
     # ---- Step3: 新ファクター試験 ----
     print('\n--- 新ファクター試験 ---', flush=True)

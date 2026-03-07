@@ -551,11 +551,13 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
                     if len(prev) == 0:
                         return None
                     entry_price = prev.iloc[-1]
-                    if entry_price <= 0:
+                    if entry_price <= 0 or np.isnan(entry_price):
                         return None
                     peak = entry_price
                     exit_price = period_prices.iloc[-1]  # デフォルトは週末価格
                     for idx, daily_price in period_prices.items():
+                        if np.isnan(daily_price):
+                            continue  # NaN日はスキップ
                         peak = max(peak, daily_price)
                         # トレーリングストップ判定
                         if use_trailing and (daily_price - peak) / peak <= trailing_stop:
@@ -567,7 +569,8 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
                             if should_exit:
                                 exit_price = daily_price  # 天井検知で即売り
                                 break
-                    return (exit_price - entry_price) / entry_price
+                    ret = (exit_price - entry_price) / entry_price
+                    return ret if not np.isnan(ret) else None
             except Exception:
                 pass
         # trailing_stop/exit_signalなし or データなし: return_dfから通常計算

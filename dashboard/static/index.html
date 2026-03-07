@@ -255,6 +255,36 @@ select { background: #21262d; color: #e6edf3; border: 1px solid #30363d; padding
         <tbody id="bt-opt-tbody"></tbody>
       </table>
     </div>
+
+    <!-- IS vs OOS 比較チャート -->
+    <div class="section-title">📊 IS vs OOS 比較</div>
+    <div id="bt-is-oos-wrap" style="background:#161b22;border:1px solid #21262d;border-radius:8px;padding:14px;margin-bottom:14px">
+      <div id="bt-is-oos-loading" style="color:#8b949e;font-size:13px;text-align:center;padding:24px">読み込み中...</div>
+      <div id="bt-is-oos-stats" style="display:none;display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px"></div>
+      <div id="bt-is-oos-chart-wrap" style="display:none;position:relative;height:240px">
+        <canvas id="bt-is-oos-chart"></canvas>
+      </div>
+    </div>
+
+    <!-- ペーパートレード履歴 -->
+    <div class="section-title">📝 ペーパートレード履歴</div>
+    <div id="bt-paper-trade-wrap" style="background:#161b22;border:1px solid #21262d;border-radius:8px;padding:14px;margin-bottom:14px">
+      <div id="bt-paper-trade-loading" style="color:#8b949e;font-size:13px;text-align:center;padding:24px">読み込み中...</div>
+      <div id="bt-paper-trade-table" style="display:none">
+        <div style="font-size:11px;color:#8b949e;margin-bottom:10px">毎週のTOP銘柄シグナルを記録。実際に買ってたら今どうなってた？</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th>週</th><th>銘柄</th><th>エントリー価格</th><th>現在価格</th><th>リターン%</th><th>ステータス</th>
+            </tr></thead>
+            <tbody id="bt-paper-trade-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="bt-paper-trade-empty" style="display:none;color:#8b949e;text-align:center;padding:20px;font-size:13px">
+        まだ記録がありません。<code style="color:#58a6ff">python3 run_paper_trade_record.py</code> を実行してください。
+      </div>
+    </div>
   </div>
 </div>
 
@@ -659,6 +689,10 @@ async function loadBacktest(silent){
     }
     // タイムシリーズチャート（非同期で後から読み込み）
     loadTimeseriesCharts();
+    // IS/OOS 比較チャート
+    loadIsOosChart();
+    // ペーパートレード履歴
+    loadPaperTradeHistory();
   } catch(e) {
     if(isFirst) document.getElementById('bt-loading').textContent='⚠️ データ取得エラー: '+e.message;
     console.error('loadBacktest error:', e);
@@ -1098,6 +1132,168 @@ function renderOptimize(opt){
     +'<td>'+r.ret_w+'</td><td>'+r.rs_w+'</td><td>'+r.green_w+'</td><td>'+r.smooth_w+'</td>'
     +'<td class="dim">'+r.n_trades+'</td>'
     +'</tr>').join('');
+}
+
+// IS vs OOS 比較チャート
+let _isOosChart = null;
+async function loadIsOosChart(){
+  try {
+    const res = await fetch('/api/backtest/is-oos-compare');
+    if(!res.ok){ document.getElementById('bt-is-oos-loading').textContent='⚠️ データ取得失敗'; return; }
+    const data = await res.json();
+    const is = data.is || {};
+    const oos = data.oos || {};
+    const isCurve = (is.curve || []).sort((a,b)=>a.date.localeCompare(b.date));
+    const oosCurve = (oos.curve || []).sort((a,b)=>a.date.localeCompare(b.date));
+
+    if(!isCurve.length && !oosCurve.length){
+      document.getElementById('bt-is-oos-loading').textContent='データなし';
+      return;
+    }
+
+    document.getElementById('bt-is-oos-loading').style.display='none';
+
+    // 統計バッジ
+    const statsEl = document.getElementById('bt-is-oos-stats');
+    statsEl.style.display='flex';
+    const fmt = (v,d=2)=>v!=null?(v>=0?'+':'')+Number(v).toFixed(d)+'%':'-';
+    const fmtS = (v)=>v!=null?(v>=0?'+':'')+Number(v).toFixed(2):'-';
+    statsEl.innerHTML=[
+      {l:'IS Sharpe',v:fmtS(is.sharpe),c:is.sharpe>=0?'#3fb950':'#f85149'},
+      {l:'IS 累積リターン',v:fmt(is.total_pct,1),c:is.total_pct>=0?'#3fb950':'#f85149'},
+      {l:'IS 期間',v: isCurve.length?isCurve[0].date+'〜'+isCurve[isCurve.length-1].date:'-',c:'#8b949e'},
+      {l:'OOS Sharpe',v:fmtS(oos.sharpe),c:oos.sharpe>=0?'#3fb950':'#f85149'},
+      {l:'OOS 累積リターン',v:fmt(oos.total_pct,1),c:oos.total_pct>=0?'#3fb950':'#f85149'},
+      {l:'OOS 期間',v: oosCurve.length?oosCurve[0].date+'〜'+oosCurve[oosCurve.length-1].date:'-',c:'#8b949e'},
+    ].map(({l,v,c})=>'<div style="background:#0d1117;border:1px solid #21262d;border-radius:6px;padding:8px 12px;min-width:120px">'
+      +'<div style="font-size:10px;color:#8b949e;margin-bottom:2px">'+l+'</div>'
+      +'<div style="font-size:15px;font-weight:700;color:'+c+'">'+v+'</div>'
+      +'</div>').join('');
+
+    // チャート描画
+    const chartWrap = document.getElementById('bt-is-oos-chart-wrap');
+    chartWrap.style.display='block';
+
+    // 累積リターン(%)として表示（0スタートに正規化）
+    const toReturnPct = (curve) => {
+      if(!curve.length) return [];
+      const base = curve[0].value;
+      return curve.map(d=>({ date: d.date, value: base !== 0 ? (d.value - base) / Math.abs(base) * 100 : d.value }));
+    };
+    const isRet = toReturnPct(isCurve);
+    const oosRet = toReturnPct(oosCurve);
+
+    const allDates = [...new Set([...isRet.map(d=>d.date), ...oosRet.map(d=>d.date)])].sort();
+    const labelSet = new Set();
+    allDates.forEach(d=>{const ym=d.slice(0,7);labelSet.add(ym);});
+    const labelMonths=[...labelSet].filter((_,i)=>i%6===0);
+
+    const isMap = Object.fromEntries(isRet.map(d=>[d.date,d.value]));
+    const oosMap = Object.fromEntries(oosRet.map(d=>[d.date,d.value]));
+
+    const ctx = document.getElementById('bt-is-oos-chart').getContext('2d');
+    if(_isOosChart){ _isOosChart.destroy(); }
+    _isOosChart = new Chart(ctx, {
+      type:'line',
+      data:{
+        labels: allDates,
+        datasets:[
+          {
+            label: 'IS (学習期間)',
+            data: allDates.map(d=>isMap[d]??null),
+            borderColor:'#58a6ff',
+            backgroundColor:'rgba(88,166,255,0.08)',
+            borderWidth:2,
+            pointRadius:0,
+            tension:0.2,
+            spanGaps:true
+          },
+          {
+            label: 'OOS (検証期間)',
+            data: allDates.map(d=>oosMap[d]??null),
+            borderColor:'#f97316',
+            backgroundColor:'rgba(249,115,22,0.06)',
+            borderWidth:2,
+            pointRadius:0,
+            tension:0.2,
+            spanGaps:true
+          }
+        ]
+      },
+      options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        interaction:{mode:'index',intersect:false},
+        plugins:{
+          legend:{display:true,labels:{color:'#c9d1d9',font:{size:11},boxWidth:20}},
+          tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y!=null?c.parsed.y.toFixed(1)+'%':'-'}`}}
+        },
+        scales:{
+          x:{
+            ticks:{color:'#8b949e',font:{size:10},maxRotation:0,
+              callback:function(val,idx){
+                const d=allDates[idx]; if(!d)return '';
+                const ym=d.slice(0,7);
+                return labelMonths.includes(ym)&&d===allDates.find(x=>x.startsWith(ym))?ym:'';
+              }
+            },
+            grid:{color:'#21262d'}
+          },
+          y:{
+            ticks:{color:'#8b949e',font:{size:10},callback:v=>v+'%'},
+            grid:{color:'#21262d'},
+            title:{display:true,text:'累積リターン(%)',color:'#8b949e',font:{size:10}}
+          }
+        }
+      }
+    });
+  } catch(e){
+    document.getElementById('bt-is-oos-loading').textContent='⚠️ エラー: '+e.message;
+    console.error('isOosChart error:', e);
+  }
+}
+
+// ペーパートレード履歴
+async function loadPaperTradeHistory(){
+  try {
+    const res = await fetch('/api/paper-trade/history');
+    if(!res.ok){ document.getElementById('bt-paper-trade-loading').textContent='⚠️ 取得失敗'; return; }
+    const data = await res.json();
+    const entries = data.entries || [];
+    document.getElementById('bt-paper-trade-loading').style.display='none';
+    if(!entries.length){
+      document.getElementById('bt-paper-trade-empty').style.display='block';
+      return;
+    }
+    document.getElementById('bt-paper-trade-table').style.display='block';
+    const tbody = document.getElementById('bt-paper-trade-tbody');
+    // 新しい週が上
+    const sorted = [...entries].sort((a,b)=>b.week.localeCompare(a.week));
+    tbody.innerHTML = sorted.map(e=>{
+      const holdings = e.holdings||[];
+      const ep = e.entry_prices||{};
+      const xp = e.exit_prices||{};
+      const holdingsStr = holdings.join(', ');
+      const entryStr = holdings.map(c=>ep[c]!=null?'¥'+Number(ep[c]).toLocaleString():'-').join(' / ');
+      const exitStr = holdings.map(c=>xp[c]!=null?'¥'+Number(xp[c]).toLocaleString():'-').join(' / ');
+      const retStr = e.return_pct!=null
+        ?'<span class="'+(e.return_pct>=0?'pos':'neg')+'">'+(e.return_pct>=0?'+':'')+Number(e.return_pct).toFixed(2)+'%</span>'
+        :'-';
+      const statusCls = e.status==='open'?'b-watch':'b-hold';
+      const statusLabel = e.status==='open'?'🔓 open':'✅ closed';
+      return '<tr>'
+        +'<td style="white-space:nowrap">'+e.week+'</td>'
+        +'<td><strong style="color:#58a6ff">'+holdingsStr+'</strong></td>'
+        +'<td class="dim">'+entryStr+'</td>'
+        +'<td class="dim">'+exitStr+'</td>'
+        +'<td>'+retStr+'</td>'
+        +'<td><span class="badge '+statusCls+'">'+statusLabel+'</span></td>'
+        +'</tr>';
+    }).join('');
+  } catch(e){
+    document.getElementById('bt-paper-trade-loading').textContent='⚠️ エラー: '+e.message;
+    console.error('paperTrade error:', e);
+  }
 }
 
 // HISTORY
