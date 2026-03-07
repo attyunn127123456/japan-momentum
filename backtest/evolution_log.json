@@ -67,7 +67,7 @@
       "at": "2026-03-07T17:49:08.118552",
       "id": "rsi_heavy_early_exit",
       "desc": "RSI重視の早期天井エグジット：exit_dd_w支配(0.42)→RSI+モメンタム重視に変更してmax_ddを35%以下に抑制",
-      "win": false,
+      "win": 0,
       "delta_sharpe": -3642.08,
       "sharpe": -1.525,
       "total_return_pct": -88.02,
@@ -110,6 +110,27 @@
       "id": "daily_rebalance_unlock",
       "desc": "デイリーリバランス解禁: Optuna内のrebalanceをweekly固定からdaily探索可能に変更",
       "win": 0,
+      "delta_sharpe": -3631.88,
+      "sharpe": -1.886,
+      "total_return_pct": -77.82,
+      "alpha_pct": -97.36,
+      "max_dd_pct": 84.15,
+      "params": {
+        "lookback": 100,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
+    },
+    {
+      "at": "2026-03-07T18:00:41.278341",
+      "id": "short_lookback_exploration",
+      "desc": "lookback短期化探索: lb=20,30,45を追加して短期モメンタム×極集中の組み合わせを解禁",
+      "win": false,
       "delta_sharpe": -3631.88,
       "sharpe": -1.886,
       "total_return_pct": -77.82,
@@ -195,7 +216,7 @@
       "at": "2026-03-07T17:49:08.118552",
       "id": "rsi_heavy_early_exit",
       "desc": "RSI重視の早期天井エグジット：exit_dd_w支配(0.42)→RSI+モメンタム重視に変更してmax_ddを35%以下に抑制",
-      "win": false,
+      "win": 0,
       "delta_sharpe": -3642.08,
       "sharpe": -1.525,
       "total_return_pct": -88.02,
@@ -253,7 +274,28 @@
         "smooth_w": 0.2,
         "resilience_w": 0.0
       }
+    },
+    {
+      "at": "2026-03-07T18:00:41.278341",
+      "id": "short_lookback_exploration",
+      "desc": "lookback短期化探索: lb=20,30,45を追加して短期モメンタム×極集中の組み合わせを解禁",
+      "win": false,
+      "delta_sharpe": -3631.88,
+      "sharpe": -1.886,
+      "total_return_pct": -77.82,
+      "alpha_pct": -97.36,
+      "max_dd_pct": 84.15,
+      "params": {
+        "lookback": 100,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.3,
+        "rs_w": 0.3,
+        "green_w": 0.2,
+        "smooth_w": 0.2,
+        "resilience_w": 0.0
+      }
     }
   ],
-  "total": 6
+  "total": 7
 }

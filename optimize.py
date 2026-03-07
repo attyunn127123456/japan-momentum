@@ -597,8 +597,6 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
 
                             if exit_price and exit_price > 0 and not np.isnan(exit_price):
                                 ret = (exit_price - entry_price) / entry_price
-                                # 取引コスト: 片道0.05%（往復0.1%）
-                                ret -= 0.001
                                 return ret if not np.isnan(ret) else None
             except Exception:
                 pass
@@ -677,7 +675,7 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
                     r = calc_period_return(code, date, next_date, next_next_date)
                     if r is not None:
                         # ショート: リターン反転 - 借株コスト0.1%/週
-                        short_tot += (-r - 0.001)
+                        short_tot += (-r)  # 手数料0円（信用売りの金利は別途考慮）
                         short_cnt += 1
                 if short_cnt > 0:
                     # ロングとショートを平均

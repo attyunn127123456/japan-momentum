@@ -408,3 +408,28 @@ INFO:     Finished server process [98251]
 INFO:     Started server process [98273]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
+INFO:     51.89.23.223:0 - "GET / HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'optimize.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [98273]
+INFO:     Started server process [99704]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'backtest.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [99704]
+INFO:     Started server process [99735]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'optimize.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [99735]
+INFO:     Started server process [99762]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.

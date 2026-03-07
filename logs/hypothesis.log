@@ -1,9 +1,12 @@
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: unexplored_ohlcv_factors_batch1 - 未探索ファクター投入（body_strength_w, overnight_return_w, higher_lows_w）：precompute()に実装済みだがGA探索されていない8ファクターのうち3つを一括追加
+仮説実行: short_lookback_exploration - lookback短期化探索: lb=20,30,45を追加して短期モメンタム×極集中の組み合わせを解禁
   ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3286銘柄×3lb / 807.3秒
+事前計算完了: 3286銘柄×3lb / 810.2秒
 /Users/panda/Projects/japan-momentum/run_hypothesis.py:536: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+事前計算完了: 3286銘柄×1lb / 270.6秒
+.
   return_df = all_prices.pct_change()
 仮説実行: rsi_heavy_early_exit - RSI重視の早期天井エグジット：exit_dd_w支配(0.42)→RSI+モメンタム重視に変更してmax_ddを35%以下に抑制
   ユニバース: キャッシュから3780銘柄読み込み

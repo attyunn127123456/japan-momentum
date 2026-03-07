@@ -133,8 +133,8 @@ def run_backtest(start: str, end: str, top_n: int, rebalance: str, use_regime: b
         if not holdings:
             current_value = portfolio_value
 
-        # 売り → 買い (0.1% コスト)
-        sell_cost = current_value * 0.001 * len(holdings)
+        # 手数料0円
+        sell_cost = 0.0
         cash = current_value - sell_cost
         per_stock = cash / top_n
         new_holdings = {}
