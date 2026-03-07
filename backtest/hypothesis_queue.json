@@ -9,7 +9,7 @@
     "hypothesis": "reset_5yr"
   },
   "running": 1,
-  "current_hypothesis": "universe_midcap",
+  "current_hypothesis": "sector_neutral_momentum",
   "last_result": {
     "id": "volume_confirmed_trend_v1",
     "result": {
@@ -1829,7 +1829,7 @@
     {
       "id": "universe_midcap",
       "desc": "ユニバース→時価総額100〜3000億の中型株",
-      "status": "running",
+      "status": "done_error",
       "result": {
         "lookback": 80,
         "top_n": 10,
@@ -1852,7 +1852,7 @@
     {
       "id": "new_high_breakout",
       "desc": "過去60日高値更新をエントリー条件に追加",
-      "status": "pending",
+      "status": "done_error",
       "result": null,
       "delta_sharpe": null,
       "elapsed_sec": 0.8
@@ -1860,7 +1860,7 @@
     {
       "id": "vol_candle_exit",
       "desc": "大出来高陰線でエグジットシグナル追加",
-      "status": "pending",
+      "status": "done_error",
       "result": {
         "lookback": 60,
         "top_n": 5,
@@ -1883,7 +1883,7 @@
     {
       "id": "resilience_upgrade",
       "desc": "下落日相対強度を主要ファクターに昇格(w=0.3)",
-      "status": "pending",
+      "status": "done_error",
       "result": {
         "lookback": 60,
         "top_n": 5,
@@ -1918,7 +1918,7 @@
         "resilience_w": 0.0,
         "sector_neutral": 1
       },
-      "status": "pending",
+      "status": "running",
       "result": {
         "lookback": 80,
         "top_n": 10,

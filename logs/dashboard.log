@@ -1237,3 +1237,61 @@ INFO:     Finished server process [89616]
 INFO:     Started server process [89659]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
+INFO:     54.37.51.108:0 - "GET / HTTP/1.1" 200 OK
+INFO:     157.230.249.233:0 - "GET / HTTP/1.1" 200 OK
+INFO:     157.230.249.233:0 - "GET / HTTP/1.1" 200 OK
+INFO:     157.230.249.233:0 - "GET /wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET /xmlrpc.php?rsd HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET / HTTP/1.1" 200 OK
+INFO:     157.230.249.233:0 - "GET /blog/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET /web/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET /wordpress/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET /website/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET /wp/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET /news/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET /2020/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET /2019/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET /shop/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET /wp1/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET /test/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET /wp2/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET /site/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET /cms/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     157.230.249.233:0 - "GET /sito/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET / HTTP/1.1" 200 OK
+INFO:     188.166.220.226:0 - "GET / HTTP/1.1" 200 OK
+INFO:     188.166.220.226:0 - "GET /wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /xmlrpc.php?rsd HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET / HTTP/1.1" 200 OK
+INFO:     188.166.220.226:0 - "GET /blog/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /web/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /wordpress/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /website/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /wp/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /news/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /2018/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /2019/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /shop/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /wp1/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /test/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /media/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /wp2/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /site/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /cms/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     188.166.220.226:0 - "GET /sito/wp-includes/wlwmanifest.xml HTTP/1.1" 404 Not Found
+INFO:     23.27.145.124:0 - "GET / HTTP/1.1" 200 OK
+INFO:     51.89.23.223:0 - "GET / HTTP/1.1" 200 OK
+INFO:     148.251.18.110:0 - "GET / HTTP/1.1" 200 OK
+INFO:     148.251.18.100:0 - "GET / HTTP/1.1" 200 OK
+INFO:     148.251.222.204:0 - "GET / HTTP/1.1" 200 OK
+INFO:     162.55.81.190:0 - "GET / HTTP/1.1" 200 OK
+INFO:     148.251.222.208:0 - "GET / HTTP/1.1" 200 OK
+INFO:     162.55.81.190:0 - "GET / HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'run_hypothesis.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [89659]
+INFO:     Started server process [2736]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.

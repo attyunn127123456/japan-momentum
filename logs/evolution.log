@@ -38,3 +38,15 @@
   3774銘柄ロード完了
 ファンダメンタルファクター: 0銘柄
 ファクター事前計算...
+事前計算完了: 3774銘柄×5lb / 3001.6秒
+/Users/panda/Projects/japan-momentum/evolution_engine.py:420: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
+
+--- 局所探索 開始 (Optuna TPE) ---
+Factor Selection: 14→13個 (除外: {'rs_w'})
+Optuna探索対象ファクター: ['ret_w', 'green_w', 'smooth_w', 'resilience_w', 'high52_w', 'omega_w', 'cluster_boost_w', 'ret_skip_w', 'win_streak_w', 'momentum_consistency_w', 'upside_capture_w', 'return_autocorr_w', 'clean_momentum_w', 'short_momentum_w', 'volume_confirm_w', 'gap_momentum_w', 'accumulation_w', 'volume_slope_w']
+Optuna TPE: 300trials 開始...
+  新ベスト: is_total=99.4%, oos_total=-31.3%, calmar=-49.90, lb=40, tn=5
+  新ベスト: is_total=300.5%, oos_total=-49.2%, calmar=-48.27, lb=40, tn=2
+  新ベスト: is_total=447.7%, oos_total=-61.5%, calmar=-47.89, lb=40, tn=1
+  新ベスト: is_total=683.2%, oos_total=-41.8%, calmar=-45.07, lb=40, tn=2

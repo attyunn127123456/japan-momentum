@@ -554,7 +554,7 @@ def main():
             if lb not in [40, 60, 80]:
                 factor_dfs.update(precompute(prices_dict, nikkei, [lb]))
             rb_key = test_params.get('rebalance', 'weekly')
-        result = eval_params(test_params, factor_dfs, prices_dict,
+            result = eval_params(test_params, factor_dfs, prices_dict,
                                  rebal_dates.get(rb_key, rebal_dates['weekly']), nikkei, START, return_df)
 
         # OAS検証（2021-2022 fold1）も実施
