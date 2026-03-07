@@ -318,6 +318,85 @@ def detect_regime(
 
 
 # ---------------------------------------------------------------------------
+# 7. Regime-Aware Parameter Adjustment
+# ---------------------------------------------------------------------------
+
+def get_regime_params(regime_result: dict, base_params: dict) -> dict:
+    """
+    レジームスコアに応じてパラメータとポジションサイズを動的に調整する。
+
+    Args:
+        regime_result: detect_regime()の戻り値
+        base_params: ベースとなるパラメータ（例: ベストパラメータ）
+
+    Returns:
+        調整済みパラメータ + position_ratio（実際に投資する比率）
+
+    2つの調整:
+    A) スコア調整（パラメータの連続変化）:
+       スコア 1.0 → top_n=2, lookback=100, trailing_stop=-0.027
+       スコア 0.7 → top_n=3, lookback=80,  trailing_stop=-0.035
+       スコア 0.5 → top_n=4, lookback=60,  trailing_stop=-0.040
+       スコア 0.3 → top_n=5, lookback=40,  trailing_stop=-0.020 (タイト)
+       スコア 0.0 → top_n=5, lookback=40,  trailing_stop=-0.015 (超タイト)
+
+    B) 確信度調整（ポジションサイズ）:
+       crash    → position_ratio=0.0  (全キャッシュ)
+       bear     → position_ratio=0.3  (30%投資)
+       choppy   → position_ratio=0.6  (60%投資)
+       bull 低確信 (score<0.6) → position_ratio=0.8
+       bull 高確信 (score>=0.6) → position_ratio=1.0  (フル投資)
+    """
+    score = float(regime_result.get("score", 0.5))
+    regime = regime_result.get("regime", "choppy")
+
+    # ------------------------------------------------------------------
+    # A) スコア調整（連続補間）
+    # ------------------------------------------------------------------
+
+    # top_n: 2〜5 に連続変化
+    top_n = int(round(2 + (1 - score) * 3))
+    top_n = max(2, min(5, top_n))
+
+    # lookback: 40〜100 に連続変化
+    lookback = int(40 + score * 60)
+    lookback = max(40, min(100, lookback))
+
+    # trailing_stop: リニア補間
+    # score >= 0.6: スコア=1.0 → -0.027, スコア=0.6 → -0.035
+    # score <  0.6: スコア=0.6 → -0.040, スコア=0.0 → -0.015
+    if score >= 0.6:
+        t = (score - 0.6) / 0.4          # 0 (score=0.6) → 1 (score=1.0)
+        trailing_stop = -(0.027 + (1 - t) * (0.035 - 0.027))
+    else:
+        t = score / 0.6                   # 0 (score=0.0) → 1 (score=0.6)
+        trailing_stop = -(0.015 + t * (0.040 - 0.015))
+
+    # ------------------------------------------------------------------
+    # B) 確信度調整（ポジションサイズ）
+    # ------------------------------------------------------------------
+    if regime == "crash":
+        position_ratio = 0.0
+    elif regime == "bear_trend":
+        position_ratio = 0.3
+    elif regime == "choppy":
+        position_ratio = 0.6
+    elif regime == "bull_trend":
+        position_ratio = 1.0 if score >= 0.6 else 0.8
+    else:
+        position_ratio = 0.6  # フォールバック
+
+    # ベースパラメータをコピーして上書き
+    adjusted = dict(base_params)
+    adjusted["top_n"] = top_n
+    adjusted["lookback"] = lookback
+    adjusted["trailing_stop"] = round(trailing_stop, 4)
+    adjusted["position_ratio"] = round(position_ratio, 2)
+
+    return adjusted
+
+
+# ---------------------------------------------------------------------------
 # Utility: bulk loader for prices_dict
 # ---------------------------------------------------------------------------
 

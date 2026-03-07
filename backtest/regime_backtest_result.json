@@ -1,0 +1,101 @@
+{
+  "run_at": "2026-03-08T00:16:15.354081",
+  "n_codes": 499,
+  "base_params": {
+    "lookback": 100,
+    "top_n": 2,
+    "rebalance": "weekly",
+    "trailing_stop": -0.0271,
+    "exit_threshold": 0.16,
+    "exit_lookback": 24,
+    "exit_rsi_w": 0.432,
+    "exit_vol_w": 0.23,
+    "exit_dd_w": 0.15,
+    "ret_w": 0.1,
+    "upside_capture_w": 0.098,
+    "green_w": 0.095,
+    "win_streak_w": 0.089,
+    "rs_w": 0.0
+  },
+  "periods": [
+    {
+      "name": "IS",
+      "start": "2016-01-01",
+      "end": "2020-12-31"
+    },
+    {
+      "name": "OOS2021",
+      "start": "2021-01-01",
+      "end": "2022-12-31"
+    },
+    {
+      "name": "OOS2023",
+      "start": "2023-01-01",
+      "end": "2024-12-31"
+    }
+  ],
+  "fixed": {
+    "IS": {
+      "total_return_pct": 1.18,
+      "sharpe": 0.145,
+      "max_dd_pct": 37.32,
+      "nikkei_pct": 84.47,
+      "n_trades": 174
+    },
+    "OOS2021": {
+      "total_return_pct": -7.68,
+      "sharpe": 0.234,
+      "max_dd_pct": 51.31,
+      "nikkei_pct": 55.18,
+      "n_trades": 84
+    },
+    "OOS2023": {
+      "total_return_pct": 105.66,
+      "sharpe": 1.206,
+      "max_dd_pct": 23.19,
+      "nikkei_pct": 49.07,
+      "n_trades": 77
+    }
+  },
+  "regime": {
+    "IS": {
+      "total_return_pct": 4.07,
+      "sharpe": 0.155,
+      "max_dd_pct": 16.39,
+      "nikkei_pct": 84.47,
+      "n_trades": 171,
+      "regime_distribution": {
+        "bear_trend": 14.2,
+        "crash": 7.3,
+        "choppy": 54.2,
+        "bull_trend": 24.2
+      }
+    },
+    "OOS2021": {
+      "total_return_pct": -21.79,
+      "sharpe": -0.703,
+      "max_dd_pct": 25.17,
+      "nikkei_pct": 55.18,
+      "n_trades": 84,
+      "regime_distribution": {
+        "choppy": 64.1,
+        "bull_trend": 20.4,
+        "bear_trend": 15.5
+      }
+    },
+    "OOS2023": {
+      "total_return_pct": 76.58,
+      "sharpe": 1.384,
+      "max_dd_pct": 9.79,
+      "nikkei_pct": 49.07,
+      "n_trades": 77,
+      "regime_distribution": {
+        "choppy": 54.8,
+        "bear_trend": 8.7,
+        "bull_trend": 34.6,
+        "crash": 1.9
+      }
+    }
+  },
+  "elapsed_sec": 357.7
+}

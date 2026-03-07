@@ -444,6 +444,27 @@
       }
     },
     {
+      "at": "2026-03-08T00:04:34.995134",
+      "id": "volume_confirmed_trend_v1",
+      "desc": "出来高確認型トレンド: volume_confirm/volume_slope/accumulation/up_down_vol_ratioなど出来高系ファクターを重視。偽ブレイクアウト排除で2021-2022のトラップ回避。exit_dd_w高めで損切り早期化。lb=100/tn=2維持",
+      "win": false,
+      "delta_sharpe": -119.668,
+      "sharpe": -0.479,
+      "total_return_pct": -70.49,
+      "alpha_pct": -216.7,
+      "max_dd_pct": 79.91,
+      "params": {
+        "lookback": 100,
+        "top_n": 2,
+        "rebalance": "weekly",
+        "ret_w": 0.06,
+        "rs_w": 0.0,
+        "green_w": 0.05,
+        "smooth_w": 0.04,
+        "resilience_w": 0.05
+      }
+    },
+    {
       "at": "2026-03-07T16:10:39.757303",
       "id": "intraday_trend_quality",
       "desc": "日中トレンド品質ファクター: (Close-Open)/(High-Low)の平均で機関の計画的売買 vs ディストリビューションを識別",
@@ -678,7 +699,7 @@
       "at": "2026-03-07T23:41:42.740603",
       "id": "quality_trend_v1",
       "desc": "品質トレンド追従: smooth/consistency/clean_momentum/price_efficiencyなど「トレンドの質」ファクターを集中配分。exit_vol_w高めで2022型ボラスパイク早期検知。lb=100/tn=2維持",
-      "win": false,
+      "win": 0,
       "delta_sharpe": -119.741,
       "sharpe": -1.148,
       "total_return_pct": -86.5,
@@ -1116,5 +1137,5 @@
       }
     }
   ],
-  "total": 43
+  "total": 44
 }

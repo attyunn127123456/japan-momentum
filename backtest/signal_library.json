@@ -277,6 +277,16 @@
       "best_weight": null,
       "sharpe_contribution": -119.741,
       "added_at": "2026-03-07"
+    },
+    {
+      "id": "volume_confirmed_trend_v1",
+      "desc": "出来高確認型トレンド: volume_confirm/volume_slope/accumulation/up_down_vol_ratioなど出来高系ファクターを重視。偽ブレイクアウト排除で2021-2022のトラップ回避。exit_dd_w高めで損切り早期化。lb=100/tn=2維持",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -119.668,
+      "added_at": "2026-03-08"
     }
   ],
   "current_weights": {

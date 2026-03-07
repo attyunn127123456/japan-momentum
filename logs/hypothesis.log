@@ -27,3 +27,9 @@
 事前計算完了: 3286銘柄×3lb / 791.3秒
 /Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
   return_df = all_prices.pct_change()
+事前計算完了: 3286銘柄×1lb / 266.1秒
+完了: volume_confirmed_trend_v1 | delta_sharpe=-119.668 | ❌ LOSE | 1070秒
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(

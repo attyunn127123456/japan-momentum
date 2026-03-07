@@ -508,7 +508,8 @@ def _eval_params_regime(default_params, factor_dfs, prices_dict, rebal_dates, ni
 
 
 def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, return_df,
-                long_short=False, use_open_prices=False, regime_params=None):
+                long_short=False, use_open_prices=False, regime_params=None,
+                position_ratio=1.0):
     # regime_params が渡された場合はレジーム適応型モードで実行
     if regime_params is not None:
         return _eval_params_regime(params, factor_dfs, prices_dict, rebal_dates, nikkei, start,
@@ -840,6 +841,8 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
                     continue  # 下のif cnt > 0をスキップ
         if cnt > 0:
             r = tot / cnt
+            # position_ratio < 1.0: 残りをキャッシュ保持（リターン0%）
+            r = r * position_ratio
             portfolio *= (1 + r)
             returns.append(r)
 
