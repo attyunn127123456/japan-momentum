@@ -71,7 +71,7 @@ def score_on_date(prices_dict: dict, nikkei: pd.Series, ticker: str, date: pd.Ti
     return scores["total"] if scores["valid"] else None
 
 
-def run_backtest(start: str, end: str, top_n: int, rebalance: str, use_regime: bool = False) -> dict:
+def run_backtest(start: str, end: str, top_n: int, rebalance: str, use_regime: bool = False, long_short: bool = False) -> dict:
     from universe import get_top_liquid_tickers
     from fetch_cache import read_ohlcv
     raw_codes = get_top_liquid_tickers(500)
@@ -115,6 +115,12 @@ def run_backtest(start: str, end: str, top_n: int, rebalance: str, use_regime: b
 
         top_codes = sorted(scores, key=lambda x: scores[x], reverse=True)[:top_n]
         top_tickers = [f'{c}.T' for c in top_codes]
+
+        # ロングショートモード: 下位top_n銘柄のショートリターンを追跡
+        if long_short and len(scores) >= top_n * 2:
+            short_codes = sorted(scores, key=lambda x: scores[x])[:top_n]
+        else:
+            short_codes = []
 
         # 現在ポートフォリオ評価
         current_value = 0.0
@@ -318,5 +324,6 @@ if __name__ == "__main__":
     parser.add_argument("--end", default=datetime.now().strftime("%Y-%m-%d"))
     parser.add_argument("--top-n", type=int, default=5)
     parser.add_argument("--rebalance", default="daily", choices=["daily", "weekly", "biweekly", "monthly"])
+    parser.add_argument("--long-short", action="store_true", help="ロングショート戦略（上位N買い+下位N空売り）")
     args = parser.parse_args()
-    run_backtest(args.start, args.end, args.top_n, args.rebalance)
+    run_backtest(args.start, args.end, args.top_n, args.rebalance, long_short=args.long_short)

@@ -1,0 +1,19 @@
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+=== 10年バックテスト開始 (19:58:17) ===
+パラメータ: lb=60, top_n=3, rebalance=weekly
+  ユニバース: キャッシュから3780銘柄読み込み
+データロード完了: 3774銘柄 (7秒)
+事前計算完了: 3774銘柄×5lb / 3008.7秒
+precompute完了 (3012秒)
+/tmp/backtest_10y.py:38: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  ret_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
+eval_params完了 (9秒)
+
+=== 10年バックテスト結果 ===
+期間: 2016-01-01 〜 2026-03-06
+total_return: +-46.72%
+sharpe:       0.477
+max_dd:       91.43%
+総時間:       3029秒
+結果保存: backtest/backtest_10y_result.json

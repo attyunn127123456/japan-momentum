@@ -360,7 +360,7 @@ def compute_exit_signal(prices_df, current_date, entry_date, params):
         return False, 0.0
 
 
-def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, return_df):
+def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, return_df, long_short=False):
     lb, tn = params["lookback"], params["top_n"]
     weights = {k: params.get(k+"_w", 0.0) for k in ["ret","rs","green","smooth","resilience"]}
     
@@ -594,6 +594,13 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
             continue
         top = row.nlargest(tn).index.tolist()
 
+        # ロングショートモード: 下位tn銘柄をショート
+        short_top = []
+        if long_short:
+            valid_row = row.dropna()
+            if len(valid_row) >= tn * 2:
+                short_top = valid_row.nsmallest(tn).index.tolist()
+
         # リターン計算（trailing_stop対応）
         tot, cnt = 0.0, 0
         if date in return_df.index and next_date in return_df.index:
@@ -601,6 +608,22 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
                 r = calc_period_return(code, date, next_date)
                 if r is not None:
                     tot += r; cnt += 1
+            if long_short and short_top:
+                short_tot, short_cnt = 0.0, 0
+                for code in short_top:
+                    r = calc_period_return(code, date, next_date)
+                    if r is not None:
+                        # ショート: リターン反転 - 借株コスト0.1%/週
+                        short_tot += (-r - 0.001)
+                        short_cnt += 1
+                if short_cnt > 0:
+                    # ロングとショートを平均
+                    long_avg = tot / cnt if cnt > 0 else 0.0
+                    short_avg = short_tot / short_cnt
+                    combined = (long_avg + short_avg) / 2
+                    portfolio *= (1 + combined)
+                    returns.append(combined)
+                    continue  # 下のif cnt > 0をスキップ
         if cnt > 0:
             r = tot / cnt
             portfolio *= (1 + r)
@@ -629,7 +652,7 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
             "n_trades": len(returns), "equity_curve": equity_curve}
 
 
-def run_grid(start="2023-01-01", end="2026-03-05", n_codes=2000):
+def run_grid(start="2016-01-01", end="2020-12-31", n_codes=2000):
     t0 = time.time()
     print(f"データ読み込み ({n_codes}銘柄)...", flush=True)
     codes = get_top_liquid_tickers(n_codes)
@@ -1053,8 +1076,8 @@ def run_walk_forward_validation(params, n_codes=500, codes=None):
 if __name__=="__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--start", default="2023-01-01")
-    parser.add_argument("--end", default=datetime.now().strftime("%Y-%m-%d"))
+    parser.add_argument("--start", default="2016-01-01")
+    parser.add_argument("--end", default="2020-12-31")
     parser.add_argument("--n", type=int, default=200)
     args = parser.parse_args()
     run_grid(start=args.start, end=args.end, n_codes=args.n)

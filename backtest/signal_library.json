@@ -19,7 +19,7 @@
     {
       "id": "green",
       "desc": "陽線率",
-      "status": "active",
+      "status": "rejected",
       "best_weight": 0.04,
       "sharpe_contribution": 0.027
     },
@@ -77,6 +77,16 @@
       "best_weight": null,
       "sharpe_contribution": 41.53,
       "added_at": "2026-03-06"
+    },
+    {
+      "id": "fold1_robust_drawdown_guard",
+      "desc": "Fold1耐性強化: 下落局面でのドローダウン抑制に特化した7ファクター構成（volume_confirm + resilience + smooth を防御軸に据える）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-07"
     }
   ],
   "current_weights": {
@@ -107,6 +117,6 @@
     "volume_acceleration_w": 0.05,
     "close_location_w": 0.05
   },
-  "baseline_sharpe": 1.194,
-  "last_updated": "2026-03-06"
+  "baseline_sharpe": 0.812,
+  "last_updated": "2026-03-07"
 }

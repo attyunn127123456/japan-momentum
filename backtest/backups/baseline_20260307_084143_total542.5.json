@@ -1,0 +1,42 @@
+{
+  "sharpe": 2.394,
+  "total_pct": 542.45,
+  "alpha_pct": 424.32,
+  "max_dd_pct": 40.58,
+  "params": {
+    "lookback": 40,
+    "top_n": 2,
+    "rebalance": "weekly",
+    "ret_w": 0.09172571588484228,
+    "green_w": 0.004489097395586231,
+    "smooth_w": 0.0,
+    "resilience_w": 0.0,
+    "high52_w": 0.0,
+    "omega_w": 0.0,
+    "cluster_boost_w": 0.0,
+    "ret_skip_w": 0.0,
+    "win_streak_w": 0.08129730617455636,
+    "momentum_consistency_w": 0.09576963761207115,
+    "upside_capture_w": 0.0,
+    "return_autocorr_w": 0.0,
+    "short_momentum_w": 0.09802995167783411,
+    "volume_confirm_w": 0.0,
+    "gap_momentum_w": 0.0,
+    "accumulation_w": 0.09967638654055386,
+    "volume_slope_w": 0.11131857659965684,
+    "clean_momentum_w": 0.10216271903874698,
+    "rs_w": 0.0
+  },
+  "equity_curve": [],
+  "date": "2026-03-07",
+  "hypothesis": "oos_best_rebase",
+  "oos_result": {
+    "total_return_pct": 542.45,
+    "sharpe": 2.394,
+    "max_dd_pct": 40.58,
+    "alpha_pct": 424.32,
+    "nikkei_pct": 118.13,
+    "n_trades": 240
+  },
+  "note": "Rebased to best OOS Sharpe=2.394 from evolution_log. Factor limit=7 applied."
+}

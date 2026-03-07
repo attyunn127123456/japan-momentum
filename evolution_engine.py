@@ -63,8 +63,10 @@ DONE_FILE   = Path('backtest/hypothesis_done.json')
 EVO_LOG     = Path('backtest/evolution_log.json')
 
 MAX_ACTIVE_FACTORS = 7  # 同時に使えるファクターの最大数（0より大きいウェイトを持つもの）
-START_TRAIN = '2023-01-01'   # 訓練期間
-START_VAL   = '2025-01-01'   # 検証期間（汎化性チェック用）
+START_TRAIN = '2016-01-01'   # IS訓練期間（OOSと重複しないよう2016-2020に固定）
+END_TRAIN   = '2020-12-31'   # IS訓練期間終了
+START_VAL   = '2021-01-01'   # 検証期間開始（fold1と同期）
+END_VAL     = '2022-12-31'   # 検証期間終了
 END         = datetime.now().strftime('%Y-%m-%d')
 N_CODES     = 4000
 
@@ -411,11 +413,22 @@ def run_evolution():
     factor_dfs = precompute(prices_dict, nikkei, [20, 40, 60, 80, 100])
     
     return_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
+    # 全期間 date_map（Walk-Forward検証用）
     daily_d   = get_rebalance_dates(warmup, END, 'daily')
     weekly_d  = get_rebalance_dates(warmup, END, 'weekly')
     monthly_d = get_rebalance_dates(warmup, END, 'monthly')
     date_map = {'daily': daily_d, 'weekly': weekly_d, 'monthly': monthly_d}
-    
+
+    # IS訓練期間専用 date_map（OOSと重複しない 2016〜2020）
+    daily_train   = get_rebalance_dates(warmup, END_TRAIN, 'daily')
+    weekly_train  = get_rebalance_dates(warmup, END_TRAIN, 'weekly')
+    date_map_train = {'daily': daily_train, 'weekly': weekly_train}
+
+    # 検証期間専用 date_map（2021〜2022）
+    daily_val   = get_rebalance_dates(START_VAL, END_VAL, 'daily')
+    weekly_val  = get_rebalance_dates(START_VAL, END_VAL, 'weekly')
+    date_map_val = {'daily': daily_val, 'weekly': weekly_val}
+
     # ---- Step1: queueの手動仮説を先に処理 ----
     for hypo in queue['queue']:
         if hypo['status'] == 'pending':
@@ -435,7 +448,7 @@ def run_evolution():
         'ret_w':0.3,'rs_w':0.3,'green_w':0.2,'smooth_w':0.2,'resilience_w':0.0
     })
     local_results = run_optuna_optimization(
-        bp, factor_dfs, prices_dict, nikkei, date_map,
+        bp, factor_dfs, prices_dict, nikkei, date_map_train,
         START_TRAIN, return_df, n_trials=300
     )
     
@@ -443,7 +456,7 @@ def run_evolution():
     best_local = None
     best_score = -99
     for p, r_train in local_results:
-        r_val = eval_params(p, factor_dfs, prices_dict, date_map[p['rebalance']], nikkei, START_VAL, return_df)
+        r_val = eval_params(p, factor_dfs, prices_dict, date_map_val[p['rebalance']], nikkei, START_VAL, return_df)
         adopted, score, reasons = evaluate(r_train, r_val, baseline)
         print(f'  sharpe={r_train["sharpe"]:.3f} score={score:+.3f} {"✅" if adopted else "❌"} lb={p["lookback"]} tn={p["top_n"]}', flush=True)
         if score > best_score:
@@ -600,8 +613,8 @@ def run_evolution():
         # 既存重みを少し下げる
         test_p['ret_w'] = max(0.1, bp.get('ret_w', 0.3) - 0.05)
         
-        r_train = eval_params(test_p, fds_copy, prices_dict, date_map[test_p['rebalance']], nikkei, START_TRAIN, return_df)
-        r_val   = eval_params(test_p, fds_copy, prices_dict, date_map[test_p['rebalance']], nikkei, START_VAL, return_df)
+        r_train = eval_params(test_p, fds_copy, prices_dict, date_map_train[test_p['rebalance']], nikkei, START_TRAIN, return_df)
+        r_val   = eval_params(test_p, fds_copy, prices_dict, date_map_val.get(test_p['rebalance'], date_map_val['weekly']), nikkei, START_VAL, return_df)
         adopted, score, reasons = evaluate(r_train, r_val, baseline)
         
         print(f'  {factor_name}: sharpe={r_train["sharpe"] if r_train else "N/A":.3f} {"✅採用" if adopted else "❌不採用"}', flush=True)
