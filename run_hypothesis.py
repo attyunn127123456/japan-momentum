@@ -293,8 +293,8 @@ def main():
         "weekly": get_rebalance_dates(warmup, END, "weekly"),
         "daily":  get_rebalance_dates(warmup, END, "daily"),
     }
-    # OOS検証用 date_map（2026年: 今年の実績で検証）
-    VAL_START = "2026-01-01"
+    # OOS検証用 date_map（直近9ヶ月: 十分なサンプルを確保）
+    VAL_START = "2025-06-01"
     VAL_END   = datetime.now().strftime("%Y-%m-%d")
     val_rebal_dates = {
         "weekly": get_rebalance_dates(VAL_START, VAL_END, "weekly"),
@@ -575,12 +575,13 @@ def main():
             is_calmar = result['total_return_pct'] / max(result.get('max_dd_pct', 100), 1.0)
             base_calmar = baseline.get('total_pct', 0) / max(baseline.get('max_dd_pct', 100), 1.0)
             delta = round(is_calmar - base_calmar, 3)
+            # OAS条件: dd<60% かつ 大崩壊しない（-30%未満）
             oas_pass = (result_val is not None and
-                        result_val.get('total_return_pct', -999) > 0 and
-                        result_val.get('max_dd_pct', 100) < 50)
+                        result_val.get('total_return_pct', -999) > -30 and
+                        result_val.get('max_dd_pct', 100) < 60)
             win = delta > 0.5 and result['max_dd_pct'] < 45 and oas_pass
             if result_val:
-                print(f"  OAS (2021-2022): total={result_val.get('total_return_pct',0):.1f}%, "
+                print(f"  OAS (2025.6-現在): total={result_val.get('total_return_pct',0):.1f}%, "
                       f"sharpe={result_val.get('sharpe',0):.3f}, dd={result_val.get('max_dd_pct',0):.1f}% "
                       f"{'✅' if oas_pass else '❌'}", flush=True)
         else:

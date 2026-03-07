@@ -50,3 +50,105 @@ Optuna TPE: 300trials 開始...
   新ベスト: is_total=300.5%, oos_total=-49.2%, calmar=-48.27, lb=40, tn=2
   新ベスト: is_total=447.7%, oos_total=-61.5%, calmar=-47.89, lb=40, tn=1
   新ベスト: is_total=683.2%, oos_total=-41.8%, calmar=-45.07, lb=40, tn=2
+  新ベスト: is_total=90.7%, oos_total=6.7%, calmar=0.77, lb=40, tn=2
+  新ベスト: is_total=6683.1%, oos_total=-47.6%, calmar=3.58, lb=40, tn=1
+  新ベスト: is_total=9040.3%, oos_total=-50.7%, calmar=23.32, lb=40, tn=1
+Optuna完了: 300trials, best_total=23.3%
+  sharpe=3.096 score=+9040.340 ❌ lb=40 tn=1
+  sharpe=2.955 score=+6914.030 ❌ lb=40 tn=1
+  sharpe=2.949 score=+6683.100 ❌ lb=40 tn=1
+  sharpe=2.928 score=+6363.130 ❌ lb=40 tn=1
+  sharpe=2.914 score=+6219.190 ❌ lb=40 tn=1
+  sharpe=2.851 score=+5465.000 ❌ lb=40 tn=1
+  sharpe=2.843 score=+5418.560 ❌ lb=40 tn=1
+  sharpe=2.846 score=+5414.300 ❌ lb=40 tn=1
+  sharpe=2.827 score=+5210.470 ❌ lb=40 tn=1
+  sharpe=2.823 score=+5148.190 ❌ lb=40 tn=1
+  sharpe=2.813 score=+5057.490 ❌ lb=40 tn=1
+  sharpe=2.803 score=+4998.690 ❌ lb=40 tn=1
+  sharpe=2.793 score=+4906.470 ❌ lb=40 tn=1
+  sharpe=2.746 score=+4441.700 ❌ lb=40 tn=1
+  sharpe=2.729 score=+4280.250 ❌ lb=40 tn=1
+  sharpe=2.714 score=+4106.060 ❌ lb=40 tn=1
+  sharpe=2.704 score=+4019.790 ❌ lb=40 tn=1
+  sharpe=2.694 score=+3949.810 ❌ lb=40 tn=1
+  sharpe=2.689 score=+3957.750 ❌ lb=40 tn=1
+  sharpe=2.685 score=+3863.910 ❌ lb=40 tn=1
+
+--- ファクター整理 (cleanup_weak_signals) ---
+  cleanup_weak_signals: 変更なし
+
+--- OOS検証 (Walk-Forward Out-of-Sample) ---
+
+=== OOS検証: 2020-01-01〜2026-03-08 ===
+バックフィル対象: 41件（レート制限回避のためスキップ）
+OOS検証: 3774銘柄ロード完了
+事前計算完了: 3774銘柄×1lb / 419.1秒
+/Users/panda/Projects/japan-momentum/optimize.py:1208: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+OOS結果: total=2792.1%, sharpe=2.735, max_dd=68.64%, alpha=2673.13%, nikkei=118.97%
+
+OOS vs 訓練: OOS=+2792.1% / 訓練=+3554.1% / OOS sharpe=2.735 max_dd=68.6%
+✅ OOS合格: sharpe=2.735 (要≥2.735), total_return=2792.1% (要>50.0%)
+
+--- 新ファクター試験 ---
+
+--- 組み合わせテスト 開始 ---
+候補仮説: 3件
+データロード (200銘柄)...
+  ユニバース: キャッシュから200銘柄読み込み
+  200銘柄ロード完了
+事前計算完了: 200銘柄×4lb / 47.9秒
+/Users/panda/Projects/japan-momentum/combination_search.py:134: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df  = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
+組み合わせ数: 3
+  combo_oos_validation+short_squeeze_momentum: エラー 90
+  combo_oos_validation+sector_neutral_momentum: エラー 90
+  combo_short_squeeze_momentum+sector_neutral_momentum: sharpe=0.749 delta=-4.139 score=+8.870 不採用
+組み合わせテスト完了: 1件 / combo_log保存
+
+=== Signal Search 開始 ===
+  ユニバース: キャッシュから200銘柄読み込み
+  200銘柄ロード完了
+事前計算完了: 200銘柄×1lb / 12.2秒
+/Users/panda/Projects/japan-momentum/signal_search.py:69: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = pd.DataFrame({c: prices_dict[c]["AdjC"] for c in prices_dict}).pct_change()
+
+[Step1] Ablation Test
+  ベースライン sharpe=0.812
+  ⚠️  topn1_extreme_concentration: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  vol_divergence_distribution_detect: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  fold1_robust_drawdown_guard: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  intraday_trend_quality: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  recovery_speed_factor: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  short_lookback_exploration: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  daily_rebalance_unlock: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  unexplored_ohlcv_factors_batch1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  rsi_heavy_early_exit: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  atr_adaptive_trailing_stop: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  return_skewness_filter: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  exit_volume_divergence_enhanced: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  sparse_tn4_lb60_antioverfitA: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  oos_proven_tn3_lb60_antioverfitB: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  mid_diverse_tn5_lb80_antioverfitC: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  vol_adj_positive_weeks: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  exit_rsi_dominant_v2: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  exit_rsi_dominant_v3: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  open_price_entry_exit: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  loose_trailing_stop_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  resilience_dominant_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  quality_trend_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  volume_confirmed_trend_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  sector_neutral_momentum: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  short_squeeze_momentum: sharpe低下 +0.0000 → candidate（他との相性あり）
+
+[Step2] 新シグナル追加テスト
+  ⚠️  rsi14: ファクターデータなし → スキップ
+  ⚠️  ma_deviation: ファクターデータなし → スキップ
+  ⚠️  momentum_12_1: ファクターデータなし → スキップ
+  ⚠️  eps_growth: ファクターデータなし → スキップ
+  ⚠️  rev_growth: ファクターデータなし → スキップ
+  ⚠️  credit_ratio: ファクターデータなし → スキップ
+
+[Step3] 全シグナル同時重み最適化
+  最適化対象: ['topn1_extreme_concentration_w', 'vol_divergence_distribution_detect_w', 'fold1_robust_drawdown_guard_w', 'intraday_trend_quality_w', 'recovery_speed_factor_w', 'short_lookback_exploration_w', 'daily_rebalance_unlock_w', 'unexplored_ohlcv_factors_batch1_w', 'rsi_heavy_early_exit_w', 'atr_adaptive_trailing_stop_w', 'return_skewness_filter_w', 'exit_volume_divergence_enhanced_w', 'sparse_tn4_lb60_antioverfitA_w', 'oos_proven_tn3_lb60_antioverfitB_w', 'mid_diverse_tn5_lb80_antioverfitC_w', 'vol_adj_positive_weeks_w', 'exit_rsi_dominant_v2_w', 'exit_rsi_dominant_v3_w', 'open_price_entry_exit_w', 'loose_trailing_stop_v1_w', 'resilience_dominant_v1_w', 'quality_trend_v1_w', 'volume_confirmed_trend_v1_w', 'sector_neutral_momentum_w', 'short_squeeze_momentum_w']

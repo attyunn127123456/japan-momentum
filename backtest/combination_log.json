@@ -1,36 +1,5 @@
 [
   {
-    "at": "2026-03-05T16:58:50.609728",
-    "id": "combo_high52_midcap+high52_w_boost",
-    "hypotheses": [
-      "high52_midcap",
-      "high52_w_boost"
-    ],
-    "merged_params": {
-      "lookback": 80,
-      "top_n": 10,
-      "rebalance": "weekly",
-      "ret_w": 0.225,
-      "rs_w": 0.225,
-      "green_w": 0.15,
-      "smooth_w": 0.15,
-      "resilience_w": 0.0
-    },
-    "sharpe": 0.453,
-    "total_return_pct": 4.27,
-    "alpha_pct": -93.93,
-    "max_dd_pct": 23.3,
-    "delta_sharpe": -4.717,
-    "score": 4.27,
-    "adopted": 0,
-    "reasons": [
-      "total_return=+4.3%",
-      "max_dd=23.3%",
-      "n_trades=116",
-      "delta_return=-236.8%"
-    ]
-  },
-  {
     "at": "2026-03-05T17:31:50.576268",
     "id": "combo_high52_all_universe+high52_midcap",
     "hypotheses": [
@@ -11553,6 +11522,37 @@
       "max_dd=21.5%",
       "n_trades=116",
       "delta_return=-3547.4%"
+    ]
+  },
+  {
+    "at": "2026-03-08T02:20:21.850788",
+    "id": "combo_short_squeeze_momentum+sector_neutral_momentum",
+    "hypotheses": [
+      "short_squeeze_momentum",
+      "sector_neutral_momentum"
+    ],
+    "merged_params": {
+      "lookback": 80,
+      "top_n": 10,
+      "rebalance": "weekly",
+      "ret_w": 0.275,
+      "rs_w": 0.3,
+      "green_w": 0.2,
+      "smooth_w": 0.2,
+      "resilience_w": 0.0
+    },
+    "sharpe": 0.749,
+    "total_return_pct": 8.87,
+    "alpha_pct": -90.09,
+    "max_dd_pct": 20.45,
+    "delta_sharpe": -4.139,
+    "score": 8.87,
+    "adopted": 0,
+    "reasons": [
+      "total_return=+8.9%",
+      "max_dd=20.4%",
+      "n_trades=116",
+      "delta_return=-3545.2%"
     ]
   }
 ]
