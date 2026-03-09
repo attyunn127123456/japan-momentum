@@ -66,7 +66,7 @@ def precompute(prices_dict, nikkei, lookbacks, use_cache=True):
     down_mask = (nk_rets < -0.01).astype(float)
     
     # lb -> factor -> {code: Series}
-    data = {lb: {"ret":{},"rs":{},"green":{},"smooth":{},"resilience":{},"ret5":{},"ret10":{},"omega":{},"high52":{},"close_location":{},"range_expand":{},"win_streak":{},"sector_momentum":{},"overnight_return":{},"volume_acceleration":{},"higher_lows":{},"body_strength":{},"vol_return_corr":{},"accumulation":{},"momentum_consistency":{},"upside_capture":{},"gap_momentum":{},"volume_confirm":{},"ret_skip":{},"cluster_boost":{},"return_autocorr":{},"volume_slope":{},"clean_momentum":{}} for lb in lookbacks}
+    data = {lb: {"ret":{},"rs":{},"green":{},"smooth":{},"resilience":{},"ret5":{},"ret10":{},"omega":{},"high52":{},"close_location":{},"range_expand":{},"win_streak":{},"sector_momentum":{},"overnight_return":{},"volume_acceleration":{},"higher_lows":{},"body_strength":{},"vol_return_corr":{},"accumulation":{},"momentum_consistency":{},"upside_capture":{},"gap_momentum":{},"volume_confirm":{},"ret_skip":{},"cluster_boost":{},"return_autocorr":{},"volume_slope":{},"clean_momentum":{},"variance_ratio":{},"vwap_drift":{},"vol_price_corr_trend":{},"run_quality":{},"stress_efficiency":{},"close_high_ratio_trend":{},"gap_recovery_strength":{},"volume_concentration":{}} for lb in lookbacks}
 
     # 業種コードマップを読み込む
     try:
@@ -263,6 +263,104 @@ def precompute(prices_dict, nikkei, lookbacks, use_cache=True):
             in_uptrend = (dd_from_peak >= -0.10).astype(float)
             clean_ret = (dr * in_uptrend).rolling(lb).sum().astype(float)
             data[lb]["clean_momentum"][code] = clean_ret
+
+            # --- 新ファクター8個 ---
+
+            # variance_ratio: Lo-MacKinlay分散比率（5日窓）
+            # VR = Var(5日リターン) / (5 * Var(1日リターン))  → 1超はトレンド持続
+            var1 = dr.rolling(lb, min_periods=20).var()
+            ret5_vr = (p / p.shift(5) - 1)
+            var5 = ret5_vr.rolling(max(lb // 5, 4), min_periods=4).var()
+            variance_ratio = (var5 / (5 * var1).replace(0, np.nan)).astype(float)
+            data[lb]["variance_ratio"][code] = variance_ratio
+
+            # vwap_drift: 終値のVWAP超過率の累積
+            if "Volume" in df.columns:
+                vol_vw = df["Volume"].reindex(p.index).replace(0, np.nan)
+                vwap_roll = (p * vol_vw).rolling(20, min_periods=5).sum() / vol_vw.rolling(20, min_periods=5).sum()
+                vwap_excess = (p / vwap_roll.replace(0, np.nan) - 1)
+                data[lb]["vwap_drift"][code] = vwap_excess.rolling(lb).mean().astype(float)
+            else:
+                data[lb]["vwap_drift"][code] = pd.Series(np.nan, index=p.index)
+
+            # vol_price_corr_trend: 出来高-リターン相関の変化方向（傾き）
+            if "Volume" in df.columns:
+                vol_vpt = df["Volume"].reindex(p.index).replace(0, np.nan)
+                vol_chg_vpt = vol_vpt.pct_change()
+                # rolling相関を計算し、その傾き（変化方向）を取る
+                roll_corr = dr.rolling(20, min_periods=10).corr(vol_chg_vpt)
+                corr_trend = roll_corr.rolling(lb, min_periods=10).apply(
+                    lambda x: np.polyfit(range(len(x)), x[~np.isnan(x)], 1)[0] if (~np.isnan(x)).sum() >= 5 else np.nan,
+                    raw=True
+                ).astype(float)
+                data[lb]["vol_price_corr_trend"][code] = corr_trend
+            else:
+                data[lb]["vol_price_corr_trend"][code] = pd.Series(np.nan, index=p.index)
+
+            # run_quality: 連続陽線の長さ×強さ
+            pos_ret = dr.clip(lower=0)
+            is_pos = (dr > 0).astype(float)
+            def _run_quality(x):
+                # xは(is_pos, pos_ret)をinterleavedで渡すため、単体dr窓で計算
+                best = 0.0
+                run_len = 0
+                run_sum = 0.0
+                for v in x:
+                    if v > 0:
+                        run_len += 1
+                        run_sum += v
+                        quality = run_len * run_sum
+                        best = max(best, quality)
+                    else:
+                        run_len = 0
+                        run_sum = 0.0
+                return best
+            run_q = dr.rolling(lb, min_periods=10).apply(_run_quality, raw=True).astype(float)
+            data[lb]["run_quality"][code] = run_q
+
+            # stress_efficiency: 市場下落日限定のprice efficiency
+            dm_se = down_mask.reindex(dr.index, fill_value=0)
+            stress_ret = dr * dm_se
+            stress_abs = dr.abs() * dm_se
+            stress_sum_ret = stress_ret.rolling(lb, min_periods=5).sum()
+            stress_sum_abs = stress_abs.rolling(lb, min_periods=5).sum().replace(0, np.nan)
+            data[lb]["stress_efficiency"][code] = (stress_sum_ret / stress_sum_abs).astype(float)
+
+            # close_high_ratio_trend: 高値引け率のトレンド（Williams %R傾き）
+            if "High" in df.columns and "Low" in df.columns:
+                h_chr = df["High"].reindex(p.index).ffill()
+                l_chr = df["Low"].reindex(p.index).ffill()
+                rng_chr = (h_chr - l_chr).replace(0, np.nan)
+                close_high_ratio = (p - l_chr) / rng_chr  # 0~1, 1=高値引け
+                chr_trend = close_high_ratio.rolling(lb, min_periods=10).apply(
+                    lambda x: np.polyfit(range(len(x)), x[~np.isnan(x)], 1)[0] if (~np.isnan(x)).sum() >= 5 else np.nan,
+                    raw=True
+                ).astype(float)
+                data[lb]["close_high_ratio_trend"][code] = chr_trend
+            else:
+                data[lb]["close_high_ratio_trend"][code] = pd.Series(np.nan, index=p.index)
+
+            # gap_recovery_strength: ギャップダウン後の日中回復力
+            if "Open" in df.columns:
+                op_gr = df["Open"].reindex(p.index).ffill()
+                gap_down = (op_gr / p.shift(1) - 1)
+                is_gap_down = (gap_down < -0.005).astype(float)  # 0.5%以上のギャップダウン
+                intraday_recovery = (p - op_gr) / op_gr.replace(0, np.nan)  # 日中回復
+                recovery_on_gap = (intraday_recovery * is_gap_down)
+                gap_count = is_gap_down.rolling(lb, min_periods=1).sum().replace(0, np.nan)
+                data[lb]["gap_recovery_strength"][code] = (recovery_on_gap.rolling(lb, min_periods=1).sum() / gap_count).astype(float)
+            else:
+                data[lb]["gap_recovery_strength"][code] = pd.Series(np.nan, index=p.index)
+
+            # volume_concentration: 出来高集中度（逆スコア: 分散購入=高スコア）
+            if "Volume" in df.columns:
+                vol_vc2 = df["Volume"].reindex(p.index).replace(0, np.nan)
+                vol_norm_vc = vol_vc2 / vol_vc2.rolling(lb, min_periods=5).sum().replace(0, np.nan)
+                # HHI (Herfindahl-Hirschman Index) の逆数 → 分散購入が高スコア
+                hhi = (vol_norm_vc ** 2).rolling(lb, min_periods=5).sum()
+                data[lb]["volume_concentration"][code] = (1.0 / hhi.replace(0, np.nan)).astype(float)
+            else:
+                data[lb]["volume_concentration"][code] = pd.Series(np.nan, index=p.index)
 
     # 業種モメンタムを一括計算（全銘柄のretが揃ってから）
     for lb in lookbacks:
@@ -787,6 +885,56 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
         cm_ranked = factor_dfs[lb]['clean_momentum'].rank(axis=1, pct=True)
         score_df = cm_ranked * clean_momentum_w if score_df is None else score_df.add(cm_ranked * clean_momentum_w, fill_value=0)
 
+    # --- 新ファクター8個 ---
+
+    # 分散比率ファクター
+    variance_ratio_w = params.get('variance_ratio_w', 0.0)
+    if variance_ratio_w > 0 and lb in factor_dfs and 'variance_ratio' in factor_dfs[lb]:
+        vr_ranked = factor_dfs[lb]['variance_ratio'].rank(axis=1, pct=True)
+        score_df = vr_ranked * variance_ratio_w if score_df is None else score_df.add(vr_ranked * variance_ratio_w, fill_value=0)
+
+    # VWAP乖離ファクター
+    vwap_drift_w = params.get('vwap_drift_w', 0.0)
+    if vwap_drift_w > 0 and lb in factor_dfs and 'vwap_drift' in factor_dfs[lb]:
+        vd_ranked = factor_dfs[lb]['vwap_drift'].rank(axis=1, pct=True)
+        score_df = vd_ranked * vwap_drift_w if score_df is None else score_df.add(vd_ranked * vwap_drift_w, fill_value=0)
+
+    # 出来高-価格相関トレンドファクター
+    vol_price_corr_trend_w = params.get('vol_price_corr_trend_w', 0.0)
+    if vol_price_corr_trend_w > 0 and lb in factor_dfs and 'vol_price_corr_trend' in factor_dfs[lb]:
+        vpct_ranked = factor_dfs[lb]['vol_price_corr_trend'].rank(axis=1, pct=True)
+        score_df = vpct_ranked * vol_price_corr_trend_w if score_df is None else score_df.add(vpct_ranked * vol_price_corr_trend_w, fill_value=0)
+
+    # 連続陽線品質ファクター
+    run_quality_w = params.get('run_quality_w', 0.0)
+    if run_quality_w > 0 and lb in factor_dfs and 'run_quality' in factor_dfs[lb]:
+        rq_ranked = factor_dfs[lb]['run_quality'].rank(axis=1, pct=True)
+        score_df = rq_ranked * run_quality_w if score_df is None else score_df.add(rq_ranked * run_quality_w, fill_value=0)
+
+    # ストレス効率ファクター
+    stress_efficiency_w = params.get('stress_efficiency_w', 0.0)
+    if stress_efficiency_w > 0 and lb in factor_dfs and 'stress_efficiency' in factor_dfs[lb]:
+        se_ranked = factor_dfs[lb]['stress_efficiency'].rank(axis=1, pct=True)
+        score_df = se_ranked * stress_efficiency_w if score_df is None else score_df.add(se_ranked * stress_efficiency_w, fill_value=0)
+
+    # 高値引け率トレンドファクター
+    close_high_ratio_trend_w = params.get('close_high_ratio_trend_w', 0.0)
+    if close_high_ratio_trend_w > 0 and lb in factor_dfs and 'close_high_ratio_trend' in factor_dfs[lb]:
+        chrt_ranked = factor_dfs[lb]['close_high_ratio_trend'].rank(axis=1, pct=True)
+        score_df = chrt_ranked * close_high_ratio_trend_w if score_df is None else score_df.add(chrt_ranked * close_high_ratio_trend_w, fill_value=0)
+
+    # ギャップ回復力ファクター
+    gap_recovery_strength_w = params.get('gap_recovery_strength_w', 0.0)
+    if gap_recovery_strength_w > 0 and lb in factor_dfs and 'gap_recovery_strength' in factor_dfs[lb]:
+        grs_ranked = factor_dfs[lb]['gap_recovery_strength'].rank(axis=1, pct=True)
+        score_df = grs_ranked * gap_recovery_strength_w if score_df is None else score_df.add(grs_ranked * gap_recovery_strength_w, fill_value=0)
+
+    # 出来高集中度（逆）ファクター
+    volume_concentration_w = params.get('volume_concentration_w', 0.0)
+    if volume_concentration_w > 0 and lb in factor_dfs and 'volume_concentration' in factor_dfs[lb]:
+        vconc_ranked = factor_dfs[lb]['volume_concentration'].rank(axis=1, pct=True)
+        score_df = vconc_ranked * volume_concentration_w if score_df is None else score_df.add(vconc_ranked * volume_concentration_w, fill_value=0)
+
     if score_df is None:
         return None
     
@@ -1149,6 +1297,9 @@ def run_optuna_optimization(baseline_params, factor_dfs, prices_dict, nikkei,
         'close_location_w', 'range_expand_w', 'win_streak_w',
         'accumulation_w', 'momentum_consistency_w', 'upside_capture_w',
         'return_autocorr_w', 'volume_slope_w', 'clean_momentum_w',
+        'variance_ratio_w', 'vwap_drift_w', 'vol_price_corr_trend_w',
+        'run_quality_w', 'stress_efficiency_w', 'close_high_ratio_trend_w',
+        'gap_recovery_strength_w', 'volume_concentration_w',
     ]
 
     base_lb = baseline_params.get('lookback', 60)
@@ -1164,7 +1315,10 @@ def run_optuna_optimization(baseline_params, factor_dfs, prices_dict, nikkei,
     alias_supported = ['short_momentum_w','cluster_boost_w','ret_skip_w',
                        'volume_confirm_w','gap_momentum_w','omega_w',
                        'accumulation_w','momentum_consistency_w','upside_capture_w',
-                       'return_autocorr_w','volume_slope_w','clean_momentum_w']
+                       'return_autocorr_w','volume_slope_w','clean_momentum_w',
+                       'variance_ratio_w','vwap_drift_w','vol_price_corr_trend_w',
+                       'run_quality_w','stress_efficiency_w','close_high_ratio_trend_w',
+                       'gap_recovery_strength_w','volume_concentration_w']
     # factor_dfsにあるものはcorr計算でフィルタ、aliasはそのまま通す
     fdf_factors = [f[:-2] if f.endswith("_w") else f for f in all_weight_factors
                    if f[:-2] in existing_factors]
