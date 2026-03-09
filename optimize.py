@@ -283,39 +283,25 @@ def precompute(prices_dict, nikkei, lookbacks, use_cache=True):
             else:
                 data[lb]["vwap_drift"][code] = pd.Series(np.nan, index=p.index)
 
-            # vol_price_corr_trend: 出来高-リターン相関の変化方向（傾き）
+            # vol_price_corr_trend: 出来高-リターン相関の変化方向（後半-前半の差）
             if "Volume" in df.columns:
                 vol_vpt = df["Volume"].reindex(p.index).replace(0, np.nan)
                 vol_chg_vpt = vol_vpt.pct_change()
-                # rolling相関を計算し、その傾き（変化方向）を取る
                 roll_corr = dr.rolling(20, min_periods=10).corr(vol_chg_vpt)
-                corr_trend = roll_corr.rolling(lb, min_periods=10).apply(
-                    lambda x: np.polyfit(range(len(x)), x[~np.isnan(x)], 1)[0] if (~np.isnan(x)).sum() >= 5 else np.nan,
-                    raw=True
-                ).astype(float)
+                # 傾きの近似: 後半平均 - 前半平均
+                half = max(lb // 2, 5)
+                corr_recent = roll_corr.rolling(half, min_periods=3).mean()
+                corr_old = roll_corr.shift(half).rolling(half, min_periods=3).mean()
+                corr_trend = (corr_recent - corr_old).astype(float)
                 data[lb]["vol_price_corr_trend"][code] = corr_trend
             else:
                 data[lb]["vol_price_corr_trend"][code] = pd.Series(np.nan, index=p.index)
 
-            # run_quality: 連続陽線の長さ×強さ
-            pos_ret = dr.clip(lower=0)
-            is_pos = (dr > 0).astype(float)
-            def _run_quality(x):
-                # xは(is_pos, pos_ret)をinterleavedで渡すため、単体dr窓で計算
-                best = 0.0
-                run_len = 0
-                run_sum = 0.0
-                for v in x:
-                    if v > 0:
-                        run_len += 1
-                        run_sum += v
-                        quality = run_len * run_sum
-                        best = max(best, quality)
-                    else:
-                        run_len = 0
-                        run_sum = 0.0
-                return best
-            run_q = dr.rolling(lb, min_periods=10).apply(_run_quality, raw=True).astype(float)
+            # run_quality: 連続陽線の長さ×強さ（近似: 陽線率×平均陽線リターン×lb）
+            is_pos_rq = (dr > 0).astype(float)
+            pos_rate = is_pos_rq.rolling(lb, min_periods=10).mean()
+            pos_mean = dr.clip(lower=0).rolling(lb, min_periods=10).mean()
+            run_q = (pos_rate * pos_mean * lb).astype(float)
             data[lb]["run_quality"][code] = run_q
 
             # stress_efficiency: 市場下落日限定のprice efficiency
@@ -326,16 +312,16 @@ def precompute(prices_dict, nikkei, lookbacks, use_cache=True):
             stress_sum_abs = stress_abs.rolling(lb, min_periods=5).sum().replace(0, np.nan)
             data[lb]["stress_efficiency"][code] = (stress_sum_ret / stress_sum_abs).astype(float)
 
-            # close_high_ratio_trend: 高値引け率のトレンド（Williams %R傾き）
+            # close_high_ratio_trend: 高値引け率のトレンド（後半平均-前半平均）
             if "High" in df.columns and "Low" in df.columns:
                 h_chr = df["High"].reindex(p.index).ffill()
                 l_chr = df["Low"].reindex(p.index).ffill()
                 rng_chr = (h_chr - l_chr).replace(0, np.nan)
                 close_high_ratio = (p - l_chr) / rng_chr  # 0~1, 1=高値引け
-                chr_trend = close_high_ratio.rolling(lb, min_periods=10).apply(
-                    lambda x: np.polyfit(range(len(x)), x[~np.isnan(x)], 1)[0] if (~np.isnan(x)).sum() >= 5 else np.nan,
-                    raw=True
-                ).astype(float)
+                half_chr = max(lb // 2, 5)
+                chr_recent = close_high_ratio.rolling(half_chr, min_periods=3).mean()
+                chr_old = close_high_ratio.shift(half_chr).rolling(half_chr, min_periods=3).mean()
+                chr_trend = (chr_recent - chr_old).astype(float)
                 data[lb]["close_high_ratio_trend"][code] = chr_trend
             else:
                 data[lb]["close_high_ratio_trend"][code] = pd.Series(np.nan, index=p.index)
