@@ -593,19 +593,29 @@ def run_paper_trade_from_signals():
         return None
 
     sig = json.loads(signal_path.read_text())
-    recommended = sig.get("recommended", [])
+    # top5 (new format) or recommended (legacy) に対応
+    recommended = sig.get("top5", sig.get("recommended", []))
     if not recommended:
         print("推奨銘柄なし")
         return None
+
+    # MA100フィルターがキャッシュ指示の場合はスキップ
+    market_filter = sig.get("market_filter", {})
+    if market_filter.get("should_be_cash", False):
+        print("⚠ MA100フィルター発動中: 全ポジション決済モード")
 
     # エンジン初期化 or 復元
     engine = PaperTradingEngine(initial_capital=10_000_000)
     engine.load_state()
 
-    # 現在価格の取得
-    all_scores = sig.get("all_scores", sig.get("top20", []))
+    # 現在価格の取得（top5/top20/all_scoresから）
+    all_entries = sig.get("top20", sig.get("all_scores", recommended))
     current_prices = {}
-    for s in all_scores:
+    for s in all_entries:
+        if "price" in s and s["price"]:
+            current_prices[s["code"]] = s["price"]
+    # top5の価格も追加
+    for s in recommended:
         if "price" in s and s["price"]:
             current_prices[s["code"]] = s["price"]
 
