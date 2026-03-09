@@ -56,7 +56,7 @@ from pathlib import Path
 from fetch_cache import read_ohlcv
 from universe import get_top_liquid_tickers
 from backtest import get_rebalance_dates, get_nikkei_history
-from optimize import precompute, eval_params, run_optuna_optimization, run_oos_validation, run_walk_forward_validation
+from optimize import precompute, eval_params, run_optuna_optimization, run_oos_validation, run_walk_forward_validation, eval_walkforward
 
 QUEUE_FILE  = Path('backtest/hypothesis_queue.json')
 DONE_FILE   = Path('backtest/hypothesis_done.json')
@@ -77,8 +77,12 @@ OOS_TOTAL_RETURN_MIN = 50.0  # %
 # ========== 複合評価ルール ==========
 def evaluate(result_train, result_val, baseline):
     """
-    total_return最大化スコアで採用/棄却を判定。
-    目標: 日経+98%の期間で+300%（年率約60%）を取ること。
+    Calmar Ratio + DD制約 で採用/棄却を判定。
+    目標: DD ≤ 30%（絶対条件）+ Sharpe最大化。
+    
+    Calmar Ratio = 年率リターン / 最大DD
+    DD制約: DD > 30% なら重ペナルティ、DD > 40% なら棄却。
+    
     Returns: (adopted: bool, score: float, reasons: list)
     """
     reasons = []
@@ -87,26 +91,65 @@ def evaluate(result_train, result_val, baseline):
         return False, -99, ['訓練期間: 結果なし']
 
     r = result_train
+    dd = r['max_dd_pct']
+    total_ret = r['total_return_pct']
+    sharpe = r['sharpe']
 
-    # スコア: total_return最大化（max_dd >= 40%なら大幅ペナルティ）
-    score = r['total_return_pct'] - max(0, r['max_dd_pct'] - 40) * 5
-    reasons.append(f'total_return={r["total_return_pct"]:+.1f}%')
-    reasons.append(f'max_dd={r["max_dd_pct"]:.1f}%')
+    # Calmar Ratio 計算（年率リターン / MaxDD）
+    # total_return_pctを年数で割って年率化（近似）
+    n_trades = r.get('n_trades', 52)
+    est_years = max(n_trades / 52, 0.5)  # 週次リバランス想定
+    annual_ret = total_ret / est_years
+    calmar = annual_ret / max(dd, 1.0)
 
-    if r['max_dd_pct'] >= 40:
-        reasons.append(f'❌ max_dd >= 40% ペナルティ適用')
+    reasons.append(f'total_return={total_ret:+.1f}%')
+    reasons.append(f'max_dd={dd:.1f}%')
+    reasons.append(f'sharpe={sharpe:.3f}')
+    reasons.append(f'calmar={calmar:.2f}')
+
+    # スコア: Calmar Ratio ベース（DD制約付き）
+    if dd <= 30:
+        # DD 30%以下: Calmar × 10 + Sharpeボーナス
+        score = calmar * 10 + sharpe * 5
+        reasons.append(f'✅ DD ≤ 30%')
+    elif dd <= 40:
+        # DD 30-40%: ペナルティ付き
+        penalty = (dd - 30) * 3
+        score = calmar * 10 + sharpe * 5 - penalty
+        reasons.append(f'⚠️ DD 30-40% ペナルティ={penalty:.1f}')
+    else:
+        # DD > 40%: 大幅ペナルティ
+        score = calmar * 10 - (dd - 30) * 10
+        reasons.append(f'❌ DD > 40% 大幅ペナルティ')
 
     # 取引数チェック
-    if r['n_trades'] < 20:
-        reasons.append(f'❌ 取引数不足 n={r["n_trades"]}')
+    if n_trades < 20:
+        reasons.append(f'❌ 取引数不足 n={n_trades}')
         score -= 50
     else:
-        reasons.append(f'n_trades={r["n_trades"]}')
+        reasons.append(f'n_trades={n_trades}')
 
-    # 採用条件: total_returnがベースラインより+5%以上改善、max_dd < 45%、かつIS sharpeがベースラインを超えること
-    delta_return = r['total_return_pct'] - baseline.get('total_pct', 0)
-    adopted = delta_return > 5 and r['max_dd_pct'] < 45 and r['sharpe'] > baseline.get('sharpe', 0)
-    reasons.append(f'delta_return={delta_return:+.1f}%')
+    # 採用条件:
+    # 1. DD < 35% (絶対条件に近い、30%目標だが少し余裕)
+    # 2. Calmarがベースラインより改善 OR Sharpeがベースラインより改善
+    # 3. total_returnがベースラインの90%以上（大幅劣化しない）
+    baseline_total = baseline.get('total_pct', 0)
+    baseline_sharpe = baseline.get('sharpe', 0)
+    baseline_dd = baseline.get('max_dd_pct', 100)
+    baseline_calmar = baseline_total / max(baseline_dd, 1.0)
+
+    delta_return = total_ret - baseline_total
+    delta_sharpe = sharpe - baseline_sharpe
+    delta_calmar = calmar - baseline_calmar
+
+    adopted = (
+        dd < 35 and
+        total_ret > baseline_total * 0.9 and
+        (delta_calmar > 0 or delta_sharpe > 0.05) and
+        sharpe >= baseline_sharpe * 0.95
+    )
+    reasons.append(f'delta_calmar={delta_calmar:+.2f}')
+    reasons.append(f'delta_sharpe={delta_sharpe:+.3f}')
 
     return adopted, round(score, 3), reasons
 
@@ -214,6 +257,26 @@ def local_search(baseline_params, factor_dfs, prices_dict, nikkei, date_map, fun
         'high52_w':         [0.0, 0.1, 0.2, 0.25, 0.3, 0.35, 0.4],
         'omega_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'short_momentum_w': [0.0, 0.05, 0.1, 0.15, 0.2],
+        'buying_intensity_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'intraday_support_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'relative_strength_accel_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'low_floor_momentum_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'intraday_return_ratio_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'crash_beta_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'volume_turnover_decay_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'negative_skew_penalty_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'frog_in_pan_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'mean_reversion_risk_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'stock_sharpe_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'amihud_liquidity_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'volume_breakout_count_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'body_momentum_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'up_volume_ratio_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'price_accel_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'inst_footprint_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'downside_vol_ratio_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'vol_compression_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
+        'sector_residual_mom_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'downside_stability_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'intraday_trend_ratio_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
         'overnight_intraday_agreement_w':          [0.0, 0.05, 0.1, 0.15, 0.2],
@@ -399,7 +462,146 @@ def add_factor_to_precomputed(factor_name, factor_dfs, prices_dict, nikkei, fund
                     # リインデックスして日次に合わせる（前値埋め）
                     reindexed = series.reindex(p.index, method='ffill').fillna(0)
                     factor_dfs[key][factor_name] = reindexed.astype(float)
-    
+
+            elif factor_name == 'crash_beta_w':
+                # 日経worst5%日のベータ（低いほど暴落耐性が高い→高スコア）
+                nk_aligned = nk_rets.reindex(dr.index).fillna(0)
+                threshold = nk_aligned.quantile(0.05)
+                crash_days = nk_aligned[nk_aligned <= threshold].index
+                if len(crash_days) >= 5:
+                    stock_crash = dr.reindex(crash_days).fillna(0)
+                    nk_crash = nk_aligned.reindex(crash_days).fillna(0)
+                    cov = stock_crash.rolling(min(lb, len(crash_days))).cov(nk_crash)
+                    var = nk_crash.rolling(min(lb, len(crash_days))).var().replace(0, np.nan)
+                    beta = (cov / var).reindex(dr.index, method='ffill').fillna(1)
+                    factor_dfs[key][factor_name] = (-beta).clip(-3, 3).astype(float)
+                else:
+                    factor_dfs[key][factor_name] = pd.Series(0.0, index=p.index)
+
+            elif factor_name == 'frog_in_pan_w':
+                # Frog-in-the-Pan: 小さな正リターンの連続（Da et al. 2014）
+                pos_days = (dr > 0).rolling(lb).mean()
+                total_pos = dr.clip(lower=0).rolling(lb).sum().replace(0, np.nan)
+                max_day_pos = dr.clip(lower=0).rolling(lb).max()
+                concentration = (max_day_pos / total_pos).fillna(1)
+                fip = pos_days * (1 - concentration)
+                factor_dfs[key][factor_name] = fip.fillna(0).astype(float)
+
+            elif factor_name == 'amihud_liquidity_w':
+                # Amihud流動性（高いほど流動性高い＝優遇）
+                vol = df['Vo'].fillna(df.get('AdjVo', pd.Series(np.nan, index=df.index))).replace(0, np.nan)
+                price_impact = (dr.abs() / vol).replace([np.inf, -np.inf], np.nan)
+                illiquidity = price_impact.rolling(lb).mean()
+                liquidity = (1 / illiquidity.replace(0, np.nan)).fillna(0)
+                # ランク正規化
+                factor_dfs[key][factor_name] = liquidity.fillna(0).astype(float)
+
+            elif factor_name == 'stock_sharpe_w':
+                # 個別銘柄Sharpe比（lb期間）
+                mu = dr.rolling(lb).mean()
+                sigma = dr.rolling(lb).std().replace(0, np.nan)
+                sharpe = (mu / sigma).fillna(0).clip(-3, 3)
+                factor_dfs[key][factor_name] = sharpe.astype(float)
+
+            elif factor_name == 'intraday_return_ratio_w':
+                # 日中リターン比率: (Open→Close累積) / (Close→Close累積)
+                if 'AdjO' in df.columns and 'AdjC' in df.columns:
+                    intraday = (df['AdjC'] / df['AdjO'] - 1).fillna(0)
+                    intraday_cum = intraday.rolling(lb).mean()
+                    total_cum = dr.rolling(lb).mean().replace(0, np.nan)
+                    ratio = (intraday_cum / total_cum.abs()).clip(-2, 2).fillna(0)
+                    factor_dfs[key][factor_name] = ratio.astype(float)
+                else:
+                    factor_dfs[key][factor_name] = pd.Series(0.0, index=p.index)
+
+            elif factor_name == 'low_floor_momentum_w':
+                # 安値ベースモメンタム（下値切り上げ）
+                if 'L' in df.columns:
+                    low = df['L']
+                    low_mom = (low / low.shift(lb) - 1).fillna(0).clip(-1, 5)
+                    factor_dfs[key][factor_name] = low_mom.astype(float)
+                else:
+                    factor_dfs[key][factor_name] = pd.Series(0.0, index=p.index)
+
+            elif factor_name == 'negative_skew_penalty_w':
+                # 負の歪度ペナルティ（宝くじ銘柄回避）
+                skew = dr.rolling(lb).skew().fillna(0)
+                factor_dfs[key][factor_name] = (-skew).clip(-3, 3).astype(float)
+
+            elif factor_name == 'trend_efficiency_w':
+                # Kaufman効率比: |累積リターン| / Σ|日次リターン|
+                net = dr.rolling(lb).sum().abs()
+                gross = dr.abs().rolling(lb).sum().replace(0, np.nan)
+                efficiency = (net / gross).fillna(0).clip(0, 1)
+                factor_dfs[key][factor_name] = efficiency.astype(float)
+
+            elif factor_name == 'volume_turnover_decay_w':
+                # 低回転率優遇（発見されていないモメンタム初期）
+                vol = df.get('Vo', df.get('AdjVo', pd.Series(np.nan, index=df.index))).replace(0, np.nan)
+                dollar_vol = (p * vol).replace(0, np.nan)
+                avg_dvol = dollar_vol.rolling(lb).mean()
+                # 全銘柄の中央値との比率（後でランク化されるので絶対値でOK）
+                low_turnover = (1 / avg_dvol.replace(0, np.nan)).fillna(0)
+                factor_dfs[key][factor_name] = low_turnover.astype(float)
+
+            elif factor_name == 'mean_reversion_risk_w':
+                # 平均回帰リスク（過去1年σに対して異常上昇した銘柄にペナルティ）
+                annual_std = dr.rolling(252).std().replace(0, np.nan)
+                lb_ret = (p / p.shift(lb) - 1).fillna(0)
+                z_score = (lb_ret / (annual_std * np.sqrt(lb / 252))).fillna(0)
+                factor_dfs[key][factor_name] = (-z_score).clip(-3, 3).astype(float)
+
+            elif factor_name == 'vwap_position_w':
+                # VWAP位置（close > VWAP = 含み益保有者多い）
+                vol = df.get('Vo', df.get('AdjVo', pd.Series(np.nan, index=df.index))).replace(0, np.nan)
+                vwap = (p * vol).rolling(lb).sum() / vol.rolling(lb).sum().replace(0, np.nan)
+                pos = (p / vwap - 1).fillna(0).clip(-0.5, 0.5)
+                factor_dfs[key][factor_name] = pos.astype(float)
+
+            elif factor_name == 'body_momentum_w':
+                # ボディモメンタム（ギャップノイズ除去）
+                if 'AdjO' in df.columns:
+                    body = (df['AdjC'] - df['AdjO']).fillna(0)
+                    body_cum = body.rolling(lb).sum()
+                    price_range = p.rolling(lb).max() - p.rolling(lb).min()
+                    normalized = (body_cum / price_range.replace(0, np.nan)).fillna(0).clip(-3, 3)
+                    factor_dfs[key][factor_name] = normalized.astype(float)
+                else:
+                    factor_dfs[key][factor_name] = pd.Series(0.0, index=p.index)
+
+            elif factor_name == 'up_volume_ratio_w':
+                # 上昇日の出来高比率
+                vol = df.get('Vo', df.get('AdjVo', pd.Series(np.nan, index=df.index))).replace(0, np.nan)
+                up_vol = vol.where(dr > 0, 0).rolling(lb).sum()
+                total_vol = vol.rolling(lb).sum().replace(0, np.nan)
+                ratio = (up_vol / total_vol).fillna(0.5)
+                factor_dfs[key][factor_name] = ratio.astype(float)
+
+            elif factor_name == 'price_accel_w':
+                # 価格加速度（後半lb/2 > 前半lb/2）
+                half = max(lb // 2, 5)
+                ret_recent = (p / p.shift(half) - 1).fillna(0)
+                ret_old = (p.shift(half) / p.shift(lb) - 1).fillna(0)
+                accel = (ret_recent - ret_old).clip(-2, 2)
+                factor_dfs[key][factor_name] = accel.astype(float)
+
+            elif factor_name == 'downside_vol_ratio_w':
+                # 下方ボラ比率の逆数（上方歪みを優遇）
+                down_vol = dr.where(dr < 0, 0).rolling(lb).std().replace(0, np.nan)
+                total_vol_s = dr.rolling(lb).std().replace(0, np.nan)
+                ratio = (down_vol / total_vol_s).fillna(0.5)
+                factor_dfs[key][factor_name] = (1 - ratio).astype(float)
+
+            elif factor_name == 'vol_compression_w':
+                # ボラティリティ圧縮（ATR40/ATR5 の逆数）
+                if 'H' in df.columns and 'L' in df.columns:
+                    atr_short = (df['H'] - df['L']).rolling(5).mean().replace(0, np.nan)
+                    atr_long = (df['H'] - df['L']).rolling(lb).mean().replace(0, np.nan)
+                    compression = (atr_short / atr_long).fillna(1)
+                    factor_dfs[key][factor_name] = (1 / compression.replace(0, np.nan)).fillna(0).clip(0, 5).astype(float)
+                else:
+                    factor_dfs[key][factor_name] = pd.Series(0.0, index=p.index)
+
     return factor_dfs
 
 
@@ -712,6 +914,15 @@ def cleanup_weak_signals(baseline_params):
 
 def append_log(hid, desc, result, win, delta, oos_result=None, walk_forward=None):
     log = json.loads(EVO_LOG.read_text()) if EVO_LOG.exists() else {'best10':[], 'all':[], 'total':0}
+    
+    # Calmar Ratio 計算
+    calmar = None
+    if result and result.get('total_return_pct') and result.get('max_dd_pct'):
+        dd = max(result['max_dd_pct'], 1.0)
+        n_trades = result.get('n_trades', 52)
+        est_years = max(n_trades / 52, 0.5)
+        calmar = round(result['total_return_pct'] / est_years / dd, 3)
+    
     entry = {
         'at': datetime.now().isoformat(), 'id': hid, 'desc': desc, 'win': int(win),
         'delta_sharpe': delta,
@@ -719,9 +930,24 @@ def append_log(hid, desc, result, win, delta, oos_result=None, walk_forward=None
         'total_return_pct': result.get('total_return_pct') if result else None,
         'alpha_pct': result.get('alpha_pct') if result else None,
         'max_dd_pct': result.get('max_dd_pct') if result else None,
-        'params': {k: result[k] for k in result if '_w' in k or k in ['lookback','top_n','rebalance']} if result else {},
+        'calmar_ratio': calmar,
+        'params': {k: result[k] for k in result if '_w' in k or k in ['lookback','top_n','rebalance','position_sizing']} if result else {},
     }
-    if oos_result:
+    
+    # IS/OOS Sharpe比 (過学習チェック指標)
+    if oos_result and result:
+        is_sharpe = result.get('sharpe', 0)
+        oos_sharpe = oos_result.get('sharpe', 0)
+        entry['is_oos_sharpe_ratio'] = round(oos_sharpe / is_sharpe, 3) if is_sharpe > 0 else None
+        entry['oos_result'] = {
+            'total_return_pct': oos_result.get('total_return_pct'),
+            'sharpe': oos_result.get('sharpe'),
+            'max_dd_pct': oos_result.get('max_dd_pct'),
+            'alpha_pct': oos_result.get('alpha_pct'),
+            'nikkei_pct': oos_result.get('nikkei_pct'),
+            'n_trades': oos_result.get('n_trades'),
+        }
+    elif oos_result:
         entry['oos_result'] = {
             'total_return_pct': oos_result.get('total_return_pct'),
             'sharpe': oos_result.get('sharpe'),
@@ -733,8 +959,11 @@ def append_log(hid, desc, result, win, delta, oos_result=None, walk_forward=None
     if walk_forward:
         entry['walk_forward'] = {
             'avg_total_return': walk_forward.get('avg_total_return'),
-            'avg_sharpe': walk_forward.get('avg_sharpe'),
-            'avg_max_dd': walk_forward.get('avg_max_dd'),
+            'avg_sharpe': walk_forward.get('avg_sharpe', walk_forward.get('avg_oos_sharpe')),
+            'avg_max_dd': walk_forward.get('avg_max_dd', walk_forward.get('avg_oos_dd')),
+            'stability_score': walk_forward.get('stability_score'),
+            'is_oos_ratio': walk_forward.get('is_oos_ratio'),
+            'deflated_sharpe': walk_forward.get('deflated_sharpe'),
             'n_passed': walk_forward.get('n_passed'),
             'all_passed': walk_forward.get('all_passed'),
             'folds': walk_forward.get('folds', []),

@@ -514,6 +514,110 @@ def paper_trade_record():
     return JSONResponse({"ok": True, "entry": entry})
 
 
+# ─── マルチストラテジー拡張エンドポイント ───
+
+@app.get("/api/portfolio")
+def portfolio():
+    """全ポッドの統合ポートフォリオ状況"""
+    try:
+        import sys
+        sys.path.insert(0, str(BASE))
+        from portfolio_engine import PortfolioEngine, create_default_engine
+        engine = create_default_engine()
+        if not engine.load_state():
+            # 状態ファイルがなければデフォルト構成を返す
+            pass
+        return JSONResponse(sanitize(engine.summary()))
+    except Exception as e:
+        return JSONResponse({"error": str(e), "hint": "portfolio_engine.py が必要です"}, status_code=500)
+
+
+@app.get("/api/paper_trades")
+def paper_trades():
+    """ペーパートレードの履歴とPnL"""
+    try:
+        import sys
+        sys.path.insert(0, str(BASE))
+        from paper_trading_engine import PaperTradingEngine
+        engine = PaperTradingEngine()
+        if engine.load_state():
+            return JSONResponse(sanitize(engine.dashboard_data()))
+        # フォールバック: 旧形式の paper_trade_log.json
+        old_path = BASE / "backtest/paper_trade_log.json"
+        if old_path.exists():
+            return JSONResponse(sanitize(json.loads(old_path.read_text())))
+        return JSONResponse({"nav": 0, "positions": [], "trade_history": [], "message": "ペーパートレード未開始"})
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/risk")
+def risk():
+    """リスクメトリクス（DD・VaR・Sharpe・相関）"""
+    try:
+        import sys
+        sys.path.insert(0, str(BASE))
+        from portfolio_engine import PortfolioEngine, create_default_engine
+        engine = create_default_engine()
+        engine.load_state()
+        metrics = engine.compute_risk_metrics()
+        correlation = engine.compute_correlation_matrix()
+        alerts = engine.check_all_limits()
+        return JSONResponse(sanitize({
+            "portfolio": metrics,
+            "correlation": correlation,
+            "alerts": alerts,
+            "as_of": metrics.get("as_of", ""),
+        }))
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/signals/all")
+def signals_all():
+    """全戦略のシグナル一覧"""
+    result = {"strategies": []}
+
+    # 1. Momentum シグナル（既存）
+    signal_path = BASE / "backtest/daily_signal_output.json"
+    if signal_path.exists():
+        sig = json.loads(signal_path.read_text())
+        result["strategies"].append({
+            "name": "momentum",
+            "display_name": "クロスセクショナルモメンタム",
+            "signals": sig.get("recommended", []),
+            "changes": sig.get("changes", {}),
+            "as_of": sig.get("as_of", ""),
+            "market_regime": sig.get("market_regime_filter", {}),
+        })
+
+    # 2. Signal Library
+    lib_path = BASE / "backtest/signal_library.json"
+    if lib_path.exists():
+        lib = json.loads(lib_path.read_text())
+        active_signals = [s for s in lib.get("signals", []) if s.get("status") == "active"]
+        result["strategies"].append({
+            "name": "signal_library",
+            "display_name": "シグナルライブラリ",
+            "signals": active_signals,
+            "total_signals": len(lib.get("signals", [])),
+            "active_count": len(active_signals),
+        })
+
+    # 3. Evolution Log（最新ベスト）
+    evo_path = BASE / "backtest/evolution_log.json"
+    if evo_path.exists():
+        evo = json.loads(evo_path.read_text())
+        best = evo.get("best10", [])[:3]
+        result["strategies"].append({
+            "name": "evolution",
+            "display_name": "進化エンジン最新",
+            "top_results": best,
+        })
+
+    return JSONResponse(sanitize(result))
+
+
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
 
 @app.get("/")

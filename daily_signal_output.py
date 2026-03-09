@@ -158,10 +158,41 @@ def run():
     # top20は引き続き先頭20件
     top20 = all_scores[:20]
 
+    # 市場レジームフィルター状態を計算
+    from optimize import check_market_regime_filter
+    regime_filter_type = params.get('market_regime_filter', 'none')
+    regime_filter_status = {}
+    try:
+        latest_date = nikkei.index[-1]
+        nk_val = float(nikkei.iloc[-1])
+        # 各フィルターの状態を個別に確認
+        ma100_active = check_market_regime_filter(nikkei, latest_date, 'ma100')
+        dd15_active = check_market_regime_filter(nikkei, latest_date, 'dd15')
+        combined_active = check_market_regime_filter(nikkei, latest_date, 'combined')
+        # MA100の値も計算
+        ma100_val = float(nikkei.iloc[-100:].mean()) if len(nikkei) >= 100 else None
+        # 250日高値
+        high250_val = float(nikkei.iloc[-min(250, len(nikkei)):].max())
+        dd_from_high = round((nk_val - high250_val) / high250_val * 100, 2) if high250_val > 0 else None
+        regime_filter_status = {
+            'configured_filter': regime_filter_type,
+            'nikkei_current': round(nk_val, 2),
+            'ma100': round(ma100_val, 2) if ma100_val else None,
+            'ma100_active': ma100_active,
+            'high250': round(high250_val, 2),
+            'dd_from_high_pct': dd_from_high,
+            'dd15_active': dd15_active,
+            'combined_active': combined_active,
+            'should_be_cash': check_market_regime_filter(nikkei, latest_date, regime_filter_type),
+        }
+    except Exception as e:
+        regime_filter_status = {'error': str(e)}
+
     output = {
         'as_of': end,
         'generated_at': datetime.now().strftime('%Y-%m-%d %H:%M JST'),
         'params': {'lookback': lb, 'top_n': top_n},
+        'market_regime_filter': regime_filter_status,
         'recommended': recommended,
         'changes': {'buy': buy, 'sell': sell, 'hold': hold},
         'top20': top20,

@@ -31,11 +31,37 @@ GRID = {
 }
 
 
-def precompute(prices_dict, nikkei, lookbacks):
+def _precompute_cache_path(lookbacks, n_codes):
+    """キャッシュファイルパスを生成"""
+    lb_str = '_'.join(str(lb) for lb in sorted(lookbacks))
+    return Path(f'data/cache/precompute_lb{lb_str}_n{n_codes}.pkl')
+
+
+def precompute(prices_dict, nikkei, lookbacks, use_cache=True):
     """全銘柄×全lookbackのファクターをrollingで事前計算。
     返り値: {lb: {factor: DataFrame(date x code)}}
+    use_cache=True の場合、pickle キャッシュを利用。
     """
     t0 = time.time()
+    
+    # キャッシュチェック
+    if use_cache:
+        import pickle
+        cache_path = _precompute_cache_path(lookbacks, len(prices_dict))
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
+        if cache_path.exists():
+            try:
+                cache_mtime = cache_path.stat().st_mtime
+                # 24時間以内のキャッシュなら再利用
+                if time.time() - cache_mtime < 86400:
+                    with open(cache_path, 'rb') as f:
+                        cached = pickle.load(f)
+                    # キャッシュのlookbacksが要求と一致するか確認
+                    if set(cached.keys()) >= set(lookbacks):
+                        print(f"キャッシュ読み込み: {cache_path} ({time.time()-t0:.1f}秒)", flush=True)
+                        return {lb: cached[lb] for lb in lookbacks}
+            except Exception as e:
+                print(f"キャッシュ読み込み失敗（再計算）: {e}", flush=True)
     nk_rets = nikkei.pct_change()
     down_mask = (nk_rets < -0.01).astype(float)
     
@@ -259,6 +285,20 @@ def precompute(prices_dict, nikkei, lookbacks):
                           for fac in data[lb]}
     
     print(f"事前計算完了: {len(prices_dict)}銘柄×{len(lookbacks)}lb / {time.time()-t0:.1f}秒", flush=True)
+    
+    # キャッシュ保存
+    if use_cache:
+        import pickle
+        try:
+            cache_path = _precompute_cache_path(lookbacks, len(prices_dict))
+            cache_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(cache_path, 'wb') as f:
+                pickle.dump(factor_dfs, f, protocol=pickle.HIGHEST_PROTOCOL)
+            cache_mb = cache_path.stat().st_size / (1024*1024)
+            print(f"キャッシュ保存: {cache_path} ({cache_mb:.1f}MB)", flush=True)
+        except Exception as e:
+            print(f"キャッシュ保存失敗（無視）: {e}", flush=True)
+    
     return factor_dfs
 
 
@@ -462,16 +502,36 @@ def _eval_params_regime(default_params, factor_dfs, prices_dict, rebal_dates, ni
                     return r
             return None
 
-        tot, cnt = 0.0, 0
+        # 各銘柄のリターンを収集
+        code_returns_regime = {}
         if date in return_df.index and next_date in return_df.index:
             for code in top:
                 r = calc_period_return(code, date, next_date, next_next_date)
                 if r is not None:
-                    tot += r
-                    cnt += 1
+                    code_returns_regime[code] = r
 
-        if cnt > 0:
-            r = tot / cnt
+        if code_returns_regime:
+            position_sizing = default_params.get('position_sizing', 'equal')
+            if position_sizing == 'risk_parity':
+                vol_lb = active_params.get('vol_lookback', lb)
+                inv_vols = {}
+                for code in code_returns_regime:
+                    if code in prices_dict:
+                        p_hist = prices_dict[code]['AdjC']
+                        hist = p_hist.loc[p_hist.index <= date].tail(vol_lb)
+                        if len(hist) >= 20:
+                            vol = hist.pct_change().dropna().std()
+                            if vol > 0:
+                                inv_vols[code] = 1.0 / vol
+                if inv_vols:
+                    total_inv = sum(inv_vols.values())
+                    rp_w = {c: iv / total_inv for c, iv in inv_vols.items()}
+                else:
+                    n = len(code_returns_regime)
+                    rp_w = {c: 1.0 / n for c in code_returns_regime}
+                r = sum(rp_w.get(c, 0) * ret for c, ret in code_returns_regime.items())
+            else:
+                r = sum(code_returns_regime.values()) / len(code_returns_regime)
             portfolio *= (1 + r)
             returns.append(r)
 
@@ -505,6 +565,52 @@ def _eval_params_regime(default_params, factor_dfs, prices_dict, rebal_dates, ni
         "equity_curve": equity_curve,
         "regime_adaptive": True,
     }
+
+
+def check_market_regime_filter(nikkei, date, filter_type):
+    """
+    市場レジームフィルター: 条件を満たすとTrue（=全キャッシュにすべき）を返す。
+    
+    filter_type:
+      'none'     → 常にFalse（フィルターなし）
+      'ma100'    → 日経が100日MAを下回る
+      'dd15'     → 日経が直近250日高値から-15%以上下落
+      'combined' → ma100 OR dd15
+    """
+    if filter_type == 'none' or not filter_type:
+        return False
+    
+    date = pd.Timestamp(date)
+    past = nikkei.loc[:date].dropna()
+    
+    if len(past) < 100:
+        return False
+    
+    current_val = float(past.iloc[-1])
+    
+    # 条件A: 100日MA割れ
+    ma100_triggered = False
+    if filter_type in ('ma100', 'combined'):
+        ma100 = float(past.iloc[-100:].mean())
+        ma100_triggered = current_val < ma100
+    
+    # 条件B: 250日高値から-15%下落
+    dd15_triggered = False
+    if filter_type in ('dd15', 'combined'):
+        lookback_250 = min(250, len(past))
+        high_250 = float(past.iloc[-lookback_250:].max())
+        if high_250 > 0:
+            dd_from_high = (current_val - high_250) / high_250
+            dd15_triggered = dd_from_high <= -0.15
+    
+    if filter_type == 'ma100':
+        return ma100_triggered
+    elif filter_type == 'dd15':
+        return dd15_triggered
+    elif filter_type == 'combined':
+        return ma100_triggered or dd15_triggered
+    
+    return False
 
 
 def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, return_df,
@@ -798,9 +904,24 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
     returns = []
     equity_curve = []
 
+    # 市場レジームフィルター
+    market_regime_filter = params.get('market_regime_filter', 'none')
+
     for i, date in enumerate(dates[:-1]):
         next_date = dates[i+1]
         next_next_date = dates[i+2] if i+2 < len(dates) else None
+
+        # レジームフィルター: 条件を満たす場合は全キャッシュ（ポジション取らない）
+        if check_market_regime_filter(nikkei, date, market_regime_filter):
+            equity_curve.append({
+                "date": str(date.date()),
+                "value": round((portfolio / 1_000_000 - 1) * 100, 2),
+                "holdings": [],
+                "regime_filter": market_regime_filter,
+                "filter_active": True,
+            })
+            continue
+
         if date not in score_df.index:
             continue
 
@@ -816,33 +937,64 @@ def eval_params(params, factor_dfs, prices_dict, rebal_dates, nikkei, start, ret
             if len(valid_row) >= tn * 2:
                 short_top = valid_row.nsmallest(tn).index.tolist()
 
-        # リターン計算（trailing_stop対応）
-        tot, cnt = 0.0, 0
+        # リターン計算（trailing_stop対応 + リスクパリティ）
+        position_sizing = params.get('position_sizing', 'equal')
+        vol_lookback = params.get('vol_lookback', lb)  # ボラ計算用lookback
+
+        # 各銘柄のリターンを先に収集
+        code_returns = {}
         if date in return_df.index and next_date in return_df.index:
             for code in top:
                 r = calc_period_return(code, date, next_date, next_next_date)
                 if r is not None:
-                    tot += r; cnt += 1
-            if long_short and short_top:
-                short_tot, short_cnt = 0.0, 0
-                for code in short_top:
-                    r = calc_period_return(code, date, next_date, next_next_date)
-                    if r is not None:
-                        # ショート: リターン反転 - 借株コスト0.1%/週
-                        short_tot += (-r)  # 手数料0円（信用売りの金利は別途考慮）
-                        short_cnt += 1
-                if short_cnt > 0:
-                    # ロングとショートを平均
-                    long_avg = tot / cnt if cnt > 0 else 0.0
-                    short_avg = short_tot / short_cnt
-                    combined = (long_avg + short_avg) / 2
-                    portfolio *= (1 + combined)
-                    returns.append(combined)
-                    continue  # 下のif cnt > 0をスキップ
-        if cnt > 0:
-            r = tot / cnt
-            # position_ratio < 1.0: 残りをキャッシュ保持（リターン0%）
-            r = r * position_ratio
+                    code_returns[code] = r
+
+        # リスクパリティ ウェイト計算
+        if position_sizing == 'risk_parity' and len(code_returns) > 0:
+            inv_vols = {}
+            for code in code_returns:
+                if code in prices_dict:
+                    p_hist = prices_dict[code]['AdjC']
+                    hist = p_hist.loc[p_hist.index <= date].tail(vol_lookback)
+                    if len(hist) >= 20:
+                        vol = hist.pct_change().dropna().std()
+                        if vol > 0:
+                            inv_vols[code] = 1.0 / vol
+            if inv_vols:
+                total_inv = sum(inv_vols.values())
+                rp_weights = {c: iv / total_inv for c, iv in inv_vols.items()}
+            else:
+                # フォールバック: 等ウェイト
+                n = len(code_returns)
+                rp_weights = {c: 1.0 / n for c in code_returns}
+            # 重み計算にない銘柄は等ウェイトでフォールバック
+            missing = [c for c in code_returns if c not in rp_weights]
+            if missing:
+                leftover = max(0, 1.0 - sum(rp_weights.values()))
+                for c in missing:
+                    rp_weights[c] = leftover / len(missing) if missing else 0
+            weighted_ret = sum(rp_weights.get(c, 0) * r for c, r in code_returns.items())
+        else:
+            # 等ウェイト（従来通り）
+            weighted_ret = sum(code_returns.values()) / len(code_returns) if code_returns else None
+
+        # ロングショートモード
+        if long_short and short_top and date in return_df.index and next_date in return_df.index:
+            short_tot, short_cnt = 0.0, 0
+            for code in short_top:
+                r = calc_period_return(code, date, next_date, next_next_date)
+                if r is not None:
+                    short_tot += (-r)
+                    short_cnt += 1
+            if short_cnt > 0 and weighted_ret is not None:
+                short_avg = short_tot / short_cnt
+                combined = (weighted_ret + short_avg) / 2
+                portfolio *= (1 + combined)
+                returns.append(combined)
+                weighted_ret = None  # skip below
+
+        if weighted_ret is not None and len(code_returns) > 0:
+            r = weighted_ret * position_ratio
             portfolio *= (1 + r)
             returns.append(r)
 
@@ -1233,6 +1385,8 @@ def run_walk_forward_validation(params, n_codes=500, codes=None):
         "avg_max_dd": ...,
         "all_passed": bool,  # 全fold でmax_dd<45%かつtotal>0
         "n_passed": int,     # 合格fold数
+        "stability_score": float,  # mean(Sharpe) / std(Sharpe)
+        "is_oos_ratio": float,     # avg(OOS_Sharpe) / IS_Sharpe
     }
     """
     import warnings; warnings.filterwarnings('ignore')
@@ -1309,6 +1463,12 @@ def run_walk_forward_validation(params, n_codes=500, codes=None):
     if not valid:
         return None
 
+    # 安定性スコア = mean(Sharpe_folds) / std(Sharpe_folds)
+    sharpes = [f["sharpe"] for f in valid]
+    mean_sharpe = float(np.mean(sharpes))
+    std_sharpe = float(np.std(sharpes)) if len(sharpes) > 1 else 1e-6
+    stability_score = mean_sharpe / max(std_sharpe, 1e-6)
+
     return {
         "folds": fold_results,
         "avg_total_return": float(np.mean([f["total_return_pct"] for f in valid])),
@@ -1316,6 +1476,156 @@ def run_walk_forward_validation(params, n_codes=500, codes=None):
         "avg_max_dd": float(np.mean([f["max_dd_pct"] for f in valid])),
         "all_passed": all(f["passed"] for f in fold_results),
         "n_passed": sum(f["passed"] for f in fold_results),
+        "stability_score": round(stability_score, 3),
+    }
+
+
+def eval_walkforward(params, n_codes=500, codes=None, train_years=3, test_years=1):
+    """
+    ローリング Walk-Forward Validation。
+    IS=3年→OOS=1年 をスライドして全フォールドを評価。
+    
+    フォールド例（train_years=3, test_years=1）:
+      2016-2018 → 2019
+      2017-2019 → 2020
+      2018-2020 → 2021
+      2019-2021 → 2022
+      2020-2022 → 2023
+      2021-2023 → 2024
+      2022-2024 → 2025
+    
+    Returns: {
+        "folds": [...],
+        "avg_oos_sharpe": float,
+        "avg_oos_total": float,
+        "avg_oos_dd": float,
+        "stability_score": float,  # mean(OOS_Sharpe) / std(OOS_Sharpe)
+        "is_oos_ratio": float,     # avg(OOS_Sharpe) / avg(IS_Sharpe)
+        "deflated_sharpe": float,  # DSR estimate
+    }
+    """
+    import warnings; warnings.filterwarnings('ignore')
+
+    overall_start = "2016-01-01"
+    overall_end = datetime.now().strftime("%Y-%m-%d")
+    warmup = (datetime.strptime(overall_start, "%Y-%m-%d") - timedelta(days=300)).strftime("%Y-%m-%d")
+
+    if codes is None:
+        codes = get_top_liquid_tickers(n_codes)
+
+    print(f"Rolling Walk-Forward: データロード ({len(codes)}銘柄)...", flush=True)
+    prices_dict = {}
+    for c in codes:
+        df = read_ohlcv(c, warmup, overall_end)
+        if df is not None and not df.empty and 'AdjC' in df.columns:
+            prices_dict[c] = df
+
+    if len(prices_dict) < 50:
+        return None
+
+    print(f"Rolling Walk-Forward: {len(prices_dict)}銘柄ロード完了", flush=True)
+
+    nikkei = get_nikkei_history(warmup, overall_end)
+    lb = params.get("lookback", 60)
+    factor_dfs = precompute(prices_dict, nikkei, [lb])
+    return_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
+
+    # ローリングフォールド生成
+    start_year = 2016
+    current_year = datetime.now().year
+    folds = []
+    y = start_year
+    while y + train_years + test_years - 1 <= current_year:
+        is_start = f"{y}-01-01"
+        is_end = f"{y + train_years - 1}-12-31"
+        oos_start = f"{y + train_years}-01-01"
+        oos_end = f"{y + train_years + test_years - 1}-12-31"
+        if y + train_years + test_years - 1 == current_year:
+            oos_end = overall_end
+        folds.append({
+            "id": f"fold_{y}_{y+train_years}",
+            "is_start": is_start, "is_end": is_end,
+            "oos_start": oos_start, "oos_end": oos_end,
+        })
+        y += 1
+
+    print(f"Rolling Walk-Forward: {len(folds)} フォールド", flush=True)
+
+    fold_results = []
+    rebal_type = params.get("rebalance", "weekly")
+
+    for fold in folds:
+        try:
+            # IS期間評価
+            is_rebal = get_rebalance_dates(fold["is_start"], fold["is_end"], rebal_type)
+            is_result = eval_params(params, factor_dfs, prices_dict, is_rebal, nikkei,
+                                     fold["is_start"], return_df)
+
+            # OOS期間評価
+            oos_rebal = get_rebalance_dates(fold["oos_start"], fold["oos_end"], rebal_type)
+            oos_result = eval_params(params, factor_dfs, prices_dict, oos_rebal, nikkei,
+                                      fold["oos_start"], return_df)
+
+            if oos_result is None:
+                fold_results.append({"id": fold["id"], "error": "OOS計算失敗", "passed": False})
+                continue
+
+            is_sharpe = is_result["sharpe"] if is_result else 0
+            oos_sharpe = oos_result["sharpe"]
+            oos_dd = oos_result["max_dd_pct"]
+            is_oos_ratio = oos_sharpe / is_sharpe if is_sharpe > 0 else 0
+
+            passed = (oos_dd < 30.0 and oos_result["total_return_pct"] > 0)
+            fold_results.append({
+                "id": fold["id"],
+                "is_start": fold["is_start"], "is_end": fold["is_end"],
+                "oos_start": fold["oos_start"], "oos_end": fold["oos_end"],
+                "is_sharpe": round(is_sharpe, 3),
+                "oos_sharpe": round(oos_sharpe, 3),
+                "oos_total_return_pct": oos_result["total_return_pct"],
+                "oos_max_dd_pct": oos_dd,
+                "is_oos_ratio": round(is_oos_ratio, 3),
+                "passed": passed,
+            })
+            status = '✅' if passed else '❌'
+            print(f"  {fold['id']}: IS_sharpe={is_sharpe:.3f} OOS_sharpe={oos_sharpe:.3f} "
+                  f"OOS_total={oos_result['total_return_pct']:.1f}% OOS_dd={oos_dd:.1f}% "
+                  f"IS/OOS={is_oos_ratio:.2f} {status}", flush=True)
+        except Exception as e:
+            fold_results.append({"id": fold["id"], "error": str(e), "passed": False})
+            print(f"  {fold['id']}: エラー {e}", flush=True)
+
+    valid = [f for f in fold_results if "oos_sharpe" in f]
+    if not valid:
+        return None
+
+    oos_sharpes = [f["oos_sharpe"] for f in valid]
+    is_sharpes = [f["is_sharpe"] for f in valid if f["is_sharpe"] > 0]
+    mean_oos = float(np.mean(oos_sharpes))
+    std_oos = float(np.std(oos_sharpes)) if len(oos_sharpes) > 1 else 1e-6
+    stability = mean_oos / max(std_oos, 1e-6)
+
+    mean_is = float(np.mean(is_sharpes)) if is_sharpes else 1.0
+    is_oos_ratio = mean_oos / mean_is if mean_is > 0 else 0
+
+    # Deflated Sharpe Ratio (simplified Bailey & López de Prado 2014)
+    # DSR = Sharpe * sqrt(1 - skew*SR/3 + (kurt-3)*SR^2/4) 簡略版
+    n_trials = len(folds)
+    e_max_sr = mean_oos  # expected max Sharpe under null
+    # Haircut = 1 - (n_trials - 1) / (2 * n_trials) as simplified approximation
+    dsr = mean_oos * max(0, 1.0 - np.log(n_trials) * 0.1) if n_trials > 1 else mean_oos
+
+    return {
+        "folds": fold_results,
+        "avg_oos_sharpe": round(mean_oos, 3),
+        "avg_oos_total": round(float(np.mean([f["oos_total_return_pct"] for f in valid])), 2),
+        "avg_oos_dd": round(float(np.mean([f["oos_max_dd_pct"] for f in valid])), 2),
+        "stability_score": round(stability, 3),
+        "is_oos_ratio": round(is_oos_ratio, 3),
+        "deflated_sharpe": round(dsr, 3),
+        "all_passed": all(f.get("passed", False) for f in fold_results),
+        "n_passed": sum(f.get("passed", False) for f in fold_results),
+        "n_folds": len(folds),
     }
 
 
