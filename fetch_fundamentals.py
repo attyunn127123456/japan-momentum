@@ -1,267 +1,224 @@
 """
-J-Quants V2 全ファンダメンタル・需給データ取得 & キャッシュ。
+J-Quants V2 ファンダメンタル・需給データ取得 & キャッシュ。
 data/fundamentals/ 以下にparquetで保存。
 """
-import time, json, requests
+import time
+import json
 import pandas as pd
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime
 
-API_KEY = 'cph3PdiF8zxH9GxClcFfShcJdSUzuNpV9ho_zMPm4a8'
-HEADERS = {'x-api-key': API_KEY}
-BASE = 'https://api.jquants.com/v2'
-CACHE_DIR = Path('data/fundamentals')
+from jquants import (
+    get_fins_summary,
+    get_fins_details,
+    get_fins_dividend,
+    get_earnings_calendar,
+    get_investor_types,
+    get_margin_interest,
+    get_short_ratio,
+    get_topix,
+)
+
+CACHE_DIR = Path("data/fundamentals")
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
-def _get(ep, params=None, timeout=30):
-    r = requests.get(f'{BASE}{ep}', headers=HEADERS, params=params or {}, timeout=timeout)
-    r.raise_for_status()
-    return r.json()
+# キャッシュ有効期間 (秒)
+CACHE_TTL = 86400  # 24h
 
-def _get_all(ep, params=None):
-    """ページネーション対応"""
-    all_data = []
-    p = dict(params or {})
-    while True:
-        d = _get(ep, p)
-        all_data.extend(d.get('data', []))
-        pk = d.get('pagination_key')
-        if not pk:
-            break
-        p['pagination_key'] = pk
-    return all_data
 
-# ---- 財務サマリー (EPS, 売上, 利益率) ----
-def fetch_fins_summary(codes, start='2022-01-01'):
-    """全銘柄の財務サマリー取得"""
-    out = Path('data/fundamentals/fins_summary.parquet')
-    if out.exists() and (time.time() - out.stat().st_mtime) < 86400:
-        print(f'fins_summary: キャッシュ使用 ({len(pd.read_parquet(out))}行)')
-        return pd.read_parquet(out)
-    
-    print('fins_summary 取得中...')
+def _cache_valid(path: Path) -> bool:
+    return path.exists() and (time.time() - path.stat().st_mtime) < CACHE_TTL
+
+
+# ── 財務サマリー（全銘柄） ──────────────────────────
+def fetch_fins_summary(codes: list, start: str = "2022-01-01") -> pd.DataFrame:
+    """全銘柄の財務サマリー取得。銘柄ごとにAPI呼び出し。"""
+    out = CACHE_DIR / "fins_summary.parquet"
+    if _cache_valid(out):
+        df = pd.read_parquet(out)
+        print(f"fins_summary: キャッシュ使用 ({len(df)}行)")
+        return df
+
+    print(f"fins_summary 取得中... ({len(codes)}銘柄)")
     all_data = []
     for i, code in enumerate(codes):
         try:
-            data = _get_all('/fins/summary', {'code': code})
-            all_data.extend(data)
+            df_code = get_fins_summary(code=code)
+            if not df_code.empty:
+                all_data.append(df_code)
         except Exception as e:
+            if "403" in str(e) or "429" in str(e):
+                print(f"  [WARN] {code}: {e}")
+                time.sleep(1)
+        if (i + 1) % 100 == 0:
+            print(f"  {i+1}/{len(codes)}", flush=True)
+        time.sleep(0.05)  # rate limit: 500req/min → 0.12s safe
+
+    if not all_data:
+        print("fins_summary: データ取得できず")
+        return pd.DataFrame()
+
+    df = pd.concat(all_data, ignore_index=True)
+    df.to_parquet(out)
+    print(f"fins_summary: {len(df)}行保存")
+    return df
+
+
+# ── 決算発表予定 ────────────────────────────────────
+def fetch_earnings_calendar(date_from: str = None, date_to: str = None) -> pd.DataFrame:
+    """決算発表予定日（イベント駆動戦略用）"""
+    out = CACHE_DIR / "earnings_calendar.parquet"
+    if _cache_valid(out):
+        df = pd.read_parquet(out)
+        print(f"earnings_calendar: キャッシュ使用 ({len(df)}行)")
+        return df
+
+    print("earnings_calendar 取得中...")
+    try:
+        df = get_earnings_calendar(date_from=date_from, date_to=date_to)
+        if not df.empty:
+            df.to_parquet(out)
+            print(f"earnings_calendar: {len(df)}行保存")
+        return df
+    except Exception as e:
+        print(f"earnings_calendar エラー: {e}")
+        return pd.DataFrame()
+
+
+# ── 配当情報 ────────────────────────────────────────
+def fetch_dividend(codes: list) -> pd.DataFrame:
+    """配当金情報。銘柄ごとに取得。"""
+    out = CACHE_DIR / "dividend.parquet"
+    if _cache_valid(out):
+        df = pd.read_parquet(out)
+        print(f"dividend: キャッシュ使用 ({len(df)}行)")
+        return df
+
+    print(f"dividend 取得中... ({len(codes)}銘柄)")
+    all_data = []
+    for i, code in enumerate(codes):
+        try:
+            df_code = get_fins_dividend(code=code)
+            if not df_code.empty:
+                all_data.append(df_code)
+        except Exception:
             pass
-        if (i+1) % 50 == 0:
-            print(f'  {i+1}/{len(codes)}', flush=True)
+        if (i + 1) % 100 == 0:
+            print(f"  {i+1}/{len(codes)}", flush=True)
         time.sleep(0.05)
-    
+
     if not all_data:
+        print("dividend: データ取得できず")
         return pd.DataFrame()
-    df = pd.DataFrame(all_data)
+
+    df = pd.concat(all_data, ignore_index=True)
+    # Mixed-type columns → string for safe parquet serialization
+    for col in df.columns:
+        if df[col].dtype == object:
+            df[col] = df[col].astype(str)
     df.to_parquet(out)
-    print(f'fins_summary: {len(df)}行保存')
+    print(f"dividend: {len(df)}行保存")
     return df
 
-# ---- 財務詳細 (BS/PL/CF) ----
-def fetch_fins_details(codes):
-    out = Path('data/fundamentals/fins_details.parquet')
-    if out.exists() and (time.time() - out.stat().st_mtime) < 86400:
-        print(f'fins_details: キャッシュ使用')
-        return pd.read_parquet(out)
-    
-    print('fins_details 取得中...')
-    all_data = []
-    for i, code in enumerate(codes[:100]):  # まず上位100銘柄
-        try:
-            data = _get_all('/fins/details', {'code': code})
-            all_data.extend(data)
-        except Exception as e:
-            pass
-        if (i+1) % 20 == 0:
-            print(f'  {i+1}/100', flush=True)
-        time.sleep(0.1)
-    
-    if not all_data:
-        return pd.DataFrame()
-    df = pd.DataFrame(all_data)
-    df.to_parquet(out)
-    print(f'fins_details: {len(df)}行保存')
-    return df
 
-# ---- 信用取引残高 ----
-def fetch_margin_interest(start='2022-01-01'):
-    out = Path('data/fundamentals/margin_interest.parquet')
-    if out.exists() and (time.time() - out.stat().st_mtime) < 86400:
-        print('margin_interest: キャッシュ使用')
+# ── 信用取引残高 ────────────────────────────────────
+def fetch_margin_interest(start: str = "2022-01-01") -> pd.DataFrame:
+    out = CACHE_DIR / "margin_interest.parquet"
+    if _cache_valid(out):
+        print("margin_interest: キャッシュ使用")
         return pd.read_parquet(out)
-    
-    print('margin_interest 取得中...')
+
+    print("margin_interest 取得中...")
     try:
-        data = _get_all('/markets/margin-interest', {'from': start})
-        df = pd.DataFrame(data)
+        df = get_margin_interest(date_from=start)
         if not df.empty:
             df.to_parquet(out)
-            print(f'margin_interest: {len(df)}行保存')
+            print(f"margin_interest: {len(df)}行保存")
         return df
     except Exception as e:
-        print(f'margin_interest エラー: {e}')
+        print(f"margin_interest エラー: {e}")
         return pd.DataFrame()
 
-# ---- 空売り残高 ----
-def fetch_short_sale(start='2023-01-01'):
-    out = Path('data/fundamentals/short_sale.parquet')
-    if out.exists() and (time.time() - out.stat().st_mtime) < 86400:
-        print('short_sale: キャッシュ使用')
-        return pd.read_parquet(out)
-    
-    print('short_sale 取得中...')
-    all_data = []
-    # 日付ごとに取得
-    d = datetime.strptime(start, '%Y-%m-%d')
-    end = datetime.now()
-    while d <= end:
-        try:
-            data = _get_all('/markets/short-sale-report', {'date': d.strftime('%Y-%m-%d')})
-            all_data.extend(data)
-        except:
-            pass
-        d += timedelta(days=7)  # 週次データ
-        time.sleep(0.1)
-    
-    if not all_data:
-        return pd.DataFrame()
-    df = pd.DataFrame(all_data)
-    df.to_parquet(out)
-    print(f'short_sale: {len(df)}行保存')
-    return df
 
-# ---- 投資部門別売買 (外国人・機関) ----
-def fetch_investor_types(start='2022-01-01'):
-    out = Path('data/fundamentals/investor_types.parquet')
-    if out.exists() and (time.time() - out.stat().st_mtime) < 86400:
-        print('investor_types: キャッシュ使用')
+# ── 投資部門別売買 ──────────────────────────────────
+def fetch_investor_types(start: str = "2022-01-01") -> pd.DataFrame:
+    out = CACHE_DIR / "investor_types.parquet"
+    if _cache_valid(out):
+        print("investor_types: キャッシュ使用")
         return pd.read_parquet(out)
-    
-    print('investor_types 取得中...')
+
+    print("investor_types 取得中...")
     try:
-        data = _get_all('/equities/investor-types', {'section': 'TSEPrime', 'from': start})
-        df = pd.DataFrame(data)
+        df = get_investor_types(date_from=start)
         if not df.empty:
             df.to_parquet(out)
-            print(f'investor_types: {len(df)}行保存')
+            print(f"investor_types: {len(df)}行保存")
         return df
     except Exception as e:
-        print(f'investor_types エラー: {e}')
+        print(f"investor_types エラー: {e}")
         return pd.DataFrame()
 
-# ---- 空売り比率 (業種別) ----
-def fetch_short_ratio(start='2022-01-01'):
-    out = Path('data/fundamentals/short_ratio.parquet')
-    if out.exists() and (time.time() - out.stat().st_mtime) < 86400:
-        print('short_ratio: キャッシュ使用')
+
+# ── 空売り比率 ──────────────────────────────────────
+def fetch_short_ratio(start: str = "2022-01-01") -> pd.DataFrame:
+    out = CACHE_DIR / "short_ratio.parquet"
+    if _cache_valid(out):
+        print("short_ratio: キャッシュ使用")
         return pd.read_parquet(out)
-    
-    print('short_ratio 取得中...')
+
+    print("short_ratio 取得中...")
     try:
-        data = _get_all('/markets/short-ratio', {'from': start})
-        df = pd.DataFrame(data)
+        df = get_short_ratio(date_from=start)
         if not df.empty:
             df.to_parquet(out)
-            print(f'short_ratio: {len(df)}行保存')
+            print(f"short_ratio: {len(df)}行保存")
         return df
     except Exception as e:
-        print(f'short_ratio エラー: {e}')
+        print(f"short_ratio エラー: {e}")
         return pd.DataFrame()
 
-# ---- 指数データ (TOPIX, 各指数) ----
-def fetch_indices(start='2022-01-01'):
-    out = Path('data/fundamentals/indices.parquet')
-    if out.exists() and (time.time() - out.stat().st_mtime) < 86400:
-        print('indices: キャッシュ使用')
+
+# ── TOPIX指数 ───────────────────────────────────────
+def fetch_topix(start: str = "2022-01-01") -> pd.DataFrame:
+    out = CACHE_DIR / "topix.parquet"
+    if _cache_valid(out):
+        print("topix: キャッシュ使用")
         return pd.read_parquet(out)
-    
-    print('indices 取得中...')
+
+    print("topix 取得中...")
     try:
-        # TOPIX, TOPIX Small, Growth 250
-        all_data = []
-        for code in ['0028', '0016', '0017']:  # TOPIX系
-            try:
-                data = _get_all('/indices/bars/daily', {'indexcode': code, 'from': start})
-                all_data.extend(data)
-            except:
-                pass
-            time.sleep(0.1)
-        df = pd.DataFrame(all_data)
+        df = get_topix(date_from=start)
         if not df.empty:
             df.to_parquet(out)
-            print(f'indices: {len(df)}行保存')
+            print(f"topix: {len(df)}行保存")
         return df
     except Exception as e:
-        print(f'indices エラー: {e}')
+        print(f"topix エラー: {e}")
         return pd.DataFrame()
 
-# ---- ファクター計算 ----
-def compute_fundamental_factors(codes, date):
-    """
-    銘柄×日付のファンダメンタルファクターを計算して返す。
-    returns: dict {code: {eps_growth, revenue_growth, margin_trend, 
-                          credit_ratio, short_interest, foreign_buying}}
-    """
-    factors = {}
-    
-    # 財務サマリーから EPS成長率・売上成長率
-    fs_path = Path('data/fundamentals/fins_summary.parquet')
-    if fs_path.exists():
-        fs = pd.read_parquet(fs_path)
-        if 'Code' in fs.columns and 'DisclosedDate' in fs.columns:
-            fs['DisclosedDate'] = pd.to_datetime(fs['DisclosedDate'], errors='coerce')
-            for code in codes:
-                c_data = fs[fs['Code'] == code].sort_values('DisclosedDate')
-                c_data = c_data[c_data['DisclosedDate'] <= date]
-                if len(c_data) >= 2:
-                    latest = c_data.iloc[-1]
-                    prev   = c_data.iloc[-2]
-                    # EPS成長率
-                    eps_cur  = float(latest.get('EarningsPerShare', 0) or 0)
-                    eps_prev = float(prev.get('EarningsPerShare', 0) or 1)
-                    eps_growth = (eps_cur / abs(eps_prev) - 1) if eps_prev != 0 else 0
-                    # 売上成長率
-                    rev_cur  = float(latest.get('NetSales', 0) or 0)
-                    rev_prev = float(prev.get('NetSales', 0) or 1)
-                    rev_growth = (rev_cur / abs(rev_prev) - 1) if rev_prev != 0 else 0
-                    
-                    factors.setdefault(code, {})
-                    factors[code]['eps_growth'] = eps_growth
-                    factors[code]['rev_growth'] = rev_growth
-    
-    # 信用倍率 (買い残/売り残)
-    mi_path = Path('data/fundamentals/margin_interest.parquet')
-    if mi_path.exists():
-        mi = pd.read_parquet(mi_path)
-        if 'Code' in mi.columns and 'Date' in mi.columns:
-            mi['Date'] = pd.to_datetime(mi['Date'], errors='coerce')
-            for code in codes:
-                c_data = mi[mi['Code'] == code]
-                c_data = c_data[c_data['Date'] <= date].sort_values('Date')
-                if not c_data.empty:
-                    latest = c_data.iloc[-1]
-                    buy = float(latest.get('LongMarginTradeVolume', 0) or 0)
-                    sell = float(latest.get('ShortMarginTradeVolume', 1) or 1)
-                    credit_ratio = buy / sell if sell > 0 else 1.0
-                    factors.setdefault(code, {})
-                    factors[code]['credit_ratio'] = credit_ratio
-    
-    return factors
 
-if __name__ == '__main__':
-    from universe import get_top_liquid_tickers
-    codes = get_top_liquid_tickers(500)
-    print(f'対象: {len(codes)}銘柄')
-    
+# ── メイン ──────────────────────────────────────────
+if __name__ == "__main__":
+    try:
+        from universe import get_top_liquid_tickers
+        codes = get_top_liquid_tickers(500)
+    except Exception:
+        # fallback: マスタから取得
+        from jquants import get_master
+        master = get_master()
+        codes = master["Code"].tolist()[:500]
+
+    print(f"対象: {len(codes)}銘柄")
+
     fetch_fins_summary(codes)
+    fetch_earnings_calendar()
+    fetch_dividend(codes)
     fetch_margin_interest()
     fetch_investor_types()
     fetch_short_ratio()
-    fetch_indices()
-    # fetch_short_sale()  # 重いので後回し
-    
-    print('全データ取得完了')
-    Path('data/fundamentals/fetch_done.json').write_text(
-        json.dumps({'at': datetime.now().isoformat(), 'codes': len(codes)})
+    fetch_topix()
+
+    print("全データ取得完了")
+    Path("data/fundamentals/fetch_done.json").write_text(
+        json.dumps({"at": datetime.now().isoformat(), "codes": len(codes)})
     )
