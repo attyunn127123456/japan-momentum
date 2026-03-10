@@ -15,7 +15,7 @@ from datetime import datetime
 BASE     = Path(__file__).parent
 SECRETS  = BASE / ".secrets/accounts.json"
 OR_URL   = "https://openrouter.ai/api/v1/chat/completions"
-CRITIC_MODEL = "openai/gpt-4.1-mini"   # 安くて十分
+CRITIC_MODEL = "anthropic/claude-sonnet-4-6"  # 批評・判断にはSonnet以上
 NOTIFY_MODEL = "anthropic/claude-opus-4-6"  # 重要提案の要約のみ
 
 IMPROVEMENTS_DIR = BASE / "improvements"
