@@ -236,3 +236,231 @@ def run():
 
 if __name__ == "__main__":
     run()
+
+
+# ─────────────────────────────────────────────────────────────
+# PANDA JUDGE — パンダが提案を読んで実装判断するレイヤー
+# ─────────────────────────────────────────────────────────────
+
+JUDGE_RULES = """
+判断基準:
+- 実装コスト（コード変更量）が小さい → 優先
+- APIコスト増加が少ない → 優先
+- 仮説の質・評価精度に直結する → 優先
+- 「いつか」「将来的に」な提案 → 今回はスキップ
+- 既に実装済みのもの → スキップ
+- 外部データソース追加（課金必要）→ スキップ（あつしに確認してから）
+"""
+
+def judge_and_plan(critique: str, past_implementations: str) -> list:
+    """今週の改善提案から実装するものを選んで具体的な実装計画を立てる"""
+    prompt = f"""あなたはDeep Alpha Engineの開発者 兼 CEOです。
+以下のHFクリティックの改善提案を読んで、今すぐ自分で実装すべきものを選んでください。
+
+## 改善提案
+{critique[:4000]}
+
+## 判断基準
+{JUDGE_RULES}
+
+## 過去の実装（重複スキップ）
+{past_implementations[:1000] if past_implementations else 'なし'}
+
+## プロジェクト構成
+- deep_alpha_engine.py (仮説生成)
+- evaluate_hypothesis.py (HF評価・3段階)
+- dashboard/app.py (FastAPI)
+- dashboard/static/index.html (UI)
+
+## 出力（JSON）
+以下の形式で「今回実装するもの」を1〜2件選んでください:
+```json
+[{{
+  "title": "実装タイトル",
+  "category": "alpha_quality|evaluation|data|process|risk",
+  "why_now": "なぜ今実装すべきか（1行）",
+  "file_to_change": "変更するファイル名",
+  "implementation": "具体的に何を変更するか（コードレベルで詳細に）",
+  "estimated_impact": "high|medium|low",
+  "api_cost_delta": "none|minimal|moderate"
+}}]
+```
+JSONのみ出力。実装困難・コスト増大のものは選ばないこと。"""
+
+    res = call_llm(CRITIC_MODEL, [{"role": "user", "content": prompt}], temperature=0.3)
+    m = re.search(r'\[.*\]', res, re.DOTALL)
+    if m:
+        try:
+            return json.loads(m.group())
+        except:
+            pass
+    return []
+
+
+def implement_improvement(plan: dict) -> bool:
+    """計画に基づいて実際にコードを変更する（Opusが実装）"""
+    file_path = BASE / plan["file_to_change"]
+    if not file_path.exists():
+        print(f"    ファイル不存在: {plan['file_to_change']}", flush=True)
+        return False
+
+    current_code = file_path.read_text()
+
+    prompt = f"""以下の改善計画に基づいて、Pythonファイルを修正してください。
+
+## 改善タイトル
+{plan['title']}
+
+## 実装内容
+{plan['implementation']}
+
+## 現在のコード
+```python
+{current_code[:6000]}
+```
+
+## 要求
+1. 修正後のコードを **完全に** 出力してください（省略なし）
+2. 変更点以外は一切触らない
+3. 既存の機能を壊さない
+4. コードのみ出力（説明不要）
+
+```python
+（修正後のコード全体をここに）
+```"""
+
+    res = call_llm("anthropic/claude-opus-4-6", [{"role": "user", "content": prompt}], temperature=0.2, timeout=300)
+
+    # コードブロックを抽出
+    m = re.search(r'```python\s*(.*?)```', res, re.DOTALL)
+    if not m:
+        m = re.search(r'```\s*(.*?)```', res, re.DOTALL)
+    if not m:
+        print(f"    コード抽出失敗", flush=True)
+        return False
+
+    new_code = m.group(1).strip()
+    if len(new_code) < 100:
+        print(f"    コードが短すぎる: {len(new_code)}文字", flush=True)
+        return False
+
+    # バックアップ
+    backup = file_path.with_suffix(f".bak_{datetime.now().strftime('%H%M')}")
+    backup.write_text(current_code)
+
+    # 構文チェック
+    try:
+        import ast
+        ast.parse(new_code)
+    except SyntaxError as e:
+        print(f"    構文エラー: {e}", flush=True)
+        return False
+
+    file_path.write_text(new_code)
+    print(f"    ✅ {plan['file_to_change']} を更新（バックアップ: {backup.name}）", flush=True)
+    return True
+
+
+def load_past_implementations() -> str:
+    """過去の実装ログを読む"""
+    log_path = BASE / "improvements/implementation_log.md"
+    if log_path.exists():
+        return log_path.read_text()[-2000:]
+    return ""
+
+
+def save_implementation_log(plans: list, results: list):
+    """実装ログを保存"""
+    log_path = BASE / "improvements/implementation_log.md"
+    now = datetime.now().strftime("%Y-%m-%d %H:%M")
+    with open(log_path, "a") as f:
+        f.write(f"\n\n## {now}\n")
+        for plan, success in zip(plans, results):
+            status = "✅ 実装済み" if success else "❌ スキップ"
+            f.write(f"- {status}: {plan['title']} ({plan['file_to_change']})\n")
+            f.write(f"  理由: {plan['why_now']}\n")
+
+
+def run_with_auto_implement():
+    """批評 → 判断 → 実装 → 報告 の完全自律ループ"""
+    print("=" * 55)
+    print("🤖 System Critic + Auto-Implement 起動")
+    print("=" * 55)
+
+    # 1. コンテキスト読み込み
+    print("\n📂 コンテキスト読み込み中...")
+    ctx = load_context()
+
+    # 2. HFクリティック分析
+    print("\n🧠 HFクリティック分析中...")
+    critique = generate_critique(ctx)
+
+    # 3. ファイル保存
+    print("\n💾 提案保存中...")
+    saved = save_to_file(critique)
+    print(f"  → {saved}")
+
+    # 4. パンダが判断（実装するものを選ぶ）
+    print("\n🐼 パンダが実装判断中...")
+    past = load_past_implementations()
+    plans = judge_and_plan(critique, past)
+    print(f"  実装対象: {len(plans)}件")
+    for p in plans:
+        print(f"  - {p.get('title')} ({p.get('file_to_change')})", flush=True)
+
+    # 5. 実装
+    results = []
+    for plan in plans:
+        print(f"\n🔧 実装中: {plan.get('title')}", flush=True)
+        success = implement_improvement(plan)
+        results.append(success)
+
+    # 6. 実装ログ保存
+    if plans:
+        save_implementation_log(plans, results)
+
+    # 7. git commit（成功したものがあれば）
+    successful = [p for p, r in zip(plans, results) if r]
+    if successful:
+        import subprocess
+        titles = " / ".join(p["title"] for p in successful)
+        subprocess.run(
+            ["git", "add", "-A"],
+            cwd=str(BASE), capture_output=True
+        )
+        subprocess.run(
+            ["git", "commit", "-m", f"auto: System Critic自動改善 — {titles}"],
+            cwd=str(BASE), capture_output=True
+        )
+        subprocess.run(
+            ["git", "push"],
+            cwd=str(BASE), capture_output=True
+        )
+        print(f"\n✅ git commit + push 完了", flush=True)
+
+    # 8. Discordに結果報告（完了サマリーのみ）
+    now_str = datetime.now().strftime("%m/%d %H:%M")
+    if successful:
+        impl_list = "\n".join(f"• {p['title']}" for p in successful)
+        msg = f"🔧 **自動改善完了** ({now_str})\n\n{impl_list}\n\n詳細: `improvements/implementation_log.md`"
+    else:
+        msg = f"🔍 **HFレビュー完了** ({now_str}) — 今回実装する改善なし（または既実装済み）"
+
+    notify_path = BASE / "improvements/.pending_notify.json"
+    notify_path.write_text(json.dumps({
+        "message": msg,
+        "user_id": DISCORD_USER_ID,
+        "timestamp": datetime.now().isoformat(),
+    }, ensure_ascii=False))
+
+    print("\n" + "=" * 55)
+    print(f"✅ 完了 / 実装: {sum(results)}/{len(results)}")
+    print("=" * 55)
+
+
+if __name__ == "__main__":
+    import sys
+    if "--auto" in sys.argv:
+        run_with_auto_implement()
+    else:
+        run()
