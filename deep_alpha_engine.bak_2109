@@ -1,0 +1,273 @@
+"""
+Deep Alpha Engine v2
+マクロトレンド起点の15ドメインから深い投資仮説を生成
+"""
+
+import json, httpx, random, re
+from pathlib import Path
+from datetime import datetime
+
+BASE    = Path(__file__).parent
+OUTPUT  = BASE / "backtest/macro_hypotheses.json"
+SECRETS = BASE / ".secrets/accounts.json"
+OR_URL  = "https://openrouter.ai/api/v1/chat/completions"
+
+def get_key():
+    if SECRETS.exists():
+        return json.loads(SECRETS.read_text())["openrouter"]["api_key"]
+    return ""
+
+def call_llm(model, messages, temperature=0.7, timeout=180):
+    r = httpx.post(OR_URL,
+        headers={"Authorization": f"Bearer {get_key()}", "Content-Type": "application/json"},
+        json={"model": model, "messages": messages, "temperature": temperature},
+        timeout=timeout)
+    r.raise_for_status()
+    return r.json()["choices"][0]["message"]["content"]
+
+# ── Catalyst Chain スキーマ定義 ─────────────────────────────────────
+CATALYST_CHAIN_SCHEMA = {
+    "next_catalyst_event": "(str) 次回決算発表/展示会/規制発効等の具体的イベント名",
+    "catalyst_date": "(str) YYYY-MM-DD or 'TBD'",
+    "days_until_catalyst": "(int|null) catalyst_dateまでの日数。TBDの場合はnull",
+    "key_kpi_to_watch": "(str) 受注残/ASP/稼働率等、注目すべきKPI",
+    "kpi_surprise_rationale": "(str) 市場予想を上回る根拠",
+    "expected_price_mechanism": "(str) 株価反応の想定メカニズム"
+}
+
+CATALYST_CHAIN_SYSTEM_INSTRUCTION = (
+    "Catalyst Chainが具体的でない仮説は投資判断に使えない。"
+    "必ず3ヶ月以内の具体的イベントを特定し、そのイベントで開示されるKPIと市場予想との乖離の根拠を明記せよ。"
+    "カタリストが特定できない場合はcatalyst_dateを'TBD'とし、confidence_scoreを0.15減点せよ。"
+    "出力JSONには必ず以下のcatalyst_chainオブジェクトを含めること:\n"
+    "  catalyst_chain: {\n"
+    "    next_catalyst_event: (str) 次回決算発表/展示会/規制発効等,\n"
+    "    catalyst_date: (str) YYYY-MM-DD or 'TBD',\n"
+    "    days_until_catalyst: (int|null),\n"
+    "    key_kpi_to_watch: (str) 受注残/ASP/稼働率等,\n"
+    "    kpi_surprise_rationale: (str) 市場予想を上回る根拠,\n"
+    "    expected_price_mechanism: (str) 株価反応の想定メカニズム\n"
+    "  }\n"
+)
+
+# ── Post-processing: Catalyst Chain enrichment & penalty ────────────
+def _enrich_hypothesis(hypothesis):
+    """catalyst_chain の days_until_catalyst を自動計算し、ペナルティを適用する。"""
+    cc = hypothesis.get("catalyst_chain")
+    if not cc:
+        # catalyst_chain が欠落している場合はデフォルトを補完
+        cc = {
+            "next_catalyst_event": "Unknown",
+            "catalyst_date": "TBD",
+            "days_until_catalyst": None,
+            "key_kpi_to_watch": "N/A",
+            "kpi_surprise_rationale": "N/A",
+            "expected_price_mechanism": "N/A"
+        }
+        hypothesis["catalyst_chain"] = cc
+
+    catalyst_date_str = cc.get("catalyst_date", "TBD")
+    apply_penalty = False
+
+    if catalyst_date_str and catalyst_date_str != "TBD":
+        try:
+            catalyst_dt = datetime.strptime(catalyst_date_str, "%Y-%m-%d")
+            days_until = (catalyst_dt - datetime.now()).days
+            cc["days_until_catalyst"] = days_until
+            if days_until > 90:
+                apply_penalty = True
+        except (ValueError, TypeError):
+            cc["days_until_catalyst"] = None
+            apply_penalty = True
+    else:
+        cc["catalyst_date"] = "TBD"
+        cc["days_until_catalyst"] = None
+        apply_penalty = True
+
+    if apply_penalty:
+        current_score = hypothesis.get("confidence_score", 0.5)
+        if isinstance(current_score, (int, float)):
+            hypothesis["confidence_score"] = round(current_score * 0.85, 4)
+
+    return hypothesis
+
+# ── ドメイン定義（高市政権重点領域 × グローバルトレンド）────────────────
+#  大カテゴリ（高市政権の4大柱）
+#    A. 経済安全保障  B. エネルギー安全保障  C. 防衛安全保障  D. 成長戦略
+#  実行順序: policy_tailwind「強」(9個) → 「中」(6個) の固定ローテーション
+# ─────────────────────────────────────────────────────────────────────
+DOMAINS = [
+  {
+    "name": "半導体・電子材料の国産強靭化",
+    "category": "経済安全保障",
+    "policy_tailwind": "強",
+    "macro_driver": "経済安全保障法×AI需要爆発で補助金10兆円規模、内製化加速",
+    "angles": [
+      "TSMC熊本・ラピダス千歳で日本回帰した半導体工場の地元サプライヤーは誰が勝つか",
+      "EUV High-NA量産移行でレジスト・ペリクル・光学系部品の供給制約と日本寡占企業",
+      "HBM・CoWoS拡大で需要急増するTSV工程の日本化学・素材メーカーの寡占ポジション",
+      "ラピダスが2026年量産を目指す2nmプロセスでのボトルネックとサプライヤー"
+    ]
+  },
+  {
+    "name": "重要鉱物・サプライチェーン脱中国",
+    "category": "経済安全保障",
+    "policy_tailwind": "強",
+    "macro_driver": "中国レアアース輸出規制×経済安保法の重要物資指定で代替投資急増",
+    "angles": [
+      "中国がレアアース輸出規制を強化した場合に日本の素材・部品メーカーで代替できる企業",
+      "海外鉱山権益確保・リサイクル技術で日本が優位に立てる重要鉱物分野",
+      "EVバッテリーCOBC（中国外製造）要件対応で恩恵を受ける日本の素材・加工企業",
+      "半導体製造に必要な希ガス（ネオン・クリプトン）の日本内製化と受益企業"
+    ]
+  },
+  {
+    "name": "原発再稼働・次世代原子力",
+    "category": "エネルギー安全保障",
+    "policy_tailwind": "強",
+    "macro_driver": "高市政権が原発最大限活用を明言、SMR開発予算・再稼働加速で関連投資急増",
+    "angles": [
+      "原発再稼働加速で日本の電力会社の収益構造が変わる。隠れた受益者（設備・燃料・廃炉）",
+      "小型モジュール炉（SMR）の2030年代量産化で日本の重工・素材メーカーが担う部分",
+      "核融合（民間：TAE/Helion）への部品・素材供給で日本企業が取れるニッチポジション",
+      "廃炉ビジネス拡大（国内40基以上）で受益する解体・廃棄物処理・ロボット企業"
+    ]
+  },
+  {
+    "name": "GX・電力インフラ刷新",
+    "category": "エネルギー安全保障",
+    "policy_tailwind": "強",
+    "macro_driver": "GX国債20兆円×電力需要急増で送配電投資ブーム、老朽設備更新が急務",
+    "angles": [
+      "AI・DC電力需要爆発で送配電設備更新が急務。受益する重電・ケーブル企業",
+      "洋上風力の国産化要件で恩恵を受ける日本の部品・素材・建設船メーカー",
+      "全固体電池の量産ロードマップ（2027-2030）と日本の素材メーカーの立ち位置",
+      "系統安定化向け大型蓄電池（LFP/NMC）の急拡大で受益する日本企業"
+    ]
+  },
+  {
+    "name": "防衛産業強化・デュアルユース",
+    "category": "防衛安全保障",
+    "policy_tailwind": "強",
+    "macro_driver": "防衛費GDP2%（年11兆円）前倒し×防衛装備移転解禁で日本防衛産業が急拡大",
+    "angles": [
+      "防衛費倍増で最も受益する防衛専業・デュアルユース企業（電子戦・ドローン・ミサイル）",
+      "宇宙防衛（衛星・宇宙状況監視）の予算急増で受益する日本の宇宙・通信企業",
+      "サイバーセキュリティの国防投資拡大で恩恵を受けるセキュリティ企業",
+      "防衛装備品の輸出解禁（次期戦闘機GCAP）で受益するサプライヤー"
+    ]
+  },
+  {
+    "name": "宇宙・衛星インフラ",
+    "category": "防衛安全保障",
+    "policy_tailwind": "強",
+    "macro_driver": "宇宙安全保障予算拡大×H3量産×民間宇宙商業化で日本の宇宙産業が転換点",
+    "angles": [
+      "H3ロケット量産化で打ち上げコスト低下、恩恵を受ける日本の衛星・部品メーカー",
+      "低軌道衛星コンステレーションで受益する日本の部品・素材・地上局企業",
+      "衛星SAR・光学データの政府調達拡大で恩恵を受ける日本の衛星データ企業",
+      "宇宙デブリ除去（アストロスケール等）の商業化と日本企業の競争優位"
+    ]
+  },
+  {
+    "name": "国土強靭化・インフラ更新",
+    "category": "防衛安全保障",
+    "policy_tailwind": "強",
+    "macro_driver": "国土強靭化計画5年15兆円×老朽インフラ更新ラッシュ×南海トラフ対策",
+    "angles": [
+      "老朽インフラ（橋梁・トンネル・上下水道）の更新需要で受益する建設・素材企業",
+      "南海トラフ地震対策の防災インフラ投資で恩恵を受ける企業",
+      "維持管理ロボット・ドローン・AIインフラ診断で受益するテック企業"
+    ]
+  },
+  {
+    "name": "造船・海洋産業",
+    "category": "防衛安全保障",
+    "policy_tailwind": "強",
+    "macro_driver": "高市政権が造船強化ロードマップ策定×LNG船・洋上風力船需要急増で日本造船復活",
+    "angles": [
+      "LNG・アンモニア船の需要急増で日本造船業が韓国・中国から奪回できるポジション",
+      "洋上風力設置専用船の不足で恩恵を受ける日本の造船・海洋工事企業",
+      "海上自衛隊の護衛艦・補給艦増強で受益する日本の造船・電子機器メーカー",
+      "自律運航船（MASS）技術の商業化で先行する日本企業の優位性"
+    ]
+  },
+  {
+    "name": "AI・データセンターインフラ",
+    "category": "成長戦略",
+    "policy_tailwind": "強",
+    "macro_driver": "政府AI戦略×DC新設補助金×推論需要爆発で日本のAIインフラ投資急増",
+    "angles": [
+      "推論専用チップ時代に電力・冷却・ネットワークの何がボトルネックになるか",
+      "日本のデータセンター電力不足と再エネ調達競争。受益する電力・不動産・建設会社",
+      "液冷・浸漬冷却への移行で必要な新素材・部品・メンテ企業",
+      "AIエージェント普及でAPIコール急増。インフラで真に不足するものは何か"
+    ]
+  },
+  {
+    "name": "食料安全保障・アグリテック",
+    "category": "経済安全保障",
+    "policy_tailwind": "中",
+    "macro_driver": "高市政権の食料安保予算拡大×農業人口激減で自動化・国産化投資増",
+    "angles": [
+      "スマート農業（精密農業・ドローン）の普及加速で受益する日本の農機・センサー企業",
+      "植物工場・垂直農業の量産化で必要な照明・環境制御・栄養液の日本メーカー優位",
+      "肥料・農薬の国産化需要で恩恵を受ける化学メーカー、輸入依存からの転換企業"
+    ]
+  },
+  {
+    "name": "水素・アンモニア・合成燃料",
+    "category": "エネルギー安全保障",
+    "policy_tailwind": "中",
+    "macro_driver": "GX戦略の水素社会実装15兆円投資×脱炭素燃料の商業化競争",
+    "angles": [
+      "水素サプライチェーン（製造・輸送・貯蔵）で日本企業が握る技術的優位性",
+      "アンモニア混焼発電の商業化で受益する化学・重工・電力会社",
+      "CO2合成燃料（e-fuel）の航空・海運向け普及で恩恵を受ける触媒・素材企業"
+    ]
+  },
+  {
+    "name": "量子コンピューティング・先端科学",
+    "category": "成長戦略",
+    "policy_tailwind": "中",
+    "macro_driver": "量子技術戦略×政府1000億円投資×IBM量子連携で日本の量子産業が立ち上がる",
+    "angles": [
+      "量子コンピュータの冷却・制御で日本企業が持つ優位性",
+      "量子暗号通信の政府調達拡大で恩恵を受ける日本の光ファイバー・通信機器メーカー",
+      "量子センシングの産業応用で最初に市場が立つ分野と日本企業"
+    ]
+  },
+  {
+    "name": "医療・バイオ・ヘルスケアテック",
+    "category": "成長戦略",
+    "policy_tailwind": "中",
+    "macro_driver": "健康医療安全保障投資×高齢化深刻化×AI創薬革命で医療費構造が変わる",
+    "angles": [
+      "ADC（抗体薬物複合体）の製造ボトルネック。リンカー・ペイロードの原料供給寡占企業",
+      "核医学治療（放射性同位体療法）の量産化で必要なインフラ・原料の日本優位",
+      "介護ロボットの普及加速で受益する日本の企業",
+      "AIによる創薬スクリーニングが製薬会社のコスト構造に与える影響"
+    ]
+  },
+  {
+    "name": "生成AI × 業務DX",
+    "category": "成長戦略",
+    "policy_tailwind": "中",
+    "macro_driver": "政府DX推進×デジタル行財政改革×民間ホワイトカラー生産性革命",
+    "angles": [
+      "業種特化型AI（法律・医療・会計・設計）の普及で受益する垂直SaaS企業",
+      "企業の基幹システムのAI刷新需要で恩恵を受けるSI・パッケージ企業",
+      "行政DX（マイナンバー・給付DX）の予算拡大で受益するITサービス企業"
+    ]
+  },
+  {
+    "name": "金融立国・資本市場改革",
+    "category": "成長戦略",
+    "policy_tailwind": "中",
+    "macro_driver": "資産運用立国×金利正常化×PBR改革第2フェーズで日本の金融市場が構造変化",
+    "angles": [
+      "日本の金利上昇局面で真に恩恵を受ける金融業態（単純な銀行以外）",
+      "東証PBR改革第2フェーズ。自社株買い・政策保有株売却で受益する企業"
+    ]
+  },
+]

@@ -1594,3 +1594,11 @@ INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
 INFO:     111.102.197.97:0 - "GET /api/hypotheses HTTP/1.1" 200 OK
 INFO:     111.102.197.97:0 - "GET /api/hypotheses HTTP/1.1" 200 OK
 INFO:     111.102.197.97:0 - "GET /api/archive HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET / HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/bookmarks HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/top_picks HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/hypotheses HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/hypotheses HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/candidates HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/today HTTP/1.1" 200 OK
+INFO:     111.102.197.97:0 - "GET /api/archive HTTP/1.1" 200 OK

@@ -25,6 +25,122 @@ def call_llm(model, messages, temperature=0.7, timeout=180):
     r.raise_for_status()
     return r.json()["choices"][0]["message"]["content"]
 
+# ── Catalyst Chain スキーマ定義 ─────────────────────────────────────
+CATALYST_CHAIN_SCHEMA = {
+    "next_catalyst_event": "(str) 次回決算発表/展示会/規制発効等の具体的イベント名",
+    "catalyst_date": "(str) YYYY-MM-DD or 'TBD'",
+    "days_until_catalyst": "(int|null) catalyst_dateまでの日数。TBDの場合はnull",
+    "key_kpi_to_watch": "(str) 受注残/ASP/稼働率等、注目すべきKPI",
+    "kpi_surprise_rationale": "(str) 市場予想を上回る根拠",
+    "expected_price_mechanism": "(str) 株価反応の想定メカニズム"
+}
+
+# ── Short Candidates スキーマ定義 ───────────────────────────────────
+SHORT_CANDIDATES_SCHEMA = {
+    "company_name": "(str) 企業名",
+    "ticker": "(str) ティッカーシンボル（日本上場企業優先、例: 6502.T）",
+    "impacted_segment": "(str) 毀損されるセグメント名",
+    "damage_mechanism": "(str) なぜ構造的に毀損するか",
+    "estimated_downside_pct": "(float) 想定下落率（例: -15.0）"
+}
+
+CATALYST_CHAIN_SYSTEM_INSTRUCTION = (
+    "Catalyst Chainが具体的でない仮説は投資判断に使えない。"
+    "必ず3ヶ月以内の具体的イベントを特定し、そのイベントで開示されるKPIと市場予想との乖離の根拠を明記せよ。"
+    "カタリストが特定できない場合はcatalyst_dateを'TBD'とし、confidence_scoreを0.15減点せよ。"
+    "出力JSONには必ず以下のcatalyst_chainオブジェクトを含めること:\n"
+    "  catalyst_chain: {\n"
+    "    next_catalyst_event: (str) 次回決算発表/展示会/規制発効等,\n"
+    "    catalyst_date: (str) YYYY-MM-DD or 'TBD',\n"
+    "    days_until_catalyst: (int|null),\n"
+    "    key_kpi_to_watch: (str) 受注残/ASP/稼働率等,\n"
+    "    kpi_surprise_rationale: (str) 市場予想を上回る根拠,\n"
+    "    expected_price_mechanism: (str) 株価反応の想定メカニズム\n"
+    "  }\n"
+)
+
+SHORT_CANDIDATES_SYSTEM_INSTRUCTION = (
+    "各仮説について、この構造変化によって売上・利益が構造的に毀損される企業を1〜3社特定せよ。"
+    "ロング候補の受益メカニズムの裏返しとして、代替される技術・製品・サービスを提供する企業、"
+    "またはサプライチェーン上で需要が減少する企業を具体的に挙げよ。"
+    "日本上場企業を優先し、ティッカーを明記せよ。"
+    "出力JSONには必ず以下のshort_candidates配列を含めること（最大3社）:\n"
+    "  short_candidates: [\n"
+    "    {\n"
+    "      company_name: (str) 企業名,\n"
+    "      ticker: (str) ティッカーシンボル（例: 6502.T）,\n"
+    "      impacted_segment: (str) 毀損されるセグメント名,\n"
+    "      damage_mechanism: (str) なぜ構造的に毀損するか,\n"
+    "      estimated_downside_pct: (float) 想定下落率（例: -15.0）\n"
+    "    }\n"
+    "  ]\n"
+)
+
+# ── Post-processing: Catalyst Chain enrichment & penalty ────────────
+def _enrich_hypothesis(hypothesis):
+    """catalyst_chain の days_until_catalyst を自動計算し、ペナルティを適用する。"""
+    cc = hypothesis.get("catalyst_chain")
+    if not cc:
+        # catalyst_chain が欠落している場合はデフォルトを補完
+        cc = {
+            "next_catalyst_event": "Unknown",
+            "catalyst_date": "TBD",
+            "days_until_catalyst": None,
+            "key_kpi_to_watch": "N/A",
+            "kpi_surprise_rationale": "N/A",
+            "expected_price_mechanism": "N/A"
+        }
+        hypothesis["catalyst_chain"] = cc
+
+    catalyst_date_str = cc.get("catalyst_date", "TBD")
+    apply_penalty = False
+
+    if catalyst_date_str and catalyst_date_str != "TBD":
+        try:
+            catalyst_dt = datetime.strptime(catalyst_date_str, "%Y-%m-%d")
+            days_until = (catalyst_dt - datetime.now()).days
+            cc["days_until_catalyst"] = days_until
+            if days_until > 90:
+                apply_penalty = True
+        except (ValueError, TypeError):
+            cc["days_until_catalyst"] = None
+            apply_penalty = True
+    else:
+        cc["catalyst_date"] = "TBD"
+        cc["days_until_catalyst"] = None
+        apply_penalty = True
+
+    if apply_penalty:
+        current_score = hypothesis.get("confidence_score", 0.5)
+        if isinstance(current_score, (int, float)):
+            hypothesis["confidence_score"] = round(current_score * 0.85, 4)
+
+    # short_candidates が欠落している場合はデフォルトを補完
+    if "short_candidates" not in hypothesis or not isinstance(hypothesis.get("short_candidates"), list):
+        hypothesis["short_candidates"] = []
+
+    # short_candidates の各要素を検証・補完
+    validated_shorts = []
+    for sc in hypothesis.get("short_candidates", []):
+        if isinstance(sc, dict):
+            validated_sc = {
+                "company_name": sc.get("company_name", "Unknown"),
+                "ticker": sc.get("ticker", "N/A"),
+                "impacted_segment": sc.get("impacted_segment", "N/A"),
+                "damage_mechanism": sc.get("damage_mechanism", "N/A"),
+                "estimated_downside_pct": sc.get("estimated_downside_pct", 0.0)
+            }
+            # estimated_downside_pct が数値であることを保証
+            if not isinstance(validated_sc["estimated_downside_pct"], (int, float)):
+                try:
+                    validated_sc["estimated_downside_pct"] = float(validated_sc["estimated_downside_pct"])
+                except (ValueError, TypeError):
+                    validated_sc["estimated_downside_pct"] = 0.0
+            validated_shorts.append(validated_sc)
+    hypothesis["short_candidates"] = validated_shorts[:3]  # 最大3社
+
+    return hypothesis
+
 # ── ドメイン定義（高市政権重点領域 × グローバルトレンド）────────────────
 #  大カテゴリ（高市政権の4大柱）
 #    A. 経済安全保障  B. エネルギー安全保障  C. 防衛安全保障  D. 成長戦略
@@ -110,342 +226,9 @@ DOMAINS = [
     "macro_driver": "国土強靭化計画5年15兆円×老朽インフラ更新ラッシュ×南海トラフ対策",
     "angles": [
       "老朽インフラ（橋梁・トンネル・上下水道）の更新需要で受益する建設・素材企業",
-      "南海トラフ地震対策の防災インフラ投資で恩恵を受ける企業",
-      "維持管理ロボット・ドローン・AIインフラ診断で受益するテック企業"
+      "南海トラフ地震対策の防災インフラ投資で受益する企業",
+      "建設DX（BIM/CIM・自動施工）の普及で受益するテクノロジー企業",
+      "水インフラ（上下水道）の老朽化対策で受益する管材・ポンプ・膜メーカー"
     ]
   },
-  {
-    "name": "造船・海洋産業",
-    "category": "防衛安全保障",
-    "policy_tailwind": "強",
-    "macro_driver": "高市政権が造船強化ロードマップ策定×LNG船・洋上風力船需要急増で日本造船復活",
-    "angles": [
-      "LNG・アンモニア船の需要急増で日本造船業が韓国・中国から奪回できるポジション",
-      "洋上風力設置専用船の不足で恩恵を受ける日本の造船・海洋工事企業",
-      "海上自衛隊の護衛艦・補給艦増強で受益する日本の造船・電子機器メーカー",
-      "自律運航船（MASS）技術の商業化で先行する日本企業の優位性"
-    ]
-  },
-  {
-    "name": "AI・データセンターインフラ",
-    "category": "成長戦略",
-    "policy_tailwind": "強",
-    "macro_driver": "政府AI戦略×DC新設補助金×推論需要爆発で日本のAIインフラ投資急増",
-    "angles": [
-      "推論専用チップ時代に電力・冷却・ネットワークの何がボトルネックになるか",
-      "日本のデータセンター電力不足と再エネ調達競争。受益する電力・不動産・建設会社",
-      "液冷・浸漬冷却への移行で必要な新素材・部品・メンテ企業",
-      "AIエージェント普及でAPIコール急増。インフラで真に不足するものは何か"
-    ]
-  },
-  {
-    "name": "食料安全保障・アグリテック",
-    "category": "経済安全保障",
-    "policy_tailwind": "中",
-    "macro_driver": "高市政権の食料安保予算拡大×農業人口激減で自動化・国産化投資増",
-    "angles": [
-      "スマート農業（精密農業・ドローン）の普及加速で受益する日本の農機・センサー企業",
-      "植物工場・垂直農業の量産化で必要な照明・環境制御・栄養液の日本メーカー優位",
-      "肥料・農薬の国産化需要で恩恵を受ける化学メーカー、輸入依存からの転換企業"
-    ]
-  },
-  {
-    "name": "水素・アンモニア・合成燃料",
-    "category": "エネルギー安全保障",
-    "policy_tailwind": "中",
-    "macro_driver": "GX戦略の水素社会実装15兆円投資×脱炭素燃料の商業化競争",
-    "angles": [
-      "水素サプライチェーン（製造・輸送・貯蔵）で日本企業が握る技術的優位性",
-      "アンモニア混焼発電の商業化で受益する化学・重工・電力会社",
-      "CO2合成燃料（e-fuel）の航空・海運向け普及で恩恵を受ける触媒・素材企業"
-    ]
-  },
-  {
-    "name": "量子コンピューティング・先端科学",
-    "category": "成長戦略",
-    "policy_tailwind": "中",
-    "macro_driver": "量子技術戦略×政府1000億円投資×IBM量子連携で日本の量子産業が立ち上がる",
-    "angles": [
-      "量子コンピュータの冷却・制御で日本企業が持つ優位性",
-      "量子暗号通信の政府調達拡大で恩恵を受ける日本の光ファイバー・通信機器メーカー",
-      "量子センシングの産業応用で最初に市場が立つ分野と日本企業"
-    ]
-  },
-  {
-    "name": "医療・バイオ・ヘルスケアテック",
-    "category": "成長戦略",
-    "policy_tailwind": "中",
-    "macro_driver": "健康医療安全保障投資×高齢化深刻化×AI創薬革命で医療費構造が変わる",
-    "angles": [
-      "ADC（抗体薬物複合体）の製造ボトルネック。リンカー・ペイロードの原料供給寡占企業",
-      "核医学治療（放射性同位体療法）の量産化で必要なインフラ・原料の日本優位",
-      "介護ロボットの普及加速で受益する日本の企業",
-      "AIによる創薬スクリーニングが製薬会社のコスト構造に与える影響"
-    ]
-  },
-  {
-    "name": "生成AI × 業務DX",
-    "category": "成長戦略",
-    "policy_tailwind": "中",
-    "macro_driver": "政府DX推進×デジタル行財政改革×民間ホワイトカラー生産性革命",
-    "angles": [
-      "業種特化型AI（法律・医療・会計・設計）の普及で受益する垂直SaaS企業",
-      "企業の基幹システムのAI刷新需要で恩恵を受けるSI・パッケージ企業",
-      "行政DX（マイナンバー・給付DX）の予算拡大で受益するITサービス企業"
-    ]
-  },
-  {
-    "name": "金融立国・資本市場改革",
-    "category": "成長戦略",
-    "policy_tailwind": "中",
-    "macro_driver": "資産運用立国×金利正常化×PBR改革第2フェーズで日本の金融市場が構造変化",
-    "angles": [
-      "日本の金利上昇局面で真に恩恵を受ける金融業態（単純な銀行以外）",
-      "東証PBR改革第2フェーズ。自社株買い・M&A・事業売却の次に来るもの",
-      "NISA拡充・家計の投資シフトで受益する資産運用・証券・フィンテック企業"
-    ]
-  }
 ]
-
-def research_domain(domain: dict, angle: str) -> str:
-    print(f"  🔍 {angle[:55]}...", flush=True)
-    prompt = f"""以下のテーマについて、業界の最前線動向・技術ロードマップ・グローバルサプライチェーンの観点から深く調査してください。
-
-マクロドライバー: {domain.get('macro_driver', '')}
-調査テーマ: {angle}
-
-特に以下を調査:
-1. 現在の技術的・物理的限界と次世代への移行タイムライン
-2. グローバルサプライチェーンでの日本企業のポジション（寡占・ニッチ・脆弱性）
-3. 直近1〜2年の業界の動き（M&A・投資・技術発表・規制変化）
-4. 5〜10年後に何が起こるかの専門的予測
-
-できるだけ具体的な企業名・製品名・数値を含めてください。"""
-    return call_llm("perplexity/sonar-pro", [{"role": "user", "content": prompt}])
-
-
-def generate_hypotheses(domain: dict, research_results: list) -> list:
-    print(f"  🧠 Opusが仮説生成中...", flush=True)
-    research_text = "\n\n---\n\n".join(research_results)
-
-    prompt = f"""あなたは世界トップレベルのヘッジファンドリサーチャーです。以下のリサーチ結果を読んで、日本株への投資仮説を生成してください。
-
-## マクロドライバー
-{domain.get('macro_driver', '')}
-
-## リサーチ結果
-{research_text}
-
-## 重要な指針
-
-「みんなが知っている話」は仮説ではありません。以下の視点で考えてください:
-- **二次・三次効果**: 直接受益者ではなく、その先の受益者
-- **ボトルネック**: サプライチェーンの中で唯一解になる企業
-- **逆説的ポジション**: 「一見ネガティブ」に見える変化で実は勝つ企業
-- **市場の認知lag**: 実態変化が株価に反映されるまでのタイムラグ
-- **Moatの存在**: 技術・特許・顧客関係・規制で守られた参入障壁
-
-## 出力（JSON）
-
-```json
-{{
-  "hypotheses": [
-    {{
-      "theme": "（20字以内のキャッチーなテーマ名）",
-      "insight": "（市場がまだ気づいていない核心的洞察、200字程度）",
-      "logic": "（技術的・構造的な論拠、400字程度）",
-      "moat_signal": "（なぜ他社ではなくこの種の企業だけが取れるか、100字）",
-      "timeline": "（この仮説が顕在化するタイムライン、例: '2026年後半〜2027年'）",
-      "target_company_type": "（どういう特性の会社を探すべきか）",
-      "key_risks": ["リスク1", "リスク2"],
-      "confidence": 0.0から1.0,
-      "domain": "{domain['name']}"
-    }}
-  ]
-}}
-```
-
-仮説は1〜3個。浅い仮説は出さない。JSONのみ出力。"""
-
-    res = call_llm("anthropic/claude-opus-4-6", [{"role": "user", "content": prompt}], temperature=0.8)
-    m = re.search(r'\{.*\}', res, re.DOTALL)
-    if m:
-        try:
-            return json.loads(m.group()).get("hypotheses", [])
-        except:
-            pass
-    return []
-
-
-def devils_advocate(h: dict) -> dict:
-    print(f"  ⚔️  反論検証: {h.get('theme', '')}", flush=True)
-    prompt = f"""以下の投資仮説に対して最も鋭い反論を3つ挙げ、反論を踏まえて仮説を強化してください。
-
-テーマ: {h.get('theme')}
-洞察: {h.get('insight')}
-論拠: {h.get('logic')}
-
-```json
-{{
-  "counterarguments": ["反論1", "反論2", "反論3"],
-  "revised_confidence": 0.0から1.0,
-  "revised_logic": "（反論を踏まえて強化された論拠）",
-  "leading_indicators": ["先行指標1", "先行指標2"]
-}}
-```
-JSONのみ出力。"""
-
-    res = call_llm("anthropic/claude-opus-4-6", [{"role": "user", "content": prompt}], temperature=0.5)
-    m = re.search(r'\{.*\}', res, re.DOTALL)
-    if m:
-        try:
-            review = json.loads(m.group())
-            h["counterarguments"]  = review.get("counterarguments", [])
-            h["confidence"]        = review.get("revised_confidence", h.get("confidence", 0.5))
-            h["logic"]             = review.get("revised_logic", h.get("logic", ""))
-            h["leading_indicators"]= review.get("leading_indicators", [])
-        except:
-            pass
-    return h
-
-
-def find_stocks(h: dict) -> list:
-    print(f"  📊 銘柄マッピング中...", flush=True)
-    prompt = f"""以下の投資仮説に合致する東証上場企業を3〜5社挙げてください。
-
-テーマ: {h.get('theme')}
-洞察: {h.get('insight')}
-Moatシグナル: {h.get('moat_signal', '')}
-対象企業タイプ: {h.get('target_company_type', '')}
-
-厳守: 東証上場企業のみ（米国株・未上場不可）。証券コード必須。
-
-```json
-[{{
-  "code": "1234",
-  "name": "会社名",
-  "reason": "なぜ仮説の受益者か（具体的に100字）",
-  "moat": "この企業固有の参入障壁（50字）",
-  "current_concern": "なぜ今まだ割安に放置されているか"
-}}]
-```
-JSONのみ出力。"""
-
-    res = call_llm("anthropic/claude-opus-4-6", [{"role": "user", "content": prompt}], temperature=0.6)
-    m = re.search(r'\[.*\]', res, re.DOTALL)
-    if m:
-        try:
-            return json.loads(m.group())
-        except:
-            pass
-    return []
-
-
-def find_startups(h: dict) -> list:
-    print(f"  🚀 スタートアップリサーチ中...", flush=True)
-    prompt = f"""以下の投資仮説に関連する日本の有望未上場スタートアップを1〜3社。
-
-テーマ: {h.get('theme')}
-洞察: {h.get('insight')}
-
-条件: 実在する日本の未上場企業のみ。不確かなら空配列。
-
-```json
-[{{
-  "name": "スタートアップ名",
-  "founded": "設立年",
-  "business": "事業内容（50字）",
-  "why_promising": "なぜ有望か（100字）",
-  "stage": "シリーズA等",
-  "investors": "主要投資家"
-}}]
-```
-JSONのみ出力。"""
-
-    res = call_llm("perplexity/sonar-pro", [{"role": "user", "content": prompt}], temperature=0.5)
-    m = re.search(r'\[.*\]', res, re.DOTALL)
-    if m:
-        try:
-            data = json.loads(m.group())
-            return [s for s in data if s.get("name")]
-        except:
-            pass
-    return []
-
-
-def run():
-    print("=" * 60)
-    print("🔬 Deep Alpha Engine v2 起動")
-    print("=" * 60)
-
-    history_file = BASE / "backtest/alpha_domain_history.json"
-    history = json.loads(history_file.read_text()) if history_file.exists() else {"last_domains": []}
-
-    # 固定ローテーション（ランダムなし）
-    # DOMAINS配列の順番通りに回す: policy_tailwind「強」が先、「中」が後
-    # history["domain_index"] で現在位置を管理
-    current_idx = history.get("domain_index", 0) % len(DOMAINS)
-    domain = DOMAINS[current_idx]
-    history["domain_index"] = (current_idx + 1) % len(DOMAINS)
-    angles = random.sample(domain["angles"], min(2, len(domain["angles"])))
-
-    print(f"\n📌 ドメイン: {domain['name']}")
-    print(f"📌 マクロドライバー: {domain['macro_driver']}")
-    print(f"📌 探索角度: {len(angles)}個\n")
-
-    # Phase 1: リサーチ
-    research_results = []
-    for angle in angles:
-        result = research_domain(domain, angle)
-        research_results.append(f"### {angle}\n\n{result}")
-
-    # Phase 2: 仮説生成
-    hypotheses = generate_hypotheses(domain, research_results)
-    if not hypotheses:
-        print("⚠️ 仮説生成失敗")
-        return []
-
-    print(f"\n💡 生成仮説: {len(hypotheses)}件")
-
-    refined = []
-    for h in hypotheses:
-        h["id"]         = f"alpha_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{len(refined)+1:02d}"
-        h["created_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
-        h = devils_advocate(h)
-        h["candidate_stocks"] = find_stocks(h)
-        h["startups"]         = find_startups(h)
-        refined.append(h)
-        print(f"\n  ✅ {h.get('theme')} (確信度: {h.get('confidence', 0):.0%})", flush=True)
-
-    # 保存（テーマ重複除去 + 最新15件）
-    existing = []
-    if OUTPUT.exists():
-        try:
-            existing = json.loads(OUTPUT.read_text()).get("hypotheses", [])
-        except:
-            pass
-
-    # 新規仮説と同テーマの既存仮説を除去してから結合
-    new_themes = {h.get("theme") for h in refined}
-    existing = [h for h in existing if h.get("theme") not in new_themes]
-    all_hyps = refined + existing
-    all_hyps = all_hyps[:15]
-
-    OUTPUT.write_text(json.dumps({
-        "updated_at":    datetime.now().strftime("%Y-%m-%d %H:%M"),
-        "last_domain":   domain["name"],
-        "hypotheses":    all_hyps,
-    }, ensure_ascii=False, indent=2))
-
-    history["last_domains"].append(domain["name"])
-    history["last_domains"] = history["last_domains"][-10:]
-    history_file.write_text(json.dumps(history))
-
-    print(f"\n{'='*60}")
-    print(f"✨ 完了: 仮説{len(refined)}件生成")
-    print(f"{'='*60}\n")
-    return refined
-
-
-if __name__ == "__main__":
-    run()
