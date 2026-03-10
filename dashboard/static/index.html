@@ -7,39 +7,78 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, sans-serif; min-height: 100vh; }
-  
+
   header { background: #161b22; border-bottom: 1px solid #30363d; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
   header h1 { font-size: 18px; color: #f0f6fc; }
   header .badge { background: #238636; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 20px; }
-  
-  .tabs { background: #161b22; border-bottom: 1px solid #30363d; padding: 0 24px; display: flex; gap: 0; }
+
+  .tabs { background: #161b22; border-bottom: 1px solid #30363d; padding: 0 24px; display: flex; }
   .tab { padding: 12px 20px; cursor: pointer; border-bottom: 2px solid transparent; color: #8b949e; font-size: 14px; transition: all 0.2s; }
   .tab:hover { color: #c9d1d9; }
   .tab.active { color: #58a6ff; border-bottom-color: #58a6ff; }
-  
+
   .content { padding: 24px; max-width: 1200px; margin: 0 auto; }
   .section { display: none; }
   .section.active { display: block; }
-  
   .updated { color: #8b949e; font-size: 12px; margin-bottom: 16px; }
-  
+
   /* 仮説カード */
-  .hypothesis-grid { display: grid; gap: 16px; }
-  .hypothesis-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; }
-  .hypothesis-card:hover { border-color: #58a6ff44; }
-  .hyp-theme { font-size: 16px; font-weight: 600; color: #f0f6fc; margin-bottom: 8px; }
-  .hyp-logic { color: #8b949e; font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
-  .hyp-meta { display: flex; gap: 16px; align-items: center; }
-  .confidence-bar { flex: 1; background: #21262d; border-radius: 4px; height: 6px; overflow: hidden; }
-  .confidence-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #238636, #58a6ff); transition: width 0.5s; }
+  .hypothesis-grid { display: grid; gap: 12px; }
+  .hypothesis-card {
+    background: #161b22; border: 1px solid #30363d; border-radius: 10px;
+    padding: 20px; cursor: pointer; transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+  .hypothesis-card:hover { border-color: #58a6ff66; background: #1c2128; }
+  .hypothesis-card.expanded { border-color: #58a6ff; }
+  .hyp-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .hyp-theme { font-size: 16px; font-weight: 600; color: #f0f6fc; }
+  .hyp-domain { font-size: 11px; color: #8b949e; background: #21262d; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+  .hyp-insight { color: #c9d1d9; font-size: 14px; line-height: 1.65; margin: 10px 0; }
+  .hyp-meta { display: flex; gap: 16px; align-items: center; margin-top: 12px; }
+  .confidence-bar { flex: 1; background: #21262d; border-radius: 4px; height: 5px; overflow: hidden; }
+  .confidence-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #238636, #58a6ff); }
   .confidence-label { font-size: 12px; color: #8b949e; white-space: nowrap; }
-  .hyp-conditions { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
-  .condition-tag { background: #21262d; border: 1px solid #30363d; border-radius: 4px; padding: 2px 8px; font-size: 12px; color: #8b949e; }
-  
+  .expand-icon { font-size: 18px; color: #8b949e; transition: transform 0.25s; }
+  .hypothesis-card.expanded .expand-icon { transform: rotate(180deg); }
+
+  /* 展開エリア */
+  .hyp-detail { display: none; margin-top: 16px; border-top: 1px solid #30363d; padding-top: 16px; }
+  .hypothesis-card.expanded .hyp-detail { display: block; }
+
+  .detail-section { margin-bottom: 16px; }
+  .detail-label { font-size: 11px; text-transform: uppercase; color: #58a6ff; letter-spacing: 0.8px; margin-bottom: 6px; }
+  .detail-text { font-size: 14px; line-height: 1.7; color: #c9d1d9; }
+  .detail-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width: 600px) { .detail-row { grid-template-columns: 1fr; } }
+
+  /* 反論リスト */
+  .counter-list { list-style: none; }
+  .counter-list li { padding: 6px 0 6px 20px; font-size: 13px; color: #e3b341; border-bottom: 1px solid #21262d; position: relative; }
+  .counter-list li::before { content: "⚠"; position: absolute; left: 0; }
+  .counter-list li:last-child { border-bottom: none; }
+
+  /* 先行指標 */
+  .indicator-list { list-style: none; }
+  .indicator-list li { padding: 5px 0 5px 18px; font-size: 13px; color: #3fb950; position: relative; }
+  .indicator-list li::before { content: "→"; position: absolute; left: 0; color: #3fb950; }
+
+  /* 銘柄カード */
+  .stocks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; margin-top: 8px; }
+  .stock-card { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 14px; }
+  .stock-header { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+  .stock-code { font-family: monospace; font-size: 15px; font-weight: 700; color: #58a6ff; }
+  .stock-name { font-size: 13px; color: #f0f6fc; }
+  .stock-reason { font-size: 12px; color: #8b949e; line-height: 1.55; margin-bottom: 6px; }
+  .stock-concern { font-size: 11px; color: #e3b341; background: #2d2a1a; border-radius: 4px; padding: 4px 8px; }
+
+  /* タイムライン */
+  .timeline-badge { display: inline-block; background: #1f3a5f; border: 1px solid #388bfd44; border-radius: 6px; padding: 4px 12px; font-size: 13px; color: #79c0ff; }
+
   /* 銘柄テーブル */
   .table-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  th { text-align: left; padding: 10px 12px; border-bottom: 1px solid #30363d; color: #8b949e; font-weight: 500; font-size: 12px; text-transform: uppercase; }
+  th { text-align: left; padding: 10px 12px; border-bottom: 1px solid #30363d; color: #8b949e; font-size: 12px; text-transform: uppercase; }
   td { padding: 10px 12px; border-bottom: 1px solid #21262d; }
   tr:hover td { background: #161b22; }
   .code { font-family: monospace; color: #58a6ff; font-weight: 600; }
@@ -48,24 +87,24 @@
   .positive { color: #3fb950; }
   .negative { color: #f85149; }
   .neutral { color: #8b949e; }
-  
+
   /* モメンタム */
   .momentum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media (max-width: 768px) { .momentum-grid { grid-template-columns: 1fr; } }
+  @media(max-width: 768px) { .momentum-grid { grid-template-columns: 1fr; } }
   .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; }
-  .card h3 { font-size: 14px; color: #8b949e; margin-bottom: 12px; text-transform: uppercase; }
+  .card h3 { font-size: 13px; color: #8b949e; margin-bottom: 12px; text-transform: uppercase; }
   .stat { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #21262d; font-size: 14px; }
   .stat:last-child { border-bottom: none; }
   .stat-label { color: #8b949e; }
   .stat-value { color: #f0f6fc; font-weight: 500; }
-  
+
+  .market-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 20px; }
+  .summary-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 14px; }
+  .summary-label { font-size: 11px; color: #8b949e; margin-bottom: 4px; }
+  .summary-value { font-size: 20px; font-weight: 600; color: #f0f6fc; }
+
   .loading { text-align: center; padding: 60px; color: #8b949e; }
   .error { background: #3d1f1f; border: 1px solid #f8514944; border-radius: 8px; padding: 16px; color: #f85149; }
-  
-  .market-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
-  .summary-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; }
-  .summary-label { font-size: 12px; color: #8b949e; margin-bottom: 4px; }
-  .summary-value { font-size: 20px; font-weight: 600; color: #f0f6fc; }
 </style>
 </head>
 <body>
@@ -76,14 +115,14 @@
 </header>
 
 <div class="tabs">
-  <div class="tab active" onclick="showTab('hypotheses')">📊 マクロ仮説</div>
-  <div class="tab" onclick="showTab('candidates')">🎯 注目銘柄</div>
-  <div class="tab" onclick="showTab('momentum')">⚡ モメンタム</div>
+  <div class="tab active" onclick="showTab('hypotheses', this)">📊 マクロ仮説</div>
+  <div class="tab" onclick="showTab('candidates', this)">🎯 注目銘柄</div>
+  <div class="tab" onclick="showTab('momentum', this)">⚡ モメンタム</div>
 </div>
 
 <div class="content">
 
-  <!-- マクロ仮説タブ -->
+  <!-- マクロ仮説 -->
   <div id="tab-hypotheses" class="section active">
     <div id="market-summary-area"></div>
     <div id="updated-hypotheses" class="updated"></div>
@@ -92,19 +131,14 @@
     </div>
   </div>
 
-  <!-- 注目銘柄タブ -->
+  <!-- 注目銘柄 -->
   <div id="tab-candidates" class="section">
     <div id="updated-candidates" class="updated"></div>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>コード</th>
-            <th>ROE</th>
-            <th>営業利益率</th>
-            <th>売上成長率</th>
-            <th>来期成長予想</th>
-            <th>スコア</th>
+            <th>コード</th><th>ROE</th><th>営業利益率</th><th>売上成長率</th><th>来期予想</th><th>スコア</th>
           </tr>
         </thead>
         <tbody id="candidates-tbody">
@@ -114,20 +148,20 @@
     </div>
   </div>
 
-  <!-- モメンタムタブ -->
+  <!-- モメンタム -->
   <div id="tab-momentum" class="section">
     <div id="updated-momentum" class="updated"></div>
-    <div id="momentum-content" class="loading">モメンタムデータ読み込み中...</div>
+    <div id="momentum-content" class="loading">読み込み中...</div>
   </div>
 
 </div>
 
 <script>
-function showTab(name) {
+function showTab(name, el) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
-  event.target.classList.add('active');
+  el.classList.add('active');
 }
 
 function fmt(v, suffix='%', digits=1) {
@@ -136,118 +170,165 @@ function fmt(v, suffix='%', digits=1) {
   return `<span class="${cls}">${v > 0 ? '+' : ''}${v.toFixed(digits)}${suffix}</span>`;
 }
 
-// マクロ仮説読み込み
+function toggleCard(card) {
+  card.classList.toggle('expanded');
+}
+
+function renderHypothesis(h) {
+  const stocks = (h.candidate_stocks || []).map(s => `
+    <div class="stock-card">
+      <div class="stock-header">
+        <span class="stock-code">${s.code || ''}</span>
+        <span class="stock-name">${s.name || ''}</span>
+      </div>
+      <div class="stock-reason">${s.reason || ''}</div>
+      ${s.current_concern ? `<div class="stock-concern">⚠ ${s.current_concern}</div>` : ''}
+    </div>
+  `).join('');
+
+  const counters = (h.counterarguments || []).map(c => `<li>${c}</li>`).join('');
+  const indicators = (h.leading_indicators || []).map(i => `<li>${i}</li>`).join('');
+
+  return `
+    <div class="hypothesis-card" onclick="toggleCard(this)">
+      <div class="hyp-header">
+        <div>
+          <div class="hyp-theme">${h.theme || '—'}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          ${h.domain ? `<span class="hyp-domain">${h.domain}</span>` : ''}
+          <span class="expand-icon">▼</span>
+        </div>
+      </div>
+
+      <div class="hyp-insight">${h.insight || h.logic || '—'}</div>
+
+      <div class="hyp-meta">
+        <div class="confidence-bar">
+          <div class="confidence-fill" style="width:${((h.confidence||0)*100).toFixed(0)}%"></div>
+        </div>
+        <span class="confidence-label">確信度 ${((h.confidence||0)*100).toFixed(0)}%</span>
+        ${h.created_at ? `<span class="confidence-label">${h.created_at}</span>` : ''}
+      </div>
+
+      <!-- 展開エリア -->
+      <div class="hyp-detail">
+
+        ${h.timeline ? `
+        <div class="detail-section">
+          <div class="detail-label">タイムライン</div>
+          <span class="timeline-badge">📅 ${h.timeline}</span>
+        </div>` : ''}
+
+        <div class="detail-row">
+          ${h.logic && h.logic !== h.insight ? `
+          <div class="detail-section">
+            <div class="detail-label">詳細ロジック</div>
+            <div class="detail-text">${h.logic}</div>
+          </div>` : '<div></div>'}
+
+          <div>
+            ${counters ? `
+            <div class="detail-section">
+              <div class="detail-label">主なリスク・反論</div>
+              <ul class="counter-list">${counters}</ul>
+            </div>` : ''}
+
+            ${indicators ? `
+            <div class="detail-section">
+              <div class="detail-label">先行指標（仮説が正しければ先に動く）</div>
+              <ul class="indicator-list">${indicators}</ul>
+            </div>` : ''}
+          </div>
+        </div>
+
+        ${stocks ? `
+        <div class="detail-section">
+          <div class="detail-label">候補銘柄</div>
+          <div class="stocks-grid">${stocks}</div>
+        </div>` : ''}
+
+      </div>
+    </div>
+  `;
+}
+
 async function loadHypotheses() {
   try {
     const r = await fetch('/api/hypotheses');
     const data = await r.json();
-    
+
     if (data.updated_at) {
-      document.getElementById('updated-hypotheses').textContent = `最終更新: ${data.updated_at}`;
+      const domain = data.last_domain ? ` | 最新ドメイン: ${data.last_domain}` : '';
+      document.getElementById('updated-hypotheses').textContent = `最終更新: ${data.updated_at}${domain}`;
     }
-    
-    // マーケットサマリー
+
     if (data.market_summary) {
       const ms = data.market_summary;
       document.getElementById('market-summary-area').innerHTML = `
         <div class="market-summary">
-          <div class="summary-card"><div class="summary-label">対象企業数</div><div class="summary-value">${ms.total_companies?.toLocaleString() || '—'}</div></div>
-          <div class="summary-card"><div class="summary-label">ROE中央値</div><div class="summary-value">${ms.median_roe?.toFixed(1) || '—'}%</div></div>
-          <div class="summary-card"><div class="summary-label">営業利益率中央値</div><div class="summary-value">${ms.median_op_margin?.toFixed(1) || '—'}%</div></div>
-          <div class="summary-card"><div class="summary-label">ROE>15%企業数</div><div class="summary-value">${ms.high_roe_count?.toLocaleString() || '—'}</div></div>
-          <div class="summary-card"><div class="summary-label">来期増収予想企業数</div><div class="summary-value">${ms.high_growth_count?.toLocaleString() || '—'}</div></div>
+          <div class="summary-card"><div class="summary-label">対象企業数</div><div class="summary-value">${(ms.total_companies||0).toLocaleString()}</div></div>
+          <div class="summary-card"><div class="summary-label">ROE中央値</div><div class="summary-value">${(ms.median_roe||0).toFixed(1)}%</div></div>
+          <div class="summary-card"><div class="summary-label">営業利益率中央値</div><div class="summary-value">${(ms.median_op_margin||0).toFixed(1)}%</div></div>
+          <div class="summary-card"><div class="summary-label">ROE>15%</div><div class="summary-value">${(ms.high_roe_count||0).toLocaleString()}社</div></div>
+          <div class="summary-card"><div class="summary-label">来期増収予想</div><div class="summary-value">${(ms.high_growth_count||0).toLocaleString()}社</div></div>
         </div>`;
     }
-    
-    const hyps = data.hypotheses || [];
+
+    const hyps = (data.hypotheses || []).filter(h => h.insight || h.logic);
     if (!hyps.length) {
-      document.getElementById('hypothesis-list').innerHTML = '<div class="error">仮説データがありません。macro_hypothesis_engine.pyを実行してください。</div>';
+      document.getElementById('hypothesis-list').innerHTML = '<div class="error">仮説データがありません。deep_alpha_engine.pyを実行してください。</div>';
       return;
     }
-    
-    document.getElementById('hypothesis-list').innerHTML = hyps.map(h => `
-      <div class="hypothesis-card">
-        <div class="hyp-theme">${h.theme || '—'}</div>
-        <div class="hyp-logic">${h.logic || '—'}</div>
-        <div class="hyp-meta">
-          <div class="confidence-bar"><div class="confidence-fill" style="width:${((h.confidence||0)*100).toFixed(0)}%"></div></div>
-          <span class="confidence-label">確信度 ${((h.confidence||0)*100).toFixed(0)}%</span>
-          <span class="confidence-label">${h.created_at || ''}</span>
-        </div>
-        ${h.target_conditions ? `
-        <div class="hyp-conditions">
-          ${h.target_conditions.min_roe ? `<span class="condition-tag">ROE≥${h.target_conditions.min_roe}%</span>` : ''}
-          ${h.target_conditions.min_op_margin ? `<span class="condition-tag">営業利益率≥${h.target_conditions.min_op_margin}%</span>` : ''}
-          ${h.target_conditions.sector_hint ? `<span class="condition-tag">${h.target_conditions.sector_hint}</span>` : ''}
-        </div>` : ''}
-      </div>
-    `).join('');
+    document.getElementById('hypothesis-list').innerHTML = hyps.map(renderHypothesis).join('');
   } catch(e) {
     document.getElementById('hypothesis-list').innerHTML = `<div class="error">エラー: ${e.message}</div>`;
   }
 }
 
-// 注目銘柄読み込み
 async function loadCandidates() {
   try {
     const r = await fetch('/api/candidates');
     const data = await r.json();
-    if (data.updated_at) {
-      document.getElementById('updated-candidates').textContent = `最終更新: ${data.updated_at} | ${data.total || 0}件`;
-    }
-    const candidates = data.candidates || [];
-    if (!candidates.length) {
-      document.getElementById('candidates-tbody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:#8b949e">データなし。fundamental_screener.pyを実行してください。</td></tr>';
+    if (data.updated_at) document.getElementById('updated-candidates').textContent = `最終更新: ${data.updated_at} | ${data.total||0}件`;
+    const list = data.candidates || [];
+    if (!list.length) {
+      document.getElementById('candidates-tbody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:#8b949e">データなし</td></tr>';
       return;
     }
-    document.getElementById('candidates-tbody').innerHTML = candidates.slice(0, 50).map(c => `
+    document.getElementById('candidates-tbody').innerHTML = list.slice(0,50).map(c => `
       <tr>
         <td><span class="code">${c.code}</span></td>
         <td>${fmt(c.roe)}</td>
         <td>${fmt(c.op_margin)}</td>
         <td>${fmt(c.sales_growth_yoy)}</td>
         <td>${fmt(c.forecast_sales_growth)}</td>
-        <td>
-          <div class="score-bar">
-            <div class="score-fill" style="width:${(c.score*80).toFixed(0)}px"></div>
-            <span>${(c.score*100).toFixed(0)}</span>
-          </div>
-        </td>
-      </tr>
-    `).join('');
+        <td><div class="score-bar"><div class="score-fill" style="width:${(c.score*80).toFixed(0)}px"></div><span>${(c.score*100).toFixed(0)}</span></div></td>
+      </tr>`).join('');
   } catch(e) {
     document.getElementById('candidates-tbody').innerHTML = `<tr><td colspan="6">エラー: ${e.message}</td></tr>`;
   }
 }
 
-// モメンタム読み込み
 async function loadMomentum() {
   try {
     const r = await fetch('/api/today');
     const data = await r.json();
     const best10 = data.best10 || [];
-    if (!best10.length) {
-      document.getElementById('momentum-content').innerHTML = '<div class="error">モメンタムデータなし</div>';
-      return;
-    }
+    if (!best10.length) { document.getElementById('momentum-content').innerHTML = '<div class="error">モメンタムデータなし</div>'; return; }
     document.getElementById('updated-momentum').textContent = `シグナル: ${best10.length}件`;
-    document.getElementById('momentum-content').innerHTML = `
-      <div class="momentum-grid">
-        ${best10.slice(0,10).map(s => `
-          <div class="card">
-            <h3>${s.code || '—'} ${s.name || ''}</h3>
-            ${Object.entries(s).filter(([k]) => !['code','name'].includes(k)).slice(0,5).map(([k,v]) =>
-              `<div class="stat"><span class="stat-label">${k}</span><span class="stat-value">${typeof v === 'number' ? v.toFixed(2) : v}</span></div>`
-            ).join('')}
-          </div>
-        `).join('')}
-      </div>`;
+    document.getElementById('momentum-content').innerHTML = `<div class="momentum-grid">${best10.slice(0,10).map(s => `
+      <div class="card">
+        <h3>${s.code||'—'} ${s.name||''}</h3>
+        ${Object.entries(s).filter(([k])=>!['code','name'].includes(k)).slice(0,5).map(([k,v])=>
+          `<div class="stat"><span class="stat-label">${k}</span><span class="stat-value">${typeof v==='number'?v.toFixed(2):v}</span></div>`
+        ).join('')}
+      </div>`).join('')}</div>`;
   } catch(e) {
     document.getElementById('momentum-content').innerHTML = `<div class="error">エラー: ${e.message}</div>`;
   }
 }
 
-// 初期ロード
 loadHypotheses();
 loadCandidates();
 loadMomentum();
