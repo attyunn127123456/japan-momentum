@@ -1,47 +1,43 @@
 #!/bin/bash
-# 自律ループ: サイクル完了→即次のサイクルを起動し続ける
-# heartbeatで死活監視される。二重起動防止のlockfile付き。
+# 自律ループ v2 — シンプル・確実版
+# lockfileを使わず、pgrep で自分自身の重複を防ぐ
 
-LOOP_LOCK="/tmp/alpha_continuous_loop.lock"
 LOG="logs/alpha_cycle.log"
 cd "$(dirname "$0")"
 mkdir -p logs
 
-# 重複起動防止
-if [ -f "$LOOP_LOCK" ]; then
-    PID=$(cat "$LOOP_LOCK")
-    if kill -0 "$PID" 2>/dev/null; then
-        echo "$(date '+%H:%M:%S') ループ既に稼働中 (PID: $PID)" | tee -a $LOG
-        exit 0
-    fi
-fi
-echo $$ > "$LOOP_LOCK"
-
-echo "$(date '+%Y-%m-%d %H:%M:%S') 🔁 自律ループ開始" | tee -a $LOG
-
-cleanup() {
-    rm -f "$LOOP_LOCK"
-    echo "$(date '+%H:%M:%S') ループ停止" | tee -a $LOG
+# 重複起動防止（自分以外に同じスクリプトが動いていたら終了）
+RUNNING=$(pgrep -f "run_continuous_loop" | grep -v $$ | wc -l | tr -d ' ')
+if [ "$RUNNING" -gt "0" ]; then
+    echo "$(date '+%H:%M:%S') 重複起動検知 → 終了" >> $LOG
     exit 0
-}
-trap cleanup SIGTERM SIGINT
+fi
+
+echo "$(date '+%Y-%m-%d %H:%M:%S') 🔁 自律ループ開始 (PID: $$)" | tee -a $LOG
 
 CYCLE=0
 while true; do
     CYCLE=$((CYCLE + 1))
-    echo "$(date '+%H:%M:%S') === サイクル #$CYCLE 開始 ===" | tee -a $LOG
+    echo "$(date '+%H:%M:%S') === サイクル #$CYCLE ===" | tee -a $LOG
 
-    # lockfileクリア
-    rm -f /tmp/evaluate_hypothesis.lock /tmp/alpha_cycle.lock
-
-    # 1サイクル実行（仮説生成→評価）
-    bash run_alpha_cycle.sh
-    EXIT=$?
-
-    if [ $EXIT -eq 0 ]; then
-        echo "$(date '+%H:%M:%S') ✅ サイクル #$CYCLE 完了 → 即次へ" | tee -a $LOG
-    else
-        echo "$(date '+%H:%M:%S') ⚠️ サイクル #$CYCLE 失敗(exit $EXIT) → 30秒待機" | tee -a $LOG
-        sleep 30
+    # 仮説生成
+    echo "$(date '+%H:%M:%S') [1/2] 仮説生成..." | tee -a $LOG
+    PYTHONUNBUFFERED=1 python3 deep_alpha_engine.py >> $LOG 2>&1
+    if [ $? -ne 0 ]; then
+        echo "$(date '+%H:%M:%S') ⚠️ 仮説生成失敗 → 30秒待機" | tee -a $LOG
+        sleep 30; continue
     fi
+
+    # 評価（lockfile不使用・pgrep で重複防止）
+    if pgrep -f "evaluate_hypothesis.py" > /dev/null; then
+        echo "$(date '+%H:%M:%S') 評価中プロセスあり → スキップ" | tee -a $LOG
+    else
+        echo "$(date '+%H:%M:%S') [2/2] HF評価..." | tee -a $LOG
+        PYTHONUNBUFFERED=1 python3 evaluate_hypothesis.py >> $LOG 2>&1
+        if [ $? -ne 0 ]; then
+            echo "$(date '+%H:%M:%S') ⚠️ 評価失敗 → 継続" | tee -a $LOG
+        fi
+    fi
+
+    echo "$(date '+%H:%M:%S') ✅ サイクル #$CYCLE 完了 → 即次へ" | tee -a $LOG
 done
