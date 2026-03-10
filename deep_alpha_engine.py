@@ -28,7 +28,7 @@ def call_llm(model, messages, temperature=0.7, timeout=180):
 # ── ドメイン定義（高市政権重点領域 × グローバルトレンド）────────────────
 #  大カテゴリ（高市政権の4大柱）
 #    A. 経済安全保障  B. エネルギー安全保障  C. 防衛安全保障  D. 成長戦略
-#  policy_tailwind: 強/中/新興
+#  実行順序: policy_tailwind「強」(9個) → 「中」(6個) の固定ローテーション
 # ─────────────────────────────────────────────────────────────────────
 DOMAINS = [
   {
@@ -56,17 +56,6 @@ DOMAINS = [
     ]
   },
   {
-    "name": "食料安全保障・アグリテック",
-    "category": "経済安全保障",
-    "policy_tailwind": "中",
-    "macro_driver": "高市政権の食料安保予算拡大×農業人口激減で自動化・国産化投資増",
-    "angles": [
-      "スマート農業（精密農業・ドローン）の普及加速で受益する日本の農機・センサー企業",
-      "植物工場・垂直農業の量産化で必要な照明・環境制御・栄養液の日本メーカー優位",
-      "肥料・農薬の国産化需要で恩恵を受ける化学メーカー、輸入依存からの転換企業"
-    ]
-  },
-  {
     "name": "原発再稼働・次世代原子力",
     "category": "エネルギー安全保障",
     "policy_tailwind": "強",
@@ -88,17 +77,6 @@ DOMAINS = [
       "洋上風力の国産化要件で恩恵を受ける日本の部品・素材・建設船メーカー",
       "全固体電池の量産ロードマップ（2027-2030）と日本の素材メーカーの立ち位置",
       "系統安定化向け大型蓄電池（LFP/NMC）の急拡大で受益する日本企業"
-    ]
-  },
-  {
-    "name": "水素・アンモニア・合成燃料",
-    "category": "エネルギー安全保障",
-    "policy_tailwind": "中",
-    "macro_driver": "GX戦略の水素社会実装15兆円投資×脱炭素燃料の商業化競争",
-    "angles": [
-      "水素サプライチェーン（製造・輸送・貯蔵）で日本企業が握る技術的優位性",
-      "アンモニア混焼発電の商業化で受益する化学・重工・電力会社",
-      "CO2合成燃料（e-fuel）の航空・海運向け普及で恩恵を受ける触媒・素材企業"
     ]
   },
   {
@@ -158,6 +136,28 @@ DOMAINS = [
       "日本のデータセンター電力不足と再エネ調達競争。受益する電力・不動産・建設会社",
       "液冷・浸漬冷却への移行で必要な新素材・部品・メンテ企業",
       "AIエージェント普及でAPIコール急増。インフラで真に不足するものは何か"
+    ]
+  },
+  {
+    "name": "食料安全保障・アグリテック",
+    "category": "経済安全保障",
+    "policy_tailwind": "中",
+    "macro_driver": "高市政権の食料安保予算拡大×農業人口激減で自動化・国産化投資増",
+    "angles": [
+      "スマート農業（精密農業・ドローン）の普及加速で受益する日本の農機・センサー企業",
+      "植物工場・垂直農業の量産化で必要な照明・環境制御・栄養液の日本メーカー優位",
+      "肥料・農薬の国産化需要で恩恵を受ける化学メーカー、輸入依存からの転換企業"
+    ]
+  },
+  {
+    "name": "水素・アンモニア・合成燃料",
+    "category": "エネルギー安全保障",
+    "policy_tailwind": "中",
+    "macro_driver": "GX戦略の水素社会実装15兆円投資×脱炭素燃料の商業化競争",
+    "angles": [
+      "水素サプライチェーン（製造・輸送・貯蔵）で日本企業が握る技術的優位性",
+      "アンモニア混焼発電の商業化で受益する化学・重工・電力会社",
+      "CO2合成燃料（e-fuel）の航空・海運向け普及で恩恵を受ける触媒・素材企業"
     ]
   },
   {
@@ -381,20 +381,12 @@ def run():
     history_file = BASE / "backtest/alpha_domain_history.json"
     history = json.loads(history_file.read_text()) if history_file.exists() else {"last_domains": []}
 
-    # 直近3回使っていないドメインを優先 + policy_tailwind「強」を70%の確率で選ぶ
-    used_recently = history["last_domains"][-3:]
-    available = [d for d in DOMAINS if d["name"] not in used_recently]
-    if not available:
-        available = DOMAINS
-
-    strong = [d for d in available if d.get("policy_tailwind") == "強"]
-    medium = [d for d in available if d.get("policy_tailwind") != "強"]
-
-    # 国策追い風「強」を70%で選ぶ
-    if strong and random.random() < 0.7:
-        domain = random.choice(strong)
-    else:
-        domain = random.choice(available)
+    # 固定ローテーション（ランダムなし）
+    # DOMAINS配列の順番通りに回す: policy_tailwind「強」が先、「中」が後
+    # history["domain_index"] で現在位置を管理
+    current_idx = history.get("domain_index", 0) % len(DOMAINS)
+    domain = DOMAINS[current_idx]
+    history["domain_index"] = (current_idx + 1) % len(DOMAINS)
     angles = random.sample(domain["angles"], min(2, len(domain["angles"])))
 
     print(f"\n📌 ドメイン: {domain['name']}")
