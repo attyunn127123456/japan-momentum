@@ -426,7 +426,7 @@ def run():
             pass
 
     all_hyps = refined + existing
-    all_hyps = all_hyps[:30]
+    all_hyps = all_hyps[:15]
 
     OUTPUT.write_text(json.dumps({
         "updated_at":    datetime.now().strftime("%Y-%m-%d %H:%M"),

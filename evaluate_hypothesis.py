@@ -394,21 +394,42 @@ def evaluate_all(hypotheses=None):
     if not hypotheses:
         print("仮説なし", flush=True); return
 
+    # ── 差分評価: 評価済みIDをロード ──────────────────────────────
+    already_evaluated = {}
+    if OUTPUT.exists():
+        try:
+            prev = json.loads(OUTPUT.read_text())
+            for h in (prev.get('ranked_hypotheses') or []):
+                hid = h.get('id')
+                if hid and h.get('alpha_score', 0) > 0:
+                    already_evaluated[hid] = h
+        except:
+            pass
+
+    new_hyps    = [h for h in hypotheses if h.get('id') not in already_evaluated]
+    cached_hyps = [already_evaluated[h['id']] for h in hypotheses if h.get('id') in already_evaluated]
+
     print(f"\n{'='*55}", flush=True)
-    print(f"🏦 HF評価エンジン v2 ({len(hypotheses)}仮説 / 2段階方式)")
+    print(f"🏦 HF評価エンジン v2")
+    print(f"  新規評価: {len(new_hyps)}件 / キャッシュ流用: {len(cached_hyps)}件")
     print(f"  Stage1: {STAGE1_MODEL}", flush=True)
     print(f"  Stage2: {STAGE2_MODEL} (上位{TOP_N_STAGE2}銘柄のみ)")
     print(f"{'='*55}\n", flush=True)
 
-    ranked = []
-    for i, h in enumerate(hypotheses):
-        print(f"[{i+1}/{len(hypotheses)}] {h.get('theme','—')}", flush=True)
+    ranked = list(cached_hyps)  # 評価済みをそのまま引き継ぐ
+
+    for i, h in enumerate(new_hyps):
+        print(f"[{i+1}/{len(new_hyps)}] {h.get('theme','—')}", flush=True)
         try:
             ev = evaluate_hypothesis(h)
             ranked.append(ev)
         except Exception as e:
             print(f"  ⚠️ スキップ: {e}", flush=True)
             ranked.append({**h, 'evaluated_stocks': [], 'alpha_score': 0, 'top_pick': None})
+
+    if not new_hyps:
+        print("  新規仮説なし → 評価スキップ", flush=True)
+        return
 
     ranked.sort(key=lambda x: x.get('alpha_score', 0), reverse=True)
     for i, h in enumerate(ranked):
