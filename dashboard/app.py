@@ -3,7 +3,7 @@ import json
 import math
 from pathlib import Path
 import pandas as pd
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse
 
@@ -617,6 +617,64 @@ def signals_all():
 
     return JSONResponse(sanitize(result))
 
+
+import datetime as _dt
+
+ARCHIVE_FILE = BASE / "backtest/archived_hypotheses.json"
+BOOKMARKS_FILE = BASE / "backtest/bookmarks.json"
+
+def _load_json(path, default):
+    if path.exists():
+        try:
+            return json.loads(path.read_text())
+        except:
+            pass
+    return default
+
+def _save_json(path, data):
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2))
+
+@app.post("/api/archive/{hypothesis_id}")
+def archive_hypothesis(hypothesis_id: str):
+    archived = _load_json(ARCHIVE_FILE, [])
+    if hypothesis_id not in archived:
+        archived.append(hypothesis_id)
+        _save_json(ARCHIVE_FILE, archived)
+    return JSONResponse({"ok": True, "archived": archived})
+
+@app.delete("/api/archive/{hypothesis_id}")
+def unarchive_hypothesis(hypothesis_id: str):
+    archived = _load_json(ARCHIVE_FILE, [])
+    archived = [x for x in archived if x != hypothesis_id]
+    _save_json(ARCHIVE_FILE, archived)
+    return JSONResponse({"ok": True, "archived": archived})
+
+@app.get("/api/archive")
+def get_archived():
+    return JSONResponse(_load_json(ARCHIVE_FILE, []))
+
+@app.post("/api/bookmarks")
+async def add_bookmark(request: Request):
+    body = await request.json()
+    bookmarks = _load_json(BOOKMARKS_FILE, [])
+    # 重複チェック
+    key = body.get("code") or body.get("name")
+    if not any((b.get("code") or b.get("name")) == key for b in bookmarks):
+        body["bookmarked_at"] = _dt.datetime.now().strftime("%Y-%m-%d %H:%M")
+        bookmarks.append(body)
+        _save_json(BOOKMARKS_FILE, bookmarks)
+    return JSONResponse({"ok": True, "total": len(bookmarks)})
+
+@app.delete("/api/bookmarks/{key}")
+def remove_bookmark(key: str):
+    bookmarks = _load_json(BOOKMARKS_FILE, [])
+    bookmarks = [b for b in bookmarks if (b.get("code") or b.get("name")) != key]
+    _save_json(BOOKMARKS_FILE, bookmarks)
+    return JSONResponse({"ok": True, "total": len(bookmarks)})
+
+@app.get("/api/bookmarks")
+def get_bookmarks():
+    return JSONResponse(_load_json(BOOKMARKS_FILE, []))
 
 @app.get("/api/hypotheses")
 def hypotheses():

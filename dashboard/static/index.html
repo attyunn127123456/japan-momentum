@@ -8,118 +8,138 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, sans-serif; min-height: 100vh; }
 
-  header { background: #161b22; border-bottom: 1px solid #30363d; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
-  header h1 { font-size: 18px; color: #f0f6fc; }
-  header .badge { background: #238636; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 20px; }
+  header { background: #161b22; border-bottom: 1px solid #30363d; padding: 14px 24px; display: flex; align-items: center; gap: 10px; }
+  header h1 { font-size: 17px; color: #f0f6fc; }
+  .badge { background: #238636; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 20px; }
 
-  .tabs { background: #161b22; border-bottom: 1px solid #30363d; padding: 0 24px; display: flex; }
-  .tab { padding: 12px 20px; cursor: pointer; border-bottom: 2px solid transparent; color: #8b949e; font-size: 14px; transition: all 0.2s; }
+  .tabs { background: #161b22; border-bottom: 1px solid #30363d; padding: 0 16px; display: flex; overflow-x: auto; }
+  .tab { padding: 11px 16px; cursor: pointer; border-bottom: 2px solid transparent; color: #8b949e; font-size: 13px; white-space: nowrap; transition: all 0.15s; }
   .tab:hover { color: #c9d1d9; }
   .tab.active { color: #58a6ff; border-bottom-color: #58a6ff; }
 
-  .content { padding: 24px; max-width: 1200px; margin: 0 auto; }
+  .content { padding: 20px; max-width: 1200px; margin: 0 auto; }
   .section { display: none; }
   .section.active { display: block; }
-  .updated { color: #8b949e; font-size: 12px; margin-bottom: 16px; }
+  .updated { color: #8b949e; font-size: 12px; margin-bottom: 14px; }
 
   /* 仮説カード */
-  .hypothesis-grid { display: grid; gap: 12px; }
-  .hypothesis-card {
-    background: #161b22; border: 1px solid #30363d; border-radius: 10px;
-    padding: 20px; cursor: pointer; transition: border-color 0.2s, background 0.2s;
-    position: relative;
+  .hypothesis-grid { display: grid; gap: 10px; }
+  .hypothesis-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 18px; position: relative; transition: border-color 0.15s; }
+  .hypothesis-card:hover { border-color: #58a6ff44; }
+  .hypothesis-card.expanded { border-color: #58a6ff66; }
+  .hypothesis-card.archived-card { opacity: 0.5; }
+
+  .hyp-top { display: flex; align-items: flex-start; gap: 10px; }
+  .hyp-main { flex: 1; cursor: pointer; }
+  .hyp-theme { font-size: 15px; font-weight: 600; color: #f0f6fc; margin-bottom: 6px; }
+  .hyp-domain { display: inline-block; font-size: 11px; color: #8b949e; background: #21262d; padding: 2px 8px; border-radius: 20px; margin-bottom: 8px; }
+  .hyp-insight { color: #c9d1d9; font-size: 13px; line-height: 1.65; }
+
+  .hyp-actions { display: flex; gap: 6px; flex-shrink: 0; align-items: flex-start; }
+  .action-btn {
+    background: #21262d; border: 1px solid #30363d; border-radius: 6px;
+    padding: 5px 8px; cursor: pointer; font-size: 14px; color: #8b949e;
+    transition: all 0.15s; line-height: 1;
   }
-  .hypothesis-card:hover { border-color: #58a6ff66; background: #1c2128; }
-  .hypothesis-card.expanded { border-color: #58a6ff; }
-  .hyp-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-  .hyp-theme { font-size: 16px; font-weight: 600; color: #f0f6fc; }
-  .hyp-domain { font-size: 11px; color: #8b949e; background: #21262d; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
-  .hyp-insight { color: #c9d1d9; font-size: 14px; line-height: 1.65; margin: 10px 0; }
-  .hyp-meta { display: flex; gap: 16px; align-items: center; margin-top: 12px; }
-  .confidence-bar { flex: 1; background: #21262d; border-radius: 4px; height: 5px; overflow: hidden; }
+  .action-btn:hover { background: #30363d; color: #c9d1d9; }
+  .action-btn.active { background: #1f3a5f; border-color: #388bfd44; color: #58a6ff; }
+  .action-btn.archive-active { background: #2d1a1a; border-color: #f8514944; color: #f85149; }
+
+  .hyp-meta { display: flex; gap: 12px; align-items: center; margin-top: 12px; cursor: pointer; }
+  .confidence-bar { flex: 1; background: #21262d; border-radius: 4px; height: 4px; overflow: hidden; }
   .confidence-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #238636, #58a6ff); }
-  .confidence-label { font-size: 12px; color: #8b949e; white-space: nowrap; }
-  .expand-icon { font-size: 18px; color: #8b949e; transition: transform 0.25s; }
+  .confidence-label { font-size: 11px; color: #8b949e; white-space: nowrap; }
+  .expand-icon { font-size: 14px; color: #8b949e; transition: transform 0.2s; }
   .hypothesis-card.expanded .expand-icon { transform: rotate(180deg); }
 
   /* 展開エリア */
-  .hyp-detail { display: none; margin-top: 16px; border-top: 1px solid #30363d; padding-top: 16px; }
+  .hyp-detail { display: none; margin-top: 14px; border-top: 1px solid #30363d; padding-top: 14px; }
   .hypothesis-card.expanded .hyp-detail { display: block; }
-
-  .detail-section { margin-bottom: 16px; }
   .detail-label { font-size: 11px; text-transform: uppercase; color: #58a6ff; letter-spacing: 0.8px; margin-bottom: 6px; }
-  .detail-text { font-size: 14px; line-height: 1.7; color: #c9d1d9; }
-  .detail-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media(max-width: 600px) { .detail-row { grid-template-columns: 1fr; } }
+  .detail-text { font-size: 13px; line-height: 1.7; color: #c9d1d9; }
+  .detail-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  @media(max-width: 640px) { .detail-row { grid-template-columns: 1fr; } }
+  .detail-section { margin-bottom: 14px; }
 
-  /* 反論リスト */
-  .counter-list { list-style: none; }
-  .counter-list li { padding: 6px 0 6px 20px; font-size: 13px; color: #e3b341; border-bottom: 1px solid #21262d; position: relative; }
-  .counter-list li::before { content: "⚠"; position: absolute; left: 0; }
-  .counter-list li:last-child { border-bottom: none; }
+  .timeline-badge { display: inline-block; background: #1f3a5f; border: 1px solid #388bfd44; border-radius: 6px; padding: 4px 12px; font-size: 12px; color: #79c0ff; }
 
-  /* 先行指標 */
-  .indicator-list { list-style: none; }
-  .indicator-list li { padding: 5px 0 5px 18px; font-size: 13px; color: #3fb950; position: relative; }
-  .indicator-list li::before { content: "→"; position: absolute; left: 0; color: #3fb950; }
+  .counter-list, .indicator-list { list-style: none; }
+  .counter-list li { padding: 5px 0 5px 18px; font-size: 12px; color: #e3b341; border-bottom: 1px solid #21262d22; position: relative; }
+  .counter-list li::before { content: "⚠"; position: absolute; left: 0; font-size: 11px; }
+  .indicator-list li { padding: 5px 0 5px 18px; font-size: 12px; color: #3fb950; position: relative; }
+  .indicator-list li::before { content: "→"; position: absolute; left: 0; }
 
-  /* 銘柄カード */
-  .stocks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; margin-top: 8px; }
-  .stock-card { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 14px; }
-  .stock-header { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
-  .stock-code { font-family: monospace; font-size: 15px; font-weight: 700; color: #58a6ff; }
-  .stock-name { font-size: 13px; color: #f0f6fc; }
-  .stock-reason { font-size: 12px; color: #8b949e; line-height: 1.55; margin-bottom: 6px; }
-  .stock-concern { font-size: 11px; color: #e3b341; background: #2d2a1a; border-radius: 4px; padding: 4px 8px; }
+  /* 銘柄カード（仮説内） */
+  .stocks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+  .stock-card { background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 12px; position: relative; }
+  .stock-header { display: flex; align-items: baseline; gap: 8px; margin-bottom: 5px; }
+  .stock-code { font-family: monospace; font-size: 14px; font-weight: 700; color: #58a6ff; }
+  .stock-name { font-size: 12px; color: #f0f6fc; }
+  .stock-reason { font-size: 12px; color: #8b949e; line-height: 1.5; margin-bottom: 6px; }
+  .stock-concern { font-size: 11px; color: #e3b341; background: #2d2a1a; border-radius: 4px; padding: 3px 7px; }
+  .bookmark-stock-btn { position: absolute; top: 10px; right: 10px; background: none; border: none; cursor: pointer; font-size: 16px; color: #8b949e; transition: color 0.15s; }
+  .bookmark-stock-btn:hover, .bookmark-stock-btn.bm { color: #e3b341; }
 
-  /* タイムライン */
-  .timeline-badge { display: inline-block; background: #1f3a5f; border: 1px solid #388bfd44; border-radius: 6px; padding: 4px 12px; font-size: 13px; color: #79c0ff; }
+  /* スタートアップ */
+  .startup-section { margin-bottom: 24px; }
+  .startup-theme-label { font-size: 13px; font-weight: 600; color: #58a6ff; margin-bottom: 10px; }
+  .startup-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+  .startup-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px; position: relative; }
+  .startup-name { font-size: 15px; font-weight: 700; color: #f0f6fc; margin-bottom: 5px; }
+  .startup-meta { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+  .startup-tag { font-size: 11px; background: #21262d; border: 1px solid #30363d; border-radius: 20px; padding: 2px 8px; color: #8b949e; }
+  .startup-tag.stage { color: #3fb950; border-color: #23863644; background: #0d2a1a; }
+  .startup-business { font-size: 12px; color: #8b949e; margin-bottom: 8px; line-height: 1.5; }
+  .startup-why { font-size: 12px; color: #c9d1d9; line-height: 1.6; border-left: 2px solid #58a6ff44; padding-left: 8px; }
+  .startup-investors { font-size: 11px; color: #8b949e; margin-top: 8px; }
+  .bookmark-startup-btn { position: absolute; top: 12px; right: 12px; background: none; border: none; cursor: pointer; font-size: 16px; color: #8b949e; }
+  .bookmark-startup-btn:hover, .bookmark-startup-btn.bm { color: #e3b341; }
 
-  /* 銘柄テーブル */
+  /* ウォッチリスト */
+  .watchlist-empty { color: #8b949e; padding: 40px; text-align: center; }
+  .watchlist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+  .watchlist-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px; position: relative; }
+  .watchlist-type { font-size: 10px; text-transform: uppercase; color: #8b949e; margin-bottom: 4px; }
+  .watchlist-title { font-size: 15px; font-weight: 600; color: #f0f6fc; margin-bottom: 4px; }
+  .watchlist-sub { font-size: 12px; color: #8b949e; line-height: 1.5; }
+  .watchlist-date { font-size: 11px; color: #8b949e; margin-top: 8px; }
+  .remove-btn { position: absolute; top: 10px; right: 10px; background: none; border: none; cursor: pointer; font-size: 14px; color: #8b949e; }
+  .remove-btn:hover { color: #f85149; }
+
+  /* 注目銘柄テーブル */
   .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  th { text-align: left; padding: 10px 12px; border-bottom: 1px solid #30363d; color: #8b949e; font-size: 12px; text-transform: uppercase; }
-  td { padding: 10px 12px; border-bottom: 1px solid #21262d; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 9px 12px; border-bottom: 1px solid #30363d; color: #8b949e; font-size: 11px; text-transform: uppercase; }
+  td { padding: 9px 12px; border-bottom: 1px solid #21262d; }
   tr:hover td { background: #161b22; }
   .code { font-family: monospace; color: #58a6ff; font-weight: 600; }
-  .score-bar { display: flex; align-items: center; gap: 8px; }
-  .score-fill { height: 4px; border-radius: 2px; background: #238636; }
+  .score-bar { display: flex; align-items: center; gap: 6px; }
+  .score-fill { height: 4px; border-radius: 2px; background: #238636; min-width: 2px; }
   .positive { color: #3fb950; }
   .negative { color: #f85149; }
   .neutral { color: #8b949e; }
 
   /* モメンタム */
-  .momentum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media(max-width: 768px) { .momentum-grid { grid-template-columns: 1fr; } }
-  .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; }
-  .card h3 { font-size: 13px; color: #8b949e; margin-bottom: 12px; text-transform: uppercase; }
-  .stat { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #21262d; font-size: 14px; }
+  .momentum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media(max-width: 700px) { .momentum-grid { grid-template-columns: 1fr; } }
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; }
+  .card h3 { font-size: 12px; color: #8b949e; margin-bottom: 10px; text-transform: uppercase; }
+  .stat { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #21262d; font-size: 13px; }
   .stat:last-child { border-bottom: none; }
   .stat-label { color: #8b949e; }
   .stat-value { color: #f0f6fc; font-weight: 500; }
 
-  .market-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 20px; }
-  .summary-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 14px; }
-  .summary-label { font-size: 11px; color: #8b949e; margin-bottom: 4px; }
-  .summary-value { font-size: 20px; font-weight: 600; color: #f0f6fc; }
+  .market-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 16px; }
+  .summary-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 12px; }
+  .summary-label { font-size: 11px; color: #8b949e; margin-bottom: 3px; }
+  .summary-value { font-size: 18px; font-weight: 600; color: #f0f6fc; }
 
-  /* スタートアップ */
-  .startup-section { margin-bottom: 28px; }
-  .startup-section-title { font-size: 13px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; border-bottom: 1px solid #30363d; padding-bottom: 8px; }
-  .startup-theme-label { font-size: 14px; font-weight: 600; color: #58a6ff; margin-bottom: 10px; }
-  .startup-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-  .startup-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 16px; transition: border-color 0.2s; }
-  .startup-card:hover { border-color: #58a6ff44; }
-  .startup-name { font-size: 16px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
-  .startup-meta { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-  .startup-tag { font-size: 11px; background: #21262d; border: 1px solid #30363d; border-radius: 20px; padding: 2px 8px; color: #8b949e; }
-  .startup-tag.stage { color: #3fb950; border-color: #23863644; background: #0d2a1a; }
-  .startup-business { font-size: 13px; color: #8b949e; margin-bottom: 8px; line-height: 1.55; }
-  .startup-why { font-size: 13px; color: #c9d1d9; line-height: 1.6; border-left: 2px solid #58a6ff44; padding-left: 10px; }
-  .startup-investors { font-size: 11px; color: #8b949e; margin-top: 8px; }
+  .loading { text-align: center; padding: 50px; color: #8b949e; }
+  .error { background: #3d1f1f; border: 1px solid #f8514944; border-radius: 8px; padding: 14px; color: #f85149; font-size: 13px; }
 
-  .loading { text-align: center; padding: 60px; color: #8b949e; }
-  .error { background: #3d1f1f; border: 1px solid #f8514944; border-radius: 8px; padding: 16px; color: #f85149; }
+  .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .show-archived-btn { font-size: 12px; color: #8b949e; background: #21262d; border: 1px solid #30363d; border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+  .show-archived-btn:hover { color: #c9d1d9; }
 </style>
 </head>
 <body>
@@ -132,7 +152,8 @@
 <div class="tabs">
   <div class="tab active" onclick="showTab('hypotheses', this)">📊 マクロ仮説</div>
   <div class="tab" onclick="showTab('candidates', this)">🎯 注目銘柄</div>
-  <div class="tab" onclick="showTab('startups', this)">🚀 注目スタートアップ</div>
+  <div class="tab" onclick="showTab('startups', this)">🚀 スタートアップ</div>
+  <div class="tab" onclick="showTab('watchlist', this)">⭐ ウォッチリスト <span id="watch-count" style="font-size:11px;background:#238636;border-radius:20px;padding:1px 6px;color:#fff;display:none"></span></div>
   <div class="tab" onclick="showTab('momentum', this)">⚡ モメンタム</div>
 </div>
 
@@ -141,9 +162,12 @@
   <!-- マクロ仮説 -->
   <div id="tab-hypotheses" class="section active">
     <div id="market-summary-area"></div>
-    <div id="updated-hypotheses" class="updated"></div>
+    <div class="section-header">
+      <div id="updated-hypotheses" class="updated" style="margin:0"></div>
+      <button class="show-archived-btn" onclick="toggleArchived()">アーカイブ済みを表示</button>
+    </div>
     <div id="hypothesis-list" class="hypothesis-grid">
-      <div class="loading">仮説データ読み込み中...</div>
+      <div class="loading">読み込み中...</div>
     </div>
   </div>
 
@@ -152,14 +176,8 @@
     <div id="updated-candidates" class="updated"></div>
     <div class="table-wrap">
       <table>
-        <thead>
-          <tr>
-            <th>コード</th><th>ROE</th><th>営業利益率</th><th>売上成長率</th><th>来期予想</th><th>スコア</th>
-          </tr>
-        </thead>
-        <tbody id="candidates-tbody">
-          <tr><td colspan="6" style="text-align:center;padding:40px;color:#8b949e">読み込み中...</td></tr>
-        </tbody>
+        <thead><tr><th>コード</th><th>ROE</th><th>営業利益率</th><th>売上成長率</th><th>来期予想</th><th>スコア</th></tr></thead>
+        <tbody id="candidates-tbody"><tr><td colspan="6" style="text-align:center;padding:30px;color:#8b949e">読み込み中...</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -167,7 +185,13 @@
   <!-- スタートアップ -->
   <div id="tab-startups" class="section">
     <div id="updated-startups" class="updated"></div>
-    <div id="startup-list"></div>
+    <div id="startup-list"><div class="loading">読み込み中...</div></div>
+  </div>
+
+  <!-- ウォッチリスト -->
+  <div id="tab-watchlist" class="section">
+    <div class="updated">ブックマークした銘柄・スタートアップ</div>
+    <div id="watchlist-content"><div class="watchlist-empty">ブックマークがありません<br><span style="font-size:12px">仮説カード内の ⭐ でブックマーク</span></div></div>
   </div>
 
   <!-- モメンタム -->
@@ -179,130 +203,265 @@
 </div>
 
 <script>
+// ===== 状態管理 =====
+let allHypotheses = [];
+let archivedIds = new Set();
+let bookmarks = [];
+let showArchived = false;
+
+// ===== タブ切り替え =====
 function showTab(name, el) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   el.classList.add('active');
+  if (name === 'watchlist') renderWatchlist();
 }
 
+// ===== フォーマット =====
 function fmt(v, suffix='%', digits=1) {
   if (v == null || isNaN(v)) return '<span class="neutral">—</span>';
   const cls = v > 0 ? 'positive' : v < 0 ? 'negative' : 'neutral';
   return `<span class="${cls}">${v > 0 ? '+' : ''}${v.toFixed(digits)}${suffix}</span>`;
 }
 
-function toggleCard(card) {
-  card.classList.toggle('expanded');
+// ===== アーカイブ =====
+function toggleArchived() {
+  showArchived = !showArchived;
+  document.querySelector('.show-archived-btn').textContent = showArchived ? 'アーカイブを隠す' : 'アーカイブ済みを表示';
+  renderHypothesisList();
 }
 
-function renderHypothesis(h) {
-  const stocks = (h.candidate_stocks || []).map(s => `
-    <div class="stock-card">
-      <div class="stock-header">
-        <span class="stock-code">${s.code || ''}</span>
-        <span class="stock-name">${s.name || ''}</span>
-      </div>
-      <div class="stock-reason">${s.reason || ''}</div>
-      ${s.current_concern ? `<div class="stock-concern">⚠ ${s.current_concern}</div>` : ''}
-    </div>
-  `).join('');
+async function toggleArchive(id, btn, e) {
+  e.stopPropagation();
+  const isArchived = archivedIds.has(id);
+  if (isArchived) {
+    await fetch(`/api/archive/${id}`, { method: 'DELETE' });
+    archivedIds.delete(id);
+    btn.classList.remove('archive-active');
+    btn.title = 'アーカイブ';
+  } else {
+    await fetch(`/api/archive/${id}`, { method: 'POST' });
+    archivedIds.add(id);
+    btn.classList.add('archive-active');
+    btn.title = 'アーカイブ解除';
+  }
+  renderHypothesisList();
+}
 
+// ===== ブックマーク =====
+async function loadBookmarks() {
+  const r = await fetch('/api/bookmarks');
+  bookmarks = await r.json();
+  updateWatchCount();
+}
+
+function updateWatchCount() {
+  const el = document.getElementById('watch-count');
+  if (bookmarks.length > 0) {
+    el.textContent = bookmarks.length;
+    el.style.display = 'inline';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+async function toggleBookmarkStock(stock, btn) {
+  const key = stock.code || stock.name;
+  const exists = bookmarks.some(b => (b.code || b.name) === key);
+  if (exists) {
+    await fetch(`/api/bookmarks/${encodeURIComponent(key)}`, { method: 'DELETE' });
+    btn.classList.remove('bm');
+    btn.textContent = '☆';
+  } else {
+    await fetch('/api/bookmarks', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ type: 'stock', ...stock })
+    });
+    btn.classList.add('bm');
+    btn.textContent = '⭐';
+  }
+  await loadBookmarks();
+  updateWatchCount();
+}
+
+async function toggleBookmarkStartup(startup, btn) {
+  const key = startup.name;
+  const exists = bookmarks.some(b => b.name === key);
+  if (exists) {
+    await fetch(`/api/bookmarks/${encodeURIComponent(key)}`, { method: 'DELETE' });
+    btn.classList.remove('bm');
+    btn.textContent = '☆';
+  } else {
+    await fetch('/api/bookmarks', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ type: 'startup', ...startup })
+    });
+    btn.classList.add('bm');
+    btn.textContent = '⭐';
+  }
+  await loadBookmarks();
+  updateWatchCount();
+}
+
+async function removeBookmark(key) {
+  await fetch(`/api/bookmarks/${encodeURIComponent(key)}`, { method: 'DELETE' });
+  await loadBookmarks();
+  updateWatchCount();
+  renderWatchlist();
+}
+
+// ===== ウォッチリスト描画 =====
+function renderWatchlist() {
+  if (!bookmarks.length) {
+    document.getElementById('watchlist-content').innerHTML = '<div class="watchlist-empty">ブックマークがありません<br><span style="font-size:12px">仮説カード内の ☆ でブックマーク</span></div>';
+    return;
+  }
+  const html = bookmarks.map(b => {
+    const key = b.code || b.name;
+    if (b.type === 'stock') {
+      return `<div class="watchlist-card">
+        <div class="watchlist-type">📈 上場株</div>
+        <div class="watchlist-title"><span style="font-family:monospace;color:#58a6ff">${b.code||''}</span> ${b.name||''}</div>
+        <div class="watchlist-sub">${b.reason||''}</div>
+        ${b.current_concern ? `<div class="watchlist-sub" style="color:#e3b341;margin-top:4px">⚠ ${b.current_concern}</div>` : ''}
+        <div class="watchlist-date">${b.bookmarked_at||''}</div>
+        <button class="remove-btn" onclick="removeBookmark('${key}')">✕</button>
+      </div>`;
+    } else {
+      return `<div class="watchlist-card">
+        <div class="watchlist-type">🚀 スタートアップ</div>
+        <div class="watchlist-title">${b.name||''}</div>
+        <div class="watchlist-sub">${b.business||''}</div>
+        <div class="watchlist-sub" style="margin-top:4px">${b.why_promising||''}</div>
+        ${b.stage ? `<div class="watchlist-sub" style="color:#3fb950;margin-top:4px">${b.stage}</div>` : ''}
+        <div class="watchlist-date">${b.bookmarked_at||''}</div>
+        <button class="remove-btn" onclick="removeBookmark('${encodeURIComponent(key)}')">✕</button>
+      </div>`;
+    }
+  }).join('');
+  document.getElementById('watchlist-content').innerHTML = `<div class="watchlist-grid">${html}</div>`;
+}
+
+// ===== 仮説カード描画 =====
+function toggleCard(card) { card.classList.toggle('expanded'); }
+
+function renderStockCard(s) {
+  const key = s.code || s.name;
+  const isBm = bookmarks.some(b => (b.code || b.name) === key);
+  const id = `bm-s-${key}`;
+  return `<div class="stock-card">
+    <button class="bookmark-stock-btn ${isBm ? 'bm' : ''}" id="${id}"
+      onclick="toggleBookmarkStock(${JSON.stringify(s).replace(/"/g,'&quot;')}, this)">${isBm ? '⭐' : '☆'}</button>
+    <div class="stock-header">
+      <span class="stock-code">${s.code||''}</span>
+      <span class="stock-name">${s.name||''}</span>
+    </div>
+    <div class="stock-reason">${s.reason||''}</div>
+    ${s.current_concern ? `<div class="stock-concern">⚠ ${s.current_concern}</div>` : ''}
+  </div>`;
+}
+
+function renderStartupCard(s, showBm=false) {
+  const isBm = bookmarks.some(b => b.name === s.name);
+  return `<div class="startup-card">
+    ${showBm ? `<button class="bookmark-startup-btn ${isBm ? 'bm' : ''}"
+      onclick="toggleBookmarkStartup(${JSON.stringify(s).replace(/"/g,'&quot;')}, this)">${isBm ? '⭐' : '☆'}</button>` : ''}
+    <div class="startup-name">${s.name}</div>
+    <div class="startup-meta">
+      ${s.founded ? `<span class="startup-tag">設立 ${s.founded}</span>` : ''}
+      ${s.stage ? `<span class="startup-tag stage">${s.stage}</span>` : ''}
+    </div>
+    <div class="startup-business">${s.business||''}</div>
+    <div class="startup-why">${s.why_promising||''}</div>
+    ${s.investors ? `<div class="startup-investors">💰 ${s.investors}</div>` : ''}
+  </div>`;
+}
+
+function renderHypothesisCard(h) {
+  const isArchived = archivedIds.has(h.id);
+  const stocks = (h.candidate_stocks || []).map(s => renderStockCard(s)).join('');
+  const startupCards = (h.startups || []).map(s => renderStartupCard(s, true)).join('');
   const counters = (h.counterarguments || []).map(c => `<li>${c}</li>`).join('');
   const indicators = (h.leading_indicators || []).map(i => `<li>${i}</li>`).join('');
 
-  return `
-    <div class="hypothesis-card" onclick="toggleCard(this)">
-      <div class="hyp-header">
-        <div>
-          <div class="hyp-theme">${h.theme || '—'}</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
-          ${h.domain ? `<span class="hyp-domain">${h.domain}</span>` : ''}
-          <span class="expand-icon">▼</span>
-        </div>
+  return `<div class="hypothesis-card ${isArchived ? 'archived-card' : ''}">
+    <div class="hyp-top">
+      <div class="hyp-main" onclick="toggleCard(this.closest('.hypothesis-card'))">
+        ${h.domain ? `<span class="hyp-domain">${h.domain}</span>` : ''}
+        <div class="hyp-theme">${h.theme||'—'}</div>
+        <div class="hyp-insight">${h.insight||h.logic||'—'}</div>
       </div>
-
-      <div class="hyp-insight">${h.insight || h.logic || '—'}</div>
-
-      <div class="hyp-meta">
-        <div class="confidence-bar">
-          <div class="confidence-fill" style="width:${((h.confidence||0)*100).toFixed(0)}%"></div>
-        </div>
-        <span class="confidence-label">確信度 ${((h.confidence||0)*100).toFixed(0)}%</span>
-        ${h.created_at ? `<span class="confidence-label">${h.created_at}</span>` : ''}
-      </div>
-
-      <!-- 展開エリア -->
-      <div class="hyp-detail">
-
-        ${h.timeline ? `
-        <div class="detail-section">
-          <div class="detail-label">タイムライン</div>
-          <span class="timeline-badge">📅 ${h.timeline}</span>
-        </div>` : ''}
-
-        <div class="detail-row">
-          ${h.logic && h.logic !== h.insight ? `
-          <div class="detail-section">
-            <div class="detail-label">詳細ロジック</div>
-            <div class="detail-text">${h.logic}</div>
-          </div>` : '<div></div>'}
-
-          <div>
-            ${counters ? `
-            <div class="detail-section">
-              <div class="detail-label">主なリスク・反論</div>
-              <ul class="counter-list">${counters}</ul>
-            </div>` : ''}
-
-            ${indicators ? `
-            <div class="detail-section">
-              <div class="detail-label">先行指標（仮説が正しければ先に動く）</div>
-              <ul class="indicator-list">${indicators}</ul>
-            </div>` : ''}
-          </div>
-        </div>
-
-        ${stocks ? `
-        <div class="detail-section">
-          <div class="detail-label">候補銘柄</div>
-          <div class="stocks-grid">${stocks}</div>
-        </div>` : ''}
-
+      <div class="hyp-actions">
+        <button class="action-btn ${isArchived ? 'archive-active' : ''}" title="${isArchived ? 'アーカイブ解除' : 'アーカイブ'}"
+          onclick="toggleArchive('${h.id}', this, event)">${isArchived ? '🗂' : '📁'}</button>
+        <button class="action-btn" title="展開" onclick="toggleCard(this.closest('.hypothesis-card'))">▼</button>
       </div>
     </div>
-  `;
+
+    <div class="hyp-meta" onclick="toggleCard(this.closest('.hypothesis-card'))">
+      <div class="confidence-bar"><div class="confidence-fill" style="width:${((h.confidence||0)*100).toFixed(0)}%"></div></div>
+      <span class="confidence-label">確信度 ${((h.confidence||0)*100).toFixed(0)}%</span>
+      ${h.created_at ? `<span class="confidence-label">${h.created_at}</span>` : ''}
+      <span class="expand-icon">▼</span>
+    </div>
+
+    <div class="hyp-detail">
+      ${h.timeline ? `<div class="detail-section"><div class="detail-label">タイムライン</div><span class="timeline-badge">📅 ${h.timeline}</span></div>` : ''}
+
+      <div class="detail-row">
+        ${h.logic && h.logic !== h.insight ? `<div class="detail-section"><div class="detail-label">詳細ロジック</div><div class="detail-text">${h.logic}</div></div>` : '<div></div>'}
+        <div>
+          ${counters ? `<div class="detail-section"><div class="detail-label">主なリスク・反論</div><ul class="counter-list">${counters}</ul></div>` : ''}
+          ${indicators ? `<div class="detail-section"><div class="detail-label">先行指標</div><ul class="indicator-list">${indicators}</ul></div>` : ''}
+        </div>
+      </div>
+
+      ${stocks ? `<div class="detail-section"><div class="detail-label">候補銘柄（東証上場）</div><div class="stocks-grid">${stocks}</div></div>` : ''}
+      ${startupCards ? `<div class="detail-section"><div class="detail-label">関連スタートアップ</div><div class="startup-grid">${startupCards}</div></div>` : ''}
+    </div>
+  </div>`;
 }
 
+function renderHypothesisList() {
+  const list = allHypotheses.filter(h => showArchived || !archivedIds.has(h.id));
+  if (!list.length) {
+    document.getElementById('hypothesis-list').innerHTML = showArchived
+      ? '<div style="color:#8b949e;padding:30px;text-align:center">仮説がありません</div>'
+      : '<div style="color:#8b949e;padding:30px;text-align:center">すべてアーカイブ済みです</div>';
+    return;
+  }
+  document.getElementById('hypothesis-list').innerHTML = list.map(renderHypothesisCard).join('');
+}
+
+// ===== データ読み込み =====
 async function loadHypotheses() {
   try {
-    const r = await fetch('/api/hypotheses');
+    const [r, ra] = await Promise.all([fetch('/api/hypotheses'), fetch('/api/archive')]);
     const data = await r.json();
+    const archived = await ra.json();
+    archivedIds = new Set(archived);
 
     if (data.updated_at) {
-      const domain = data.last_domain ? ` | 最新ドメイン: ${data.last_domain}` : '';
+      const domain = data.last_domain ? ` | ${data.last_domain}` : '';
       document.getElementById('updated-hypotheses').textContent = `最終更新: ${data.updated_at}${domain}`;
     }
 
     if (data.market_summary) {
       const ms = data.market_summary;
-      document.getElementById('market-summary-area').innerHTML = `
-        <div class="market-summary">
-          <div class="summary-card"><div class="summary-label">対象企業数</div><div class="summary-value">${(ms.total_companies||0).toLocaleString()}</div></div>
-          <div class="summary-card"><div class="summary-label">ROE中央値</div><div class="summary-value">${(ms.median_roe||0).toFixed(1)}%</div></div>
-          <div class="summary-card"><div class="summary-label">営業利益率中央値</div><div class="summary-value">${(ms.median_op_margin||0).toFixed(1)}%</div></div>
-          <div class="summary-card"><div class="summary-label">ROE>15%</div><div class="summary-value">${(ms.high_roe_count||0).toLocaleString()}社</div></div>
-          <div class="summary-card"><div class="summary-label">来期増収予想</div><div class="summary-value">${(ms.high_growth_count||0).toLocaleString()}社</div></div>
-        </div>`;
+      document.getElementById('market-summary-area').innerHTML = `<div class="market-summary">
+        <div class="summary-card"><div class="summary-label">対象企業数</div><div class="summary-value">${(ms.total_companies||0).toLocaleString()}</div></div>
+        <div class="summary-card"><div class="summary-label">ROE中央値</div><div class="summary-value">${(ms.median_roe||0).toFixed(1)}%</div></div>
+        <div class="summary-card"><div class="summary-label">営業利益率中央値</div><div class="summary-value">${(ms.median_op_margin||0).toFixed(1)}%</div></div>
+        <div class="summary-card"><div class="summary-label">ROE>15%</div><div class="summary-value">${(ms.high_roe_count||0).toLocaleString()}社</div></div>
+        <div class="summary-card"><div class="summary-label">来期増収予想</div><div class="summary-value">${(ms.high_growth_count||0).toLocaleString()}社</div></div>
+      </div>`;
     }
 
-    const hyps = (data.hypotheses || []).filter(h => h.insight || h.logic);
-    if (!hyps.length) {
-      document.getElementById('hypothesis-list').innerHTML = '<div class="error">仮説データがありません。deep_alpha_engine.pyを実行してください。</div>';
-      return;
-    }
-    document.getElementById('hypothesis-list').innerHTML = hyps.map(renderHypothesis).join('');
+    allHypotheses = (data.hypotheses || []).filter(h => h.insight || h.logic);
+    renderHypothesisList();
   } catch(e) {
     document.getElementById('hypothesis-list').innerHTML = `<div class="error">エラー: ${e.message}</div>`;
   }
@@ -314,40 +473,16 @@ async function loadCandidates() {
     const data = await r.json();
     if (data.updated_at) document.getElementById('updated-candidates').textContent = `最終更新: ${data.updated_at} | ${data.total||0}件`;
     const list = data.candidates || [];
-    if (!list.length) {
-      document.getElementById('candidates-tbody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:#8b949e">データなし</td></tr>';
-      return;
-    }
+    if (!list.length) { document.getElementById('candidates-tbody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:30px;color:#8b949e">データなし</td></tr>'; return; }
     document.getElementById('candidates-tbody').innerHTML = list.slice(0,50).map(c => `
       <tr>
         <td><span class="code">${c.code}</span></td>
-        <td>${fmt(c.roe)}</td>
-        <td>${fmt(c.op_margin)}</td>
-        <td>${fmt(c.sales_growth_yoy)}</td>
-        <td>${fmt(c.forecast_sales_growth)}</td>
-        <td><div class="score-bar"><div class="score-fill" style="width:${(c.score*80).toFixed(0)}px"></div><span>${(c.score*100).toFixed(0)}</span></div></td>
+        <td>${fmt(c.roe)}</td><td>${fmt(c.op_margin)}</td>
+        <td>${fmt(c.sales_growth_yoy)}</td><td>${fmt(c.forecast_sales_growth)}</td>
+        <td><div class="score-bar"><div class="score-fill" style="width:${Math.max(2,(c.score*80)).toFixed(0)}px"></div><span>${(c.score*100).toFixed(0)}</span></div></td>
       </tr>`).join('');
   } catch(e) {
     document.getElementById('candidates-tbody').innerHTML = `<tr><td colspan="6">エラー: ${e.message}</td></tr>`;
-  }
-}
-
-async function loadMomentum() {
-  try {
-    const r = await fetch('/api/today');
-    const data = await r.json();
-    const best10 = data.best10 || [];
-    if (!best10.length) { document.getElementById('momentum-content').innerHTML = '<div class="error">モメンタムデータなし</div>'; return; }
-    document.getElementById('updated-momentum').textContent = `シグナル: ${best10.length}件`;
-    document.getElementById('momentum-content').innerHTML = `<div class="momentum-grid">${best10.slice(0,10).map(s => `
-      <div class="card">
-        <h3>${s.code||'—'} ${s.name||''}</h3>
-        ${Object.entries(s).filter(([k])=>!['code','name'].includes(k)).slice(0,5).map(([k,v])=>
-          `<div class="stat"><span class="stat-label">${k}</span><span class="stat-value">${typeof v==='number'?v.toFixed(2):v}</span></div>`
-        ).join('')}
-      </div>`).join('')}</div>`;
-  } catch(e) {
-    document.getElementById('momentum-content').innerHTML = `<div class="error">エラー: ${e.message}</div>`;
   }
 }
 
@@ -356,48 +491,43 @@ async function loadStartups() {
     const r = await fetch('/api/hypotheses');
     const data = await r.json();
     const hyps = (data.hypotheses || []).filter(h => h.startups && h.startups.length > 0);
-
-    if (data.updated_at) {
-      document.getElementById('updated-startups').textContent = `仮説から抽出 | 最終更新: ${data.updated_at}`;
-    }
-
+    if (data.updated_at) document.getElementById('updated-startups').textContent = `仮説から抽出 | 最終更新: ${data.updated_at}`;
     if (!hyps.length) {
-      document.getElementById('startup-list').innerHTML = '<div style="color:#8b949e;padding:40px;text-align:center">スタートアップデータがありません。deep_alpha_engine.pyを実行してください。</div>';
+      document.getElementById('startup-list').innerHTML = '<div style="color:#8b949e;padding:40px;text-align:center">スタートアップデータがありません</div>';
       return;
     }
-
-    const html = hyps.map(h => {
-      const cards = (h.startups || []).map(s => `
-        <div class="startup-card">
-          <div class="startup-name">${s.name}</div>
-          <div class="startup-meta">
-            ${s.founded ? `<span class="startup-tag">設立 ${s.founded}</span>` : ''}
-            ${s.stage ? `<span class="startup-tag stage">${s.stage}</span>` : ''}
-          </div>
-          <div class="startup-business">${s.business || ''}</div>
-          <div class="startup-why">${s.why_promising || ''}</div>
-          ${s.investors ? `<div class="startup-investors">投資家: ${s.investors}</div>` : ''}
-        </div>
-      `).join('');
-
-      return `
-        <div class="startup-section">
-          <div class="startup-theme-label">📊 ${h.theme}</div>
-          <div class="startup-grid">${cards}</div>
-        </div>
-      `;
-    }).join('');
-
-    document.getElementById('startup-list').innerHTML = html;
+    document.getElementById('startup-list').innerHTML = hyps.map(h => `
+      <div class="startup-section">
+        <div class="startup-theme-label">📊 ${h.theme}</div>
+        <div class="startup-grid">${(h.startups||[]).map(s => renderStartupCard(s, true)).join('')}</div>
+      </div>`).join('');
   } catch(e) {
     document.getElementById('startup-list').innerHTML = `<div class="error">エラー: ${e.message}</div>`;
   }
 }
 
-loadHypotheses();
-loadCandidates();
-loadStartups();
-loadMomentum();
+async function loadMomentum() {
+  try {
+    const r = await fetch('/api/today');
+    const data = await r.json();
+    const best10 = data.best10 || [];
+    if (!best10.length) { document.getElementById('momentum-content').innerHTML = '<div class="error">データなし</div>'; return; }
+    document.getElementById('updated-momentum').textContent = `シグナル: ${best10.length}件`;
+    document.getElementById('momentum-content').innerHTML = `<div class="momentum-grid">${best10.slice(0,10).map(s => `
+      <div class="card"><h3>${s.code||'—'} ${s.name||''}</h3>
+      ${Object.entries(s).filter(([k])=>!['code','name'].includes(k)).slice(0,5).map(([k,v])=>
+        `<div class="stat"><span class="stat-label">${k}</span><span class="stat-value">${typeof v==='number'?v.toFixed(2):v}</span></div>`
+      ).join('')}</div>`).join('')}</div>`;
+  } catch(e) {
+    document.getElementById('momentum-content').innerHTML = `<div class="error">エラー: ${e.message}</div>`;
+  }
+}
+
+// 初期化
+(async () => {
+  await loadBookmarks();
+  await Promise.all([loadHypotheses(), loadCandidates(), loadStartups(), loadMomentum()]);
+})();
 </script>
 </body>
 </html>
