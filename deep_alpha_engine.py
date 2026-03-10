@@ -202,37 +202,36 @@ JSONのみ出力。"""
 
 
 def find_jp_stocks(hypothesis: dict) -> list:
-    """仮説から具体的な日本株候補を探す"""
+    """仮説から具体的な日本株候補を探す（東証上場のみ）"""
     print(f"  📊 銘柄マッピング中...")
-    
+
     prompt = f"""以下の投資仮説に合致する日本の上場企業を3〜5社挙げてください。
 
 ## 仮説
 テーマ: {hypothesis.get('theme')}
 洞察: {hypothesis.get('insight')}
-対象企業タイプ: {hypothesis.get('target_company_type')}
+対象企業タイプ: {hypothesis.get('target_company_type', '')}
 
-## 条件
-- 東証上場企業のみ
-- 証券コード（4桁）も記載
-- なぜこの仮説に合致するかの具体的な理由
+## 厳守条件
+- **東証上場企業のみ**（プライム・スタンダード・グロース問わず）
+- 米国株・未上場企業は絶対に含めない
+- 証券コード（4桁または5桁）を必ず記載
+- なぜ今この仮説で割安・見落とされているかを具体的に
 
-## 出力（JSON）
-```json
+## 出力（JSON配列のみ）
 [
   {{
     "code": "1234",
     "name": "会社名",
     "reason": "なぜこの仮説の受益者か（具体的に100字程度）",
-    "current_concern": "なぜ今まだ割安に放置されているか"
+    "current_concern": "なぜ今まだ市場に見落とされているか"
   }}
 ]
-```
 
 JSONのみ出力。"""
 
     result = call_llm("anthropic/claude-opus-4-6", [{"role": "user", "content": prompt}], temperature=0.6)
-    
+
     try:
         import re
         match = re.search(r'\[.*\]', result, re.DOTALL)
@@ -240,7 +239,51 @@ JSONのみ出力。"""
             return json.loads(match.group())
     except Exception as e:
         print(f"    銘柄マッピングエラー: {e}")
-    
+
+    return []
+
+
+def find_startups(hypothesis: dict) -> list:
+    """仮説から有望な未上場スタートアップを探す"""
+    print(f"  🚀 スタートアップリサーチ中...")
+
+    prompt = f"""以下の投資仮説に関連する分野で、特に有望な日本の未上場スタートアップを1〜3社挙げてください。
+
+## 仮説
+テーマ: {hypothesis.get('theme')}
+洞察: {hypothesis.get('insight')}
+
+## 条件
+- 日本の未上場スタートアップ（VC投資済み、または注目されている企業）
+- 上場企業は含めない
+- 実在する会社のみ（不確かな場合は記載しない）
+- この仮説のテーマに直接関連する事業を持つこと
+
+## 出力（JSON配列のみ）
+[
+  {{
+    "name": "スタートアップ名",
+    "founded": "設立年（わかれば）",
+    "business": "事業内容（50字程度）",
+    "why_promising": "なぜこの仮説で有望か（100字程度）",
+    "stage": "シリーズA/B/C等（わかれば）",
+    "investors": "主要投資家（わかれば）"
+  }}
+]
+
+確実に存在する会社のみ。不明な場合は空配列[]を返す。JSONのみ出力。"""
+
+    result = call_llm("perplexity/sonar-pro", [{"role": "user", "content": prompt}], temperature=0.5)
+
+    try:
+        import re
+        match = re.search(r'\[.*\]', result, re.DOTALL)
+        if match:
+            data = json.loads(match.group())
+            return [s for s in data if s.get("name")]  # 名前があるものだけ
+    except Exception as e:
+        print(f"    スタートアップリサーチエラー: {e}")
+
     return []
 
 
@@ -297,8 +340,10 @@ def run():
         h["created_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
         h = devils_advocate(h)
         
-        # Phase 4: 銘柄マッピング
+        # Phase 4: 銘柄マッピング（東証上場）
         h["candidate_stocks"] = find_jp_stocks(h)
+        # Phase 5: スタートアップリサーチ
+        h["startups"] = find_startups(h)
         refined.append(h)
         
         print(f"\n  ✅ {h.get('theme')} (確信度: {h.get('confidence', 0):.0%})")

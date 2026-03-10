@@ -103,6 +103,21 @@
   .summary-label { font-size: 11px; color: #8b949e; margin-bottom: 4px; }
   .summary-value { font-size: 20px; font-weight: 600; color: #f0f6fc; }
 
+  /* スタートアップ */
+  .startup-section { margin-bottom: 28px; }
+  .startup-section-title { font-size: 13px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px; border-bottom: 1px solid #30363d; padding-bottom: 8px; }
+  .startup-theme-label { font-size: 14px; font-weight: 600; color: #58a6ff; margin-bottom: 10px; }
+  .startup-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .startup-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 16px; transition: border-color 0.2s; }
+  .startup-card:hover { border-color: #58a6ff44; }
+  .startup-name { font-size: 16px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
+  .startup-meta { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .startup-tag { font-size: 11px; background: #21262d; border: 1px solid #30363d; border-radius: 20px; padding: 2px 8px; color: #8b949e; }
+  .startup-tag.stage { color: #3fb950; border-color: #23863644; background: #0d2a1a; }
+  .startup-business { font-size: 13px; color: #8b949e; margin-bottom: 8px; line-height: 1.55; }
+  .startup-why { font-size: 13px; color: #c9d1d9; line-height: 1.6; border-left: 2px solid #58a6ff44; padding-left: 10px; }
+  .startup-investors { font-size: 11px; color: #8b949e; margin-top: 8px; }
+
   .loading { text-align: center; padding: 60px; color: #8b949e; }
   .error { background: #3d1f1f; border: 1px solid #f8514944; border-radius: 8px; padding: 16px; color: #f85149; }
 </style>
@@ -117,6 +132,7 @@
 <div class="tabs">
   <div class="tab active" onclick="showTab('hypotheses', this)">📊 マクロ仮説</div>
   <div class="tab" onclick="showTab('candidates', this)">🎯 注目銘柄</div>
+  <div class="tab" onclick="showTab('startups', this)">🚀 注目スタートアップ</div>
   <div class="tab" onclick="showTab('momentum', this)">⚡ モメンタム</div>
 </div>
 
@@ -146,6 +162,12 @@
         </tbody>
       </table>
     </div>
+  </div>
+
+  <!-- スタートアップ -->
+  <div id="tab-startups" class="section">
+    <div id="updated-startups" class="updated"></div>
+    <div id="startup-list"></div>
   </div>
 
   <!-- モメンタム -->
@@ -329,8 +351,52 @@ async function loadMomentum() {
   }
 }
 
+async function loadStartups() {
+  try {
+    const r = await fetch('/api/hypotheses');
+    const data = await r.json();
+    const hyps = (data.hypotheses || []).filter(h => h.startups && h.startups.length > 0);
+
+    if (data.updated_at) {
+      document.getElementById('updated-startups').textContent = `仮説から抽出 | 最終更新: ${data.updated_at}`;
+    }
+
+    if (!hyps.length) {
+      document.getElementById('startup-list').innerHTML = '<div style="color:#8b949e;padding:40px;text-align:center">スタートアップデータがありません。deep_alpha_engine.pyを実行してください。</div>';
+      return;
+    }
+
+    const html = hyps.map(h => {
+      const cards = (h.startups || []).map(s => `
+        <div class="startup-card">
+          <div class="startup-name">${s.name}</div>
+          <div class="startup-meta">
+            ${s.founded ? `<span class="startup-tag">設立 ${s.founded}</span>` : ''}
+            ${s.stage ? `<span class="startup-tag stage">${s.stage}</span>` : ''}
+          </div>
+          <div class="startup-business">${s.business || ''}</div>
+          <div class="startup-why">${s.why_promising || ''}</div>
+          ${s.investors ? `<div class="startup-investors">投資家: ${s.investors}</div>` : ''}
+        </div>
+      `).join('');
+
+      return `
+        <div class="startup-section">
+          <div class="startup-theme-label">📊 ${h.theme}</div>
+          <div class="startup-grid">${cards}</div>
+        </div>
+      `;
+    }).join('');
+
+    document.getElementById('startup-list').innerHTML = html;
+  } catch(e) {
+    document.getElementById('startup-list').innerHTML = `<div class="error">エラー: ${e.message}</div>`;
+  }
+}
+
 loadHypotheses();
 loadCandidates();
+loadStartups();
 loadMomentum();
 </script>
 </body>
