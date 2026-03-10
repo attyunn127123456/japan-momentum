@@ -22,7 +22,7 @@ OR_URL      = "https://openrouter.ai/api/v1/chat/completions"
 JQUANTS_KEY = "cph3PdiF8zxH9GxClcFfShcJdSUzuNpV9ho_zMPm4a8"
 
 STAGE1_MODEL = "openai/gpt-4.1-mini"
-STAGE2_MODEL = "openai/gpt-5"
+STAGE2_MODEL = "openai/o4-mini"
 MARKET_MODEL = "perplexity/sonar-pro"
 
 TOP_N_STAGE2 = 3   # Stage2に進める銘柄数
@@ -36,7 +36,7 @@ def get_or_key():
         return json.loads(SECRETS.read_text())["openrouter"]["api_key"]
     return ""
 
-def call_llm(model, messages, temperature=0.3, timeout=300, retries=3):
+def call_llm(model, messages, temperature=0.3, timeout=90, retries=3):
     import time
     last_err = None
     for attempt in range(retries):
