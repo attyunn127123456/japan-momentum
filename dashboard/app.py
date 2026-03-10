@@ -700,7 +700,18 @@ EVALUATED_FILE = BASE / "backtest/evaluated_hypotheses.json"
 def top_picks():
     if not EVALUATED_FILE.exists():
         return JSONResponse({"ranked_hypotheses": [], "updated_at": None, "total": 0})
-    return JSONResponse(sanitize(json.loads(EVALUATED_FILE.read_text())))
+    data = sanitize(json.loads(EVALUATED_FILE.read_text()))
+    # alpha_score > 0 かつ top_pick がある仮説のみ表示
+    ranked = [
+        h for h in (data.get("ranked_hypotheses") or [])
+        if (h.get("alpha_score") or 0) > 0 and h.get("top_pick") and h["top_pick"].get("code")
+    ]
+    # rank を振り直す
+    for i, h in enumerate(ranked):
+        h["rank"] = i + 1
+    data["ranked_hypotheses"] = ranked
+    data["total"] = len(ranked)
+    return JSONResponse(data)
 
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
 
