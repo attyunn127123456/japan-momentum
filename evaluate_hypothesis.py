@@ -45,8 +45,31 @@ def call_llm(model, messages, temperature=0.3, timeout=120):
     return r.json()["choices"][0]["message"]["content"]
 
 def extract_obj(text):
-    m = re.search(r'\{.*\}', text, re.DOTALL)
-    return json.loads(m.group()) if m else {}
+    # コードブロック除去
+    text = re.sub(r'```(?:json)?\s*', '', text).strip()
+    # 最外のJSONオブジェクトを抽出
+    start = text.find('{')
+    if start == -1:
+        return {}
+    depth, end = 0, -1
+    for i, c in enumerate(text[start:], start):
+        if c == '{': depth += 1
+        elif c == '}':
+            depth -= 1
+            if depth == 0:
+                end = i + 1
+                break
+    if end == -1:
+        return {}
+    try:
+        return json.loads(text[start:end])
+    except Exception:
+        # 壊れたJSONは修復試行
+        try:
+            import ast
+            return ast.literal_eval(text[start:end])
+        except:
+            return {}
 
 # ── J-Quants 財務データ取得 ──────────────────────────────────
 def fetch_fins(code: str) -> dict:
@@ -76,7 +99,7 @@ def fetch_fins(code: str) -> dict:
             "fiscal_year":  latest.get("FiscalYear"),
         }
     except Exception as e:
-        print(f"      J-Quants取得失敗 {code}: {e}")
+        print(f"      J-Quants取得失敗 {code}: {e}", flush=True)
         return {}
 
 # ── 現在株価取得（Perplexity）────────────────────────────────
@@ -117,91 +140,133 @@ JSONのみ。"""
         if m:
             return json.loads(m.group())
     except Exception as e:
-        print(f"    Stage1エラー: {e}")
+        print(f"    Stage1エラー: {e}", flush=True)
     return []
 
-# ── STAGE 2: 詳細評価（gpt-5 + 実財務データ）────────────────
+# ── STAGE 2: 詳細評価（gpt-5 + 実財務 + 3段階分解）───────────
 def stage2_evaluate(hypothesis: dict, stock: dict, fins: dict, price_data: dict) -> dict:
-    """実財務数値を使って定量的な業績インパクトを試算"""
-
+    """
+    3段階で厳密に評価:
+    1. Market Sizing    → 市場規模×シェア変化 = 売上インパクト（円建て）
+    2. Moat Assessment  → 参入障壁を0-5で定量スコアリング
+    3. Forward Valuation→ 将来EPS×適正PER = 目標株価。現フォワードPERは割安か
+    """
     current_price = price_data.get("current_price") or 0
     per = price_data.get("per") or 15
 
-    # 財務数値を人間が読みやすい形に
     fins_text = ""
     if fins.get("sales"):
-        sales_bn = fins["sales"] / 1000  # 百万→十億（10億円単位）
+        sales_bn = fins["sales"] / 1000
         op_bn    = (fins.get("op") or 0) / 1000
         fins_text = f"""
-実績財務（直近通期）:
-- 売上高: {sales_bn:.1f}十億円（{fins.get('fiscal_year','')}）
-- 営業利益: {op_bn:.1f}十億円（利益率{fins.get('op_margin',0):.1f}%）
-- EPS: {fins.get('eps','不明')}円
-- 会社予想EPS: {fins.get('f_eps','不明')}円
-- BPS: {fins.get('bps','不明')}円"""
+実績財務（直近通期 {fins.get("fiscal_year","")}）:
+  売上高: {sales_bn:.1f}十億円
+  営業利益: {op_bn:.1f}十億円（営業利益率 {fins.get("op_margin",0):.1f}%）
+  EPS実績: {fins.get("eps","不明")}円 / 会社予想EPS: {fins.get("f_eps","不明")}円
+  BPS: {fins.get("bps","不明")}円"""
 
-    prompt = f"""あなたはヘッジファンドのシニアアナリストです。以下の投資仮説が実現した場合の{stock.get('name')}への業績インパクトを定量試算してください。
+    prompt = f"""あなたはトップティアのヘッジファンドのシニアアナリストです。
+以下の投資仮説が実現した場合の「{stock.get("name")}」への業績・バリュエーションインパクトを、3ステップで厳密に分析してください。
 
-## 投資仮説
-{hypothesis.get('theme')}: {hypothesis.get('insight','')}
-タイムライン: {hypothesis.get('timeline','')}
+━━ 投資仮説 ━━
+テーマ: {hypothesis.get("theme")}
+洞察: {hypothesis.get("insight","")}
+タイムライン: {hypothesis.get("timeline","")}
+Moatシグナル: {hypothesis.get("moat_signal", stock.get("moat", ""))}
 
-## なぜこの銘柄が受益するか
-{stock.get('reason','')}
-なぜ今割安か: {stock.get('current_concern','')}
+━━ この銘柄の受益ロジック ━━
+{stock.get("reason","")}
+なぜ今割安に放置されているか: {stock.get("current_concern","")}
 
-## 現在の財務・株価データ{fins_text}
-現在株価: {current_price}円 / PER: {per}倍 / PBR: {price_data.get('pbr','不明')}倍
-アナリストTP: {price_data.get('analyst_tp','不明')}円（{price_data.get('consensus','不明')}）
+━━ 現在の財務・株価データ ━━{fins_text}
+現在株価: {current_price}円 / PER: {per}倍 / PBR: {price_data.get("pbr","不明")}倍
+アナリストTP: {price_data.get("analyst_tp","不明")}円（コンセンサス: {price_data.get("consensus","不明")}）
 
-## 要求（定量的に、円建てで）
-以下のJSON形式で回答してください。売上・利益は「十億円単位」、EPSは「円単位」で記入:
+━━ 分析要求（3ステップ） ━━
+
+Step1 Market Sizing: 対象市場規模（現在・将来）を推定し、この企業が取れるシェア変化から売上インパクト（十億円）を積み上げ計算
+Step2 Moat Assessment: 技術/特許、スイッチングコスト、スケール優位、規制障壁を各0-5でスコアリング。なぜ競合ではなくこの企業だけが取れるか
+Step3 Forward Valuation: Step1のインパクトをEPS（円）に変換し、適正PER（根拠付き）で目標株価を計算。現在のフォワードPERが割安かを判定
+
+以下のJSONのみ出力:
 
 {{
-  "sales_impact": {{
-    "bear": {{"amount_bn": -1.0, "pct": -2}},
-    "base": {{"amount_bn": 5.0,  "pct": 8}},
-    "bull": {{"amount_bn": 15.0, "pct": 24}},
-    "mechanism": "なぜこの売上インパクトが生じるか（具体的に50字）"
+  "market_sizing": {{
+    "target_market_now_bn": 0,
+    "target_market_future_bn": 0,
+    "company_share_now_pct": 0,
+    "company_share_after_pct": 0,
+    "revenue_impact_bn": {{"bear": 0, "base": 0, "bull": 0}},
+    "mechanism": "なぜこのシェア増加が起きるか（具体的に80字）"
+  }},
+  "moat_assessment": {{
+    "tech_patent_score": 0,
+    "switching_cost_score": 0,
+    "scale_advantage_score": 0,
+    "regulatory_barrier_score": 0,
+    "total_moat_score": 0,
+    "moat_summary": "参入障壁の本質（60字）",
+    "key_risk_to_moat": "このMoatが崩れる条件（50字）"
+  }},
+  "valuation": {{
+    "current_eps_jpy": 0,
+    "forward_eps_base_jpy": 0,
+    "forward_eps_bull_jpy": 0,
+    "eps_growth_driver": "EPS増加の計算根拠（税率・株式数の前提を明記）",
+    "fair_per": 0,
+    "per_basis": "なぜこのPERが適正か（成長率・業界比較）",
+    "target_price": {{"bear": 0, "base": 0, "bull": 0}},
+    "current_forward_per": 0,
+    "valuation_verdict": "割安/適正/割高",
+    "upside_to_base_pct": 0
   }},
   "op_impact": {{
-    "bear": {{"amount_bn": -0.5, "pct": -3}},
-    "base": {{"amount_bn": 3.0,  "pct": 18}},
-    "bull": {{"amount_bn": 8.0,  "pct": 47}}
+    "bear": {{"amount_bn": 0, "pct": 0}},
+    "base": {{"amount_bn": 0, "pct": 0}},
+    "bull": {{"amount_bn": 0, "pct": 0}}
   }},
-  "eps_impact": {{
-    "bear": {{"amount_jpy": -5, "pct": -4}},
-    "base": {{"amount_jpy": 25, "pct": 20}},
-    "bull": {{"amount_jpy": 70, "pct": 55}},
-    "note": "EPS変化の計算根拠（税率・発行済株式数の前提）"
-  }},
-  "target_price": {{
-    "bear": 0,
-    "base": 0,
-    "bull": 0,
-    "methodology": "目標PER×修正後予想EPS or PBR法など、計算式を明記"
-  }},
-  "market_pricing_pct": 0.15,
+  "market_pricing_pct": 0.2,
   "pricing_rationale": "なぜ市場がまだ織り込んでいないか",
-  "key_catalyst": "株価が動く最初のトリガー",
+  "key_catalyst": "株価が動く最初のトリガーイベント（具体的に）",
   "catalyst_timeline": "2026年Q3",
-  "stop_loss_thesis": "この仮説が崩れる条件",
+  "stop_loss_thesis": "この仮説が完全に崩れる条件",
   "position_size_suggestion": "2-3%",
   "stop_loss_pct": -12
 }}
 
-JSONのみ出力。数値は必ず埋めること（不確かなら幅のある推定で）。"""
+全ての数値を必ず埋めること。JSONのみ出力。"""
 
     try:
         res = call_llm(STAGE2_MODEL, [{"role":"user","content":prompt}], temperature=0.3)
-        return extract_obj(res)
+        detail = extract_obj(res)
+        # eps_impact を valuation から生成（後方互換）
+        if "valuation" in detail and "eps_impact" not in detail:
+            v = detail["valuation"]
+            cur = v.get("current_eps_jpy") or 0
+            fwd_b = v.get("forward_eps_base_jpy") or 0
+            fwd_u = v.get("forward_eps_bull_jpy") or 0
+            detail["eps_impact"] = {
+                "base": {
+                    "amount_jpy": round(fwd_b - cur, 1) if cur and fwd_b else None,
+                    "pct":        round((fwd_b - cur) / cur * 100, 1) if cur and fwd_b else None,
+                },
+                "bull": {
+                    "amount_jpy": round(fwd_u - cur, 1) if cur and fwd_u else None,
+                    "pct":        round((fwd_u - cur) / cur * 100, 1) if cur and fwd_u else None,
+                },
+                "note": v.get("eps_growth_driver", ""),
+            }
+        # target_price を valuation から統一
+        if "valuation" in detail:
+            detail["target_price"] = detail["valuation"].get("target_price", {})
+        return detail
     except Exception as e:
-        print(f"    Stage2エラー {stock.get('name')}: {e}")
+        print(f"    Stage2エラー {stock.get('name')}: {e}", flush=True)
         return {}
 
 # ── Alpha Score ──────────────────────────────────────────────
-def parse_timeline_years(text: str) -> float:
-    if not text: return 2.0
+def parse_timeline_years(text) -> float:
+    if not text or not isinstance(text, str): return 2.0
     m = re.search(r'(\d{4})', text)
     if m:
         return max(0.5, int(m.group(1)) - 2026 + 0.5)
@@ -212,9 +277,9 @@ def parse_timeline_years(text: str) -> float:
 
 def calc_alpha(hypothesis: dict, detail: dict, s1: dict) -> dict:
     confidence  = hypothesis.get('confidence', 0.5)
-    upside      = detail.get('target_price', {}).get('base', 0)
-    cur_price   = detail.get('_current_price', 0)
-    downside    = abs(detail.get('stop_loss_pct', 15))
+    upside      = detail.get('target_price', {}).get('base') or 0
+    cur_price   = detail.get('_current_price') or 0
+    downside    = abs(float(detail.get("stop_loss_pct") or 15))
     pricing_gap = 1.0 - min(1.0, max(0.0, detail.get('market_pricing_pct', 0.5)))
     tl_years    = parse_timeline_years(hypothesis.get('timeline', ''))
 
@@ -311,24 +376,28 @@ def evaluate_hypothesis(h: dict) -> dict:
 def evaluate_all(hypotheses=None):
     if hypotheses is None:
         if not HYPO_FILE.exists():
-            print("仮説ファイルなし"); return
+            print("仮説ファイルなし", flush=True); return
         data = json.loads(HYPO_FILE.read_text())
         hypotheses = data.get('hypotheses', [])
 
     if not hypotheses:
-        print("仮説なし"); return
+        print("仮説なし", flush=True); return
 
-    print(f"\n{'='*55}")
+    print(f"\n{'='*55}", flush=True)
     print(f"🏦 HF評価エンジン v2 ({len(hypotheses)}仮説 / 2段階方式)")
-    print(f"  Stage1: {STAGE1_MODEL}")
+    print(f"  Stage1: {STAGE1_MODEL}", flush=True)
     print(f"  Stage2: {STAGE2_MODEL} (上位{TOP_N_STAGE2}銘柄のみ)")
-    print(f"{'='*55}\n")
+    print(f"{'='*55}\n", flush=True)
 
     ranked = []
     for i, h in enumerate(hypotheses):
-        print(f"[{i+1}/{len(hypotheses)}] {h.get('theme','—')}")
-        ev = evaluate_hypothesis(h)
-        ranked.append(ev)
+        print(f"[{i+1}/{len(hypotheses)}] {h.get('theme','—')}", flush=True)
+        try:
+            ev = evaluate_hypothesis(h)
+            ranked.append(ev)
+        except Exception as e:
+            print(f"  ⚠️ スキップ: {e}", flush=True)
+            ranked.append({**h, 'evaluated_stocks': [], 'alpha_score': 0, 'top_pick': None})
 
     ranked.sort(key=lambda x: x.get('alpha_score', 0), reverse=True)
     for i, h in enumerate(ranked):
@@ -343,9 +412,9 @@ def evaluate_all(hypotheses=None):
     }
     OUTPUT.write_text(json.dumps(output, ensure_ascii=False, indent=2))
 
-    print(f"\n{'='*55}")
-    print(f"✅ 評価完了 → {OUTPUT.name}")
-    print(f"\n🏆 Top 3:")
+    print(f"\n{'='*55}", flush=True)
+    print(f"✅ 評価完了 → {OUTPUT.name}", flush=True)
+    print(f"\n🏆 Top 3:", flush=True)
     for h in ranked[:3]:
         tp = h.get('top_pick') or {}
         eps_b = ((tp.get('eps_impact') or {}).get('base') or {})
@@ -354,7 +423,7 @@ def evaluate_all(hypotheses=None):
         print(f"  #{h['rank']} {h.get('theme')} | α={h.get('alpha_score',0):.2f} | "
               f"年率+{h.get('expected_annual_return_pct',0):.0f}% | "
               f"Top: {tp.get('code','—')} EPS+{eps_amt}円({eps_pct}%)")
-    print(f"{'='*55}\n")
+    print(f"{'='*55}\n", flush=True)
 
     return ranked
 
