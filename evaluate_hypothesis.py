@@ -395,19 +395,25 @@ def evaluate_all(hypotheses=None):
         print("仮説なし", flush=True); return
 
     # ── 差分評価: 評価済みIDをロード ──────────────────────────────
-    already_evaluated = {}
+    already_evaluated = {}  # theme → h
     if OUTPUT.exists():
         try:
             prev = json.loads(OUTPUT.read_text())
             for h in (prev.get('ranked_hypotheses') or []):
-                hid = h.get('id')
-                if hid and h.get('alpha_score', 0) > 0:
-                    already_evaluated[hid] = h
+                theme = h.get('theme')
+                if theme and h.get('alpha_score', 0) > 0:
+                    already_evaluated[theme] = h  # テーマでキャッシュ（IDに依存しない）
         except:
             pass
 
-    new_hyps    = [h for h in hypotheses if h.get('id') not in already_evaluated]
-    cached_hyps = [already_evaluated[h['id']] for h in hypotheses if h.get('id') in already_evaluated]
+    new_hyps    = [h for h in hypotheses if h.get('theme') not in already_evaluated]
+    # キャッシュ流用: hypothesesの順序を維持しつつ重複除去
+    seen, cached_hyps = set(), []
+    for h in hypotheses:
+        t = h.get('theme')
+        if t in already_evaluated and t not in seen:
+            seen.add(t)
+            cached_hyps.append(already_evaluated[t])
 
     print(f"\n{'='*55}", flush=True)
     print(f"🏦 HF評価エンジン v2")
