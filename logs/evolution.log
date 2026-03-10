@@ -2,120 +2,128 @@
   warnings.warn(
 
 === Evolution Engine 起動 ===
-ベースライン: sharpe=0.0, total=0.0%
+ベースライン: sharpe=3.478, total=2299.21%
 データロード (4000銘柄)...
   ユニバース: キャッシュから3780銘柄読み込み
   3774銘柄ロード完了
 ファンダメンタルファクター: 0銘柄
 ファクター事前計算...
-事前計算完了: 3774銘柄×5lb / 2970.8秒
-/Users/panda/Projects/japan-momentum/evolution_engine.py:415: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  print('ファクター事前計算...', flush=True)
-
---- 手動仮説: short_lookback_exploration ---
-/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
-  warnings.warn(
-
-=== Evolution Engine 起動 ===
-ベースライン: sharpe=4.888, total=3554.06%
-データロード (4000銘柄)...
-  ユニバース: キャッシュから3780銘柄読み込み
-  3774銘柄ロード完了
-ファンダメンタルファクター: 0銘柄
-ファクター事前計算...
-事前計算完了: 3774銘柄×5lb / 3005.4秒
-/Users/panda/Projects/japan-momentum/evolution_engine.py:418: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
-
---- 手動仮説: exit_volume_divergence_enhanced ---
-/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
-  warnings.warn(
-
-=== Evolution Engine 起動 ===
-ベースライン: sharpe=4.888, total=3554.06%
-データロード (4000銘柄)...
-  ユニバース: キャッシュから3780銘柄読み込み
-  3774銘柄ロード完了
-ファンダメンタルファクター: 0銘柄
-ファクター事前計算...
-事前計算完了: 3774銘柄×5lb / 3001.6秒
-/Users/panda/Projects/japan-momentum/evolution_engine.py:420: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+キャッシュ読み込み: data/cache/precompute_lb20_40_60_80_100_n3774.pkl (3.8秒)
+/Users/panda/Projects/japan-momentum/evolution_engine.py:635: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
   return_df = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
 
 --- 局所探索 開始 (Optuna TPE) ---
-Factor Selection: 14→13個 (除外: {'rs_w'})
-Optuna探索対象ファクター: ['ret_w', 'green_w', 'smooth_w', 'resilience_w', 'high52_w', 'omega_w', 'cluster_boost_w', 'ret_skip_w', 'win_streak_w', 'momentum_consistency_w', 'upside_capture_w', 'return_autocorr_w', 'clean_momentum_w', 'short_momentum_w', 'volume_confirm_w', 'gap_momentum_w', 'accumulation_w', 'volume_slope_w']
+Factor Selection: 17→15個 (除外: {'rs_w', 'run_quality_w'})
+Optuna探索対象ファクター: ['ret_w', 'green_w', 'smooth_w', 'resilience_w', 'high52_w', 'omega_w', 'cluster_boost_w', 'ret_skip_w', 'win_streak_w', 'momentum_consistency_w', 'upside_capture_w', 'return_autocorr_w', 'clean_momentum_w', 'variance_ratio_w', 'stress_efficiency_w', 'short_momentum_w', 'volume_confirm_w', 'gap_momentum_w', 'accumulation_w', 'volume_slope_w', 'vwap_drift_w', 'vol_price_corr_trend_w', 'run_quality_w', 'close_high_ratio_trend_w', 'gap_recovery_strength_w', 'volume_concentration_w']
 Optuna TPE: 300trials 開始...
-  新ベスト: is_total=99.4%, oos_total=-31.3%, calmar=-49.90, lb=40, tn=5
-  新ベスト: is_total=300.5%, oos_total=-49.2%, calmar=-48.27, lb=40, tn=2
-  新ベスト: is_total=447.7%, oos_total=-61.5%, calmar=-47.89, lb=40, tn=1
-  新ベスト: is_total=683.2%, oos_total=-41.8%, calmar=-45.07, lb=40, tn=2
-  新ベスト: is_total=90.7%, oos_total=6.7%, calmar=0.77, lb=40, tn=2
-  新ベスト: is_total=6683.1%, oos_total=-47.6%, calmar=3.58, lb=40, tn=1
-  新ベスト: is_total=9040.3%, oos_total=-50.7%, calmar=23.32, lb=40, tn=1
-Optuna完了: 300trials, best_total=23.3%
-  sharpe=3.096 score=+9040.340 ❌ lb=40 tn=1
-  sharpe=2.955 score=+6914.030 ❌ lb=40 tn=1
-  sharpe=2.949 score=+6683.100 ❌ lb=40 tn=1
-  sharpe=2.928 score=+6363.130 ❌ lb=40 tn=1
-  sharpe=2.914 score=+6219.190 ❌ lb=40 tn=1
-  sharpe=2.851 score=+5465.000 ❌ lb=40 tn=1
-  sharpe=2.843 score=+5418.560 ❌ lb=40 tn=1
-  sharpe=2.846 score=+5414.300 ❌ lb=40 tn=1
-  sharpe=2.827 score=+5210.470 ❌ lb=40 tn=1
-  sharpe=2.823 score=+5148.190 ❌ lb=40 tn=1
-  sharpe=2.813 score=+5057.490 ❌ lb=40 tn=1
-  sharpe=2.803 score=+4998.690 ❌ lb=40 tn=1
-  sharpe=2.793 score=+4906.470 ❌ lb=40 tn=1
-  sharpe=2.746 score=+4441.700 ❌ lb=40 tn=1
-  sharpe=2.729 score=+4280.250 ❌ lb=40 tn=1
-  sharpe=2.714 score=+4106.060 ❌ lb=40 tn=1
-  sharpe=2.704 score=+4019.790 ❌ lb=40 tn=1
-  sharpe=2.694 score=+3949.810 ❌ lb=40 tn=1
-  sharpe=2.689 score=+3957.750 ❌ lb=40 tn=1
-  sharpe=2.685 score=+3863.910 ❌ lb=40 tn=1
+  新ベスト: is_total=1292.3%, calmar=50.17, lb=60, tn=5
+  新ベスト: is_total=1577.5%, calmar=51.39, lb=60, tn=4
+  新ベスト: is_total=2954.0%, calmar=127.55, lb=60, tn=4
+Optuna完了: 300trials, best_total=127.5%
+  sharpe=3.432 score=+317.281 ❌ lb=60 tn=4
+  sharpe=3.440 score=+348.658 ❌ lb=60 tn=4
+  sharpe=3.406 score=+303.492 ❌ lb=60 tn=4
+  sharpe=3.405 score=+303.349 ❌ lb=60 tn=4
+  sharpe=3.370 score=+287.372 ❌ lb=60 tn=4
+  sharpe=3.362 score=+286.170 ❌ lb=60 tn=4
+  sharpe=3.354 score=+279.237 ❌ lb=60 tn=4
+  sharpe=3.381 score=+267.533 ❌ lb=60 tn=4
+  sharpe=3.340 score=+283.691 ❌ lb=60 tn=4
+  sharpe=3.354 score=+281.016 ❌ lb=60 tn=4
+  sharpe=3.318 score=+238.776 ❌ lb=60 tn=4
+  sharpe=3.321 score=+264.600 ❌ lb=60 tn=4
+  sharpe=3.298 score=+262.893 ❌ lb=60 tn=4
+  sharpe=3.330 score=+234.254 ❌ lb=60 tn=4
+  sharpe=3.290 score=+265.195 ❌ lb=60 tn=4
+  sharpe=3.294 score=+264.806 ❌ lb=60 tn=4
+  sharpe=3.278 score=+224.081 ❌ lb=60 tn=4
+  sharpe=3.305 score=+284.633 ❌ lb=60 tn=4
+  sharpe=3.275 score=+278.264 ❌ lb=60 tn=4
+  sharpe=3.286 score=+261.440 ❌ lb=60 tn=4
 
 --- ファクター整理 (cleanup_weak_signals) ---
   cleanup_weak_signals: 変更なし
 
 --- OOS検証 (Walk-Forward Out-of-Sample) ---
 
-=== OOS検証: 2020-01-01〜2026-03-08 ===
+=== OOS検証: 2020-01-01〜2026-03-10 ===
 バックフィル対象: 41件（レート制限回避のためスキップ）
 OOS検証: 3774銘柄ロード完了
-事前計算完了: 3774銘柄×1lb / 419.1秒
-/Users/panda/Projects/japan-momentum/optimize.py:1208: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+キャッシュ読み込み: data/cache/precompute_lb60_n3774.pkl (1.4秒)
+/Users/panda/Projects/japan-momentum/optimize.py:1500: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
   return_df = all_prices.pct_change()
-OOS結果: total=2792.1%, sharpe=2.735, max_dd=68.64%, alpha=2673.13%, nikkei=118.97%
+OOS結果: total=1478.97%, sharpe=2.714, max_dd=45.43%, alpha=1368.32%, nikkei=110.65%
 
-OOS vs 訓練: OOS=+2792.1% / 訓練=+3554.1% / OOS sharpe=2.735 max_dd=68.6%
-✅ OOS合格: sharpe=2.735 (要≥2.735), total_return=2792.1% (要>50.0%)
+OOS vs 訓練: OOS=+1479.0% / 訓練=+2299.2% / OOS sharpe=2.714 max_dd=45.4%
+✅ OOS合格: sharpe=2.714 (要≥2.714), total_return=1479.0% (要>50.0%)
 
 --- 新ファクター試験 ---
 
 --- 組み合わせテスト 開始 ---
-候補仮説: 3件
+候補仮説: 50件
 データロード (200銘柄)...
   ユニバース: キャッシュから200銘柄読み込み
   200銘柄ロード完了
-事前計算完了: 200銘柄×4lb / 47.9秒
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_100_n200.pkl (0.1秒)
 /Users/panda/Projects/japan-momentum/combination_search.py:134: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
   return_df  = pd.DataFrame({c: prices_dict[c]['AdjC'] for c in prices_dict}).pct_change()
-組み合わせ数: 3
-  combo_oos_validation+short_squeeze_momentum: エラー 90
-  combo_oos_validation+sector_neutral_momentum: エラー 90
-  combo_short_squeeze_momentum+sector_neutral_momentum: sharpe=0.749 delta=-4.139 score=+8.870 不採用
-組み合わせテスト完了: 1件 / combo_log保存
+組み合わせ数: 45
+  combo_local_search+risk_parity_tn5_ma100_lb60_v1: sharpe=0.888 delta=-2.590 score=+6.558 不採用
+  combo_local_search+paper_trade_champion_v1: sharpe=0.888 delta=-2.590 score=+6.558 不採用
+  combo_local_search+champion_dd15_filter_lb60_v1: sharpe=0.888 delta=-2.590 score=+6.558 不採用
+  combo_local_search+oos_validation: sharpe=0.595 delta=-2.883 score=+4.182 不採用
+  combo_local_search+market_regime_ma100_v1: sharpe=0.010 delta=-3.468 score=-0.511 不採用
+  combo_local_search+market_regime_combined_v1: sharpe=0.010 delta=-3.468 score=-0.511 不採用
+  combo_local_search+dd30_tn5_ma100_v1: sharpe=-0.354 delta=-3.832 score=-5.152 不採用
+  combo_local_search+dd30_tn4_no_filter_v1: sharpe=0.010 delta=-3.468 score=-0.511 不採用
+  combo_local_search+biweekly_midcap: エラー 70
+  combo_risk_parity_tn5_ma100_lb60_v1+paper_trade_champion_v1: sharpe=1.136 delta=-2.342 score=+9.042 不採用
+  combo_risk_parity_tn5_ma100_lb60_v1+champion_dd15_filter_lb60_v1: sharpe=1.136 delta=-2.342 score=+9.042 不採用
+  combo_risk_parity_tn5_ma100_lb60_v1+oos_validation: sharpe=0.903 delta=-2.575 score=+6.881 不採用
+  combo_risk_parity_tn5_ma100_lb60_v1+market_regime_ma100_v1: sharpe=0.900 delta=-2.578 score=+6.998 不採用
+  combo_risk_parity_tn5_ma100_lb60_v1+market_regime_combined_v1: sharpe=0.900 delta=-2.578 score=+6.998 不採用
+  combo_risk_parity_tn5_ma100_lb60_v1+dd30_tn5_ma100_v1: sharpe=0.899 delta=-2.579 score=+7.087 不採用
+  combo_risk_parity_tn5_ma100_lb60_v1+dd30_tn4_no_filter_v1: sharpe=0.900 delta=-2.578 score=+6.998 不採用
+  combo_risk_parity_tn5_ma100_lb60_v1+biweekly_midcap: エラー 70
+  combo_paper_trade_champion_v1+champion_dd15_filter_lb60_v1: sharpe=1.136 delta=-2.342 score=+9.042 不採用
+  combo_paper_trade_champion_v1+oos_validation: sharpe=0.903 delta=-2.575 score=+6.881 不採用
+  combo_paper_trade_champion_v1+market_regime_ma100_v1: sharpe=0.900 delta=-2.578 score=+6.998 不採用
+  combo_paper_trade_champion_v1+market_regime_combined_v1: sharpe=0.900 delta=-2.578 score=+6.998 不採用
+  combo_paper_trade_champion_v1+dd30_tn5_ma100_v1: sharpe=0.899 delta=-2.579 score=+7.087 不採用
+  combo_paper_trade_champion_v1+dd30_tn4_no_filter_v1: sharpe=0.900 delta=-2.578 score=+6.998 不採用
+  combo_paper_trade_champion_v1+biweekly_midcap: エラー 70
+  combo_champion_dd15_filter_lb60_v1+oos_validation: sharpe=0.903 delta=-2.575 score=+6.881 不採用
+  combo_champion_dd15_filter_lb60_v1+market_regime_ma100_v1: sharpe=0.900 delta=-2.578 score=+6.998 不採用
+  combo_champion_dd15_filter_lb60_v1+market_regime_combined_v1: sharpe=0.900 delta=-2.578 score=+6.998 不採用
+  combo_champion_dd15_filter_lb60_v1+dd30_tn5_ma100_v1: sharpe=0.899 delta=-2.579 score=+7.087 不採用
+  combo_champion_dd15_filter_lb60_v1+dd30_tn4_no_filter_v1: sharpe=0.900 delta=-2.578 score=+6.998 不採用
+  combo_champion_dd15_filter_lb60_v1+biweekly_midcap: エラー 70
+  combo_oos_validation+market_regime_ma100_v1: sharpe=0.608 delta=-2.870 score=+4.364 不採用
+  combo_oos_validation+market_regime_combined_v1: sharpe=0.608 delta=-2.870 score=+4.364 不採用
+  combo_oos_validation+dd30_tn5_ma100_v1: sharpe=0.174 delta=-3.304 score=+0.863 不採用
+  combo_oos_validation+dd30_tn4_no_filter_v1: sharpe=0.608 delta=-2.870 score=+4.364 不採用
+  combo_oos_validation+biweekly_midcap: エラー 90
+  combo_market_regime_ma100_v1+market_regime_combined_v1: sharpe=-0.075 delta=-3.553 score=-1.265 不採用
+  combo_market_regime_ma100_v1+dd30_tn5_ma100_v1: sharpe=0.298 delta=-3.180 score=+1.769 不採用
+  combo_market_regime_ma100_v1+dd30_tn4_no_filter_v1: sharpe=-0.075 delta=-3.553 score=-1.265 不採用
+  combo_market_regime_ma100_v1+biweekly_midcap: エラー 90
+  combo_market_regime_combined_v1+dd30_tn5_ma100_v1: sharpe=0.298 delta=-3.180 score=+1.769 不採用
+  combo_market_regime_combined_v1+dd30_tn4_no_filter_v1: sharpe=-0.075 delta=-3.553 score=-1.265 不採用
+  combo_market_regime_combined_v1+biweekly_midcap: エラー 90
+  combo_dd30_tn5_ma100_v1+dd30_tn4_no_filter_v1: sharpe=0.298 delta=-3.180 score=+1.769 不採用
+  combo_dd30_tn5_ma100_v1+biweekly_midcap: エラー 90
+  combo_dd30_tn4_no_filter_v1+biweekly_midcap: エラー 90
+組み合わせテスト完了: 36件 / combo_log保存
 
 === Signal Search 開始 ===
   ユニバース: キャッシュから200銘柄読み込み
   200銘柄ロード完了
-事前計算完了: 200銘柄×1lb / 12.2秒
+キャッシュ読み込み: data/cache/precompute_lb80_n200.pkl (0.0秒)
 /Users/panda/Projects/japan-momentum/signal_search.py:69: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
   return_df = pd.DataFrame({c: prices_dict[c]["AdjC"] for c in prices_dict}).pct_change()
 
 [Step1] Ablation Test
-  ベースライン sharpe=0.812
+  ベースライン sharpe=0.769
   ⚠️  topn1_extreme_concentration: sharpe低下 +0.0000 → candidate（他との相性あり）
   ⚠️  vol_divergence_distribution_detect: sharpe低下 +0.0000 → candidate（他との相性あり）
   ⚠️  fold1_robust_drawdown_guard: sharpe低下 +0.0000 → candidate（他との相性あり）
@@ -141,6 +149,97 @@ OOS vs 訓練: OOS=+2792.1% / 訓練=+3554.1% / OOS sharpe=2.735 max_dd=68.6%
   ⚠️  volume_confirmed_trend_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
   ⚠️  sector_neutral_momentum: sharpe低下 +0.0000 → candidate（他との相性あり）
   ⚠️  short_squeeze_momentum: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  smart_money_flow: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  trend_filter_regime: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  volume_price_divergence: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  adaptive_lookback: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  short_term_reversal_filter: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  midcap_top15_momentum: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  momentum_acceleration: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  regime_adaptive_weights: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  green_smooth_synergy: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  regime_bear_defense: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  lookback_ensemble: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  regime_cash_buffer: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  ret_rs_dual_rank: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  midcap_volume_stable: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  regime_extreme_bear_cash: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  pure_momentum_concentration: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  midcap_monthly_rebalance: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  midcap_lookback60: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  midcap_ret_dominant: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  midcap_lookback100: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  midcap_top7_concentrated: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  midcap_regime_bull_concentrate: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  midcap_lookback70: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  midcap_rs_dominant: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  midcap_green_dominant: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  midcap_equal_weight: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  midcap_upper_expand: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  midcap_lower_raise: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  rank_product_midcap: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  biweekly_midcap: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  high52_midcap: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  vol_surge_breakout_universe: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  short_term_accel: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  short_term_dominant: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  rs_accel_primary: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  open_universe_rs_dynamic: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  high52_broad_universe: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  dual_momentum_confirm: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  vol_adj_momentum: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  high52_w_boost: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  high52_accel_combo: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  high52_all_universe: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  omega_factor: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  earnings_revision_momentum_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  margin_balance_pressure_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  multi_tf_coherence_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  drawdown_age_w_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  intraweek_pattern_w_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  volume_return_asymmetry_w_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  pv_divergence_streak_w_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  market_breadth_adj_w_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  gap_follow_through_w_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  dd_exit_dominant_quality_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  short_lb_moderate_conc_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  autocorr_accum_vslope_trio_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  tight_trailing_stop_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  higher_exit_threshold_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  longer_exit_lookback_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  market_regime_ma100_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  market_regime_dd15_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  market_regime_combined_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  dd30_tn6_combined_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  dd30_tn4_ma100_lb80_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  mid_lookback_80_tn2_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  ultra_concentration_tn1_lb100_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  ma50_regime_filter_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  dd30_tn4_no_filter_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  risk_parity_tn5_trailing_stop_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  risk_parity_tn6_ma100_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  risk_parity_tn5_combined_filter_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  risk_parity_tn2_ma100_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  risk_parity_tn8_ma100_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  risk_parity_tn4_ma100_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  risk_parity_tn8_ma100_lb60_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  risk_parity_tn5_ma100_lb80_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  risk_parity_tn3_ma100_lb60_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  risk_parity_tn6_ma100_lb60_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  risk_parity_tn7_ma100_lb60_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  risk_parity_tn5_ma100_lb50_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  biweekly_rp_tn5_lb60_ma100_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  no_filter_rp_tn5_lb60_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  daily_rp_tn5_lb60_ma100_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  ga_weight_reopt_champion_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  ensemble_champion_tn8lb100_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  champion_plus_factors_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  paper_trade_champion_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  champion_combined_filter_lb60_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  champion_ma80_filter_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  champion_half_position_filter_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  champion_dd12_filter_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
+  ⚠️  champion_dd15_lb40_v1: sharpe低下 +0.0000 → candidate（他との相性あり）
 
 [Step2] 新シグナル追加テスト
   ⚠️  rsi14: ファクターデータなし → スキップ
@@ -151,4 +250,4 @@ OOS vs 訓練: OOS=+2792.1% / 訓練=+3554.1% / OOS sharpe=2.735 max_dd=68.6%
   ⚠️  credit_ratio: ファクターデータなし → スキップ
 
 [Step3] 全シグナル同時重み最適化
-  最適化対象: ['topn1_extreme_concentration_w', 'vol_divergence_distribution_detect_w', 'fold1_robust_drawdown_guard_w', 'intraday_trend_quality_w', 'recovery_speed_factor_w', 'short_lookback_exploration_w', 'daily_rebalance_unlock_w', 'unexplored_ohlcv_factors_batch1_w', 'rsi_heavy_early_exit_w', 'atr_adaptive_trailing_stop_w', 'return_skewness_filter_w', 'exit_volume_divergence_enhanced_w', 'sparse_tn4_lb60_antioverfitA_w', 'oos_proven_tn3_lb60_antioverfitB_w', 'mid_diverse_tn5_lb80_antioverfitC_w', 'vol_adj_positive_weeks_w', 'exit_rsi_dominant_v2_w', 'exit_rsi_dominant_v3_w', 'open_price_entry_exit_w', 'loose_trailing_stop_v1_w', 'resilience_dominant_v1_w', 'quality_trend_v1_w', 'volume_confirmed_trend_v1_w', 'sector_neutral_momentum_w', 'short_squeeze_momentum_w']
+  最適化対象: ['topn1_extreme_concentration_w', 'vol_divergence_distribution_detect_w', 'fold1_robust_drawdown_guard_w', 'intraday_trend_quality_w', 'recovery_speed_factor_w', 'short_lookback_exploration_w', 'daily_rebalance_unlock_w', 'unexplored_ohlcv_factors_batch1_w', 'rsi_heavy_early_exit_w', 'atr_adaptive_trailing_stop_w', 'return_skewness_filter_w', 'exit_volume_divergence_enhanced_w', 'sparse_tn4_lb60_antioverfitA_w', 'oos_proven_tn3_lb60_antioverfitB_w', 'mid_diverse_tn5_lb80_antioverfitC_w', 'vol_adj_positive_weeks_w', 'exit_rsi_dominant_v2_w', 'exit_rsi_dominant_v3_w', 'open_price_entry_exit_w', 'loose_trailing_stop_v1_w', 'resilience_dominant_v1_w', 'quality_trend_v1_w', 'volume_confirmed_trend_v1_w', 'sector_neutral_momentum_w', 'short_squeeze_momentum_w', 'smart_money_flow_w', 'trend_filter_regime_w', 'volume_price_divergence_w', 'adaptive_lookback_w', 'short_term_reversal_filter_w', 'midcap_top15_momentum_w', 'momentum_acceleration_w', 'regime_adaptive_weights_w', 'green_smooth_synergy_w', 'regime_bear_defense_w', 'lookback_ensemble_w', 'regime_cash_buffer_w', 'ret_rs_dual_rank_w', 'midcap_volume_stable_w', 'regime_extreme_bear_cash_w', 'pure_momentum_concentration_w', 'midcap_monthly_rebalance_w', 'midcap_lookback60_w', 'midcap_ret_dominant_w', 'midcap_lookback100_w', 'midcap_top7_concentrated_w', 'midcap_regime_bull_concentrate_w', 'midcap_lookback70_w', 'midcap_rs_dominant_w', 'midcap_green_dominant_w', 'midcap_equal_weight_w', 'midcap_upper_expand_w', 'midcap_lower_raise_w', 'rank_product_midcap_w', 'biweekly_midcap_w', 'high52_midcap_w', 'vol_surge_breakout_universe_w', 'short_term_accel_w', 'short_term_dominant_w', 'rs_accel_primary_w', 'open_universe_rs_dynamic_w', 'high52_broad_universe_w', 'dual_momentum_confirm_w', 'vol_adj_momentum_w', 'high52_w_boost_w', 'high52_accel_combo_w', 'high52_all_universe_w', 'omega_factor_w', 'earnings_revision_momentum_v1_w', 'margin_balance_pressure_v1_w', 'multi_tf_coherence_v1_w', 'drawdown_age_w_v1_w', 'intraweek_pattern_w_v1_w', 'volume_return_asymmetry_w_v1_w', 'pv_divergence_streak_w_v1_w', 'market_breadth_adj_w_v1_w', 'gap_follow_through_w_v1_w', 'dd_exit_dominant_quality_v1_w', 'short_lb_moderate_conc_v1_w', 'autocorr_accum_vslope_trio_v1_w', 'tight_trailing_stop_v1_w', 'higher_exit_threshold_v1_w', 'longer_exit_lookback_v1_w', 'market_regime_ma100_v1_w', 'market_regime_dd15_v1_w', 'market_regime_combined_v1_w', 'dd30_tn6_combined_v1_w', 'dd30_tn4_ma100_lb80_v1_w', 'mid_lookback_80_tn2_v1_w', 'ultra_concentration_tn1_lb100_v1_w', 'ma50_regime_filter_v1_w', 'dd30_tn4_no_filter_v1_w', 'risk_parity_tn5_trailing_stop_v1_w', 'risk_parity_tn6_ma100_v1_w', 'risk_parity_tn5_combined_filter_v1_w', 'risk_parity_tn2_ma100_v1_w', 'risk_parity_tn8_ma100_v1_w', 'risk_parity_tn4_ma100_v1_w', 'risk_parity_tn8_ma100_lb60_v1_w', 'risk_parity_tn5_ma100_lb80_v1_w', 'risk_parity_tn3_ma100_lb60_v1_w', 'risk_parity_tn6_ma100_lb60_v1_w', 'risk_parity_tn7_ma100_lb60_v1_w', 'risk_parity_tn5_ma100_lb50_v1_w', 'biweekly_rp_tn5_lb60_ma100_v1_w', 'no_filter_rp_tn5_lb60_v1_w', 'daily_rp_tn5_lb60_ma100_v1_w', 'ga_weight_reopt_champion_v1_w', 'ensemble_champion_tn8lb100_v1_w', 'champion_plus_factors_v1_w', 'paper_trade_champion_v1_w', 'champion_combined_filter_lb60_v1_w', 'champion_ma80_filter_v1_w', 'champion_half_position_filter_v1_w', 'champion_dd12_filter_v1_w', 'champion_dd15_lb40_v1_w']

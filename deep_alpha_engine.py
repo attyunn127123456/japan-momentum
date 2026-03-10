@@ -409,7 +409,7 @@ def run():
 
     refined = []
     for h in hypotheses:
-        h["id"]         = f"alpha_{datetime.now().strftime('%Y%m%d')}_{len(refined)+1:03d}"
+        h["id"]         = f"alpha_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{len(refined)+1:02d}"
         h["created_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
         h = devils_advocate(h)
         h["candidate_stocks"] = find_stocks(h)
@@ -417,7 +417,7 @@ def run():
         refined.append(h)
         print(f"\n  ✅ {h.get('theme')} (確信度: {h.get('confidence', 0):.0%})", flush=True)
 
-    # 保存（最新30件）
+    # 保存（テーマ重複除去 + 最新15件）
     existing = []
     if OUTPUT.exists():
         try:
@@ -425,6 +425,9 @@ def run():
         except:
             pass
 
+    # 新規仮説と同テーマの既存仮説を除去してから結合
+    new_themes = {h.get("theme") for h in refined}
+    existing = [h for h in existing if h.get("theme") not in new_themes]
     all_hyps = refined + existing
     all_hyps = all_hyps[:15]
 

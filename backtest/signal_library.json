@@ -315,7 +315,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 1.499,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-08"
     },
     {
@@ -325,7 +325,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 1.467,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-08"
     },
     {
@@ -335,7 +335,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 1.467,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-08"
     },
     {
@@ -345,7 +345,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 1.467,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-08"
     },
     {
@@ -355,7 +355,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 1.467,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-08"
     },
     {
@@ -365,7 +365,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 0.707,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-08"
     },
     {
@@ -375,7 +375,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 1.693,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-08"
     },
     {
@@ -385,7 +385,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 1.404,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-08"
     },
     {
@@ -395,7 +395,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 1.496,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-08"
     },
     {
@@ -405,7 +405,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 1.467,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-08"
     },
     {
@@ -415,7 +415,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 1.467,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-08"
     },
     {
@@ -425,7 +425,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 1.404,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-08"
     },
     {
@@ -435,7 +435,7 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 1.499,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-08"
     },
     {
@@ -445,38 +445,878 @@
       "param_key": null,
       "status": "candidate",
       "best_weight": null,
-      "sharpe_contribution": 1.471,
+      "sharpe_contribution": 0.0,
       "added_at": "2026-03-08"
+    },
+    {
+      "id": "midcap_sweet_spot",
+      "desc": "時価総額200〜1500億の甘いスポットユニバース × top_n=8で集中",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "rejected",
+      "best_weight": null,
+      "sharpe_contribution": 2.471,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "regime_extreme_bear_cash",
+      "desc": "レジーム連動型: 極端弱気局面（日経200MA下+直近4週-5%超）のみ全キャッシュ退避",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "pure_momentum_concentration",
+      "desc": "ret×rs集中型: モメンタム2シグナルに0.9集中、green/smooth最小化",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "midcap_monthly_rebalance",
+      "desc": "中型株ユニバース×月次リバランスで取引コスト削減",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "midcap_lookback60",
+      "desc": "中型株ユニバース×lookback=60日で短期モメンタム強化",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "midcap_ret_dominant",
+      "desc": "中型株ユニバース×絶対リターン重視スコア（ret_w=0.4に増加）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "midcap_lookback100",
+      "desc": "中型株ユニバース×lookback=100日で中期モメンタム強化",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "midcap_top7_concentrated",
+      "desc": "中型株ユニバース×top_n=7で高集中ポートフォリオ",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "midcap_regime_bull_concentrate",
+      "desc": "レジーム連動型: 強気確認時top_n=7集中×通常時top_n=10（攻め特化型）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "midcap_lookback70",
+      "desc": "中型株ユニバース×lookback=70日（60日と80日の中間探索）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "midcap_rs_dominant",
+      "desc": "中型株ユニバース×相対強度重視スコア（rs_w=0.4に増加）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "midcap_green_dominant",
+      "desc": "中型株ユニバース×陽線比率重視スコア（green_w=0.35に増加）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "midcap_equal_weight",
+      "desc": "中型株ユニバース×4シグナル等重み（0.25×4）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "midcap_upper_expand",
+      "desc": "中型株ユニバース上限拡大：時価総額100〜5000億",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "midcap_lower_raise",
+      "desc": "中型株ユニバース下限引き上げ：時価総額300〜3000億",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "rank_product_midcap",
+      "desc": "ランク積スコア×中型株: 4ファクターの百分位ランクの幾何平均でスコア計算",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "biweekly_midcap",
+      "desc": "中型株ユニバース×2週間リバランス: 取引コスト削減と中期モメンタム活用",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "high52_midcap",
+      "desc": "52週高値proximity因子×中型株: 年初来高値への近さをモメンタムシグナルとして追加",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "vol_surge_breakout_universe",
+      "desc": "動的ユニバース: 出来高急増×価格ブレイクアウト銘柄を動的選択（時価総額フィルター廃止）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "short_term_accel",
+      "desc": "長期トレンド×直近加速: 短期リターン（5-10日）ファクターを追加（w=0.2）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "short_term_dominant",
+      "desc": "短期モメンタム主力: short_momentum_wを0.35に増強",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "rs_accel_primary",
+      "desc": "RS加速度を主力ファクター(w=0.35)に昇格: 前半40日→後半40日でRS改善幅をメインシグナル化",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "open_universe_rs_dynamic",
+      "desc": "完全オープンユニバース: 時価総額フィルター廃止×RS上位30%動的絞り込みでtop10選択",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "high52_broad_universe",
+      "desc": "high52シグナル × 時価総額フィルター廃止: 52週高値75%以上をユニバース条件に（大型株もキャプチャ）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "dual_momentum_confirm",
+      "desc": "短期×中期モメンタム方向一致フィルター: 20日と80日の両方で正リターンの銘柄のみを対象",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "vol_adj_momentum",
+      "desc": "ボラティリティ調整済みモメンタム: リターン÷ATRで計算したリスク調整後シグナルをメイン指標に",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "high52_w_boost",
+      "desc": "52週高値ファクターを主力に昇格（high52_w=0.3）: ベースラインのw=0.2からさらに増強",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "high52_accel_combo",
+      "desc": "52週高値近接×モメンタム加速の組み合わせ: 高値更新中かつ加速している銘柄を重点選択",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "high52_all_universe",
+      "desc": "52週高値効果×全銘柄ユニバース（大型含む）: high52_wを主力ファクター（w=0.35）に昇格して時価総額フィルター廃止",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "omega_factor",
+      "desc": "Omega比ファクター追加: 上昇速度÷下落幅の非対称性スコア（w=0.2）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-08"
+    },
+    {
+      "id": "earnings_revision_momentum_v1",
+      "desc": "決算改善モメンタム: fins/summaryの営業利益前年比変化率の加速をファクター化",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "margin_balance_pressure_v1",
+      "desc": "信用残圧力ファクター: margin-interestデータの信用買い残増減トレンドで過熱検出",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "multi_tf_coherence_v1",
+      "desc": "マルチTF一貫性ファクター: 20日/60日/100日リターンの方向強度一致度を連続スコア化",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "drawdown_age_w_v1",
+      "desc": "ドローダウン経過日数ファクター: ルックバック期間中の最大DD発生タイミングの新しさを逆スコア化。最大DDが古く回復済みの銘柄を優遇",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "intraweek_pattern_w_v1",
+      "desc": "週内パターン安定性ファクター: 月〜金の曜日別リターンのエントロピーを測定。特定曜日に偏らず安定してリターンを出す銘柄を優遇",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "volume_return_asymmetry_w_v1",
+      "desc": "出来高リターン非対称性ファクター: 上昇日の平均出来高と下落日の平均出来高の比率。上昇日に出来高が多い=買い圧力優勢の銘柄を優遇",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "pv_divergence_streak_w_v1",
+      "desc": "価格出来高乖離持続日数: 価格が上昇トレンドなのに出来高が減少し続ける日数をカウント。乖離が長いほどトレンド疲弊リスクが高い（負の重み期待）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "market_breadth_adj_w_v1",
+      "desc": "市場ブレッドス調整モメンタム: 全銘柄中20日リターンがプラスの割合（市場ブレッドス）のトレンドを計算し、ブレッドスが悪化中でも上昇できている銘柄を優遇",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "gap_follow_through_w_v1",
+      "desc": "ギャップフォロースルー品質: 陽のオーバーナイトギャップ（寄付>前日終値）後に日中でどれだけギャップが維持されるかの平均。ギャップが維持される=機関投資家の本物の買い、フェードする=投機的ノイズ",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "dd_exit_dominant_quality_v1",
+      "desc": "DD+Vol支配型エグジット×品質シグナル: IS best(Sharpe 3.096)のexit構成(exit_dd_w=0.35,exit_vol_w=0.28)をlb=100/tn=2に移植。シグナル側はreturn_autocorr/accumulation/upside_capture重視でret_w≈0",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "short_lb_moderate_conc_v1",
+      "desc": "短ルックバック(lb=40)×中集中(tn=2): IS bestのlb=40が生む短期モメンタム捕捉力をtn=2で分散。IS bestの全シグナル/exit構成をほぼ踏襲しつつ過度な集中リスクを緩和",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "autocorr_accum_vslope_trio_v1",
+      "desc": "3強ファクター集中: return_autocorr(0.20)+accumulation(0.15)+volume_slope(0.15)を3本柱に。IS bestでweight上位かつ互いに異なる情報源（価格持続性/需給/出来高トレンド）の組合せ。exit_dd_w支配型",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "tight_trailing_stop_v1",
+      "desc": "trailing_stop=-0.020に引き締め（ベースライン-0.027→-0.020）。他パラメータ全て固定。DD 68.6%の主因は大きな反転時にストップが遠すぎること",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "higher_exit_threshold_v1",
+      "desc": "exit_threshold=0.22に引き上げ（ベースライン0.16→0.22）。他パラメータ全て固定。エグジットの感度を下げて偽シグナルによる早期売りを抑制",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "longer_exit_lookback_v1",
+      "desc": "exit_lookback=30に延長（ベースライン24→30）。他パラメータ全て固定。エグジットの計算窓を広げて短期ノイズに対する耐性を向上",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "market_regime_ma100_v1",
+      "desc": "日経100日MA割れで全キャッシュ",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "market_regime_dd15_v1",
+      "desc": "日経直近高値から-15%下落で全キャッシュ",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "market_regime_combined_v1",
+      "desc": "日経100日MA割れ OR 高値-15%下落で全キャッシュ（ユニオン）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "dd30_tn5_ma100_v1",
+      "desc": "DD30%目標: tn=5分散 + MA100フィルター。tn=2→5で集中リスク半減、MA100で市場暴落回避",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "rejected",
+      "best_weight": null,
+      "sharpe_contribution": 6.776,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "dd30_tn6_combined_v1",
+      "desc": "DD30%目標: tn=6分散 + combinedフィルター（最保守）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "dd30_tn4_ma100_lb80_v1",
+      "desc": "DD30%目標: tn=4分散 + MA100 + lb=80（Sharpe維持重視）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "mid_lookback_80_tn2_v1",
+      "desc": "lb=80/tn=2。100日→80日に短縮して2021-22の変化を早く捕捉",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "ultra_concentration_tn1_lb100_v1",
+      "desc": "lb=100/tn=1超集中。ISでSharpe 4.126実績。RSI exitが個別銘柄の過熱を制御",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "ma50_regime_filter_v1",
+      "desc": "MA50割れで全キャッシュ。MA100より高感度で中間調整も回避",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "dd30_tn4_no_filter_v1",
+      "desc": "DD30%目標: tn=4分散のみ（フィルターなし）。フィルター効果の純粋測定用",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "risk_parity_tn5_trailing_stop_v1",
+      "desc": "risk_parity + trailing_stop=-0.030 + MA100。2つのDD削減メカニズムの加算効果",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "risk_parity_tn6_ma100_v1",
+      "desc": "tn=6 + risk_parity + MA100。等配分ではtn=5→6で効果なかったが、ボラウェイトなら6銘柄の分散効果が活きる可能性",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "risk_parity_tn5_combined_filter_v1",
+      "desc": "3重DD防御: tn=5 + risk_parity + combinedフィルター（最保守）",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "risk_parity_tn2_ma100_v1",
+      "desc": "tn=2 + risk_parity + MA100。ベースラインのtn=2でリスクパリティがどこまでDD削減できるかの測定",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "risk_parity_tn8_ma100_v1",
+      "desc": "ヘッジファンド型高分散: tn=8 + risk_parity + MA100。risk_parityがボラ逆数で配分するため8銘柄でも実効集中度が保たれつつ、テール相関の低減でDD大幅削減を狙う",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "risk_parity_tn5_ma100_lb60_v1",
+      "desc": "短期モメンタム捕捉型: lb=60 + tn=5 + risk_parity + MA100。lookback短縮でトレンド転換への反応速度を向上",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "rejected",
+      "best_weight": null,
+      "sharpe_contribution": 4.186,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "risk_parity_tn4_ma100_v1",
+      "desc": "集中型risk_parity: tn=4 + risk_parity + MA100。等配分tn=4(DD45%)がrisk_parityでDD30%以内に収まるかの検証",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "risk_parity_tn8_ma100_lb60_v1",
+      "desc": "ベストオブベスト融合: lb=60 + tn=8 + risk_parity + MA100。lb=60は324%リターン/DD24%を実現、tn=8+risk_parityはSharpe2.995を達成。両者の強みを結合し、短期反応速度×高分散でSharpe3.0超え+DD25%以内を狙う",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "risk_parity_tn5_ma100_lb80_v1",
+      "desc": "中間lookback探索: lb=80 + tn=5 + risk_parity + MA100。lb=60(Sharpe2.917/DD24%)とlb=100(tn=5等配分Sharpe2.591/DD31.8%)の中間点。lb=80のやや長めの窓で偽シグナル削減しつつ、lb=60ほど敏感すぎない安定性を狙う",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "risk_parity_tn3_ma100_lb60_v1",
+      "desc": "攻撃的集中×risk_parity: lb=60 + tn=3 + risk_parity + MA100。tn=5→3で上位銘柄への集中度を上げ、リターンの上振れを狙う。risk_parityがボラ逆数配分するため、実質的に低ボラ銘柄に厚く張り、3銘柄でも暴落時の同時下落リスクを軽減",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "risk_parity_tn6_ma100_lb60_v1",
+      "desc": "lb=60近傍探索①: tn=6 + lb=60 + risk_parity + MA100。現ベスト(tn=5/lb=60)の分散度を1段階上げる。lb=100ではtn=6のDD31.4%だったが、lb=60の短期反応速度がtn=6の分散効果と組み合わさりDD25%以内を維持しつつSharpe改善を狙う",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "risk_parity_tn7_ma100_lb60_v1",
+      "desc": "lb=60近傍探索②: tn=7 + lb=60 + risk_parity + MA100。tn=8/lb=60はSharpe1.365で崩壊したが、tn=7は崩壊せずtn=5のリターンに近い分散効果を出せるかの境界テスト",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "risk_parity_tn5_ma100_lb50_v1",
+      "desc": "lookback短縮探索: lb=50 + tn=5 + risk_parity + MA100。lb=60が最強だったので更に短い窓を試す。lb=40(IS best)の短期捕捉力に近づきつつ、tn=5+RPの分散でDD制御を維持できるかの検証",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "biweekly_rp_tn5_lb60_ma100_v1",
+      "desc": "隔週リバランス×チャンピオン構成: tn=5/lb=60/RP/MA100をbiweeklyで実行。weeklyでの過剰回転を削減し、モメンタム銘柄の保有期間を延長。以前のbiweekly_midcap(Sharpe2.48/DD14.9%)は全く別パラメータ(tn=10/lb=80/equal)だったため、チャンピオン構成でのbiweekly効果は未検証",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "no_filter_rp_tn5_lb60_v1",
+      "desc": "フィルターなし×チャンピオン構成: tn=5/lb=60/RPだがMA100フィルターを外す。RP+5銘柄分散だけでDD制御できるかの検証。MA100フィルターは2021-2024で大量のキャッシュ退避期間を生んでおり（equity curveで確認）、リターン機会損失が大きい可能性",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "daily_rp_tn5_lb60_ma100_v1",
+      "desc": "デイリーリバランス×チャンピオン構成: tn=5/lb=60/RP/MA100をdailyで実行。lb=60の短期lookbackの利点を最大活用し、トレンド転換を1日単位で捕捉。risk_parityが毎日ボラ再計算することで、急変時のポジションサイズ調整が即座に反映される",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "ga_weight_reopt_champion_v1",
+      "desc": "GA重み再最適化: チャンピオン構成(tn=5/lb=60/RP/MA100)をベースに、evolution_engineでシグナルウェイトだけをGA探索。現在のウェイト(ret_w=0.09等)はOOSベースライン(lb=100/tn=2)用に最適化されたもので、lb=60/tn=5の特性に合っていない。IS bestのlocal_search(lb=40/tn=1, Sharpe3.096)では return_autocorr_w=0.13, resilience_w=0.11, upside_capture_w=0.09, accumulation_w=0.09等が高ウェイトで選ばれており、lb=60/tn=5用に最適化すれば全く違うウェイト配分が出るはず",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "ensemble_champion_tn8lb100_v1",
+      "desc": "アンサンブル戦略: チャンピオン(tn=5/lb=60/RP/MA100, Sharpe2.917/DD24%)とtn=8/lb=100/RP/MA100(Sharpe2.995/DD28%)を50:50で組み合わせ。lb=60は短期モメンタム重視、lb=100は中期モメンタム重視で異なる銘柄を選ぶため、ポートフォリオの相関が低くDD削減効果が期待できる。各戦略5銘柄/8銘柄→合計最大13銘柄の高分散ポートフォリオ",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "champion_plus_factors_v1",
+      "desc": "チャンピオン構成に追加ファクター投入: tn=5/lb=60/RP/MA100の構造を維持し、現在5ファクターしか使っていないところに実装済みの有望ファクターを追加。IS bestで高ウェイトだったreturn_autocorr_w(0.13), upside_capture_w(0.09), volume_slope_w(0.08), accumulation_w(0.09)と、未探索だがOHLCV由来の有望ファクターpath_convexity_w, dip_absorption_w, trend_efficiency_wを追加",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "paper_trade_champion_v1",
+      "desc": "チャンピオン構成でペーパートレード開始。162回探索済み、OOSデータ汚染リスク回避のため探索を停止し実運用フェーズへ移行。",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "champion_dd15_filter_lb60_v1",
+      "desc": "チャンピオンのMA100フィルターをDD15（250日高値-15%）に置換。lb=60/tn=5/RPとの組み合わせは未検証。",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "rejected",
+      "best_weight": null,
+      "sharpe_contribution": 6.965,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "champion_combined_filter_lb60_v1",
+      "desc": "チャンピオンのフィルターをcombined（MA100 OR DD15）に変更。最も保守的なフィルターで最大DD削減を狙う。",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "champion_ma80_filter_v1",
+      "desc": "MA100→MA80に短縮したレジームフィルター。チャンピオン構成(lb=60/tn=5/RP)のMA期間を最適化。MA100では2021-2022で長期キャッシュ退避が多すぎ（equity curveで週単位で空白多数）、MA80にすることでフィルター解除が早まり、トレンド再開時の機会損失を削減。一方でlb=60の短期lookbackとMA80の短期フィルターの組み合わせで偽シグナルリスクがあるため、DDが悪化する可能性もある。",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "champion_half_position_filter_v1",
+      "desc": "レジームフィルター発動時にポジションを半減（50%キャッシュ）。現チャンピオンはMA100割れで100%キャッシュ退避するが、equity curveを見ると退避期間中にも上昇相場がある（2021/08末の+13%ジャンプ等）。完全退避→半減に変更し、下落リスクの半分を引き受ける代わりに上昇機会の半分を維持。",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "champion_dd12_filter_v1",
+      "desc": "DD15→DD12に引き締めたドローダウンフィルター。DD15版チャンピオン(Sharpe2.828/DD27%/Return+553%)のフィルター閾値を-12%に厳しくする。DD15は250日高値から-15%下落で退避だが、-12%なら3%早く退避開始。DD15版はReturnが+553%とMA100版(+324%)より圧倒的に高いが、DD27%がやや高い。閾値を厳しくしてDD25%以下に抑えつつ高リターンを維持できるかの検証。",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "champion_dd15_lb40_v1",
+      "desc": "チャンピオンDD15フィルターのlookbackを60→40に短縮。IS bestがlb=40でSharpe3.096を達成しており、DD15フィルターとの組み合わせは未検証。lb=40の短期反応速度 × DD15の暴落回避 × tn=5/RPの分散で、現DD15チャンピオン(lb=60, Return+553%, DD27%)を超えるリターンを狙う。lb=50はSharpe2.14/DD30%に崩壊したが、lb=40は異なる最適化面にある可能性。",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": 0.0,
+      "added_at": "2026-03-09"
+    },
+    {
+      "id": "vol_regime_exposure_scaling_v1",
+      "desc": "ポートフォリオレベルのボラティリティ・レジーム適応ポジションサイジング。ポートフォリオ日次リターンの20日実現volが閾値（例: 年率30%相当）を超えたら、全ポジションサイズを0.5倍に縮小。閾値以下に戻ったら1.0倍に復帰。market_vol_scaling_w（個別ファクター重み）とは異なり、ポートフォリオ全体の投資比率を動的に変更する構造的変更。2020年COVID期のような高vol局面でDD=-48%→-25%程度に圧縮を狙う。",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -90.468,
+      "added_at": "2026-03-10"
+    },
+    {
+      "id": "dual_lookback_ensemble_v1",
+      "desc": "デュアルルックバック・アンサンブル。lb=40とlb=80の2つの期間でそれぞれ全ファクターのコンポジットスコアを計算し、平均して最終ランキングとする。単一のlb=60に依存するパラメータ感度を低減し、OOS安定性を向上させる構造的変更。短期(40日)は素早いトレンド転換を捉え、長期(80日)は安定したトレンドを確認。両方が合意する銘柄はより信頼性が高い。",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -90.468,
+      "added_at": "2026-03-10"
+    },
+    {
+      "id": "absolute_momentum_cash_filter_v1",
+      "desc": "絶対モメンタム・キャッシュフィルター。毎リバランス時に、選択されたtop_n銘柄の20日リターンの中央値を計算。中央値が負なら保有比率を50%に、全銘柄が負なら100%キャッシュに退避。正に戻ったら全額復帰。2020年のような全面安局面では「最もモメンタムが強い銘柄」すら下落しており、その場合にポジションを減らすことでDD30%以内を実現。",
+      "type": "hypothesis",
+      "param_key": null,
+      "status": "candidate",
+      "best_weight": null,
+      "sharpe_contribution": -90.468,
+      "added_at": "2026-03-10"
     }
   ],
   "current_weights": {
     "rs_w": 0.0,
-    "green_w": 0.04,
-    "high52_w": 0.11,
-    "ret_w": 0.06,
-    "smooth_w": 0.04,
-    "resilience_w": 0.08,
-    "exit_rsi_w": 0.13,
+    "green_w": 0.085,
+    "high52_w": 0.049,
+    "ret_w": 0.09,
+    "smooth_w": 0.033,
+    "resilience_w": 0.068,
+    "exit_rsi_w": 0.43,
     "exit_vol_w": 0.23,
-    "exit_dd_w": 0.42,
-    "exit_mom_w": 0.25,
-    "omega_w": 0.05,
-    "cluster_boost_w": 0.04,
-    "ret_skip_w": 0.05,
-    "win_streak_w": 0.02,
-    "momentum_consistency_w": 0.1,
-    "upside_capture_w": 0.02,
-    "return_autocorr_w": 0.004,
-    "clean_momentum_w": 0.08,
-    "short_momentum_w": 0.03,
-    "volume_confirm_w": 0.06,
-    "gap_momentum_w": 0.008,
-    "accumulation_w": 0.04,
-    "volume_slope_w": 0.09,
+    "exit_dd_w": 0.15,
+    "exit_mom_w": 0.014,
+    "omega_w": 0.085,
+    "cluster_boost_w": 0.052,
+    "ret_skip_w": 0.016,
+    "win_streak_w": 0.089,
+    "momentum_consistency_w": 0.023,
+    "upside_capture_w": 0.098,
+    "return_autocorr_w": 0.03,
+    "clean_momentum_w": 0.064,
+    "short_momentum_w": 0.04,
+    "volume_confirm_w": 0.087,
+    "gap_momentum_w": 0.034,
+    "accumulation_w": 0.013,
+    "volume_slope_w": 0.024,
     "vol_return_corr_w": 0.05,
     "volume_acceleration_w": 0.05,
     "close_location_w": 0.05
   },
-  "baseline_sharpe": 0.812,
-  "last_updated": "2026-03-08"
+  "baseline_sharpe": 0.769,
+  "last_updated": "2026-03-10"
 }

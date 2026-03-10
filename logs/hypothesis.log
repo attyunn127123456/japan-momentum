@@ -1,254 +1,662 @@
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
+仮説実行: vol_surge_breakout_universe - 動的ユニバース: 出来高急増×価格ブレイクアウト銘柄を動的選択（時価総額フィルター廃止）
+  ユニバース: キャッシュから3780銘柄読み込み
+事前計算完了: 3771銘柄×3lb / 1100.5秒
+キャッシュ保存: data/cache/precompute_lb40_60_80_n3771.pkl (4226.4MB)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+  OAS (2025.6-現在): total=59.1%, sharpe=13.557, dd=2.4% ✅
+完了: vol_surge_breakout_universe | delta_sharpe=-89.953 | ❌ LOSE | 1114秒
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: portfolio_dd_cap_exit_v1 - ポートフォリオレベルDD上限による強制現金化。個別exit_dd_wは銘柄単位だが、ポートフォリオ全体のDD（ピークからの下落率）が閾値を超えたら全ポジションを即クローズし、N週間クーリングオフ。fold3のDD=37.93%を30%以内に抑えるための安全装置。
+  factor_to_add 検出: portfolio_dd_cap を GA の RANGES に追加します
+  ✅ portfolio_dd_cap を evolution_engine.py の RANGES に追加しました
+完了: portfolio_dd_cap_exit_v1 | status=added_to_ga | factor=portfolio_dd_cap
+次の仮説を自動起動: sector_momentum_dispersion_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: sector_momentum_dispersion_w_v1 - 業種間モメンタム分散度ファクター。33業種のモメンタムの分散が大きい時（一部業種だけ上昇＝テーマ相場）はモメンタム戦略が効きやすい。分散が小さい時（全業種が均一に動く＝マクロ主導）はモメンタム効果が薄い。業種分散度をスコアの調整係数として使い、テーマ相場で攻め、マクロ相場で守る。
+  factor_to_add 検出: sector_momentum_dispersion_w を GA の RANGES に追加します
+  ✅ sector_momentum_dispersion_w を evolution_engine.py の RANGES に追加しました
+完了: sector_momentum_dispersion_w_v1 | status=added_to_ga | factor=sector_momentum_dispersion_w
+次の仮説を自動起動: drawdown_velocity_exit_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: drawdown_velocity_exit_w_v1 - ドローダウン速度ファクター。個別銘柄の下落が「ゆっくり」vs「急速」かを区別する出口シグナル。直近5日のDD変化率（DD deepening speed）を測定し、急速にDDが深まる銘柄を早期退出。exit_dd_wがDD「深さ」を見るのに対し、これはDD「加速度」を見る。暴落初期の急落をキャッチして被害拡大前に脱出。
+  factor_to_add 検出: drawdown_velocity_exit_w を GA の RANGES に追加します
+  ✅ drawdown_velocity_exit_w を evolution_engine.py の RANGES に追加しました
+完了: drawdown_velocity_exit_w_v1 | status=added_to_ga | factor=drawdown_velocity_exit_w
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: vol_surge_breakout_universe - 動的ユニバース: 出来高急増×価格ブレイクアウト銘柄を動的選択（時価総額フィルター廃止）
+  ユニバース: キャッシュから3780銘柄読み込み
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.6秒)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+  OAS (2025.6-現在): total=59.1%, sharpe=13.557, dd=2.4% ✅
+完了: vol_surge_breakout_universe | delta_sharpe=-89.953 | ❌ LOSE | 9秒
+次の仮説を自動起動: short_term_dominant
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: short_term_dominant - 短期モメンタム主力: short_momentum_wを0.35に増強
+  ユニバース: キャッシュから3780銘柄読み込み
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.3秒)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+  OAS (2025.6-現在): total=57.3%, sharpe=14.041, dd=1.9% ✅
+完了: short_term_dominant | delta_sharpe=-90.138 | ❌ LOSE | 11秒
+次の仮説を自動起動: open_universe_rs_dynamic
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: open_universe_rs_dynamic - 完全オープンユニバース: 時価総額フィルター廃止×RS上位30%動的絞り込みでtop10選択
+  ユニバース: キャッシュから3780銘柄読み込み
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.3秒)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+  OAS (2025.6-現在): total=56.9%, sharpe=13.156, dd=2.4% ✅
+完了: open_universe_rs_dynamic | delta_sharpe=-89.924 | ❌ LOSE | 8秒
+次の仮説を自動起動: dual_momentum_confirm
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: dual_momentum_confirm - 短期×中期モメンタム方向一致フィルター: 20日と80日の両方で正リターンの銘柄のみを対象
+  ユニバース: キャッシュから3780銘柄読み込み
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.2秒)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+  OAS (2025.6-現在): total=46.0%, sharpe=11.088, dd=3.4% ✅
+完了: dual_momentum_confirm | delta_sharpe=-90.633 | ❌ LOSE | 9秒
+次の仮説を自動起動: high52_w_boost
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: high52_w_boost - 52週高値ファクターを主力に昇格（high52_w=0.3）: ベースラインのw=0.2からさらに増強
+  ユニバース: キャッシュから3780銘柄読み込み
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.2秒)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+  OAS (2025.6-現在): total=49.5%, sharpe=12.238, dd=2.8% ✅
+完了: high52_w_boost | delta_sharpe=-90.767 | ❌ LOSE | 8秒
+次の仮説を自動起動: high52_all_universe
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: high52_all_universe - 52週高値効果×全銘柄ユニバース（大型含む）: high52_wを主力ファクター（w=0.35）に昇格して時価総額フィルター廃止
+  ユニバース: キャッシュから3780銘柄読み込み
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.4秒)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+  OAS (2025.6-現在): total=54.2%, sharpe=12.422, dd=3.1% ✅
+完了: high52_all_universe | delta_sharpe=-90.645 | ❌ LOSE | 9秒
+次の仮説を自動起動: topn1_extreme_concentration
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: topn1_extreme_concentration - top_n=1の極限集中投資: Optunaのtop_n下限を1に拡張して1銘柄集中の破壊力を検証
+  ユニバース: キャッシュから3780銘柄読み込み
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.5秒)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+  OAS (2025.6-現在): total=81.1%, sharpe=11.488, dd=5.2% ✅
+完了: topn1_extreme_concentration | delta_sharpe=-90.468 | ❌ LOSE | 8秒
+次の仮説を自動起動: unexplored_ohlcv_factors_batch1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: unexplored_ohlcv_factors_batch1 - 未探索ファクター投入（body_strength_w, overnight_return_w, higher_lows_w）：precompute()に実装済みだがGA探索されていない8ファクターのうち3つを一括追加
+  ユニバース: キャッシュから3780銘柄読み込み
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.4秒)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+  OAS (2025.6-現在): total=57.2%, sharpe=3.217, dd=37.5% ✅
+完了: unexplored_ohlcv_factors_batch1 | delta_sharpe=-86.37 | ❌ LOSE | 15秒
+次の仮説を自動起動: vol_divergence_distribution_detect
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: vol_divergence_distribution_detect - 出来高乖離+加速度ファクターでディストリビューション（天井圏の売り抜け）検知：vol_return_corr_w, volume_acceleration_w, close_location_w追加
+  ユニバース: キャッシュから3780銘柄読み込み
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.3秒)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+  OAS (2025.6-現在): total=3.0%, sharpe=1.335, dd=39.0% ✅
+完了: vol_divergence_distribution_detect | delta_sharpe=-90.297 | ❌ LOSE | 15秒
+次の仮説を自動起動: return_skewness_filter
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: return_skewness_filter - リターン歪度ファクター：正の歪度（右テール肥大）銘柄を優遇し、負の歪度（左テール＝暴落リスク大）銘柄を回避
+  ユニバース: キャッシュから3780銘柄読み込み
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.4秒)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+  OAS (2025.6-現在): total=127.6%, sharpe=12.202, dd=6.6% ✅
+完了: return_skewness_filter | delta_sharpe=-90.294 | ❌ LOSE | 14秒
+次の仮説を自動起動: sparse_tn4_lb60_antioverfitA
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: sparse_tn4_lb60_antioverfitA - 探索空間変更A: lb=60×top_n=4×スパース6ファクター。OOS実績のあるlb=60をベースに、tn=4の中間集中度で過学習を防ぐスパースモデル
+  ユニバース: キャッシュから3780銘柄読み込み
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.3秒)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+  OAS (2025.6-現在): total=106.0%, sharpe=13.210, dd=4.5% ✅
+完了: sparse_tn4_lb60_antioverfitA | delta_sharpe=-88.909 | ❌ LOSE | 10秒
+次の仮説を自動起動: intraday_trend_quality
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: intraday_trend_quality - 日中トレンド品質ファクター: (Close-Open)/(High-Low)の平均で機関の計画的売買 vs ディストリビューションを識別
+  ユニバース: キャッシュから3780銘柄読み込み
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.4秒)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+事前計算完了: 3771銘柄×1lb / 340.2秒
+キャッシュ保存: data/cache/precompute_lb100_n3771.pkl (1408.8MB)
+  OAS (2025.6-現在): total=15.0%, sharpe=2.327, dd=16.1% ✅
+完了: intraday_trend_quality | delta_sharpe=-92.084 | ❌ LOSE | 351秒
+次の仮説を自動起動: vol_adj_positive_weeks
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: vol_adj_positive_weeks - ボラ調整済み正週率ファクター: 週次リターン÷週次実現ボラで正の率を測定し、真のリスク調整済み一貫性を識別
+  ユニバース: キャッシュから3780銘柄読み込み
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.9秒)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+キャッシュ読み込み: data/cache/precompute_lb100_n3771.pkl (0.4秒)
+  OAS (2025.6-現在): total=15.0%, sharpe=2.327, dd=16.1% ✅
+完了: vol_adj_positive_weeks | delta_sharpe=-92.064 | ❌ LOSE | 11秒
+次の仮説を自動起動: open_price_entry_exit
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: open_price_entry_exit - use_open_prices=True: 初値でエントリー/エグジット。ベースライン全パラメータ維持（lb=100/tn=2/exit系フル搭載）
+  ユニバース: キャッシュから3780銘柄読み込み
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.6秒)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+キャッシュ読み込み: data/cache/precompute_lb100_n3771.pkl (0.5秒)
+  OAS (2025.6-現在): total=69.6%, sharpe=4.336, dd=19.6% ✅
+完了: open_price_entry_exit | delta_sharpe=-79.788 | ❌ LOSE | 15秒
+次の仮説を自動起動: resilience_dominant_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
 仮説実行: resilience_dominant_v1 - 耐性主導モメンタム: resilience/bear_resilience/upside_captureを最重視。exit緩め(trailing=-0.035)で2021-2022のチョッピーな相場でのWhipsaw回避。lb=100/tn=2/20+ファクター維持
   ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3286銘柄×3lb / 804.8秒
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.5秒)
 /Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
   return_df = all_prices.pct_change()
-事前計算完了: 3286銘柄×1lb / 267.3秒
-完了: resilience_dominant_v1 | delta_sharpe=-119.554 | ❌ LOSE | 1083秒
-次の仮説を自動起動: quality_trend_v1
-/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
-  warnings.warn(
-仮説実行: quality_trend_v1 - 品質トレンド追従: smooth/consistency/clean_momentum/price_efficiencyなど「トレンドの質」ファクターを集中配分。exit_vol_w高めで2022型ボラスパイク早期検知。lb=100/tn=2維持
-  ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3286銘柄×3lb / 788.8秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-事前計算完了: 3286銘柄×1lb / 263.9秒
-完了: quality_trend_v1 | delta_sharpe=-119.741 | ❌ LOSE | 1065秒
+キャッシュ読み込み: data/cache/precompute_lb100_n3771.pkl (0.4秒)
+  OAS (2025.6-現在): total=56.2%, sharpe=4.002, dd=20.1% ✅
+完了: resilience_dominant_v1 | delta_sharpe=-88.503 | ❌ LOSE | 15秒
 次の仮説を自動起動: volume_confirmed_trend_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
 仮説実行: volume_confirmed_trend_v1 - 出来高確認型トレンド: volume_confirm/volume_slope/accumulation/up_down_vol_ratioなど出来高系ファクターを重視。偽ブレイクアウト排除で2021-2022のトラップ回避。exit_dd_w高めで損切り早期化。lb=100/tn=2維持
   ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3286銘柄×3lb / 791.3秒
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.6秒)
 /Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
   return_df = all_prices.pct_change()
-事前計算完了: 3286銘柄×1lb / 266.1秒
-完了: volume_confirmed_trend_v1 | delta_sharpe=-119.668 | ❌ LOSE | 1070秒
+キャッシュ読み込み: data/cache/precompute_lb100_n3771.pkl (0.4秒)
+  OAS (2025.6-現在): total=62.8%, sharpe=4.310, dd=20.1% ✅
+完了: volume_confirmed_trend_v1 | delta_sharpe=-87.598 | ❌ LOSE | 15秒
+次の仮説を自動起動: margin_balance_pressure_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: margin_balance_pressure_v1 - 信用残圧力ファクター: margin-interestデータの信用買い残増減トレンドで過熱検出
+  ユニバース: キャッシュから3780銘柄読み込み
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.6秒)
+/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
+  return_df = all_prices.pct_change()
+キャッシュ読み込み: data/cache/precompute_lb100_n3771.pkl (0.4秒)
+  OAS (2025.6-現在): total=69.6%, sharpe=4.336, dd=19.6% ✅
+完了: margin_balance_pressure_v1 | delta_sharpe=-81.805 | ❌ LOSE | 14秒
+次の仮説を自動起動: mfe_mae_ratio_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: mfe_mae_ratio_w_v1 - 最大有利変動/最大不利変動の比率ファクター
+  factor_to_add 検出: mfe_mae_ratio_w を GA の RANGES に追加します
+  ✅ mfe_mae_ratio_w を evolution_engine.py の RANGES に追加しました
+完了: mfe_mae_ratio_w_v1 | status=added_to_ga | factor=mfe_mae_ratio_w
+次の仮説を自動起動: loss_correlation_penalty_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: loss_correlation_penalty_w_v1 - 下落時クロス相関ペナルティ（ポートフォリオDD直結の分散化ファクター）
+  factor_to_add 検出: loss_correlation_penalty_w を GA の RANGES に追加します
+  ✅ loss_correlation_penalty_w を evolution_engine.py の RANGES に追加しました
+完了: loss_correlation_penalty_w_v1 | status=added_to_ga | factor=loss_correlation_penalty_w
+次の仮説を自動起動: time_near_high_ratio_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: time_near_high_ratio_w_v1 - ローリング高値近傍滞在率ファクター
+  factor_to_add 検出: time_near_high_ratio_w を GA の RANGES に追加します
+  ✅ time_near_high_ratio_w を evolution_engine.py の RANGES に追加しました
+完了: time_near_high_ratio_w_v1 | status=added_to_ga | factor=time_near_high_ratio_w
+次の仮説を自動起動: ret_dispersion_timing_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: ret_dispersion_timing_w_v1 - クロスセクショナルリターン分散タイミング：全銘柄の60日リターンの標準偏差を計算し、分散が高い時にモメンタムスコアをブースト、低い時にペナルティ。分散低下はモメンタムクラッシュの前兆。
+  factor_to_add 検出: ret_dispersion_timing_w を GA の RANGES に追加します
+  ✅ ret_dispersion_timing_w を evolution_engine.py の RANGES に追加しました
+完了: ret_dispersion_timing_w_v1 | status=added_to_ga | factor=ret_dispersion_timing_w
+次の仮説を自動起動: overnight_return_asymmetry_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: overnight_return_asymmetry_w_v1 - オーバーナイトリターンの歪度：60日間のオーバーナイトリターン(Open[t]/Close[t-1]-1)の歪度(skewness)をランク化。正の歪度=機関投資家による間欠的な大口買い、負の歪度=配分中。
+  factor_to_add 検出: overnight_return_asymmetry_w を GA の RANGES に追加します
+  ✅ overnight_return_asymmetry_w を evolution_engine.py の RANGES に追加しました
+完了: overnight_return_asymmetry_w_v1 | status=added_to_ga | factor=overnight_return_asymmetry_w
+次の仮説を自動起動: hurst_trend_persistence_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: hurst_trend_persistence_w_v1 - ハースト指数によるトレンド持続性フィルター：R/S分析で60日間のハースト指数を推定。H>0.5=トレンド持続、H<0.5=平均回帰。高H銘柄はモメンタムが本物で反転リスクが低い。
+  factor_to_add 検出: hurst_trend_persistence_w を GA の RANGES に追加します
+  ✅ hurst_trend_persistence_w を evolution_engine.py の RANGES に追加しました
+完了: hurst_trend_persistence_w_v1 | status=added_to_ga | factor=hurst_trend_persistence_w
+次の仮説を自動起動: tail_risk_ratio_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: tail_risk_ratio_w_v1 - テールリスク比率ファクター: 日次リターンの上位5%tile / |下位5%tile|。比率>1=良いサプライズが悪いサプライズを上回る。DDは下方テールに直結するため、上方テール優位の銘柄を優遇することでOOS DD耐性を強化。upside_capture_wやomega_wが平均的な非対称性を見るのに対し、テール極値に特化した新情報。
+  factor_to_add 検出: tail_risk_ratio_w を GA の RANGES に追加します
+  ✅ tail_risk_ratio_w を evolution_engine.py の RANGES に追加しました
+完了: tail_risk_ratio_w_v1 | status=added_to_ga | factor=tail_risk_ratio_w
+次の仮説を自動起動: conditional_volume_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: conditional_volume_w_v1 - 条件付き出来高比率ファクター: Close < SMA20の日の平均出来高 / Close >= SMA20の日の平均出来高。比率が高い=安値圏で出来高増=機関のaccumulation。比率が低い=上昇時のみ出来高増=小口の追随買い。DD時に機関の買い支えがある銘柄はDD回復が早くOOS安定性に寄与。既存のvolume_confirm_w（直近出来高/60日平均）やaccumulation_w（OBV系）とは異なり、価格レジーム別の出来高パターンを測定。
+  factor_to_add 検出: conditional_volume_w を GA の RANGES に追加します
+  ✅ conditional_volume_w を evolution_engine.py の RANGES に追加しました
+完了: conditional_volume_w_v1 | status=added_to_ga | factor=conditional_volume_w
+次の仮説を自動起動: sector_relative_dd_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: sector_relative_dd_w_v1 - セクター内相対DDファクター: 同業種(33業種コード)内での60日最大DDのクロスセクショナルランク(昇順=DDが小さいほど高スコア)。セクター全体が下落しても相対的にDD が小さい銘柄=銘柄固有のDD耐性がある。sector_residual_mom_v1がリターン面のセクター調整なのに対し、これはリスク面のセクター調整。OOS DD 45%問題はセクター暴落時に全保有銘柄が同時にDDするためであり、セクター内でDD耐性の高い銘柄を優先することで軽減。
+  factor_to_add 検出: sector_relative_dd_w を GA の RANGES に追加します
+  ✅ sector_relative_dd_w を evolution_engine.py の RANGES に追加しました
+完了: sector_relative_dd_w_v1 | status=added_to_ga | factor=sector_relative_dd_w
 全仮説消化。即opusに新仮説生成を依頼します。
 openclaw system event 送信完了
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: price_efficiency_factor_v1 - 価格効率性ファクター追加: lb期間の(終値変化幅/日足レンジ累積)で「最短経路で上昇した銘柄」を検出。ベースライン全18ファクター+exit系パラメータ完全維持、lb=100/tn=2
-  factor_to_add 検出: price_efficiency_w を GA の RANGES に追加します
-  price_efficiency_w は既に RANGES に存在します（スキップ）
-完了: price_efficiency_factor_v1 | status=added_to_ga | factor=price_efficiency_w
-次の仮説を自動起動: intraday_trend_ratio_v1
+仮説実行: exp_decay_momentum_w_v1 - 指数減衰モメンタム: 日次リターンをexp(-i/halflife)で加重した累積値。halflife=20日で直近リターンを重視しつつ全lookback期間の情報を利用。ret_w(等加重60日)ともshort_momentum_w(5-10日のみ)とも異なるモメンタム計測。トレンド末期の減速を素早く検知しOOS DDを削減。
+  factor_to_add 検出: exp_decay_momentum_w を GA の RANGES に追加します
+  ✅ exp_decay_momentum_w を evolution_engine.py の RANGES に追加しました
+完了: exp_decay_momentum_w_v1 | status=added_to_ga | factor=exp_decay_momentum_w
+次の仮説を自動起動: rank_acceleration_w_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: intraday_trend_ratio_v1 - 日中トレンド比率ファクター: (Close-Open)/(High-Low)のlb期間平均。正値=終値が日足レンジ上部で引ける傾向=買い圧力持続。ベースライン全18ファクター+exit系完全維持、lb=100/tn=2
-  factor_to_add 検出: intraday_trend_ratio_w を GA の RANGES に追加します
-  ✅ intraday_trend_ratio_w を evolution_engine.py の RANGES に追加しました
-完了: intraday_trend_ratio_v1 | status=added_to_ga | factor=intraday_trend_ratio_w
-次の仮説を自動起動: weekly_return_stability_v1
+仮説実行: rank_acceleration_w_v1 - モメンタムランク加速度: 毎週の全銘柄60日リターンランキングにおける順位変化の傾き。4週間前→現在でランクが急上昇中（例:500位→50位）の「新興勝者」を検出。絶対リターンではなくクロスセクショナル順位のダイナミクスを捉える唯一のファクター。
+  factor_to_add 検出: rank_acceleration_w を GA の RANGES に追加します
+  ✅ rank_acceleration_w を evolution_engine.py の RANGES に追加しました
+完了: rank_acceleration_w_v1 | status=added_to_ga | factor=rank_acceleration_w
+次の仮説を自動起動: market_vol_scaling_w_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: weekly_return_stability_v1 - 週次リターン安定性ファクター: lb期間の週次リターンの下方偏差(ソルティノ的)の逆数。下振れが小さく上振れが大きい銘柄を選好。ベースライン全18ファクター+exit系完全維持、lb=100/tn=2
-  factor_to_add 検出: downside_stability_w を GA の RANGES に追加します
-  ✅ downside_stability_w を evolution_engine.py の RANGES に追加しました
-完了: weekly_return_stability_v1 | status=added_to_ga | factor=downside_stability_w
+仮説実行: market_vol_scaling_w_v1 - マーケットボラティリティ適応スケーリング: 全銘柄日次リターンのクロスセクショナル標準偏差(20日MA)を市場ボラ指標として計算。市場ボラが低い時はモメンタムスコアをフル適用、高い時はスコアを減衰させる連続的レジームアダプター。ハードフィルター（MA100割れ→全キャッシュ）ではなく、スコアに掛ける連続乗数（0.3〜1.0）として機能。
+  factor_to_add 検出: market_vol_scaling_w を GA の RANGES に追加します
+  ✅ market_vol_scaling_w を evolution_engine.py の RANGES に追加しました
+完了: market_vol_scaling_w_v1 | status=added_to_ga | factor=market_vol_scaling_w
 全仮説消化。即opusに新仮説生成を依頼します。
 openclaw system event 送信完了
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: universe_midcap - ユニバース→時価総額100〜3000億の中型株
-  ユニバース: キャッシュから500銘柄読み込み
-中型株ユニバース: 500銘柄
-事前計算完了: 500銘柄×3lb / 131.9秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:312: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-Traceback (most recent call last):
-  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 557, in main
-    result = eval_params(test_params, factor_dfs, prices_dict,
-UnboundLocalError: local variable 'test_params' referenced before assignment
-エラー: local variable 'test_params' referenced before assignment
-次の仮説を自動起動: new_high_breakout
+全仮説完了
+次の仮説を自動起動: vol_regime_exposure_scaling_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:331: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-仮説実行: new_high_breakout - 過去60日高値更新をエントリー条件に追加
+仮説実行: vol_regime_exposure_scaling_v1 - ポートフォリオレベルのボラティリティ・レジーム適応ポジションサイジング。ポートフォリオ日次リターンの20日実現volが閾値（例: 年率30%相当）を超えたら、全ポジションサイズを0.5倍に縮小。閾値以下に戻ったら1.0倍に復帰。market_vol_scaling_w（個別ファクター重み）とは異なり、ポートフォリオ全体の投資比率を動的に変更する構造的変更。2020年COVID期のような高vol局面でDD=-48%→-25%程度に圧縮を狙う。
   ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×1lb / 358.7秒
-Traceback (most recent call last):
-  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 557, in main
-    result = eval_params(test_params, factor_dfs, prices_dict,
-UnboundLocalError: local variable 'test_params' referenced before assignment
-エラー: local variable 'test_params' referenced before assignment
-次の仮説を自動起動: vol_candle_exit
-/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
-  warnings.warn(
-仮説実行: vol_candle_exit - 大出来高陰線でエグジットシグナル追加
-  ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×1lb / 357.8秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:356: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-Traceback (most recent call last):
-  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 359, in main
-    result = eval_params(p, factor_dfs, prices_dict, rebal_dates["weekly"], nikkei, START, return_df)
-  File "/Users/panda/Projects/japan-momentum/optimize.py", line 521, in eval_params
-    score_df = build_score_df(factor_dfs, lb, weights)
-  File "/Users/panda/Projects/japan-momentum/optimize.py", line 267, in build_score_df
-    facs = factor_dfs[lb]
-KeyError: 40
-エラー: 40
-次の仮説を自動起動: resilience_upgrade
-/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
-  warnings.warn(
-仮説実行: resilience_upgrade - 下落日相対強度を主要ファクターに昇格(w=0.3)
-  ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×1lb / 358.7秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:370: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-Traceback (most recent call last):
-  File "/Users/panda/Projects/japan-momentum/run_hypothesis.py", line 557, in main
-    result = eval_params(test_params, factor_dfs, prices_dict,
-UnboundLocalError: local variable 'test_params' referenced before assignment
-エラー: local variable 'test_params' referenced before assignment
-次の仮説を自動起動: sector_neutral_momentum
-/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
-  warnings.warn(
-/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
-  warnings.warn(
-仮説実行: sector_neutral_momentum - セクター中立モメンタム：同セクター内相対強度でランキング
-  ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×3lb / 1049.3秒
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.6秒)
 /Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
   return_df = all_prices.pct_change()
-完了: sector_neutral_momentum | delta_sharpe=1.467 | ❌ LOSE | 1059秒
-次の仮説を自動起動: short_squeeze_momentum
+  OAS (2025.6-現在): total=81.1%, sharpe=11.488, dd=5.2% ✅
+完了: vol_regime_exposure_scaling_v1 | delta_sharpe=-90.468 | ❌ LOSE | 9秒
+次の仮説を自動起動: dual_lookback_ensemble_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: short_squeeze_momentum - 信用倍率低位（空売り過多）×価格モメンタム強のショートスクイーズ狙い
+仮説実行: dual_lookback_ensemble_v1 - デュアルルックバック・アンサンブル。lb=40とlb=80の2つの期間でそれぞれ全ファクターのコンポジットスコアを計算し、平均して最終ランキングとする。単一のlb=60に依存するパラメータ感度を低減し、OOS安定性を向上させる構造的変更。短期(40日)は素早いトレンド転換を捉え、長期(80日)は安定したトレンドを確認。両方が合意する銘柄はより信頼性が高い。
   ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×3lb / 1052.0秒
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.5秒)
 /Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
   return_df = all_prices.pct_change()
-完了: short_squeeze_momentum | delta_sharpe=1.693 | ❌ LOSE | 1061秒
-次の仮説を自動起動: smart_money_flow
+  OAS (2025.6-現在): total=81.1%, sharpe=11.488, dd=5.2% ✅
+完了: dual_lookback_ensemble_v1 | delta_sharpe=-90.468 | ❌ LOSE | 9秒
+次の仮説を自動起動: absolute_momentum_cash_filter_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: smart_money_flow - 機関投資家買い越し×個人売り越し銘柄フィルター（investor_types活用）
+仮説実行: absolute_momentum_cash_filter_v1 - 絶対モメンタム・キャッシュフィルター。毎リバランス時に、選択されたtop_n銘柄の20日リターンの中央値を計算。中央値が負なら保有比率を50%に、全銘柄が負なら100%キャッシュに退避。正に戻ったら全額復帰。2020年のような全面安局面では「最もモメンタムが強い銘柄」すら下落しており、その場合にポジションを減らすことでDD30%以内を実現。
   ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×3lb / 1033.8秒
+キャッシュ読み込み: data/cache/precompute_lb40_60_80_n3771.pkl (1.4秒)
 /Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
   return_df = all_prices.pct_change()
-完了: smart_money_flow | delta_sharpe=1.499 | ❌ LOSE | 1042秒
-次の仮説を自動起動: trend_filter_regime
+  OAS (2025.6-現在): total=81.1%, sharpe=11.488, dd=5.2% ✅
+完了: absolute_momentum_cash_filter_v1 | delta_sharpe=-90.468 | ❌ LOSE | 8秒
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: trend_filter_regime - 日経225の200MA上/下でポジションサイズを切り替え
-  ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×3lb / 1025.4秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-完了: trend_filter_regime | delta_sharpe=1.467 | ❌ LOSE | 1033秒
-次の仮説を自動起動: volume_price_divergence
+全仮説完了
+次の仮説を自動起動: rolling_shallow_dd_rank_w_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: volume_price_divergence - 価格上昇＋出来高急減の銘柄をフィルタ除外
-  ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×3lb / 1028.6秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-完了: volume_price_divergence | delta_sharpe=1.467 | ❌ LOSE | 1036秒
-次の仮説を自動起動: adaptive_lookback
+仮説実行: rolling_shallow_dd_rank_w_v1 - ローリング浅DDランクファクター: 過去60日間を20日ローリング窓で走査し、各窓内の最大DDを計算。その最大値（=最悪の20日DD）が小さい銘柄ほど高スコア。モメンタムの強さではなく「プルバックの浅さ」を直接測定。高ボラ期にフルインベストしても、DD耐性の高い銘柄を自然に選好することでOOS DD30%突破を防ぐ構造的アプローチ。resilience_w（下落日パフォーマンス）やstress_efficiency_w（ストレス期効率）とは異なり、実際のDD履歴そのものをランキング。
+  factor_to_add 検出: rolling_shallow_dd_rank_w を GA の RANGES に追加します
+  ✅ rolling_shallow_dd_rank_w を evolution_engine.py の RANGES に追加しました
+完了: rolling_shallow_dd_rank_w_v1 | status=added_to_ga | factor=rolling_shallow_dd_rank_w
+次の仮説を自動起動: price_path_convexity_w_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: adaptive_lookback - ATRに応じてルックバック期間を動的調整
-  ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×3lb / 1022.6秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-完了: adaptive_lookback | delta_sharpe=1.467 | ❌ LOSE | 1030秒
-次の仮説を自動起動: short_term_reversal_filter
+仮説実行: price_path_convexity_w_v1 - 価格パス凸性ファクター: lookback期間の実際の価格パスと線形補間（始点→終点の直線）の乖離を測定。sum(actual_price[i] - linear_interp[i])を正規化。凸（上に膨らむ=加速上昇）はポジティブ、凹（下に膨らむ=減速・天井圏）はネガティブ。モメンタムの水準ではなくトレンドの「形状」を捉える。smooth_wは上昇の安定性、ret_wはリターン水準だが、convexityはトレンドの加速/減速フェーズを区別。天井圏の銘柄を避けることでDD回避に寄与。
+  factor_to_add 検出: price_path_convexity_w を GA の RANGES に追加します
+  ✅ price_path_convexity_w を evolution_engine.py の RANGES に追加しました
+完了: price_path_convexity_w_v1 | status=added_to_ga | factor=price_path_convexity_w
+次の仮説を自動起動: sector_breadth_confirm_w_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: short_term_reversal_filter - 直近5日急騰銘柄をフィルタ除外（短期リバーサル回避）
-  ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×3lb / 1025.0秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-完了: short_term_reversal_filter | delta_sharpe=1.467 | ❌ LOSE | 1033秒
-次の仮説を自動起動: midcap_top15_momentum
+仮説実行: sector_breadth_confirm_w_v1 - セクター内ブレッド確認ファクター: 各銘柄の33業種コード内で、60日SMAを上回っている銘柄の割合を計算。高ブレッド（同業種全体が上昇基調）=サステナブルなモメンタム。低ブレッド（自分だけ上昇、業種は弱い）=脆弱で反転リスク大。sector_accel_w（業種モメンタム加速度）やsector_relative_dd_w（業種内相対DD）とは異なり、業種全体の「参加率」を測定。COVIDのような全面安の初期段階ではブレッドが急低下するため、早期退避シグナルとしても機能。
+  factor_to_add 検出: sector_breadth_confirm_w を GA の RANGES に追加します
+  sector_breadth_confirm_w は既に RANGES に存在します（スキップ）
+完了: sector_breadth_confirm_w_v1 | status=added_to_ga | factor=sector_breadth_confirm_w
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: midcap_top15_momentum - universe_midcap×top_n=15で分散強化（local_search知見の組み合わせ）
-  ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×3lb / 1011.8秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-完了: midcap_top15_momentum | delta_sharpe=0.707 | ❌ LOSE | 1020秒
-次の仮説を自動起動: momentum_acceleration
+全仮説完了
+次の仮説を自動起動: garman_klass_trend_w_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: momentum_acceleration - モメンタム加速度ファクター追加（後半40日 > 前半40日で加点）
-  ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×3lb / 1023.7秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-完了: momentum_acceleration | delta_sharpe=1.693 | ❌ LOSE | 1032秒
-次の仮説を自動起動: regime_adaptive_weights
+仮説実行: garman_klass_trend_w_v1 - Garman-Klass推定量(OHLC全4価格を使う情報理論的に最適なボラ推定)のローリングトレンド。GKボラが減少トレンドの銘柄はマイクロストラクチャーが安定化＝DD耐性大。既存vol_compression/volatility_squeezeはClose-Closeまたはレンジサイズベースで、OHLC全情報を使うGK推定とは計算が異なる
+  factor_to_add 検出: garman_klass_trend_w を GA の RANGES に追加します
+  ✅ garman_klass_trend_w を evolution_engine.py の RANGES に追加しました
+完了: garman_klass_trend_w_v1 | status=added_to_ga | factor=garman_klass_trend_w
+次の仮説を自動起動: shadow_ratio_trend_w_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:530: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-仮説実行: regime_adaptive_weights - レジーム連動型重み（強気/弱気/高ボラで自動切替）
-  ユニバース: キャッシュから3780銘柄読み込み
-完了: regime_adaptive_weights | delta_sharpe=1.404 | ❌ LOSE | 330秒
-次の仮説を自動起動: green_smooth_synergy
+仮説実行: shadow_ratio_trend_w_v1 - 下ヒゲ/(下ヒゲ+上ヒゲ)比率の20日回帰トレンド。lower_shadow_support_wは下ヒゲの絶対サイズ、intraday_strength_wは(C-L)/(H-L)のスナップショット。本ファクターはヒゲ比率の変化方向を測定する未計測の切り口
+  factor_to_add 検出: shadow_ratio_trend_w を GA の RANGES に追加します
+  ✅ shadow_ratio_trend_w を evolution_engine.py の RANGES に追加しました
+完了: shadow_ratio_trend_w_v1 | status=added_to_ga | factor=shadow_ratio_trend_w
+次の仮説を自動起動: log_return_kurtosis_w_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: green_smooth_synergy - green_candle × smooth_trend 合成スコアで銘柄純度向上
-  ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×3lb / 1023.5秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-完了: green_smooth_synergy | delta_sharpe=1.496 | ❌ LOSE | 1030秒
-次の仮説を自動起動: regime_bear_defense
+仮説実行: log_return_kurtosis_w_v1 - 40日ローリング対数リターンの尖度(kurtosis)の逆数。尖度が低い＝fat tailが薄い＝極端なリターンが出にくい。tail_risk_ratio_wはテール比率、negative_skew_penalty_wは3次モーメント(歪度)で、4次モーメント(尖度)は未計測
+  factor_to_add 検出: log_return_kurtosis_w を GA の RANGES に追加します
+  ✅ log_return_kurtosis_w を evolution_engine.py の RANGES に追加しました
+完了: log_return_kurtosis_w_v1 | status=added_to_ga | factor=log_return_kurtosis_w
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: regime_bear_defense - レジーム連動型: bull時フルポジ×non-bull時top_n半減+smooth重視
-  ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×3lb / 1021.8秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-完了: regime_bear_defense | delta_sharpe=1.467 | ❌ LOSE | 1030秒
-次の仮説を自動起動: lookback_ensemble
+全仮説完了
+次の仮説を自動起動: up_run_persistence_w_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: lookback_ensemble - lookback 60日・80日のスコアをアンサンブル平均してランキング
-  ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×3lb / 1012.9秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-完了: lookback_ensemble | delta_sharpe=1.467 | ❌ LOSE | 1021秒
-次の仮説を自動起動: regime_cash_buffer
+仮説実行: up_run_persistence_w_v1 - 連続上昇日数/連続下落日数の比率トレンド。win_streak(現在の連勝)やgreen_w(陽線率)と異なり、上昇/下落ランの長さ分布比を測定。モメンタムの微細構造的持続性を捕捉
+  factor_to_add 検出: up_run_persistence_w を GA の RANGES に追加します
+  ✅ up_run_persistence_w を evolution_engine.py の RANGES に追加しました
+完了: up_run_persistence_w_v1 | status=added_to_ga | factor=up_run_persistence_w
+次の仮説を自動起動: volume_at_high_ratio_w_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:530: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-仮説実行: regime_cash_buffer - レジーム連動型: non-bull時にキャッシュバッファ30%（top_n=7に削減）
-  ユニバース: キャッシュから3780銘柄読み込み
-完了: regime_cash_buffer | delta_sharpe=1.404 | ❌ LOSE | 328秒
-次の仮説を自動起動: ret_rs_dual_rank
+仮説実行: volume_at_high_ratio_w_v1 - N日レンジ上位20%での平均出来高 / その他の日の平均出来高。高値圏で出来高が増えるかを測定。volume_confirm(単純出来高比)やaccumulation(OBV的)と異なり、価格位置と出来高の連動を直接捕捉
+  factor_to_add 検出: volume_at_high_ratio_w を GA の RANGES に追加します
+  ✅ volume_at_high_ratio_w を evolution_engine.py の RANGES に追加しました
+完了: volume_at_high_ratio_w_v1 | status=added_to_ga | factor=volume_at_high_ratio_w
+次の仮説を自動起動: sector_outperformance_trend_w_v1
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: ret_rs_dual_rank - ret×rs 2段フィルタ: RS上位40%絞り込み後にretスコアでtop_n選択
-  ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×3lb / 1021.6秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
-完了: ret_rs_dual_rank | delta_sharpe=1.499 | ❌ LOSE | 1028秒
-次の仮説を自動起動: midcap_volume_stable
+仮説実行: sector_outperformance_trend_w_v1 - 個別銘柄リターン−業種平均リターンの回帰スロープ（N日）。sector_accel(業種レベル加速度)やsector_relative_dd(業種DD比較)と異なり、個別銘柄のセクター内アルファ加速度を測定
+  factor_to_add 検出: sector_outperformance_trend_w を GA の RANGES に追加します
+  ✅ sector_outperformance_trend_w を evolution_engine.py の RANGES に追加しました
+完了: sector_outperformance_trend_w_v1 | status=added_to_ga | factor=sector_outperformance_trend_w
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
 /Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-仮説実行: midcap_volume_stable - 中型株×出来高安定フィルター: 週次出来高CV低位銘柄を優遇
-  ユニバース: キャッシュから3780銘柄読み込み
-事前計算完了: 3771銘柄×3lb / 1017.0秒
-/Users/panda/Projects/japan-momentum/run_hypothesis.py:545: FutureWarning: The default fill_method='pad' in DataFrame.pct_change is deprecated and will be removed in a future version. Either fill in any non-leading NA values prior to calling pct_change or specify 'fill_method=None' to not fill NA values.
-  return_df = all_prices.pct_change()
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+次の仮説を自動起動: cross_rank_stability_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: cross_rank_stability_w_v1 - クロスセクション順位安定性：直近N日間の銘柄リターン順位（パーセンタイル）の標準偏差。低分散=安定的上位ランカー。既存のmomentum_consistency（リターン符号の一貫性）やreturn_sign_persistence（符号連続性）とは異なり、全銘柄中の「相対順位がどれだけブレないか」を測る。安定した上位銘柄は機関投資家の継続買いを反映。
+  factor_to_add 検出: cross_rank_stability_w を GA の RANGES に追加します
+  ✅ cross_rank_stability_w を evolution_engine.py の RANGES に追加しました
+完了: cross_rank_stability_w_v1 | status=added_to_ga | factor=cross_rank_stability_w
+次の仮説を自動起動: atr_regime_change_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: atr_regime_change_w_v1 - ATRレジーム変化検出：短期ATR(5日)/長期ATR(40日)の比率。1超=ボラ拡大（ブレイクアウト初期）、1未満=ボラ収縮。garman_klass_trendはGK推定量のトレンドだが、ATRはギャップを含むTrue Rangeベースで異なる情報。上昇トレンド中のATR拡大は新規参入者の増加を示唆。
+  factor_to_add 検出: atr_regime_change_w を GA の RANGES に追加します
+  ✅ atr_regime_change_w を evolution_engine.py の RANGES に追加しました
+完了: atr_regime_change_w_v1 | status=added_to_ga | factor=atr_regime_change_w
+次の仮説を自動起動: up_volume_ratio_trend_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: up_volume_ratio_trend_w_v1 - 買いボリューム比率トレンド：陽線日の出来高/全出来高の比率のローリング回帰スロープ。比率が上昇中=買い圧力が加速。OBV（累積）やvolume_confirm（水準）、high_volume_return_skew（歪度）とは異なり、「買い出来高のシェアが時系列でどう変化しているか」の勾配を見る。
+  factor_to_add 検出: up_volume_ratio_trend_w を GA の RANGES に追加します
+  ✅ up_volume_ratio_trend_w を evolution_engine.py の RANGES に追加しました
+完了: up_volume_ratio_trend_w_v1 | status=added_to_ga | factor=up_volume_ratio_trend_w
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+次の仮説を自動起動: return_entropy_trend_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: return_entropy_trend_w_v1 - リターン分布エントロピートレンド：直近N日のリターンをビン分割しShannon entropyを計算、そのローリング変化（勾配）をスコア化。エントロピー低下中＝リターン分布が特定値に集中＝トレンド明確化。情報理論的アプローチで、自己相関（return_autocorr）・Hurst指数・分散比率とは根本的に異なる測定軸。
+  factor_to_add 検出: return_entropy_trend_w を GA の RANGES に追加します
+  ✅ return_entropy_trend_w を evolution_engine.py の RANGES に追加しました
+完了: return_entropy_trend_w_v1 | status=added_to_ga | factor=return_entropy_trend_w
+次の仮説を自動起動: cusum_break_recency_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: cusum_break_recency_w_v1 - CUSUM構造変化検出：累積和（CUSUM）ベースのレジーム変化検出器で、直近の正方向ブレイクからの経過日数の逆数をスコア化。直近でレジームが正に転換した銘柄ほど高スコア。rank_acceleration（ランク変化速度）やexp_decay_momentum（指数減衰）とは異なり、「リターン系列の統計的構造が変わった瞬間」を検出する。
+  factor_to_add 検出: cusum_break_recency_w を GA の RANGES に追加します
+  ✅ cusum_break_recency_w を evolution_engine.py の RANGES に追加しました
+完了: cusum_break_recency_w_v1 | status=added_to_ga | factor=cusum_break_recency_w
+次の仮説を自動起動: volume_price_lead_lag_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: volume_price_lead_lag_w_v1 - 出来高-価格リードラグ非対称性：volume_change[t-1]とreturn[t]の相関（出来高が価格をリード）からreturn[t-1]とvolume_change[t]の相関（価格が出来高をリード）を引いた差分。正の値＝出来高が価格に先行＝買い圧力が事前に蓄積中。volume_confirm（同時点の水準）、volume_slope（出来高トレンド）、accumulation（OBV的蓄積）とは異なり、時間的因果方向を測定。
+  factor_to_add 検出: volume_price_lead_lag_w を GA の RANGES に追加します
+  ✅ volume_price_lead_lag_w を evolution_engine.py の RANGES に追加しました
+完了: volume_price_lead_lag_w_v1 | status=added_to_ga | factor=volume_price_lead_lag_w
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+次の仮説を自動起動: opening_drive_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: opening_drive_w_v1 - 日中上方ドライブ力: (High-Open)/(High-Low)の20日トレンド。寄りから高値まで押し上げる力が強い銘柄は日中買い需要が持続的
+  factor_to_add 検出: opening_drive_w_v1 を GA の RANGES に追加します
+  ✅ opening_drive_w_v1 を evolution_engine.py の RANGES に追加しました
+完了: opening_drive_w_v1 | status=added_to_ga | factor=opening_drive_w_v1
+次の仮説を自動起動: range_autocorrelation_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: range_autocorrelation_w_v1 - 日足レンジ自己相関: H-Lの40日lag-1自己相関。レンジが平均回帰的（負の自己相関）な銘柄はボラティリティが予測可能でモメンタム信頼度が高い
+  factor_to_add 検出: range_autocorrelation_w_v1 を GA の RANGES に追加します
+  ✅ range_autocorrelation_w_v1 を evolution_engine.py の RANGES に追加しました
+完了: range_autocorrelation_w_v1 | status=added_to_ga | factor=range_autocorrelation_w_v1
+次の仮説を自動起動: close_dispersion_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: close_dispersion_w_v1 - 終値ポジション一貫性: (Close-Low)/(High-Low)の20日分散の逆数。終値が常にレンジ内の同じ位置に来る銘柄は系統的な売買圧力を示す
+  factor_to_add 検出: close_dispersion_w_v1 を GA の RANGES に追加します
+  ✅ close_dispersion_w_v1 を evolution_engine.py の RANGES に追加しました
+完了: close_dispersion_w_v1 | status=added_to_ga | factor=close_dispersion_w_v1
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+次の仮説を自動起動: sequential_gap_autocorr_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: sequential_gap_autocorr_w_v1 - Overnight gapの自己相関: gap系列(Open[t]-Close[t-1])のN日自己相関。正の自己相関=持続的な夜間買い圧力（機関投資家フロー代理変数）
+  factor_to_add 検出: sequential_gap_autocorr_w を GA の RANGES に追加します
+  ✅ sequential_gap_autocorr_w を evolution_engine.py の RANGES に追加しました
+完了: sequential_gap_autocorr_w_v1 | status=added_to_ga | factor=sequential_gap_autocorr_w
+次の仮説を自動起動: range_acceleration_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: range_acceleration_w_v1 - ATRの二次微分: ローリングATRの変化率のさらなる変化率。レンジ拡大の加速度を測定
+  factor_to_add 検出: range_acceleration_w を GA の RANGES に追加します
+  ✅ range_acceleration_w を evolution_engine.py の RANGES に追加しました
+完了: range_acceleration_w_v1 | status=added_to_ga | factor=range_acceleration_w
+次の仮説を自動起動: open_position_in_range_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: open_position_in_range_w_v1 - Open位置の日中レンジ内分布: (Open-Low)/(High-Low)のN日平均。始値が安値近くに位置し続ける=日中一貫した買い需要
+  factor_to_add 検出: open_position_in_range_w を GA の RANGES に追加します
+  ✅ open_position_in_range_w を evolution_engine.py の RANGES に追加しました
+完了: open_position_in_range_w_v1 | status=added_to_ga | factor=open_position_in_range_w
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+次の仮説を自動起動: price_ratchet_efficiency_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: price_ratchet_efficiency_w_v1 - 新高値の保持率 — N日新高値を付けた後M日以内に旧高値を下回らない割合
+  factor_to_add 検出: price_ratchet_efficiency_w_v1 を GA の RANGES に追加します
+  ✅ price_ratchet_efficiency_w_v1 を evolution_engine.py の RANGES に追加しました
+完了: price_ratchet_efficiency_w_v1 | status=added_to_ga | factor=price_ratchet_efficiency_w_v1
+次の仮説を自動起動: low_vol_retracement_quality_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: low_vol_retracement_quality_w_v1 - 押し目局面での出来高縮小度 — 下落日の平均出来高/上昇日の平均出来高（低いほど健全）
+  factor_to_add 検出: low_vol_retracement_quality_w_v1 を GA の RANGES に追加します
+  ✅ low_vol_retracement_quality_w_v1 を evolution_engine.py の RANGES に追加しました
+完了: low_vol_retracement_quality_w_v1 | status=added_to_ga | factor=low_vol_retracement_quality_w_v1
+次の仮説を自動起動: range_mean_reversion_speed_w_v1
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+仮説実行: range_mean_reversion_speed_w_v1 - 日中レンジ(H-L)の平均回帰速度 — レンジ拡大後に正常水準へ戻る半減期の逆数
+  factor_to_add 検出: range_mean_reversion_speed_w_v1 を GA の RANGES に追加します
+  ✅ range_mean_reversion_speed_w_v1 を evolution_engine.py の RANGES に追加しました
+完了: range_mean_reversion_speed_w_v1 | status=added_to_ga | factor=range_mean_reversion_speed_w_v1
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+全仮説完了
+全仮説消化。即opusに新仮説生成を依頼します。
+openclaw system event 送信完了
+/Users/panda/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(

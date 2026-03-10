@@ -1,0 +1,99 @@
+{
+  "initial_capital": 10000000,
+  "nav": 10180000,
+  "peak_nav": 10200000.0,
+  "portfolio_dd_limit": 20.0,
+  "nav_history": [
+    {
+      "date": "2026-03-09",
+      "nav": 10200000.0
+    },
+    {
+      "date": "2026-03-09",
+      "nav": 10180000.0
+    },
+    {
+      "date": "2026-03-09",
+      "nav": 10200000.0
+    },
+    {
+      "date": "2026-03-09",
+      "nav": 10180000
+    }
+  ],
+  "pods": {
+    "momentum": {
+      "allocation_pct": 50,
+      "dd_limit_pct": 15,
+      "nav": 5200000,
+      "peak_nav": 5200000,
+      "active": true,
+      "description": "クロスセクショナルモメンタム（ロング/ショート）",
+      "positions": [],
+      "nav_history": [
+        {
+          "date": "2026-03-09",
+          "nav": 5200000
+        }
+      ],
+      "daily_returns": [
+        0.040000000000000036
+      ]
+    },
+    "mean_reversion": {
+      "allocation_pct": 20,
+      "dd_limit_pct": 10,
+      "nav": 1980000,
+      "peak_nav": 2000000.0,
+      "active": true,
+      "description": "短期過売り反発（RSI+BB）",
+      "positions": [],
+      "nav_history": [
+        {
+          "date": "2026-03-09",
+          "nav": 1980000
+        }
+      ],
+      "daily_returns": [
+        -0.010000000000000009
+      ]
+    },
+    "event_driven": {
+      "allocation_pct": 15,
+      "dd_limit_pct": 12,
+      "nav": 1520000,
+      "peak_nav": 1520000,
+      "active": true,
+      "description": "決算サプライズ・信用倍率変動",
+      "positions": [],
+      "nav_history": [
+        {
+          "date": "2026-03-09",
+          "nav": 1520000
+        }
+      ],
+      "daily_returns": [
+        0.01333333333333342
+      ]
+    },
+    "macro_overlay": {
+      "allocation_pct": 15,
+      "dd_limit_pct": 8,
+      "nav": 1480000,
+      "peak_nav": 1500000.0,
+      "active": true,
+      "description": "レジーム判定に基づくヘッジ",
+      "positions": [],
+      "nav_history": [
+        {
+          "date": "2026-03-09",
+          "nav": 1480000
+        }
+      ],
+      "daily_returns": [
+        -0.013333333333333308
+      ]
+    }
+  },
+  "saved_at": "2026-03-09T17:12:15.972545"
+}
