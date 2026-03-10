@@ -660,12 +660,23 @@ function renderPricingGap(pct) {
   </div>`;
 }
 
+function moatBar(score, max=5) {
+  const pct = (score||0) / max * 100;
+  const color = pct >= 70 ? '#3fb950' : pct >= 40 ? '#e3b341' : '#f85149';
+  return `<div style="flex:1;background:#21262d;border-radius:3px;height:4px;overflow:hidden"><div style="width:${pct}%;height:100%;background:${color};border-radius:3px"></div></div>`;
+}
+
 function renderTopPickCard(h) {
-  const tp = h.top_pick || {};
+  const tp   = h.top_pick || {};
   const alpha = h.alpha_score || 0;
   const annual = h.expected_annual_return_pct || 0;
-  const tPrice = tp.target_price || {};
-  const upside = tp.upside_base_pct || 0;
+  const val  = tp.valuation || {};
+  const moat = tp.moat_assessment || {};
+  const ms   = tp.market_sizing || {};
+  const tPrice = (val.target_price || tp.target_price) || {};
+  const upside = val.upside_to_base_pct || tp.upside_base_pct || 0;
+  const verdict = val.valuation_verdict || '';
+  const verdictColor = verdict === '割安' ? '#3fb950' : verdict === '割高' ? '#f85149' : '#e3b341';
 
   return `<div class="tp-card ${rankClass(h.rank)}">
     <div class="tp-rank">${rankEmoji(h.rank)}</div>
@@ -676,51 +687,76 @@ function renderTopPickCard(h) {
     <div class="tp-scores">
       <div class="tp-score-block">
         <div class="tp-score-label">Alpha Score</div>
-        <div class="tp-score-value gold">${(alpha * 100).toFixed(0)}</div>
+        <div class="tp-score-value gold">${(alpha*100).toFixed(0)}</div>
         <div class="tp-alpha-bar"><div class="tp-alpha-fill" style="width:${(alpha*100).toFixed(0)}%"></div></div>
       </div>
       <div class="tp-score-block">
         <div class="tp-score-label">期待年率リターン</div>
         <div class="tp-score-value green">+${annual.toFixed(0)}%</div>
       </div>
-      ${tp.kelly_fraction != null ? `<div class="tp-score-block">
-        <div class="tp-score-label">Kelly ポジション</div>
-        <div class="tp-score-value blue">${((tp.kelly_fraction||0)*100).toFixed(0)}%</div>
+      ${moat.total_moat_score != null ? `<div class="tp-score-block">
+        <div class="tp-score-label">Moatスコア</div>
+        <div class="tp-score-value" style="color:#79c0ff">${moat.total_moat_score}/20</div>
+      </div>` : ''}
+      ${verdict ? `<div class="tp-score-block">
+        <div class="tp-score-label">バリュエーション</div>
+        <div class="tp-score-value" style="color:${verdictColor}">${verdict}</div>
       </div>` : ''}
       ${tp.market_pricing_pct != null ? `<div class="tp-score-block">
-        <div class="tp-score-label">市場織込度</div>
-        <div class="tp-score-value" style="color:#e3b341">${((tp.market_pricing_pct||0)*100).toFixed(0)}%</div>
+        <div class="tp-score-label">市場未織込</div>
+        <div class="tp-score-value" style="color:#e3b341">${((1-(tp.market_pricing_pct||0))*100).toFixed(0)}%</div>
       </div>` : ''}
     </div>
 
     ${tp.code ? `<div class="tp-pick-box">
       <div class="tp-pick-header">
         <span class="tp-pick-code">${tp.code}</span>
-        <span class="tp-pick-name">${tp.name || ''}</span>
-        ${upside > 0 ? `<span class="tp-pick-upside">+${upside.toFixed(0)}%</span>` : ''}
+        <span class="tp-pick-name">${tp.name||''}</span>
+        ${upside > 0 ? `<span class="tp-pick-upside">+${Number(upside).toFixed(0)}%</span>` : ''}
       </div>
 
       ${tp.market_pricing_pct != null ? renderPricingGap(tp.market_pricing_pct) : ''}
 
       <div class="tp-price-row">
-        ${tp.current_price ? `<div class="tp-price-item"><span class="lbl">現在株価</span><span class="val">¥${(tp.current_price).toLocaleString()}</span></div>` : ''}
-        ${tPrice.bear ? `<div class="tp-price-item"><span class="lbl">Bear 目標</span><span class="val bear">¥${(tPrice.bear).toLocaleString()}</span></div>` : ''}
-        ${tPrice.base ? `<div class="tp-price-item"><span class="lbl">Base 目標</span><span class="val base">¥${(tPrice.base).toLocaleString()}</span></div>` : ''}
-        ${tPrice.bull ? `<div class="tp-price-item"><span class="lbl">Bull 目標</span><span class="val bull">¥${(tPrice.bull).toLocaleString()}</span></div>` : ''}
-        ${tp.analyst_target_price ? `<div class="tp-price-item"><span class="lbl">アナリストTP</span><span class="val" style="color:#8b949e">¥${(tp.analyst_target_price).toLocaleString()}</span></div>` : ''}
+        ${tp.current_price ? `<div class="tp-price-item"><span class="lbl">現在株価</span><span class="val">¥${tp.current_price.toLocaleString()}</span></div>` : ''}
+        ${val.current_eps_jpy ? `<div class="tp-price-item"><span class="lbl">現在EPS</span><span class="val">¥${val.current_eps_jpy}</span></div>` : ''}
+        ${val.forward_eps_base_jpy ? `<div class="tp-price-item"><span class="lbl">将来EPS(base)</span><span class="val base">¥${val.forward_eps_base_jpy}</span></div>` : ''}
+        ${val.fair_per ? `<div class="tp-price-item"><span class="lbl">適正PER</span><span class="val blue">${val.fair_per}x</span></div>` : ''}
+        ${val.current_forward_per ? `<div class="tp-price-item"><span class="lbl">現フォワードPER</span><span class="val" style="color:${verdictColor}">${val.current_forward_per}x</span></div>` : ''}
+        ${tPrice.bear ? `<div class="tp-price-item"><span class="lbl">Bear目標</span><span class="val bear">¥${tPrice.bear.toLocaleString()}</span></div>` : ''}
+        ${tPrice.base ? `<div class="tp-price-item"><span class="lbl">Base目標</span><span class="val base">¥${tPrice.base.toLocaleString()}</span></div>` : ''}
+        ${tPrice.bull ? `<div class="tp-price-item"><span class="lbl">Bull目標</span><span class="val bull">¥${tPrice.bull.toLocaleString()}</span></div>` : ''}
+        ${tp.analyst_target_price ? `<div class="tp-price-item"><span class="lbl">アナリストTP</span><span class="val" style="color:#8b949e">¥${tp.analyst_target_price.toLocaleString()}</span></div>` : ''}
       </div>
 
-      ${tPrice.basis ? `<div style="font-size:11px;color:#8b949e;margin-bottom:8px">💡 ${tPrice.basis}</div>` : ''}
+      ${val.per_basis ? `<div style="font-size:11px;color:#8b949e;margin-bottom:8px">💡 PER根拠: ${val.per_basis}</div>` : ''}
 
-      ${tp.key_catalyst ? `<div class="tp-catalyst">⚡ ${tp.key_catalyst}（${tp.catalyst_timeline || ''}）</div>` : ''}
-      ${tp.risk_comment ? `<div class="tp-risk">⚠ ${tp.risk_comment}</div>` : ''}
+      ${ms.mechanism ? `<div style="font-size:12px;color:#c9d1d9;background:#0d1117;border-radius:6px;padding:8px 10px;margin-bottom:8px">
+        📈 市場規模: ${ms.target_market_now_bn||'?'}十億円 → ${ms.target_market_future_bn||'?'}十億円 | シェア: ${ms.company_share_now_pct||'?'}% → ${ms.company_share_after_pct||'?'}%<br>
+        <span style="color:#8b949e;font-size:11px">${ms.mechanism}</span>
+      </div>` : ''}
+
+      ${moat.moat_summary ? `<div style="margin-bottom:8px">
+        <div style="font-size:11px;color:#58a6ff;margin-bottom:6px">🏰 Moat分析</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px">
+          <div style="font-size:11px;color:#8b949e;display:flex;align-items:center;gap:6px">技術/特許 ${moatBar(moat.tech_patent_score)} ${moat.tech_patent_score||0}/5</div>
+          <div style="font-size:11px;color:#8b949e;display:flex;align-items:center;gap:6px">SW コスト ${moatBar(moat.switching_cost_score)} ${moat.switching_cost_score||0}/5</div>
+          <div style="font-size:11px;color:#8b949e;display:flex;align-items:center;gap:6px">スケール ${moatBar(moat.scale_advantage_score)} ${moat.scale_advantage_score||0}/5</div>
+          <div style="font-size:11px;color:#8b949e;display:flex;align-items:center;gap:6px">規制参入 ${moatBar(moat.regulatory_barrier_score)} ${moat.regulatory_barrier_score||0}/5</div>
+        </div>
+        <div style="font-size:12px;color:#c9d1d9">${moat.moat_summary}</div>
+        ${moat.key_risk_to_moat ? `<div style="font-size:11px;color:#e3b341;margin-top:4px">⚠ ${moat.key_risk_to_moat}</div>` : ''}
+      </div>` : ''}
+
+      ${tp.key_catalyst ? `<div class="tp-catalyst">⚡ ${tp.key_catalyst}（${tp.catalyst_timeline||''}）</div>` : ''}
+      ${tp.stop_loss_thesis ? `<div class="tp-risk">🛑 ${tp.stop_loss_thesis}</div>` : ''}
 
       <div class="tp-meta-row">
         ${tp.analyst_consensus ? `<span class="tp-meta-tag">アナリスト: ${tp.analyst_consensus}</span>` : ''}
-        ${tp.position_size_suggestion ? `<span class="tp-meta-tag kelly">推奨ポジション: ${tp.position_size_suggestion}</span>` : ''}
+        ${tp.kelly_fraction != null ? `<span class="tp-meta-tag kelly">Kelly: ${((tp.kelly_fraction||0)*100).toFixed(0)}%</span>` : ''}
+        ${tp.position_size_suggestion ? `<span class="tp-meta-tag kelly">推奨: ${tp.position_size_suggestion}</span>` : ''}
         ${tp.stop_loss_pct ? `<span class="tp-meta-tag">SL: ${tp.stop_loss_pct}%</span>` : ''}
         ${tp.per ? `<span class="tp-meta-tag">PER: ${tp.per}x</span>` : ''}
-        ${tp.pbr ? `<span class="tp-meta-tag">PBR: ${tp.pbr}x</span>` : ''}
       </div>
     </div>` : '<div style="color:#8b949e;font-size:13px">銘柄評価データなし</div>'}
 
