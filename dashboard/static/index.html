@@ -174,6 +174,60 @@
   .summary-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 12px; }
   .summary-label { font-size: 11px; color: #8b949e; margin-bottom: 3px; }
   .summary-value { font-size: 18px; font-weight: 600; color: #f0f6fc; }
+  /* ===== Top Picks ===== */
+  .tp-card {
+    background: #161b22; border: 1px solid #30363d; border-radius: 12px;
+    padding: 20px; margin-bottom: 14px; position: relative; transition: border-color 0.2s;
+  }
+  .tp-card.rank1 { border-color: #b8860b; background: #1a1700; }
+  .tp-card.rank2 { border-color: #71717a44; }
+  .tp-card.rank3 { border-color: #92400e44; }
+  .tp-rank { position: absolute; top: 16px; right: 18px; font-size: 26px; }
+  .tp-theme { font-size: 17px; font-weight: 700; color: #f0f6fc; margin-bottom: 4px; }
+  .tp-domain { font-size: 11px; color: #8b949e; background: #21262d; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-bottom: 10px; }
+  .tp-insight { font-size: 13px; color: #c9d1d9; line-height: 1.6; margin-bottom: 14px; }
+
+  .tp-scores { display: flex; gap: 16px; margin-bottom: 14px; flex-wrap: wrap; }
+  .tp-score-block { background: #0d1117; border-radius: 8px; padding: 10px 14px; min-width: 100px; }
+  .tp-score-label { font-size: 10px; text-transform: uppercase; color: #8b949e; letter-spacing: 0.8px; margin-bottom: 4px; }
+  .tp-score-value { font-size: 20px; font-weight: 700; }
+  .tp-score-value.gold { color: #d4a017; }
+  .tp-score-value.green { color: #3fb950; }
+  .tp-score-value.blue { color: #58a6ff; }
+
+  .tp-alpha-bar { background: #21262d; border-radius: 4px; height: 6px; overflow: hidden; margin-top: 6px; }
+  .tp-alpha-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #d4a017, #f0f6fc); }
+
+  .tp-pick-box {
+    background: #0d1117; border: 1px solid #30363d; border-radius: 10px;
+    padding: 14px; margin-bottom: 14px;
+  }
+  .tp-pick-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+  .tp-pick-code { font-family: monospace; font-size: 18px; font-weight: 700; color: #58a6ff; }
+  .tp-pick-name { font-size: 15px; font-weight: 600; color: #f0f6fc; }
+  .tp-pick-upside { font-size: 22px; font-weight: 700; color: #3fb950; }
+  .tp-price-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  .tp-price-item { background: #161b22; border-radius: 6px; padding: 6px 10px; font-size: 12px; }
+  .tp-price-item .lbl { color: #8b949e; font-size: 10px; display: block; margin-bottom: 2px; }
+  .tp-price-item .val { color: #f0f6fc; font-weight: 600; }
+  .tp-price-item .val.bear { color: #f85149; }
+  .tp-price-item .val.base { color: #3fb950; }
+  .tp-price-item .val.bull { color: #79c0ff; }
+
+  .tp-catalyst { background: #1f3a1f; border: 1px solid #23863644; border-radius: 6px; padding: 8px 12px; font-size: 12px; color: #3fb950; margin-bottom: 8px; }
+  .tp-risk { font-size: 12px; color: #e3b341; border-left: 2px solid #e3b34144; padding-left: 8px; }
+  .tp-meta-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+  .tp-meta-tag { font-size: 11px; background: #21262d; border: 1px solid #30363d; border-radius: 20px; padding: 3px 10px; color: #8b949e; }
+  .tp-meta-tag.kelly { color: #58a6ff; border-color: #388bfd44; background: #1f3a5f; }
+
+  .tp-pricing-gap { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .tp-pricing-label { font-size: 11px; color: #8b949e; width: 80px; flex-shrink: 0; }
+  .tp-pricing-bar { flex: 1; background: #21262d; border-radius: 4px; height: 5px; overflow: hidden; }
+  .tp-pricing-fill { height: 100%; border-radius: 4px; }
+  .tp-pricing-pct { font-size: 11px; color: #8b949e; width: 40px; text-align: right; }
+
+  .tp-empty { color: #8b949e; padding: 40px; text-align: center; }
+
   .loading { text-align: center; padding: 50px; color: #8b949e; }
   .error { background: #3d1f1f; border: 1px solid #f8514944; border-radius: 8px; padding: 14px; color: #f85149; font-size: 13px; }
   .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
@@ -188,7 +242,8 @@
 </header>
 
 <div class="tabs">
-  <div class="tab active" onclick="showTab('hypotheses', this)">📊 マクロ仮説</div>
+  <div class="tab active" onclick="showTab('toppicks', this)">🏆 Top Picks</div>
+  <div class="tab" onclick="showTab('hypotheses', this)">📊 マクロ仮説</div>
   <div class="tab" onclick="showTab('candidates', this)">🎯 注目銘柄</div>
   <div class="tab" onclick="showTab('startups', this)">🚀 スタートアップ</div>
   <div class="tab" onclick="showTab('watchlist', this)">⭐ ウォッチリスト <span id="watch-count" style="font-size:11px;background:#238636;border-radius:20px;padding:1px 6px;color:#fff;display:none"></span></div>
@@ -197,7 +252,13 @@
 
 <div class="content">
 
-  <div id="tab-hypotheses" class="section active">
+  <!-- Top Picks -->
+  <div id="tab-toppicks" class="section active">
+    <div id="updated-toppicks" class="updated"></div>
+    <div id="toppicks-content"><div class="loading">読み込み中...</div></div>
+  </div>
+
+  <div id="tab-hypotheses" class="section">
     <div id="market-summary-area"></div>
     <div class="section-header">
       <div id="updated-hypotheses" class="updated" style="margin:0"></div>
@@ -585,9 +646,109 @@ async function loadMomentum() {
   }
 }
 
+// ===== Top Picks =====
+function rankEmoji(r) { return r===1?'🥇':r===2?'🥈':r===3?'🥉':`#${r}`; }
+function rankClass(r) { return r===1?'rank1':r===2?'rank2':r===3?'rank3':''; }
+
+function renderPricingGap(pct) {
+  const gap = 1 - (pct || 0);
+  const color = gap > 0.7 ? '#3fb950' : gap > 0.4 ? '#e3b341' : '#f85149';
+  return `<div class="tp-pricing-gap">
+    <span class="tp-pricing-label">市場未織込</span>
+    <div class="tp-pricing-bar"><div class="tp-pricing-fill" style="width:${(gap*100).toFixed(0)}%;background:${color}"></div></div>
+    <span class="tp-pricing-pct">${(gap*100).toFixed(0)}%</span>
+  </div>`;
+}
+
+function renderTopPickCard(h) {
+  const tp = h.top_pick || {};
+  const alpha = h.alpha_score || 0;
+  const annual = h.expected_annual_return_pct || 0;
+  const tPrice = tp.target_price || {};
+  const upside = tp.upside_base_pct || 0;
+
+  return `<div class="tp-card ${rankClass(h.rank)}">
+    <div class="tp-rank">${rankEmoji(h.rank)}</div>
+    ${h.domain ? `<span class="tp-domain">${h.domain}</span>` : ''}
+    <div class="tp-theme">${h.theme || '—'}</div>
+    <div class="tp-insight">${h.insight || h.logic || ''}</div>
+
+    <div class="tp-scores">
+      <div class="tp-score-block">
+        <div class="tp-score-label">Alpha Score</div>
+        <div class="tp-score-value gold">${(alpha * 100).toFixed(0)}</div>
+        <div class="tp-alpha-bar"><div class="tp-alpha-fill" style="width:${(alpha*100).toFixed(0)}%"></div></div>
+      </div>
+      <div class="tp-score-block">
+        <div class="tp-score-label">期待年率リターン</div>
+        <div class="tp-score-value green">+${annual.toFixed(0)}%</div>
+      </div>
+      ${tp.kelly_fraction != null ? `<div class="tp-score-block">
+        <div class="tp-score-label">Kelly ポジション</div>
+        <div class="tp-score-value blue">${((tp.kelly_fraction||0)*100).toFixed(0)}%</div>
+      </div>` : ''}
+      ${tp.market_pricing_pct != null ? `<div class="tp-score-block">
+        <div class="tp-score-label">市場織込度</div>
+        <div class="tp-score-value" style="color:#e3b341">${((tp.market_pricing_pct||0)*100).toFixed(0)}%</div>
+      </div>` : ''}
+    </div>
+
+    ${tp.code ? `<div class="tp-pick-box">
+      <div class="tp-pick-header">
+        <span class="tp-pick-code">${tp.code}</span>
+        <span class="tp-pick-name">${tp.name || ''}</span>
+        ${upside > 0 ? `<span class="tp-pick-upside">+${upside.toFixed(0)}%</span>` : ''}
+      </div>
+
+      ${tp.market_pricing_pct != null ? renderPricingGap(tp.market_pricing_pct) : ''}
+
+      <div class="tp-price-row">
+        ${tp.current_price ? `<div class="tp-price-item"><span class="lbl">現在株価</span><span class="val">¥${(tp.current_price).toLocaleString()}</span></div>` : ''}
+        ${tPrice.bear ? `<div class="tp-price-item"><span class="lbl">Bear 目標</span><span class="val bear">¥${(tPrice.bear).toLocaleString()}</span></div>` : ''}
+        ${tPrice.base ? `<div class="tp-price-item"><span class="lbl">Base 目標</span><span class="val base">¥${(tPrice.base).toLocaleString()}</span></div>` : ''}
+        ${tPrice.bull ? `<div class="tp-price-item"><span class="lbl">Bull 目標</span><span class="val bull">¥${(tPrice.bull).toLocaleString()}</span></div>` : ''}
+        ${tp.analyst_target_price ? `<div class="tp-price-item"><span class="lbl">アナリストTP</span><span class="val" style="color:#8b949e">¥${(tp.analyst_target_price).toLocaleString()}</span></div>` : ''}
+      </div>
+
+      ${tPrice.basis ? `<div style="font-size:11px;color:#8b949e;margin-bottom:8px">💡 ${tPrice.basis}</div>` : ''}
+
+      ${tp.key_catalyst ? `<div class="tp-catalyst">⚡ ${tp.key_catalyst}（${tp.catalyst_timeline || ''}）</div>` : ''}
+      ${tp.risk_comment ? `<div class="tp-risk">⚠ ${tp.risk_comment}</div>` : ''}
+
+      <div class="tp-meta-row">
+        ${tp.analyst_consensus ? `<span class="tp-meta-tag">アナリスト: ${tp.analyst_consensus}</span>` : ''}
+        ${tp.position_size_suggestion ? `<span class="tp-meta-tag kelly">推奨ポジション: ${tp.position_size_suggestion}</span>` : ''}
+        ${tp.stop_loss_pct ? `<span class="tp-meta-tag">SL: ${tp.stop_loss_pct}%</span>` : ''}
+        ${tp.per ? `<span class="tp-meta-tag">PER: ${tp.per}x</span>` : ''}
+        ${tp.pbr ? `<span class="tp-meta-tag">PBR: ${tp.pbr}x</span>` : ''}
+      </div>
+    </div>` : '<div style="color:#8b949e;font-size:13px">銘柄評価データなし</div>'}
+
+    ${h.timeline ? `<div style="font-size:12px;color:#79c0ff;margin-top:8px">📅 ${h.timeline}</div>` : ''}
+  </div>`;
+}
+
+async function loadTopPicks() {
+  try {
+    const r = await fetch('/api/top_picks');
+    const data = await r.json();
+    if (data.updated_at) {
+      document.getElementById('updated-toppicks').textContent = `HF評価 最終更新: ${data.updated_at} | ${data.total||0}仮説評価済み`;
+    }
+    const ranked = data.ranked_hypotheses || [];
+    if (!ranked.length) {
+      document.getElementById('toppicks-content').innerHTML = '<div class="tp-empty">評価データがありません<br><span style="font-size:12px">evaluate_hypothesis.pyを実行してください</span></div>';
+      return;
+    }
+    document.getElementById('toppicks-content').innerHTML = ranked.map(renderTopPickCard).join('');
+  } catch(e) {
+    document.getElementById('toppicks-content').innerHTML = `<div class="error">エラー: ${e.message}</div>`;
+  }
+}
+
 (async () => {
   await loadBookmarks();
-  await Promise.all([loadHypotheses(), loadCandidates(), loadStartups(), loadMomentum()]);
+  await Promise.all([loadTopPicks(), loadHypotheses(), loadCandidates(), loadStartups(), loadMomentum()]);
 })();
 </script>
 </body>

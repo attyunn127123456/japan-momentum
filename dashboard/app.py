@@ -694,6 +694,14 @@ def candidates():
     return JSONResponse(sanitize(data))
 
 
+EVALUATED_FILE = BASE / "backtest/evaluated_hypotheses.json"
+
+@app.get("/api/top_picks")
+def top_picks():
+    if not EVALUATED_FILE.exists():
+        return JSONResponse({"ranked_hypotheses": [], "updated_at": None, "total": 0})
+    return JSONResponse(sanitize(json.loads(EVALUATED_FILE.read_text())))
+
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
 
 @app.get("/")
