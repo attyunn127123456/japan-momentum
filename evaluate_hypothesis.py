@@ -36,13 +36,24 @@ def get_or_key():
         return json.loads(SECRETS.read_text())["openrouter"]["api_key"]
     return ""
 
-def call_llm(model, messages, temperature=0.3, timeout=120):
-    r = httpx.post(OR_URL,
-        headers={"Authorization": f"Bearer {get_or_key()}", "Content-Type": "application/json"},
-        json={"model": model, "messages": messages, "temperature": temperature},
-        timeout=timeout)
-    r.raise_for_status()
-    return r.json()["choices"][0]["message"]["content"]
+def call_llm(model, messages, temperature=0.3, timeout=300, retries=3):
+    import time
+    last_err = None
+    for attempt in range(retries):
+        try:
+            r = httpx.post(OR_URL,
+                headers={"Authorization": f"Bearer {get_or_key()}", "Content-Type": "application/json"},
+                json={"model": model, "messages": messages, "temperature": temperature},
+                timeout=timeout)
+            r.raise_for_status()
+            return r.json()["choices"][0]["message"]["content"]
+        except Exception as e:
+            last_err = e
+            wait = 10 * (attempt + 1)
+            print(f"    LLMエラー(試行{attempt+1}/{retries}): {e} → {wait}秒後リトライ", flush=True)
+            time.sleep(wait)
+    print(f"    LLM失敗（{retries}回試行）: {last_err}", flush=True)
+    return ""
 
 def extract_obj(text):
     # コードブロック除去
