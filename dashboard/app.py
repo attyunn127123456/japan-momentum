@@ -618,6 +618,24 @@ def signals_all():
     return JSONResponse(sanitize(result))
 
 
+@app.get("/api/hypotheses")
+def hypotheses():
+    p = BASE / "backtest/macro_hypotheses.json"
+    if not p.exists():
+        return JSONResponse({"hypotheses": [], "updated_at": None, "market_summary": {}})
+    return JSONResponse(json.loads(p.read_text()))
+
+@app.get("/api/candidates")
+def candidates():
+    p = BASE / "backtest/fundamental_candidates.json"
+    if not p.exists():
+        return JSONResponse({"candidates": [], "updated_at": None, "total": 0})
+    data = json.loads(p.read_text())
+    if "candidates" in data:
+        data["candidates"] = sorted(data["candidates"], key=lambda x: x.get("score", 0), reverse=True)
+    return JSONResponse(sanitize(data))
+
+
 app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")
 
 @app.get("/")

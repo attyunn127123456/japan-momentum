@@ -1,0 +1,39 @@
+{
+  "updated_at": "2026-03-10 13:25",
+  "total": 3,
+  "candidates": [
+    {
+      "code": "72030",
+      "disc_date": "2026-02-06",
+      "roe": 7.58,
+      "op_margin": 8.39,
+      "sales_growth_yoy": 54.63,
+      "eps_growth": 70.9,
+      "forecast_sales_growth": 31.28,
+      "score": 0.6822,
+      "hypothesis_id": "general"
+    },
+    {
+      "code": "67580",
+      "disc_date": "2026-02-05",
+      "roe": -4.81,
+      "op_margin": 13.6,
+      "sales_growth_yoy": 64.82,
+      "eps_growth": -168.54,
+      "forecast_sales_growth": 30.25,
+      "score": 0.5185,
+      "hypothesis_id": "general"
+    },
+    {
+      "code": "99840",
+      "disc_date": "2026-02-12",
+      "roe": 17.33,
+      "op_margin": -23.86,
+      "sales_growth_yoy": 53.05,
+      "eps_growth": -72.89,
+      "forecast_sales_growth": 7.53,
+      "score": 0.475,
+      "hypothesis_id": "general"
+    }
+  ]
+}

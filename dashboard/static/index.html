@@ -3,1037 +3,254 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Japan Multi-Strategy Fund</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        bg: { primary: '#0b0e11', secondary: '#141820', card: '#1a1f2e', border: '#252d3a' },
-        accent: { blue: '#3b82f6', green: '#10b981', red: '#ef4444', yellow: '#f59e0b', purple: '#8b5cf6' },
-        txt: { primary: '#e2e8f0', secondary: '#94a3b8', dim: '#64748b' }
-      }
-    }
-  }
-}
-</script>
+<title>Japan Alpha Dashboard</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0b0e11; color: #e2e8f0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
-  .mono { font-family: 'JetBrains Mono', monospace; }
-  .glass { background: rgba(26,31,46,0.7); backdrop-filter: blur(12px); border: 1px solid rgba(37,45,58,0.8); }
-  .glow-green { text-shadow: 0 0 20px rgba(16,185,129,0.3); }
-  .glow-red { text-shadow: 0 0 20px rgba(239,68,68,0.3); }
-  .tab-active { background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.1)); border-color: #3b82f6; color: #e2e8f0; }
-  .scrollbar-hide::-webkit-scrollbar { display: none; }
-  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-  .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
-  @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
-  .fade-in { animation: fadeIn 0.3s ease-out; }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-  .progress-bar { transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
-  .heatmap-cell { transition: all 0.3s ease; }
-  .heatmap-cell:hover { transform: scale(1.08); z-index: 10; }
-  table { border-collapse: collapse; }
-  th { position: sticky; top: 0; z-index: 5; }
-  .sort-btn:hover { color: #e2e8f0; }
-  @media (max-width: 768px) {
-    .hide-mobile { display: none !important; }
-    .mobile-stack { flex-direction: column !important; }
-  }
+  body { background: #0d1117; color: #c9d1d9; font-family: -apple-system, sans-serif; min-height: 100vh; }
+  
+  header { background: #161b22; border-bottom: 1px solid #30363d; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+  header h1 { font-size: 18px; color: #f0f6fc; }
+  header .badge { background: #238636; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 20px; }
+  
+  .tabs { background: #161b22; border-bottom: 1px solid #30363d; padding: 0 24px; display: flex; gap: 0; }
+  .tab { padding: 12px 20px; cursor: pointer; border-bottom: 2px solid transparent; color: #8b949e; font-size: 14px; transition: all 0.2s; }
+  .tab:hover { color: #c9d1d9; }
+  .tab.active { color: #58a6ff; border-bottom-color: #58a6ff; }
+  
+  .content { padding: 24px; max-width: 1200px; margin: 0 auto; }
+  .section { display: none; }
+  .section.active { display: block; }
+  
+  .updated { color: #8b949e; font-size: 12px; margin-bottom: 16px; }
+  
+  /* 仮説カード */
+  .hypothesis-grid { display: grid; gap: 16px; }
+  .hypothesis-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; }
+  .hypothesis-card:hover { border-color: #58a6ff44; }
+  .hyp-theme { font-size: 16px; font-weight: 600; color: #f0f6fc; margin-bottom: 8px; }
+  .hyp-logic { color: #8b949e; font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+  .hyp-meta { display: flex; gap: 16px; align-items: center; }
+  .confidence-bar { flex: 1; background: #21262d; border-radius: 4px; height: 6px; overflow: hidden; }
+  .confidence-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #238636, #58a6ff); transition: width 0.5s; }
+  .confidence-label { font-size: 12px; color: #8b949e; white-space: nowrap; }
+  .hyp-conditions { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .condition-tag { background: #21262d; border: 1px solid #30363d; border-radius: 4px; padding: 2px 8px; font-size: 12px; color: #8b949e; }
+  
+  /* 銘柄テーブル */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; padding: 10px 12px; border-bottom: 1px solid #30363d; color: #8b949e; font-weight: 500; font-size: 12px; text-transform: uppercase; }
+  td { padding: 10px 12px; border-bottom: 1px solid #21262d; }
+  tr:hover td { background: #161b22; }
+  .code { font-family: monospace; color: #58a6ff; font-weight: 600; }
+  .score-bar { display: flex; align-items: center; gap: 8px; }
+  .score-fill { height: 4px; border-radius: 2px; background: #238636; }
+  .positive { color: #3fb950; }
+  .negative { color: #f85149; }
+  .neutral { color: #8b949e; }
+  
+  /* モメンタム */
+  .momentum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 768px) { .momentum-grid { grid-template-columns: 1fr; } }
+  .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; }
+  .card h3 { font-size: 14px; color: #8b949e; margin-bottom: 12px; text-transform: uppercase; }
+  .stat { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #21262d; font-size: 14px; }
+  .stat:last-child { border-bottom: none; }
+  .stat-label { color: #8b949e; }
+  .stat-value { color: #f0f6fc; font-weight: 500; }
+  
+  .loading { text-align: center; padding: 60px; color: #8b949e; }
+  .error { background: #3d1f1f; border: 1px solid #f8514944; border-radius: 8px; padding: 16px; color: #f85149; }
+  
+  .market-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .summary-card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; }
+  .summary-label { font-size: 12px; color: #8b949e; margin-bottom: 4px; }
+  .summary-value { font-size: 20px; font-weight: 600; color: #f0f6fc; }
 </style>
 </head>
-<body class="min-h-screen">
+<body>
 
-<!-- Header -->
-<header class="sticky top-0 z-50 glass border-b border-bg-border">
-  <div class="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center text-sm font-bold">JM</div>
-      <div>
-        <h1 class="text-base font-bold tracking-tight">Japan Multi-Strategy Fund</h1>
-        <p class="text-[10px] text-txt-dim uppercase tracking-widest">Multi-Pod Hedge Fund Dashboard</p>
-      </div>
-    </div>
-    <div class="flex items-center gap-3">
-      <span id="market-status" class="flex items-center gap-1.5 text-xs text-txt-secondary">
-        <span class="w-2 h-2 rounded-full bg-accent-green pulse-dot"></span>
-        <span id="last-updated">読み込み中...</span>
-      </span>
-    </div>
-  </div>
+<header>
+  <h1>🐼 Japan Alpha Dashboard</h1>
+  <span class="badge">LIVE</span>
 </header>
 
-<!-- Tabs -->
-<nav class="border-b border-bg-border bg-bg-primary/80 backdrop-blur-sm sticky top-[52px] z-40">
-  <div class="max-w-[1600px] mx-auto px-4 flex gap-1 overflow-x-auto scrollbar-hide">
-    <button onclick="switchTab('portfolio')" class="tab-btn tab-active px-4 py-2.5 text-sm font-medium rounded-t-lg border border-b-0 border-transparent text-txt-secondary whitespace-nowrap transition-all" data-tab="portfolio">📊 ポートフォリオ</button>
-    <button onclick="switchTab('trades')" class="tab-btn px-4 py-2.5 text-sm font-medium rounded-t-lg border border-b-0 border-transparent text-txt-secondary whitespace-nowrap transition-all" data-tab="trades">💹 ペーパートレード</button>
-    <button onclick="switchTab('signals')" class="tab-btn px-4 py-2.5 text-sm font-medium rounded-t-lg border border-b-0 border-transparent text-txt-secondary whitespace-nowrap transition-all" data-tab="signals">🔔 シグナル</button>
-    <button onclick="switchTab('risk')" class="tab-btn px-4 py-2.5 text-sm font-medium rounded-t-lg border border-b-0 border-transparent text-txt-secondary whitespace-nowrap transition-all" data-tab="risk">🛡️ リスク管理</button>
-    <button onclick="switchTab('backtest')" class="tab-btn px-4 py-2.5 text-sm font-medium rounded-t-lg border border-b-0 border-transparent text-txt-secondary whitespace-nowrap transition-all" data-tab="backtest">📈 バックテスト</button>
-  </div>
-</nav>
+<div class="tabs">
+  <div class="tab active" onclick="showTab('hypotheses')">📊 マクロ仮説</div>
+  <div class="tab" onclick="showTab('candidates')">🎯 注目銘柄</div>
+  <div class="tab" onclick="showTab('momentum')">⚡ モメンタム</div>
+</div>
 
-<!-- Main Content -->
-<main class="max-w-[1600px] mx-auto px-4 py-6">
+<div class="content">
 
-<!-- ① Portfolio Overview -->
-<section id="tab-portfolio" class="tab-content fade-in">
-  <!-- Top KPIs -->
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-    <div class="glass rounded-xl p-4">
-      <p class="text-[10px] uppercase tracking-widest text-txt-dim mb-1">純資産総額 (NAV)</p>
-      <p id="kpi-nav" class="text-2xl md:text-3xl font-extrabold mono">¥0</p>
-    </div>
-    <div class="glass rounded-xl p-4">
-      <p class="text-[10px] uppercase tracking-widest text-txt-dim mb-1">本日 PnL</p>
-      <p id="kpi-pnl" class="text-2xl md:text-3xl font-extrabold mono">¥0</p>
-    </div>
-    <div class="glass rounded-xl p-4">
-      <p class="text-[10px] uppercase tracking-widest text-txt-dim mb-1">累計リターン</p>
-      <p id="kpi-return" class="text-2xl md:text-3xl font-extrabold mono">0.00%</p>
-    </div>
-    <div class="glass rounded-xl p-4">
-      <p class="text-[10px] uppercase tracking-widest text-txt-dim mb-1">シャープレシオ</p>
-      <p id="kpi-sharpe" class="text-2xl md:text-3xl font-extrabold mono">0.00</p>
+  <!-- マクロ仮説タブ -->
+  <div id="tab-hypotheses" class="section active">
+    <div id="market-summary-area"></div>
+    <div id="updated-hypotheses" class="updated"></div>
+    <div id="hypothesis-list" class="hypothesis-grid">
+      <div class="loading">仮説データ読み込み中...</div>
     </div>
   </div>
 
-  <!-- Risk Strip -->
-  <div class="grid grid-cols-3 md:grid-cols-5 gap-3 mb-6">
-    <div class="glass rounded-lg p-3 text-center">
-      <p class="text-[10px] text-txt-dim mb-0.5">最大DD</p>
-      <p id="kpi-maxdd" class="text-lg font-bold mono text-accent-red">0.00%</p>
-    </div>
-    <div class="glass rounded-lg p-3 text-center">
-      <p class="text-[10px] text-txt-dim mb-0.5">現在DD</p>
-      <p id="kpi-curdd" class="text-lg font-bold mono text-accent-yellow">0.00%</p>
-    </div>
-    <div class="glass rounded-lg p-3 text-center">
-      <p class="text-[10px] text-txt-dim mb-0.5">VaR (95%)</p>
-      <p id="kpi-var95" class="text-lg font-bold mono text-accent-red">¥0</p>
-    </div>
-    <div class="glass rounded-lg p-3 text-center hide-mobile">
-      <p class="text-[10px] text-txt-dim mb-0.5">Gross Exposure</p>
-      <p id="kpi-gross" class="text-lg font-bold mono">0%</p>
-    </div>
-    <div class="glass rounded-lg p-3 text-center hide-mobile">
-      <p class="text-[10px] text-txt-dim mb-0.5">Net Exposure</p>
-      <p id="kpi-net" class="text-lg font-bold mono">0%</p>
-    </div>
-  </div>
-
-  <!-- Pod Cards -->
-  <h3 class="text-xs font-semibold text-txt-dim uppercase tracking-widest mb-3">ポッド状態</h3>
-  <div id="pod-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-    <!-- Populated by JS -->
-  </div>
-
-  <!-- Equity Curve -->
-  <div class="glass rounded-xl p-5 mb-6">
-    <div class="flex items-center justify-between mb-4">
-      <h3 class="text-sm font-semibold">エクイティカーブ</h3>
-      <span class="text-[10px] text-txt-dim">ポートフォリオ vs 日経225</span>
-    </div>
-    <div class="relative h-[280px] md:h-[350px]">
-      <canvas id="equity-chart"></canvas>
-    </div>
-  </div>
-</section>
-
-<!-- ② Paper Trades -->
-<section id="tab-trades" class="tab-content hidden fade-in">
-  <!-- Trade KPIs -->
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-    <div class="glass rounded-xl p-4">
-      <p class="text-[10px] uppercase tracking-widest text-txt-dim mb-1">トレードNAV</p>
-      <p id="trade-nav" class="text-2xl font-extrabold mono">¥0</p>
-    </div>
-    <div class="glass rounded-xl p-4">
-      <p class="text-[10px] uppercase tracking-widest text-txt-dim mb-1">累計PnL</p>
-      <p id="trade-pnl" class="text-2xl font-extrabold mono">¥0</p>
-    </div>
-    <div class="glass rounded-xl p-4">
-      <p class="text-[10px] uppercase tracking-widest text-txt-dim mb-1">勝率</p>
-      <p id="trade-winrate" class="text-2xl font-extrabold mono">0%</p>
-    </div>
-    <div class="glass rounded-xl p-4">
-      <p class="text-[10px] uppercase tracking-widest text-txt-dim mb-1">プロフィットファクター</p>
-      <p id="trade-pf" class="text-2xl font-extrabold mono">0.00</p>
-    </div>
-  </div>
-
-  <!-- Stats Strip -->
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-    <div class="glass rounded-lg p-3 text-center">
-      <p class="text-[10px] text-txt-dim">取引回数</p>
-      <p id="trade-count" class="text-lg font-bold mono">0</p>
-    </div>
-    <div class="glass rounded-lg p-3 text-center">
-      <p class="text-[10px] text-txt-dim">平均保有日数</p>
-      <p id="trade-avgdays" class="text-lg font-bold mono">0</p>
-    </div>
-    <div class="glass rounded-lg p-3 text-center">
-      <p class="text-[10px] text-txt-dim">ロング数</p>
-      <p id="trade-long" class="text-lg font-bold mono text-accent-green">0</p>
-    </div>
-    <div class="glass rounded-lg p-3 text-center">
-      <p class="text-[10px] text-txt-dim">ショート数</p>
-      <p id="trade-short" class="text-lg font-bold mono text-accent-red">0</p>
-    </div>
-  </div>
-
-  <!-- Positions Table -->
-  <div class="glass rounded-xl p-5 mb-6">
-    <h3 class="text-sm font-semibold mb-3">現在の保有ポジション</h3>
-    <div class="overflow-x-auto scrollbar-hide">
-      <table class="w-full text-sm">
+  <!-- 注目銘柄タブ -->
+  <div id="tab-candidates" class="section">
+    <div id="updated-candidates" class="updated"></div>
+    <div class="table-wrap">
+      <table>
         <thead>
-          <tr class="text-[11px] text-txt-dim uppercase tracking-wider">
-            <th class="text-left p-2 bg-bg-card">銘柄</th>
-            <th class="text-left p-2 bg-bg-card">名称</th>
-            <th class="text-center p-2 bg-bg-card">方向</th>
-            <th class="text-right p-2 bg-bg-card">数量</th>
-            <th class="text-right p-2 bg-bg-card">取得価格</th>
-            <th class="text-right p-2 bg-bg-card">現在価格</th>
-            <th class="text-right p-2 bg-bg-card">含み損益</th>
-            <th class="text-right p-2 bg-bg-card">損益率</th>
-            <th class="text-right p-2 bg-bg-card hide-mobile">保有日数</th>
+          <tr>
+            <th>コード</th>
+            <th>ROE</th>
+            <th>営業利益率</th>
+            <th>売上成長率</th>
+            <th>来期成長予想</th>
+            <th>スコア</th>
           </tr>
         </thead>
-        <tbody id="positions-body" class="divide-y divide-bg-border">
-          <tr><td colspan="9" class="text-center text-txt-dim py-8">読み込み中...</td></tr>
+        <tbody id="candidates-tbody">
+          <tr><td colspan="6" style="text-align:center;padding:40px;color:#8b949e">読み込み中...</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- Recent Trades -->
-  <div class="glass rounded-xl p-5 mb-6">
-    <h3 class="text-sm font-semibold mb-3">直近の約定履歴</h3>
-    <div class="overflow-x-auto scrollbar-hide">
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="text-[11px] text-txt-dim uppercase tracking-wider">
-            <th class="text-left p-2 bg-bg-card">日時</th>
-            <th class="text-left p-2 bg-bg-card">銘柄</th>
-            <th class="text-center p-2 bg-bg-card">売買</th>
-            <th class="text-right p-2 bg-bg-card">数量</th>
-            <th class="text-right p-2 bg-bg-card">価格</th>
-            <th class="text-right p-2 bg-bg-card">損益</th>
-          </tr>
-        </thead>
-        <tbody id="trades-body" class="divide-y divide-bg-border">
-          <tr><td colspan="6" class="text-center text-txt-dim py-8">読み込み中...</td></tr>
-        </tbody>
-      </table>
-    </div>
+  <!-- モメンタムタブ -->
+  <div id="tab-momentum" class="section">
+    <div id="updated-momentum" class="updated"></div>
+    <div id="momentum-content" class="loading">モメンタムデータ読み込み中...</div>
   </div>
 
-  <!-- PnL Chart -->
-  <div class="glass rounded-xl p-5">
-    <h3 class="text-sm font-semibold mb-3">累計PnL推移</h3>
-    <div class="relative h-[250px]">
-      <canvas id="pnl-chart"></canvas>
-    </div>
-  </div>
-</section>
-
-<!-- ③ Signals -->
-<section id="tab-signals" class="tab-content hidden fade-in">
-  <!-- Regime Filter Status -->
-  <div class="glass rounded-xl p-4 mb-6 flex flex-wrap items-center gap-4">
-    <div class="flex items-center gap-2">
-      <span class="text-[10px] text-txt-dim uppercase tracking-widest">レジームフィルター</span>
-      <span id="regime-status" class="px-2 py-0.5 rounded-full text-xs font-semibold bg-accent-green/20 text-accent-green">ON</span>
-    </div>
-    <div id="regime-detail" class="text-xs text-txt-secondary"></div>
-    <div class="ml-auto">
-      <input id="signal-search" class="bg-bg-secondary border border-bg-border rounded-lg px-3 py-1.5 text-sm text-txt-primary placeholder-txt-dim outline-none focus:border-accent-blue w-48" placeholder="🔍 銘柄検索...">
-    </div>
-  </div>
-
-  <!-- Signal Filters -->
-  <div class="flex gap-2 mb-4 flex-wrap">
-    <button onclick="filterSignals('all')" class="sig-filter sig-filter-active px-3 py-1 rounded-full text-xs font-medium border border-bg-border bg-bg-card text-txt-secondary">全て</button>
-    <button onclick="filterSignals('BUY')" class="sig-filter px-3 py-1 rounded-full text-xs font-medium border border-bg-border bg-bg-card text-txt-secondary">🟢 BUY</button>
-    <button onclick="filterSignals('SELL')" class="sig-filter px-3 py-1 rounded-full text-xs font-medium border border-bg-border bg-bg-card text-txt-secondary">🔴 SELL</button>
-    <button onclick="filterSignals('HOLD')" class="sig-filter px-3 py-1 rounded-full text-xs font-medium border border-bg-border bg-bg-card text-txt-secondary">⚪ HOLD</button>
-  </div>
-
-  <!-- Signals Table -->
-  <div class="glass rounded-xl p-5">
-    <div class="overflow-x-auto scrollbar-hide max-h-[600px] overflow-y-auto">
-      <table class="w-full text-sm">
-        <thead>
-          <tr class="text-[11px] text-txt-dim uppercase tracking-wider">
-            <th class="text-left p-2 bg-bg-card cursor-pointer sort-btn" onclick="sortSignals('code')">コード</th>
-            <th class="text-left p-2 bg-bg-card">銘柄名</th>
-            <th class="text-right p-2 bg-bg-card cursor-pointer sort-btn" onclick="sortSignals('score')">スコア ↓</th>
-            <th class="text-center p-2 bg-bg-card">推奨</th>
-            <th class="text-right p-2 bg-bg-card hide-mobile cursor-pointer sort-btn" onclick="sortSignals('return')">リターン</th>
-            <th class="text-right p-2 bg-bg-card hide-mobile">RS</th>
-            <th class="text-right p-2 bg-bg-card hide-mobile">現在値</th>
-          </tr>
-        </thead>
-        <tbody id="signals-body" class="divide-y divide-bg-border">
-          <tr><td colspan="7" class="text-center text-txt-dim py-8">読み込み中...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ④ Risk Management -->
-<section id="tab-risk" class="tab-content hidden fade-in">
-  <!-- Risk KPIs -->
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-    <div class="glass rounded-xl p-4 text-center">
-      <p class="text-[10px] text-txt-dim mb-1">VaR (95%)</p>
-      <p id="risk-var95" class="text-xl font-bold mono text-accent-red">¥0</p>
-      <p id="risk-var95-pct" class="text-[10px] text-txt-dim mono">0.00%</p>
-    </div>
-    <div class="glass rounded-xl p-4 text-center">
-      <p class="text-[10px] text-txt-dim mb-1">VaR (99%)</p>
-      <p id="risk-var99" class="text-xl font-bold mono text-accent-red">¥0</p>
-      <p id="risk-var99-pct" class="text-[10px] text-txt-dim mono">0.00%</p>
-    </div>
-    <div class="glass rounded-xl p-4 text-center">
-      <p class="text-[10px] text-txt-dim mb-1">年率ボラティリティ</p>
-      <p id="risk-vol" class="text-xl font-bold mono">0.00%</p>
-    </div>
-    <div class="glass rounded-xl p-4 text-center">
-      <p class="text-[10px] text-txt-dim mb-1">ポートフォリオDD限度</p>
-      <p id="risk-ddlimit" class="text-xl font-bold mono text-accent-yellow">-20%</p>
-    </div>
-  </div>
-
-  <!-- Pod DD Gauges -->
-  <h3 class="text-xs font-semibold text-txt-dim uppercase tracking-widest mb-3">ポッド別ドローダウン</h3>
-  <div id="dd-gauges" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
-    <!-- Populated by JS -->
-  </div>
-
-  <!-- Correlation Heatmap -->
-  <div class="glass rounded-xl p-5 mb-6">
-    <h3 class="text-sm font-semibold mb-4">ポッド間相関マトリックス</h3>
-    <div id="correlation-matrix" class="flex justify-center">
-      <p class="text-txt-dim text-sm py-8">データ不足（相関計算には十分な期間が必要です）</p>
-    </div>
-  </div>
-
-  <!-- Alerts -->
-  <div class="glass rounded-xl p-5">
-    <h3 class="text-sm font-semibold mb-3">アラート一覧</h3>
-    <div id="alerts-list">
-      <p class="text-txt-dim text-sm py-4 text-center">アラートなし ✅</p>
-    </div>
-  </div>
-</section>
-
-<!-- ⑤ Backtest -->
-<section id="tab-backtest" class="tab-content hidden fade-in">
-  <div id="bt-loading" class="text-center text-txt-dim py-12">データ取得中...</div>
-  <div id="bt-content" class="hidden">
-    <!-- Backtest KPIs -->
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
-      <div class="glass rounded-xl p-4 text-center">
-        <p class="text-[10px] text-txt-dim mb-1">累計リターン</p>
-        <p id="bt-return" class="text-xl font-bold mono">-</p>
-      </div>
-      <div class="glass rounded-xl p-4 text-center">
-        <p class="text-[10px] text-txt-dim mb-1">シャープレシオ</p>
-        <p id="bt-sharpe" class="text-xl font-bold mono">-</p>
-      </div>
-      <div class="glass rounded-xl p-4 text-center">
-        <p class="text-[10px] text-txt-dim mb-1">最大DD</p>
-        <p id="bt-maxdd" class="text-xl font-bold mono text-accent-red">-</p>
-      </div>
-      <div class="glass rounded-xl p-4 text-center">
-        <p class="text-[10px] text-txt-dim mb-1">保有銘柄数</p>
-        <p id="bt-topn" class="text-xl font-bold mono">-</p>
-      </div>
-      <div class="glass rounded-xl p-4 text-center">
-        <p class="text-[10px] text-txt-dim mb-1">テスト数</p>
-        <p id="bt-total" class="text-xl font-bold mono">-</p>
-      </div>
-    </div>
-
-    <!-- Best Results Table -->
-    <div class="glass rounded-xl p-5">
-      <h3 class="text-sm font-semibold mb-3">累積ベスト10</h3>
-      <div class="overflow-x-auto scrollbar-hide">
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="text-[11px] text-txt-dim uppercase tracking-wider">
-              <th class="text-left p-2 bg-bg-card">#</th>
-              <th class="text-left p-2 bg-bg-card">仮説</th>
-              <th class="text-right p-2 bg-bg-card">リターン</th>
-              <th class="text-right p-2 bg-bg-card">Sharpe</th>
-              <th class="text-right p-2 bg-bg-card">最大DD</th>
-              <th class="text-right p-2 bg-bg-card hide-mobile">LB日数</th>
-              <th class="text-right p-2 bg-bg-card hide-mobile">銘柄数</th>
-              <th class="text-right p-2 bg-bg-card hide-mobile">頻度</th>
-            </tr>
-          </thead>
-          <tbody id="bt-best-body" class="divide-y divide-bg-border">
-            <tr><td colspan="8" class="text-center text-txt-dim py-8">読み込み中...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
-</main>
-
-<footer class="border-t border-bg-border py-4 text-center text-[10px] text-txt-dim">
-  Japan Multi-Strategy Fund Dashboard · Powered by J-Quants API
-</footer>
+</div>
 
 <script>
-// ═══════════════════════════════════════════════════
-// Utility Functions
-// ═══════════════════════════════════════════════════
-
-const fmt = {
-  jpy: v => '¥' + Math.round(v).toLocaleString('ja-JP'),
-  pct: (v, d=2) => (v >= 0 ? '+' : '') + v.toFixed(d) + '%',
-  num: (v, d=2) => v.toFixed(d),
-  date: s => { try { return new Date(s).toLocaleDateString('ja-JP', {timeZone:'Asia/Tokyo'}); } catch(e) { return s||''; } },
-};
-
-function colorClass(v, zero='text-txt-secondary') {
-  return v > 0 ? 'text-accent-green' : v < 0 ? 'text-accent-red' : zero;
+function showTab(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
 }
 
-function colorGlow(v) {
-  return v > 0 ? 'text-accent-green glow-green' : v < 0 ? 'text-accent-red glow-red' : 'text-txt-secondary';
+function fmt(v, suffix='%', digits=1) {
+  if (v == null || isNaN(v)) return '<span class="neutral">—</span>';
+  const cls = v > 0 ? 'positive' : v < 0 ? 'negative' : 'neutral';
+  return `<span class="${cls}">${v > 0 ? '+' : ''}${v.toFixed(digits)}${suffix}</span>`;
 }
 
-// ═══════════════════════════════════════════════════
-// Tab Switching
-// ═══════════════════════════════════════════════════
-
-function switchTab(name) {
-  document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('tab-active'));
-  const panel = document.getElementById('tab-' + name);
-  if (panel) { panel.classList.remove('hidden'); panel.classList.add('fade-in'); }
-  const btn = document.querySelector(`.tab-btn[data-tab="${name}"]`);
-  if (btn) btn.classList.add('tab-active');
-  // Lazy load
-  if (name === 'backtest' && !backtestLoaded) loadBacktest();
-  if (name === 'signals' && !signalsLoaded) loadSignals();
-  if (name === 'risk' && !riskLoaded) loadRisk();
-  if (name === 'trades' && !tradesLoaded) loadTrades();
-}
-
-// ═══════════════════════════════════════════════════
-// Mock Data (fallback when API returns error)
-// ═══════════════════════════════════════════════════
-
-const MOCK = {
-  portfolio: {
-    portfolio: {
-      nav: 10250000, initial_capital: 10000000,
-      total_pnl: 250000, total_pnl_pct: 2.50,
-      current_dd_pct: -1.30, max_dd_pct: -5.20,
-      dd_limit_pct: 20, sharpe_ann: 1.85,
-      var_95_1d_jpy: -125000, var_95_1d_pct: -1.22,
-      var_99_1d_jpy: -210000, var_99_1d_pct: -2.05,
-      volatility_ann: 0.18,
-      gross_exposure_pct: 85.0, net_exposure_pct: 62.0,
-      pods: {
-        momentum: { name:'momentum', nav:5200000, allocation_pct:50, dd_pct:-2.1, dd_limit_pct:15, active:true, description:'クロスセクショナルモメンタム', positions_count:5, long_exposure:4800000, short_exposure:0, net_exposure:4800000 },
-        mean_reversion: { name:'mean_reversion', nav:2050000, allocation_pct:20, dd_pct:-0.5, dd_limit_pct:10, active:true, description:'短期過売り反発', positions_count:0 },
-        event_driven: { name:'event_driven', nav:1520000, allocation_pct:15, dd_pct:0, dd_limit_pct:12, active:true, description:'決算サプライズ', positions_count:0 },
-        macro_overlay: { name:'macro_overlay', nav:1480000, allocation_pct:15, dd_pct:-1.0, dd_limit_pct:8, active:true, description:'マクロヘッジ', positions_count:0 },
-      }
-    },
-    alerts: [],
-    correlation: { matrix: {}, alerts: [] },
-    as_of: new Date().toISOString().slice(0,10),
-  },
-  paper_trades: {
-    nav: 10250000, cash: 2800000, initial_capital: 10000000,
-    total_pnl: 250000, total_pnl_pct: 2.50,
-    positions: [],
-    long_count: 0, short_count: 0,
-    performance: { total_trades: 0, win_rate: 0, profit_factor: 0, avg_days_held: 0 },
-    recent_trades: [],
-    equity_curve: [],
-  },
-  signals: { strategies: [] },
-  risk: {
-    portfolio: {
-      var_95_1d_jpy: -125000, var_95_1d_pct: -1.22,
-      var_99_1d_jpy: -210000, var_99_1d_pct: -2.05,
-      volatility_ann: 0.18, dd_limit_pct: 20,
-      current_dd_pct: -1.30, max_dd_pct: -5.20,
-      pods: {},
-    },
-    correlation: { matrix: {} },
-    alerts: [],
-  },
-};
-
-const POD_NAMES = {
-  momentum: 'モメンタム',
-  mean_reversion: 'ミーンリバージョン',
-  event_driven: 'イベントドリブン',
-  macro_overlay: 'マクロオーバーレイ',
-};
-
-const POD_ICONS = {
-  momentum: '🚀', mean_reversion: '🔄', event_driven: '📰', macro_overlay: '🌐',
-};
-
-const POD_COLORS = {
-  momentum: 'from-blue-500/20 to-blue-600/5 border-blue-500/30',
-  mean_reversion: 'from-purple-500/20 to-purple-600/5 border-purple-500/30',
-  event_driven: 'from-amber-500/20 to-amber-600/5 border-amber-500/30',
-  macro_overlay: 'from-emerald-500/20 to-emerald-600/5 border-emerald-500/30',
-};
-
-// ═══════════════════════════════════════════════════
-// Data Fetch with Fallback
-// ═══════════════════════════════════════════════════
-
-async function apiFetch(url, fallbackKey) {
+// マクロ仮説読み込み
+async function loadHypotheses() {
   try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(res.statusText);
-    const data = await res.json();
-    if (data.error) throw new Error(data.error);
-    return data;
-  } catch (e) {
-    console.warn(`API ${url} failed: ${e.message}, using mock`);
-    return MOCK[fallbackKey] || null;
-  }
-}
-
-// ═══════════════════════════════════════════════════
-// ① Portfolio
-// ═══════════════════════════════════════════════════
-
-let equityChart = null;
-
-async function loadPortfolio() {
-  const data = await apiFetch('/api/portfolio', 'portfolio');
-  if (!data) return;
-  const p = data.portfolio || data;
-  const pods = p.pods || {};
-
-  // KPIs
-  document.getElementById('kpi-nav').textContent = fmt.jpy(p.nav || 0);
-  document.getElementById('kpi-nav').className = 'text-2xl md:text-3xl font-extrabold mono';
-
-  const pnl = p.total_pnl || 0;
-  document.getElementById('kpi-pnl').textContent = (pnl >= 0 ? '+' : '') + fmt.jpy(pnl);
-  document.getElementById('kpi-pnl').className = `text-2xl md:text-3xl font-extrabold mono ${colorGlow(pnl)}`;
-
-  const ret = p.total_pnl_pct || 0;
-  document.getElementById('kpi-return').textContent = fmt.pct(ret);
-  document.getElementById('kpi-return').className = `text-2xl md:text-3xl font-extrabold mono ${colorGlow(ret)}`;
-
-  const sharpe = p.sharpe_ann || 0;
-  document.getElementById('kpi-sharpe').textContent = fmt.num(sharpe);
-  document.getElementById('kpi-sharpe').className = `text-2xl md:text-3xl font-extrabold mono ${colorClass(sharpe)}`;
-
-  document.getElementById('kpi-maxdd').textContent = fmt.pct(p.max_dd_pct || 0);
-  document.getElementById('kpi-curdd').textContent = fmt.pct(p.current_dd_pct || 0);
-  document.getElementById('kpi-var95').textContent = fmt.jpy(Math.abs(p.var_95_1d_jpy || 0));
-  document.getElementById('kpi-gross').textContent = fmt.num(p.gross_exposure_pct || 0, 1) + '%';
-  document.getElementById('kpi-net').textContent = fmt.num(p.net_exposure_pct || 0, 1) + '%';
-
-  document.getElementById('last-updated').textContent = (data.as_of || '') + ' 更新';
-
-  // Pod Cards
-  const podCardsHtml = Object.entries(pods).map(([key, pod]) => {
-    const name = POD_NAMES[key] || key;
-    const icon = POD_ICONS[key] || '📦';
-    const colors = POD_COLORS[key] || 'from-gray-500/20 to-gray-600/5 border-gray-500/30';
-    const ddPct = Math.abs(pod.dd_pct || 0);
-    const ddLimit = pod.dd_limit_pct || 15;
-    const ddRatio = Math.min(ddPct / ddLimit * 100, 100);
-    const ddBarColor = ddRatio > 80 ? 'bg-accent-red' : ddRatio > 50 ? 'bg-accent-yellow' : 'bg-accent-green';
-    const statusDot = pod.active
-      ? '<span class="w-2 h-2 rounded-full bg-accent-green pulse-dot"></span>'
-      : '<span class="w-2 h-2 rounded-full bg-accent-red"></span>';
-
-    return `<div class="bg-gradient-to-br ${colors} border rounded-xl p-4">
-      <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center gap-2">
-          <span class="text-lg">${icon}</span>
-          <div>
-            <p class="text-sm font-semibold">${name}</p>
-            <p class="text-[10px] text-txt-dim">${pod.description || ''}</p>
-          </div>
+    const r = await fetch('/api/hypotheses');
+    const data = await r.json();
+    
+    if (data.updated_at) {
+      document.getElementById('updated-hypotheses').textContent = `最終更新: ${data.updated_at}`;
+    }
+    
+    // マーケットサマリー
+    if (data.market_summary) {
+      const ms = data.market_summary;
+      document.getElementById('market-summary-area').innerHTML = `
+        <div class="market-summary">
+          <div class="summary-card"><div class="summary-label">対象企業数</div><div class="summary-value">${ms.total_companies?.toLocaleString() || '—'}</div></div>
+          <div class="summary-card"><div class="summary-label">ROE中央値</div><div class="summary-value">${ms.median_roe?.toFixed(1) || '—'}%</div></div>
+          <div class="summary-card"><div class="summary-label">営業利益率中央値</div><div class="summary-value">${ms.median_op_margin?.toFixed(1) || '—'}%</div></div>
+          <div class="summary-card"><div class="summary-label">ROE>15%企業数</div><div class="summary-value">${ms.high_roe_count?.toLocaleString() || '—'}</div></div>
+          <div class="summary-card"><div class="summary-label">来期増収予想企業数</div><div class="summary-value">${ms.high_growth_count?.toLocaleString() || '—'}</div></div>
+        </div>`;
+    }
+    
+    const hyps = data.hypotheses || [];
+    if (!hyps.length) {
+      document.getElementById('hypothesis-list').innerHTML = '<div class="error">仮説データがありません。macro_hypothesis_engine.pyを実行してください。</div>';
+      return;
+    }
+    
+    document.getElementById('hypothesis-list').innerHTML = hyps.map(h => `
+      <div class="hypothesis-card">
+        <div class="hyp-theme">${h.theme || '—'}</div>
+        <div class="hyp-logic">${h.logic || '—'}</div>
+        <div class="hyp-meta">
+          <div class="confidence-bar"><div class="confidence-fill" style="width:${((h.confidence||0)*100).toFixed(0)}%"></div></div>
+          <span class="confidence-label">確信度 ${((h.confidence||0)*100).toFixed(0)}%</span>
+          <span class="confidence-label">${h.created_at || ''}</span>
         </div>
-        <div class="flex items-center gap-1.5 text-[10px]">${statusDot}<span class="text-txt-dim">${pod.active ? 'アクティブ' : '停止'}</span></div>
+        ${h.target_conditions ? `
+        <div class="hyp-conditions">
+          ${h.target_conditions.min_roe ? `<span class="condition-tag">ROE≥${h.target_conditions.min_roe}%</span>` : ''}
+          ${h.target_conditions.min_op_margin ? `<span class="condition-tag">営業利益率≥${h.target_conditions.min_op_margin}%</span>` : ''}
+          ${h.target_conditions.sector_hint ? `<span class="condition-tag">${h.target_conditions.sector_hint}</span>` : ''}
+        </div>` : ''}
       </div>
-      <div class="grid grid-cols-3 gap-2 mb-3">
-        <div><p class="text-[10px] text-txt-dim">NAV</p><p class="text-sm font-bold mono">${fmt.jpy(pod.nav || 0)}</p></div>
-        <div><p class="text-[10px] text-txt-dim">配分</p><p class="text-sm font-bold mono">${fmt.num(pod.allocation_pct || 0, 0)}%</p></div>
-        <div><p class="text-[10px] text-txt-dim">DD</p><p class="text-sm font-bold mono ${colorClass(pod.dd_pct||0)}">${fmt.pct(pod.dd_pct || 0, 1)}</p></div>
-      </div>
-      <div>
-        <div class="flex justify-between text-[10px] text-txt-dim mb-1"><span>DD: ${ddPct.toFixed(1)}%</span><span>限度: ${ddLimit}%</span></div>
-        <div class="w-full h-1.5 rounded-full bg-bg-primary overflow-hidden"><div class="h-full rounded-full ${ddBarColor} progress-bar" style="width:${ddRatio}%"></div></div>
-      </div>
-    </div>`;
-  }).join('');
-  document.getElementById('pod-cards').innerHTML = podCardsHtml || '<p class="text-txt-dim col-span-4 text-center py-8">ポッドデータなし</p>';
-
-  // Equity Curve from timeseries
-  loadEquityCurve();
-}
-
-async function loadEquityCurve() {
-  try {
-    const data = await apiFetch('/api/backtest/timeseries', null);
-    if (!data || !data.weekly || !data.weekly.length) return;
-    const weekly = data.weekly.sort((a,b) => a.date.localeCompare(b.date));
-    const nikkei = (data.nikkei_weekly || []).sort((a,b) => a.date.localeCompare(b.date));
-    const normalize = arr => { if(!arr.length) return []; const b=arr[0].value; return arr.map(d=>({date:d.date,value:b?d.value/b*100:100})); };
-    const pN = normalize(weekly);
-    const nN = normalize(nikkei);
-    const dates = [...new Set([...pN.map(d=>d.date),...nN.map(d=>d.date)])].sort();
-    const pMap = Object.fromEntries(pN.map(d=>[d.date,d.value]));
-    const nMap = Object.fromEntries(nN.map(d=>[d.date,d.value]));
-
-    const ctx = document.getElementById('equity-chart').getContext('2d');
-    if (equityChart) equityChart.destroy();
-    equityChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: dates,
-        datasets: [
-          { label: 'ポートフォリオ', data: dates.map(d=>pMap[d]??null), borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.08)', borderWidth: 2, pointRadius: 0, tension: 0.3, fill: true, spanGaps: true },
-          { label: '日経225', data: dates.map(d=>nMap[d]??null), borderColor: '#64748b', borderWidth: 1.5, borderDash: [4,4], pointRadius: 0, tension: 0.3, spanGaps: true },
-        ]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        interaction: { mode: 'index', intersect: false },
-        plugins: {
-          legend: { display: true, labels: { color: '#94a3b8', font: { size: 11, family: 'Inter' }, boxWidth: 16 } },
-          tooltip: { backgroundColor: '#1a1f2e', borderColor: '#252d3a', borderWidth: 1, titleColor: '#e2e8f0', bodyColor: '#94a3b8', cornerRadius: 8 }
-        },
-        scales: {
-          x: { ticks: { color: '#64748b', font: { size: 10 }, maxRotation: 0, callback: (v,i) => { const d=dates[i]; if(!d) return ''; const ym=d.slice(0,7); return i===0||dates[i-1]?.slice(0,7)!==ym?ym:''; } }, grid: { color: 'rgba(37,45,58,0.5)' } },
-          y: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: 'rgba(37,45,58,0.5)' }, title: { display: true, text: '指数 (開始=100)', color: '#64748b', font: { size: 10 } } }
-        }
-      }
-    });
-  } catch(e) { console.warn('Equity curve load failed:', e); }
-}
-
-// ═══════════════════════════════════════════════════
-// ② Paper Trades
-// ═══════════════════════════════════════════════════
-
-let tradesLoaded = false;
-let pnlChart = null;
-
-async function loadTrades() {
-  tradesLoaded = true;
-  const data = await apiFetch('/api/paper_trades', 'paper_trades');
-  if (!data) return;
-
-  document.getElementById('trade-nav').textContent = fmt.jpy(data.nav || 0);
-  const pnl = data.total_pnl || 0;
-  document.getElementById('trade-pnl').textContent = (pnl>=0?'+':'') + fmt.jpy(pnl);
-  document.getElementById('trade-pnl').className = `text-2xl font-extrabold mono ${colorGlow(pnl)}`;
-
-  const perf = data.performance || {};
-  document.getElementById('trade-winrate').textContent = (perf.win_rate || 0) + '%';
-  document.getElementById('trade-pf').textContent = fmt.num(perf.profit_factor || 0);
-  document.getElementById('trade-count').textContent = perf.total_trades || 0;
-  document.getElementById('trade-avgdays').textContent = fmt.num(perf.avg_days_held || 0, 1);
-  document.getElementById('trade-long').textContent = data.long_count || 0;
-  document.getElementById('trade-short').textContent = data.short_count || 0;
-
-  // Positions
-  const positions = data.positions || [];
-  const posTbody = document.getElementById('positions-body');
-  if (positions.length === 0) {
-    posTbody.innerHTML = '<tr><td colspan="9" class="text-center text-txt-dim py-8">保有ポジションなし</td></tr>';
-  } else {
-    posTbody.innerHTML = positions.map(p => {
-      const sideLabel = p.side === 'long' ? '<span class="text-accent-green font-semibold">L</span>' : '<span class="text-accent-red font-semibold">S</span>';
-      const pnlVal = p.unrealized_pnl || 0;
-      const pnlPct = p.unrealized_pnl_pct || 0;
-      return `<tr class="hover:bg-bg-card/50 transition-colors">
-        <td class="p-2 font-semibold text-accent-blue mono">${p.code || ''}</td>
-        <td class="p-2 text-txt-secondary">${p.name || ''}</td>
-        <td class="p-2 text-center">${sideLabel}</td>
-        <td class="p-2 text-right mono">${(p.quantity||0).toLocaleString()}</td>
-        <td class="p-2 text-right mono text-txt-secondary">¥${(p.entry_price||0).toLocaleString()}</td>
-        <td class="p-2 text-right mono">¥${(p.current_price||0).toLocaleString()}</td>
-        <td class="p-2 text-right mono ${colorClass(pnlVal)}">${(pnlVal>=0?'+':'') + fmt.jpy(pnlVal)}</td>
-        <td class="p-2 text-right mono ${colorClass(pnlPct)}">${fmt.pct(pnlPct, 1)}</td>
-        <td class="p-2 text-right mono text-txt-dim hide-mobile">${p.days_held || 0}日</td>
-      </tr>`;
-    }).join('');
-  }
-
-  // Recent Trades
-  const trades = (data.recent_trades || []).slice(-20).reverse();
-  const trTbody = document.getElementById('trades-body');
-  if (trades.length === 0) {
-    trTbody.innerHTML = '<tr><td colspan="6" class="text-center text-txt-dim py-8">約定履歴なし</td></tr>';
-  } else {
-    trTbody.innerHTML = trades.map(t => {
-      const isOpen = t.type === 'open';
-      const typeLabel = isOpen
-        ? (t.side==='long' ? '<span class="text-accent-green">買い</span>' : '<span class="text-accent-red">売り建て</span>')
-        : '<span class="text-accent-yellow">決済</span>';
-      const pnlStr = t.net_pnl != null ? `<span class="${colorClass(t.net_pnl)}">${(t.net_pnl>=0?'+':'')+fmt.jpy(t.net_pnl)}</span>` : '-';
-      return `<tr class="hover:bg-bg-card/50 transition-colors">
-        <td class="p-2 text-txt-dim mono text-xs">${t.date || t.exit_date || ''}</td>
-        <td class="p-2"><span class="font-semibold text-accent-blue">${t.code||''}</span> <span class="text-txt-dim text-xs">${t.name||''}</span></td>
-        <td class="p-2 text-center">${typeLabel}</td>
-        <td class="p-2 text-right mono">${(t.quantity||0).toLocaleString()}</td>
-        <td class="p-2 text-right mono text-txt-secondary">¥${(t.price || t.exit_price || 0).toLocaleString()}</td>
-        <td class="p-2 text-right mono">${pnlStr}</td>
-      </tr>`;
-    }).join('');
-  }
-
-  // PnL Chart
-  const curve = data.equity_curve || [];
-  if (curve.length > 1) {
-    const ctx = document.getElementById('pnl-chart').getContext('2d');
-    if (pnlChart) pnlChart.destroy();
-    const labels = curve.map(d => d.date);
-    const navData = curve.map(d => d.total_pnl || 0);
-    pnlChart = new Chart(ctx, {
-      type: 'line',
-      data: { labels, datasets: [{ label: '累計PnL', data: navData, borderColor: '#10b981', backgroundColor: 'rgba(16,185,129,0.1)', borderWidth: 2, pointRadius: 0, fill: true, tension: 0.3 }] },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false }, tooltip: { backgroundColor: '#1a1f2e', borderColor: '#252d3a', borderWidth: 1, cornerRadius: 8 } },
-        scales: {
-          x: { ticks: { color: '#64748b', font: { size: 10 }, maxRotation: 0 }, grid: { color: 'rgba(37,45,58,0.5)' } },
-          y: { ticks: { color: '#64748b', font: { size: 10 }, callback: v => '¥' + (v/10000).toFixed(0) + '万' }, grid: { color: 'rgba(37,45,58,0.5)' } }
-        }
-      }
-    });
-  }
-}
-
-// ═══════════════════════════════════════════════════
-// ③ Signals
-// ═══════════════════════════════════════════════════
-
-let signalsLoaded = false;
-let allSignals = [];
-let currentSignalFilter = 'all';
-let signalSortKey = 'score';
-let signalSortAsc = false;
-
-async function loadSignals() {
-  signalsLoaded = true;
-  const data = await apiFetch('/api/signals/all', 'signals');
-  if (!data) return;
-
-  const strategies = data.strategies || [];
-  allSignals = [];
-
-  // Extract momentum signals
-  for (const strat of strategies) {
-    if (strat.name === 'momentum') {
-      const sigs = strat.signals || [];
-      for (const s of sigs) {
-        allSignals.push({
-          code: s.code || '',
-          name: s.name || '',
-          score: s.score || 0,
-          action: 'BUY',
-          return_pct: s.ret5d_pct || 0,
-          rs_score: s.rs_score || 0,
-          price: s.price || 0,
-        });
-      }
-      // Regime info
-      const regime = strat.market_regime || {};
-      const regimeEl = document.getElementById('regime-detail');
-      if (regime.filter_active !== undefined) {
-        document.getElementById('regime-status').textContent = regime.filter_active ? 'ON' : 'OFF';
-        document.getElementById('regime-status').className = regime.filter_active
-          ? 'px-2 py-0.5 rounded-full text-xs font-semibold bg-accent-green/20 text-accent-green'
-          : 'px-2 py-0.5 rounded-full text-xs font-semibold bg-accent-red/20 text-accent-red';
-      }
-      if (regime.current_regime) {
-        regimeEl.textContent = `現在のレジーム: ${regime.current_regime}`;
-      }
-    }
-
-    // Also grab signal_library signals
-    if (strat.name === 'signal_library') {
-      const activeSigs = strat.signals || [];
-      // These aren't individual stock signals, skip for table
-    }
-  }
-
-  // If no signals from API, try legacy
-  if (allSignals.length === 0) {
-    try {
-      const legacyRes = await fetch('/api/signals');
-      if (legacyRes.ok) {
-        const legacy = await legacyRes.json();
-        const results = legacy.results || [];
-        for (const r of results) {
-          allSignals.push({
-            code: r.code || '',
-            name: r.name || '',
-            score: r.score_today || r.score || 0,
-            action: r.verdict || 'HOLD',
-            return_pct: r.return_5_25d || 0,
-            rs_score: r.rs_score || 0,
-            price: r.price || 0,
-          });
-        }
-      }
-    } catch(e) {}
-  }
-
-  // Sort by score desc
-  allSignals.sort((a,b) => b.score - a.score);
-  renderSignals();
-}
-
-function renderSignals() {
-  let filtered = [...allSignals];
-  const q = (document.getElementById('signal-search')?.value || '').toLowerCase().trim();
-  if (q) filtered = filtered.filter(s => s.code.toLowerCase().includes(q) || s.name.toLowerCase().includes(q));
-  if (currentSignalFilter !== 'all') filtered = filtered.filter(s => s.action === currentSignalFilter);
-
-  // Sort
-  filtered.sort((a,b) => {
-    const av = signalSortKey==='code' ? a.code : signalSortKey==='return' ? a.return_pct : a.score;
-    const bv = signalSortKey==='code' ? b.code : signalSortKey==='return' ? b.return_pct : b.score;
-    const cmp = typeof av === 'string' ? av.localeCompare(bv) : bv - av;
-    return signalSortAsc ? -cmp : cmp;
-  });
-
-  const actionBadge = a => {
-    const map = {
-      BUY: 'bg-accent-green/20 text-accent-green',
-      SELL: 'bg-accent-red/20 text-accent-red',
-      HOLD: 'bg-bg-border text-txt-dim',
-      WATCH: 'bg-accent-yellow/20 text-accent-yellow',
-    };
-    return `<span class="px-2 py-0.5 rounded-full text-[10px] font-semibold ${map[a]||map.HOLD}">${a}</span>`;
-  };
-
-  const tbody = document.getElementById('signals-body');
-  if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" class="text-center text-txt-dim py-8">シグナルなし</td></tr>';
-    return;
-  }
-  tbody.innerHTML = filtered.map(s => `<tr class="hover:bg-bg-card/50 transition-colors">
-    <td class="p-2 font-semibold text-accent-blue mono">${s.code}</td>
-    <td class="p-2 text-txt-secondary">${s.name}</td>
-    <td class="p-2 text-right mono font-bold ${s.score>=70?'text-accent-green':s.score>=50?'text-accent-yellow':'text-txt-dim'}">${s.score.toFixed(1)}</td>
-    <td class="p-2 text-center">${actionBadge(s.action)}</td>
-    <td class="p-2 text-right mono ${colorClass(s.return_pct)} hide-mobile">${fmt.pct(s.return_pct, 1)}</td>
-    <td class="p-2 text-right mono ${colorClass(s.rs_score)} hide-mobile">${s.rs_score.toFixed(1)}</td>
-    <td class="p-2 text-right mono text-txt-dim hide-mobile">¥${s.price?s.price.toLocaleString():'-'}</td>
-  </tr>`).join('');
-}
-
-function filterSignals(f) {
-  currentSignalFilter = f;
-  document.querySelectorAll('.sig-filter').forEach(el => el.classList.remove('sig-filter-active'));
-  event.target.classList.add('sig-filter-active');
-  renderSignals();
-}
-
-function sortSignals(key) {
-  if (signalSortKey === key) signalSortAsc = !signalSortAsc;
-  else { signalSortKey = key; signalSortAsc = false; }
-  renderSignals();
-}
-
-// Search listener
-document.getElementById('signal-search')?.addEventListener('input', () => renderSignals());
-
-// ═══════════════════════════════════════════════════
-// ④ Risk Management
-// ═══════════════════════════════════════════════════
-
-let riskLoaded = false;
-
-async function loadRisk() {
-  riskLoaded = true;
-  const data = await apiFetch('/api/risk', 'risk');
-  if (!data) return;
-  const p = data.portfolio || {};
-
-  document.getElementById('risk-var95').textContent = fmt.jpy(Math.abs(p.var_95_1d_jpy || 0));
-  document.getElementById('risk-var95-pct').textContent = fmt.pct(p.var_95_1d_pct || 0, 2);
-  document.getElementById('risk-var99').textContent = fmt.jpy(Math.abs(p.var_99_1d_jpy || 0));
-  document.getElementById('risk-var99-pct').textContent = fmt.pct(p.var_99_1d_pct || 0, 2);
-  document.getElementById('risk-vol').textContent = ((p.volatility_ann || 0) * 100).toFixed(1) + '%';
-  document.getElementById('risk-ddlimit').textContent = '-' + (p.dd_limit_pct || 20) + '%';
-
-  // DD Gauges
-  const pods = p.pods || {};
-  const gaugesHtml = Object.entries(pods).map(([key, pod]) => {
-    const name = POD_NAMES[key] || key;
-    const icon = POD_ICONS[key] || '📦';
-    const ddPct = Math.abs(pod.dd_pct || 0);
-    const ddLimit = pod.dd_limit_pct || 15;
-    const ratio = Math.min(ddPct / ddLimit * 100, 100);
-    const barColor = ratio > 80 ? 'bg-accent-red' : ratio > 50 ? 'bg-accent-yellow' : 'bg-accent-green';
-    const statusText = !pod.active ? '⛔ 停止中' : ratio > 80 ? '⚠️ 警戒' : '✅ 正常';
-    return `<div class="glass rounded-xl p-4">
-      <div class="flex items-center justify-between mb-2">
-        <div class="flex items-center gap-2"><span>${icon}</span><span class="text-sm font-semibold">${name}</span></div>
-        <span class="text-xs ${ratio>80?'text-accent-red':ratio>50?'text-accent-yellow':'text-accent-green'}">${statusText}</span>
-      </div>
-      <div class="flex items-center gap-3 mb-1">
-        <span class="text-xs text-txt-dim w-20">DD: ${ddPct.toFixed(1)}%</span>
-        <div class="flex-1 h-3 rounded-full bg-bg-primary overflow-hidden"><div class="h-full rounded-full ${barColor} progress-bar" style="width:${ratio}%"></div></div>
-        <span class="text-xs text-txt-dim w-20 text-right">限度: ${ddLimit}%</span>
-      </div>
-      <div class="text-[10px] text-txt-dim">残余マージン: ${(ddLimit - ddPct).toFixed(1)}% | 使用率: ${ratio.toFixed(0)}%</div>
-    </div>`;
-  }).join('');
-  document.getElementById('dd-gauges').innerHTML = gaugesHtml || '<p class="text-txt-dim col-span-2 text-center py-8">ポッドデータなし</p>';
-
-  // Correlation Matrix
-  const corr = data.correlation || {};
-  const matrix = corr.matrix || {};
-  const podNames = Object.keys(pods);
-  if (podNames.length >= 2 && Object.keys(matrix).length > 0) {
-    let html = '<div class="overflow-x-auto"><table class="text-xs">';
-    html += '<tr><th class="p-2"></th>' + podNames.map(n => `<th class="p-2 text-center text-txt-dim">${(POD_NAMES[n]||n).slice(0,4)}</th>`).join('') + '</tr>';
-    for (const n1 of podNames) {
-      html += `<tr><td class="p-2 text-right text-txt-dim font-medium">${(POD_NAMES[n1]||n1).slice(0,6)}</td>`;
-      for (const n2 of podNames) {
-        if (n1 === n2) { html += '<td class="p-2 text-center"><div class="w-10 h-10 rounded-md bg-accent-blue/30 flex items-center justify-center font-bold">1.00</div></td>'; continue; }
-        const key1 = `${n1}_${n2}`, key2 = `${n2}_${n1}`;
-        const val = matrix[key1] ?? matrix[key2] ?? 0;
-        const intensity = Math.abs(val);
-        const bg = val > 0 ? `rgba(239,68,68,${intensity*0.5})` : `rgba(59,130,246,${intensity*0.5})`;
-        html += `<td class="p-1 text-center"><div class="heatmap-cell w-10 h-10 rounded-md flex items-center justify-center font-bold mono text-[11px]" style="background:${bg}">${val.toFixed(2)}</div></td>`;
-      }
-      html += '</tr>';
-    }
-    html += '</table></div>';
-    document.getElementById('correlation-matrix').innerHTML = html;
-  }
-
-  // Alerts
-  const alerts = data.alerts || [];
-  const alertsEl = document.getElementById('alerts-list');
-  if (alerts.length === 0) {
-    alertsEl.innerHTML = '<p class="text-txt-dim text-sm py-4 text-center">アラートなし ✅</p>';
-  } else {
-    alertsEl.innerHTML = alerts.map(a => {
-      const levelColors = {
-        critical: 'border-accent-red bg-accent-red/10 text-accent-red',
-        warning: 'border-accent-yellow bg-accent-yellow/10 text-accent-yellow',
-        caution: 'border-accent-blue bg-accent-blue/10 text-accent-blue',
-      };
-      const cls = levelColors[a.level] || levelColors.caution;
-      return `<div class="border-l-4 ${cls} rounded-r-lg p-3 mb-2">
-        <div class="flex items-center gap-2">
-          <span class="text-xs font-bold uppercase">${a.level}</span>
-          <span class="text-sm text-txt-primary">${a.message}</span>
-        </div>
-      </div>`;
-    }).join('');
-  }
-}
-
-// ═══════════════════════════════════════════════════
-// ⑤ Backtest
-// ═══════════════════════════════════════════════════
-
-let backtestLoaded = false;
-
-async function loadBacktest() {
-  backtestLoaded = true;
-  try {
-    const evoRes = await fetch('/api/backtest/evolution');
-    if (!evoRes.ok) throw new Error('evolution API failed');
-    const evoData = await evoRes.json();
-
-    document.getElementById('bt-loading').classList.add('hidden');
-    document.getElementById('bt-content').classList.remove('hidden');
-
-    const best10 = evoData.best10 || [];
-    document.getElementById('bt-total').textContent = evoData.total || 0;
-
-    if (best10.length > 0) {
-      const top = best10[0];
-      document.getElementById('bt-return').textContent = fmt.pct(top.total_return_pct || 0);
-      document.getElementById('bt-return').className = `text-xl font-bold mono ${colorClass(top.total_return_pct||0)}`;
-      document.getElementById('bt-sharpe').textContent = fmt.num(top.sharpe || 0);
-      document.getElementById('bt-sharpe').className = `text-xl font-bold mono ${colorClass(top.sharpe||0)}`;
-      document.getElementById('bt-maxdd').textContent = (top.max_dd_pct || 0) + '%';
-      document.getElementById('bt-topn').textContent = top.params?.top_n || '-';
-    }
-
-    const tbody = document.getElementById('bt-best-body');
-    if (best10.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" class="text-center text-txt-dim py-8">データなし</td></tr>';
-    } else {
-      tbody.innerHTML = best10.map((r, i) => {
-        const hypName = r.id || r.hypothesis || '-';
-        const freq = r.params?.rebalance === 'weekly' ? '週次' : r.params?.rebalance === 'daily' ? '日次' : '-';
-        return `<tr class="hover:bg-bg-card/50 transition-colors ${i===0?'bg-accent-blue/5':''}">
-          <td class="p-2 text-txt-dim">${i+1}</td>
-          <td class="p-2 text-sm max-w-[200px] truncate">${hypName}</td>
-          <td class="p-2 text-right mono font-bold ${colorClass(r.total_return_pct||0)}">${fmt.pct(r.total_return_pct||0)}</td>
-          <td class="p-2 text-right mono ${colorClass(r.sharpe||0)}">${fmt.num(r.sharpe||0)}</td>
-          <td class="p-2 text-right mono text-accent-red">${(r.max_dd_pct||0)}%</td>
-          <td class="p-2 text-right mono text-txt-dim hide-mobile">${r.params?.lookback||'-'}</td>
-          <td class="p-2 text-right mono text-txt-dim hide-mobile">${r.params?.top_n||'-'}</td>
-          <td class="p-2 text-right text-txt-dim hide-mobile">${freq}</td>
-        </tr>`;
-      }).join('');
-    }
+    `).join('');
   } catch(e) {
-    // Try legacy best-results
-    try {
-      const res = await fetch('/api/best-results');
-      if (res.ok) {
-        const data = await res.json();
-        document.getElementById('bt-loading').classList.add('hidden');
-        document.getElementById('bt-content').classList.remove('hidden');
-        // handle legacy format
-      }
-    } catch(e2) {}
-    document.getElementById('bt-loading').textContent = '⚠️ バックテストデータなし';
+    document.getElementById('hypothesis-list').innerHTML = `<div class="error">エラー: ${e.message}</div>`;
   }
 }
 
-// ═══════════════════════════════════════════════════
-// Init
-// ═══════════════════════════════════════════════════
+// 注目銘柄読み込み
+async function loadCandidates() {
+  try {
+    const r = await fetch('/api/candidates');
+    const data = await r.json();
+    if (data.updated_at) {
+      document.getElementById('updated-candidates').textContent = `最終更新: ${data.updated_at} | ${data.total || 0}件`;
+    }
+    const candidates = data.candidates || [];
+    if (!candidates.length) {
+      document.getElementById('candidates-tbody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:#8b949e">データなし。fundamental_screener.pyを実行してください。</td></tr>';
+      return;
+    }
+    document.getElementById('candidates-tbody').innerHTML = candidates.slice(0, 50).map(c => `
+      <tr>
+        <td><span class="code">${c.code}</span></td>
+        <td>${fmt(c.roe)}</td>
+        <td>${fmt(c.op_margin)}</td>
+        <td>${fmt(c.sales_growth_yoy)}</td>
+        <td>${fmt(c.forecast_sales_growth)}</td>
+        <td>
+          <div class="score-bar">
+            <div class="score-fill" style="width:${(c.score*80).toFixed(0)}px"></div>
+            <span>${(c.score*100).toFixed(0)}</span>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  } catch(e) {
+    document.getElementById('candidates-tbody').innerHTML = `<tr><td colspan="6">エラー: ${e.message}</td></tr>`;
+  }
+}
 
-// Filter button active styling
-document.head.insertAdjacentHTML('beforeend', `<style>.sig-filter-active { background: rgba(59,130,246,0.15) !important; border-color: #3b82f6 !important; color: #e2e8f0 !important; }</style>`);
+// モメンタム読み込み
+async function loadMomentum() {
+  try {
+    const r = await fetch('/api/today');
+    const data = await r.json();
+    const best10 = data.best10 || [];
+    if (!best10.length) {
+      document.getElementById('momentum-content').innerHTML = '<div class="error">モメンタムデータなし</div>';
+      return;
+    }
+    document.getElementById('updated-momentum').textContent = `シグナル: ${best10.length}件`;
+    document.getElementById('momentum-content').innerHTML = `
+      <div class="momentum-grid">
+        ${best10.slice(0,10).map(s => `
+          <div class="card">
+            <h3>${s.code || '—'} ${s.name || ''}</h3>
+            ${Object.entries(s).filter(([k]) => !['code','name'].includes(k)).slice(0,5).map(([k,v]) =>
+              `<div class="stat"><span class="stat-label">${k}</span><span class="stat-value">${typeof v === 'number' ? v.toFixed(2) : v}</span></div>`
+            ).join('')}
+          </div>
+        `).join('')}
+      </div>`;
+  } catch(e) {
+    document.getElementById('momentum-content').innerHTML = `<div class="error">エラー: ${e.message}</div>`;
+  }
+}
 
-// Load portfolio on start
-loadPortfolio();
-
-// Auto-refresh every 60s
-setInterval(() => {
-  const activeTab = document.querySelector('.tab-content:not(.hidden)')?.id?.replace('tab-','');
-  if (activeTab === 'portfolio') loadPortfolio();
-}, 60000);
-
+// 初期ロード
+loadHypotheses();
+loadCandidates();
+loadMomentum();
 </script>
 </body>
 </html>

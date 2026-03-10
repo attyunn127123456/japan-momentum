@@ -1,0 +1,47 @@
+{
+  "updated_at": "2026-03-10 13:25",
+  "market_summary": {
+    "total_companies": 3,
+    "median_op_margin": 8.39,
+    "median_roe": 7.58,
+    "high_roe_count": 1,
+    "high_growth_count": 2
+  },
+  "hypotheses": [
+    {
+      "id": "h_sample_001",
+      "theme": "AIインフラ投資継続でSIerが恩恵",
+      "logic": "生成AI導入が加速する中、日本企業のDX投資需要が高まり、ITサービス企業の売上・利益が向上する見込み",
+      "target_conditions": {
+        "min_roe": 10,
+        "min_op_margin": 5,
+        "sector_hint": "情報・通信"
+      },
+      "confidence": 0.75,
+      "created_at": "2026-03-10"
+    },
+    {
+      "id": "h_sample_002",
+      "theme": "円安継続で輸出製造業の利益拡大",
+      "logic": "構造的な円安環境下で、海外売上比率が高い製造業は為替差益を享受し利益率が改善",
+      "target_conditions": {
+        "min_roe": 8,
+        "min_op_margin": 6
+      },
+      "confidence": 0.65,
+      "created_at": "2026-03-10"
+    },
+    {
+      "id": "h_sample_003",
+      "theme": "成果報酬型SaaSはAI普及で効率化恩恵",
+      "logic": "LLMによる業務自動化で成果ベース課金モデルのSaaS企業は内部コスト削減しつつ顧客価値は向上、利益率が改善",
+      "target_conditions": {
+        "min_roe": 12,
+        "min_op_margin": 8,
+        "sector_hint": "情報・通信"
+      },
+      "confidence": 0.8,
+      "created_at": "2026-03-10"
+    }
+  ]
+}
